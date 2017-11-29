@@ -1,4 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-29T23:28:31+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 4</title><link href="http://localhost:4000/scala/2017/11/29/scala_day4.html" rel="alternate" type="text/html" title="Scala day 4" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day4</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day4.html">&lt;h2 id=&quot;scalas-function-literal&quot;&gt;scala’s function literal&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-30T00:51:23+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 5 (operators are methods)</title><link href="http://localhost:4000/scala/2017/11/29/scala_day5.html" rel="alternate" type="text/html" title="Scala day 5 (operators are methods)" /><published>2017-11-29T14:44:17+08:00</published><updated>2017-11-29T14:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day5</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day5.html">&lt;h2 id=&quot;any-method-can-be-an-operator&quot;&gt;Any method can be an operator&lt;/h2&gt;
+&lt;h3 id=&quot;scala-的方法可當成運算子運算子也可當成方法&quot;&gt;scala 的方法可當成運算子，運算子也可當成方法&lt;/h3&gt;
+&lt;p&gt;以 Int 為例，Int 定義了許多運算子的方法，例如：+,-,*,/,!=,to,…&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;sum: Int = 6
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + 5
+&lt;span class=&quot;go&quot;&gt;sum: Int = 6
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val nums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 to 5
+&lt;span class=&quot;go&quot;&gt;nums: scala.collection.immutable.Range.Inclusive = Range 1 to 5
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Int 也實作了許多 overload 可帶入不同型態的參數，像 + 就可傳入許多不同型態的參數，回傳型態也不一樣 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + 2
+&lt;span class=&quot;go&quot;&gt;sum: Int = 3
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + &lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;sum: String = 12
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + 2D
+&lt;span class=&quot;go&quot;&gt;sum: Double = 3.0
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + 2L
+&lt;span class=&quot;go&quot;&gt;sum: Long = 3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;再來看 String，String 的 api 裡有提供 concat 這方法，也可以把他當成運算子使用 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val msg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi &quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;msg: String = &quot;Hi &quot;
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val newMsg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; msg concat &lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;newMsg: String = Hi Jack
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;String 的 toLowerCase ，把 toLowerCase 當作方法呼叫 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; newMsg.toLowerCase
+&lt;span class=&quot;go&quot;&gt;res1: String = hi jack
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;prefix-operators--infix-operator--postfix-operators&quot;&gt;prefix operators 、 infix operator 、 Postfix operators&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;prefix operators 是 +, -, !, and ~&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-5&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res1: Int = -5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;infix operator 就是在物件及方法參數的中間運算子．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1 + 5
+&lt;span class=&quot;go&quot;&gt;res2: Int = 6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;Postfix operators 是沒有帶參數的方法．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 5 toLong
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:12: warning: postfix operator toLong should be enabled
+&lt;span class=&quot;go&quot;&gt;by making the implicit value scala.language.postfixOps visible.
+This can be achieved by adding the import clause 'import scala.language.postfixOps'
+or by setting the compiler option -language:postfixOps.
+See the Scaladoc for value scala.language.postfixOps for a discussion
+why the feature should be explicitly enabled.
+       5 toLong
+         ^
+res3: Long = 5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;toLowerCase 也算是 Postfix operators，需要 import scala.language.postfixOps 才不會出現 warning :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; newMsg toLowerCase
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: warning: postfix operator toLowerCase should be enabled
+&lt;span class=&quot;go&quot;&gt;by making the implicit value scala.language.postfixOps visible.
+This can be achieved by adding the import clause 'import scala.language.postfixOps'
+or by setting the compiler option -language:postfixOps.
+See the Scaladoc for value scala.language.postfixOps for a discussion
+why the feature should be explicitly enabled.
+       newMsg toLowerCase
+              ^
+res2: String = hi jack
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.language.postfixOps
+&lt;span class=&quot;go&quot;&gt;import scala.language.postfixOps
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; newMsg toLowerCase
+&lt;span class=&quot;go&quot;&gt;res3: String = hi jack
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;在 scala 裡 &lt;strong&gt;&lt;em&gt;operators are methods&lt;/em&gt;&lt;/strong&gt; &amp;amp; &lt;strong&gt;&lt;em&gt;any method can be an operator&lt;/em&gt;&lt;/strong&gt;，就看程式的寫法．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Any method can be an operator scala 的方法可當成運算子，運算子也可當成方法 以 Int 為例，Int 定義了許多運算子的方法，例如：+,-,*,/,!=,to,… ```console scala&amp;gt; val sum = (1).+(5) sum: Int = 6</summary></entry><entry><title type="html">Scala day 4 (function literal)</title><link href="http://localhost:4000/scala/2017/11/29/scala_day4.html" rel="alternate" type="text/html" title="Scala day 4 (function literal)" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day4</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day4.html">&lt;h2 id=&quot;scalas-function-literal&quot;&gt;scala’s function literal&lt;/h2&gt;
 &lt;h4 id=&quot;function-literal-語法&quot;&gt;function literal 語法&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;(num1: Int,num2: Int) =&amp;gt; num1 + num2&lt;/strong&gt;&lt;/li&gt;
@@ -52,7 +148,7 @@
 &lt;ul&gt;
   &lt;li&gt;function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，
 所以還需要再花時間研究一下．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala’s function literal function literal 語法 (num1: Int,num2: Int) =&amp;gt; num1 + num2</summary></entry><entry><title type="html">Scala day 3</title><link href="http://localhost:4000/scala/2017/11/29/scala_day3.html" rel="alternate" type="text/html" title="Scala day 3" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day3</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day3.html">&lt;h2 id=&quot;define-something-in-scala&quot;&gt;Define something in scala&lt;/h2&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala’s function literal function literal 語法 (num1: Int,num2: Int) =&amp;gt; num1 + num2</summary></entry><entry><title type="html">Scala day 3 (Define something)</title><link href="http://localhost:4000/scala/2017/11/29/scala_day3.html" rel="alternate" type="text/html" title="Scala day 3 (Define something)" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day3</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day3.html">&lt;h2 id=&quot;define-something-in-scala&quot;&gt;Define something in scala&lt;/h2&gt;
 &lt;h4 id=&quot;定義變數&quot;&gt;定義變數&lt;/h4&gt;
 &lt;p&gt;定義一個變數的基本內容 :&lt;/p&gt;
 &lt;ul&gt;
@@ -257,7 +353,7 @@ published: true
 &lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;jekyllrb&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://stackoverflow.com/questions/30625044/jekyll-post-not-generated&quot;&gt;jekyll-post-not-generated&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://pages.github.com/&quot;&gt;github pages&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">安裝使用 Jekyll</summary></entry><entry><title type="html">Scala day 2</title><link href="http://localhost:4000/scala/2017/11/28/scala_day2.html" rel="alternate" type="text/html" title="Scala day 2" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day2</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day2.html">&lt;h2 id=&quot;use-scalac-compile-scala&quot;&gt;Use &lt;strong&gt;scalac&lt;/strong&gt; Compile Scala：&lt;/h2&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">安裝使用 Jekyll</summary></entry><entry><title type="html">Scala day 2 (Compile Scala)</title><link href="http://localhost:4000/scala/2017/11/28/scala_day2.html" rel="alternate" type="text/html" title="Scala day 2 (Compile Scala)" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day2</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day2.html">&lt;h2 id=&quot;use-scalac-compile-scala&quot;&gt;Use &lt;strong&gt;scalac&lt;/strong&gt; Compile Scala：&lt;/h2&gt;
 &lt;p&gt;HelloWorld.scala&lt;/p&gt;
 &lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
@@ -300,7 +396,7 @@ published: true
 
 &lt;h3 id=&quot;參考資料&quot;&gt;參考資料&lt;/h3&gt;
 &lt;hr /&gt;
-&lt;p&gt;https://stackoverflow.com/questions/16821828/classnotfoundexceptionscala-predef-issue&lt;/p&gt;</content><author><name></name></author><summary type="html">Use scalac Compile Scala： HelloWorld.scala ```scala object HelloWorld {</summary></entry><entry><title type="html">Scala day 1</title><link href="http://localhost:4000/scala/2017/11/28/scala_day1.html" rel="alternate" type="text/html" title="Scala day 1" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day1</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day1.html">&lt;h2 id=&quot;run-scala&quot;&gt;Run scala&lt;/h2&gt;
+&lt;p&gt;https://stackoverflow.com/questions/16821828/classnotfoundexceptionscala-predef-issue&lt;/p&gt;</content><author><name></name></author><summary type="html">Use scalac Compile Scala： HelloWorld.scala ```scala object HelloWorld {</summary></entry><entry><title type="html">Scala day 1 (Run scala)</title><link href="http://localhost:4000/scala/2017/11/28/scala_day1.html" rel="alternate" type="text/html" title="Scala day 1 (Run scala)" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day1</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day1.html">&lt;h2 id=&quot;run-scala&quot;&gt;Run scala&lt;/h2&gt;
 &lt;h3 id=&quot;scala安裝&quot;&gt;scala安裝：&lt;/h3&gt;
 &lt;p&gt;1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz&lt;/p&gt;
 &lt;blockquote&gt;
