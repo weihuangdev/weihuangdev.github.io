@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-30T00:51:23+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 5 (operators are methods)</title><link href="http://localhost:4000/scala/2017/11/29/scala_day5.html" rel="alternate" type="text/html" title="Scala day 5 (operators are methods)" /><published>2017-11-29T14:44:17+08:00</published><updated>2017-11-29T14:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day5</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day5.html">&lt;h2 id=&quot;any-method-can-be-an-operator&quot;&gt;Any method can be an operator&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-30T00:56:33+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 5 (operators are methods)</title><link href="http://localhost:4000/scala/2017/11/29/scala_day5.html" rel="alternate" type="text/html" title="Scala day 5 (operators are methods)" /><published>2017-11-29T14:44:17+08:00</published><updated>2017-11-29T14:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day5</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day5.html">&lt;h2 id=&quot;any-method-can-be-an-operator&quot;&gt;Any method can be an operator&lt;/h2&gt;
 &lt;h3 id=&quot;scala-的方法可當成運算子運算子也可當成方法&quot;&gt;scala 的方法可當成運算子，運算子也可當成方法&lt;/h3&gt;
 &lt;p&gt;以 Int 為例，Int 定義了許多運算子的方法，例如：+,-,*,/,!=,to,…&lt;/p&gt;
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -268,92 +268,7 @@ res2: String = hi jack
 &lt;ul&gt;
   &lt;li&gt;scala 編譯器的 type inference，可以推測變數的型別及方法回傳的型態，所以可以讓程式碼更加簡潔．&lt;/li&gt;
   &lt;li&gt;scala function 的參數都是 val 不可改變．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Define something in scala 定義變數 定義一個變數的基本內容 : var / val 變數名稱 : 變數型態 = 值</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2017/11/28/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-11-28T16:44:17+08:00</published><updated>2017-11-28T16:44:17+08:00</updated><id>http://localhost:4000/jekyll/update/2017/11/28/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/11/28/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
-
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
-
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry><entry><title type="html">start By Jekyll</title><link href="http://localhost:4000/daniel/update/2017/11/28/startByJekyll.html" rel="alternate" type="text/html" title="start By Jekyll" /><published>2017-11-28T15:43:17+08:00</published><updated>2017-11-28T15:43:17+08:00</updated><id>http://localhost:4000/daniel/update/2017/11/28/startByJekyll</id><content type="html" xml:base="http://localhost:4000/daniel/update/2017/11/28/startByJekyll.html">&lt;h3 id=&quot;安裝使用-jekyll&quot;&gt;安裝使用 Jekyll&lt;/h3&gt;
-
-&lt;p&gt;macOS預設的ruby太舊，只好用brew裝新版&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install ruby
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;安裝後位置(/usr/local/Cellar/ruby/2.4.2_1)，重新讀取環境變數&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source ~/.bash_profile
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;確認ruby版本&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby -v
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;更新gem&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem update --system
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用gym安裝jekyll&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install jekyll
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;確認jekyll版本&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll -v
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;到要建立blog project的目錄底下下指令&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll new danielblog
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;會建立danielblog資料夾，cd進去&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd danielblog
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;啟動jekyll服務&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll serve
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;結果出現錯誤&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:288:in `block in verify_gemfile_dependencies_are_found!': Could not find gem 'minima (~&amp;gt; 2.0)' in any of the gem sources listed in your Gemfile. (Bundler::GemNotFound)
-from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `each'
-from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `verify_gemfile_dependencies_are_found!'
-...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;上網查所要裝bundler，所以執行下面兩行指令&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install bundler
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;之後再重新執行一次jekyll serve．然後再打開網址：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://127.0.0.1:4000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/startByJekyll_1.jpg&quot; alt=&quot;startByJekyll_1.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;github-pages--jekyll&quot;&gt;github pages + jekyll&lt;/h3&gt;
-&lt;p&gt;如果要搭配使用 &lt;strong&gt;github pages&lt;/strong&gt; 時，在 github 建立 Repository name 一定要是&lt;strong&gt;(github的使用者名稱).github.io&lt;/strong&gt;．&lt;br /&gt;
-假設github的使用者名稱是weihuangdev，Repository name 就要設成 : weihuangdev.github.io&lt;br /&gt;
-然後在網址才會是 &lt;strong&gt;https://weihuangdev.github.io/&lt;/strong&gt;，否則網頁的路徑會跟jekyll的路徑不一樣，顯示會有問題．這坑踩超久…&lt;/p&gt;
-
-&lt;h3 id=&quot;補充&quot;&gt;補充&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;想讀取圖片的話，可在project(danielblog)底下建立assets資料夾裡放圖片或resource，可用下面markdown語法：&lt;br /&gt;
-![day1_1.jpg]({{ “/assets/day1_1.jpg” | absolute_url }})
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;![day1_1.jpg](http://localhost:4000/assets/day1_1.jpg)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;在markdown想換行的話直接在後面加兩個空白即可．&lt;/li&gt;
-  &lt;li&gt;寫好_post但文章出不來時，可在_config.yml加上：
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;future: true
-published: true
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考網址：&lt;br /&gt;
-&lt;a href=&quot;https://mathsigit.github.io/blog_page/2017/11/07/githubpage-with-jekyll/&quot;&gt;Yung-An’s Blog&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;jekyllrb&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://stackoverflow.com/questions/30625044/jekyll-post-not-generated&quot;&gt;jekyll-post-not-generated&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://pages.github.com/&quot;&gt;github pages&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">安裝使用 Jekyll</summary></entry><entry><title type="html">Scala day 2 (Compile Scala)</title><link href="http://localhost:4000/scala/2017/11/28/scala_day2.html" rel="alternate" type="text/html" title="Scala day 2 (Compile Scala)" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day2</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day2.html">&lt;h2 id=&quot;use-scalac-compile-scala&quot;&gt;Use &lt;strong&gt;scalac&lt;/strong&gt; Compile Scala：&lt;/h2&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Define something in scala 定義變數 定義一個變數的基本內容 : var / val 變數名稱 : 變數型態 = 值</summary></entry><entry><title type="html">Scala day 2 (Compile Scala)</title><link href="http://localhost:4000/scala/2017/11/28/scala_day2.html" rel="alternate" type="text/html" title="Scala day 2 (Compile Scala)" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day2</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day2.html">&lt;h2 id=&quot;use-scalac-compile-scala&quot;&gt;Use &lt;strong&gt;scalac&lt;/strong&gt; Compile Scala：&lt;/h2&gt;
 &lt;p&gt;HelloWorld.scala&lt;/p&gt;
 &lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 
@@ -491,4 +406,89 @@ This is by shell
       &lt;li&gt;直接執行shell的方式．&lt;/li&gt;
     &lt;/ol&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Run scala scala安裝： 1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz 參考網址：https://www.scala-lang.org/download/</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Run scala scala安裝： 1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz 參考網址：https://www.scala-lang.org/download/</summary></entry><entry><title type="html">start By Jekyll</title><link href="http://localhost:4000/daniel/update/2017/11/28/startByJekyll.html" rel="alternate" type="text/html" title="start By Jekyll" /><published>2017-11-28T11:43:17+08:00</published><updated>2017-11-28T11:43:17+08:00</updated><id>http://localhost:4000/daniel/update/2017/11/28/startByJekyll</id><content type="html" xml:base="http://localhost:4000/daniel/update/2017/11/28/startByJekyll.html">&lt;h3 id=&quot;安裝使用-jekyll&quot;&gt;安裝使用 Jekyll&lt;/h3&gt;
+
+&lt;p&gt;macOS預設的ruby太舊，只好用brew裝新版&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install ruby
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;安裝後位置(/usr/local/Cellar/ruby/2.4.2_1)，重新讀取環境變數&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;確認ruby版本&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby -v
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;更新gem&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem update --system
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用gym安裝jekyll&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install jekyll
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;確認jekyll版本&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll -v
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;到要建立blog project的目錄底下下指令&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll new danielblog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;會建立danielblog資料夾，cd進去&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd danielblog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;啟動jekyll服務&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll serve
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;結果出現錯誤&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:288:in `block in verify_gemfile_dependencies_are_found!': Could not find gem 'minima (~&amp;gt; 2.0)' in any of the gem sources listed in your Gemfile. (Bundler::GemNotFound)
+from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `each'
+from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `verify_gemfile_dependencies_are_found!'
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;上網查所要裝bundler，所以執行下面兩行指令&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install bundler
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;之後再重新執行一次jekyll serve．然後再打開網址：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://127.0.0.1:4000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/startByJekyll_1.jpg&quot; alt=&quot;startByJekyll_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;github-pages--jekyll&quot;&gt;github pages + jekyll&lt;/h3&gt;
+&lt;p&gt;如果要搭配使用 &lt;strong&gt;github pages&lt;/strong&gt; 時，在 github 建立 Repository name 一定要是&lt;strong&gt;(github的使用者名稱).github.io&lt;/strong&gt;．&lt;br /&gt;
+假設github的使用者名稱是weihuangdev，Repository name 就要設成 : weihuangdev.github.io&lt;br /&gt;
+然後在網址才會是 &lt;strong&gt;https://weihuangdev.github.io/&lt;/strong&gt;，否則網頁的路徑會跟jekyll的路徑不一樣，顯示會有問題．這坑踩超久…&lt;/p&gt;
+
+&lt;h3 id=&quot;補充&quot;&gt;補充&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;想讀取圖片的話，可在project(danielblog)底下建立assets資料夾裡放圖片或resource，可用下面markdown語法：&lt;br /&gt;
+![day1_1.jpg]({{ “/assets/day1_1.jpg” | absolute_url }})
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;![day1_1.jpg](http://localhost:4000/assets/day1_1.jpg)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;在markdown想換行的話直接在後面加兩個空白即可．&lt;/li&gt;
+  &lt;li&gt;寫好_post但文章出不來時，可在_config.yml加上：
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;future: true
+published: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考網址：&lt;br /&gt;
+&lt;a href=&quot;https://mathsigit.github.io/blog_page/2017/11/07/githubpage-with-jekyll/&quot;&gt;Yung-An’s Blog&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;jekyllrb&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://stackoverflow.com/questions/30625044/jekyll-post-not-generated&quot;&gt;jekyll-post-not-generated&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://pages.github.com/&quot;&gt;github pages&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">安裝使用 Jekyll</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2017/11/28/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-11-28T10:44:17+08:00</published><updated>2017-11-28T10:44:17+08:00</updated><id>http://localhost:4000/jekyll/update/2017/11/28/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/11/28/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry></feed>
