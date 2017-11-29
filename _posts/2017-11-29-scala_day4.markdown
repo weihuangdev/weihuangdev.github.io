@@ -1,0 +1,68 @@
+---
+layout: post
+title:  "Scala day 4"
+date:   2017-11-29 13:44:17 +0800
+categories: scala
+---
+
+## scala's function literal
+#### function literal 語法
+* **(num1: Int,num2: Int) => num1 + num2**  
+
+function literal 由於沒有 function 名稱所以又可稱為匿名函式(anonymous function)，又有另外一個名稱 lambda expressions．
+
+```console
+scala> val sum = (num1: Int,num2: Int) => num1 + num2
+sum: (Int, Int) => Int = $$Lambda$1182/1936666552@9715d26
+
+scala> sum(1,2)
+res10: Int = 3
+```
+使用 underscore (_) 簡化 lambda expressions : 
+```console
+scala> val sum = (_:Int) + (_:Int)
+sum: (Int, Int) => Int = $$Lambda$1189/26179918@389a9ff6
+
+scala> sum(1,2)
+res11: Int = 3
+```
+或著這樣寫
+
+```console
+scala> val sum : (Int , Int) => Int = _ + _
+sum: (Int, Int) => Int = $$Lambda$1267/1294798554@2ce987d7
+```
+
+再來看下面例子，如果參數只有一個的話，省略到最後會變成只要一個 _ ，且不用指定型態就可代表傳入的參數 :  
+
+```console
+scala> val sayHello = (name:String) => "Hello " + name
+sayHello: String => String = $$Lambda$1195/2104281815@4d9ad37e
+
+scala> val sayHello = "Hello " + (_:String)
+sayHello: String => String = $$Lambda$1196/952756535@26401eda
+
+scala> val sayHello = "Hello " + _
+sayHello: Any => String = $$Lambda$1204/1132118748@3de507af
+
+scala> sayHello("Daniel")
+res12: String = Hello Daniel
+```
+function literal 運用在迴圈上 :  
+```console
+scala> 1.to(5).foreach((num:Int) => print(num + " "))
+1 2 3 4 5
+
+scala> (1 to 5).foreach(print)
+12345
+```
+
+
+### 總結
+- - -
+* function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，
+所以還需要再花時間研究一下．
+
+
+
+

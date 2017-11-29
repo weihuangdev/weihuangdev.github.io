@@ -1,0 +1,60 @@
+---
+layout: post
+title:  "Scala day 2"
+date:   2017-11-28 13:44:17 +0800
+categories: scala
+---
+
+
+## Use **scalac** Compile Scala：
+HelloWorld.scala
+```scala
+object HelloWorld {
+
+  def main(args: Array[String]): Unit = {
+    println("Hello World!")
+  }
+}
+```
+使用 **scalac** compile scala 程式，會出現可以在JVM執行的class檔．
+```console
+daniel@Danielde-MacBook-Pro > scalac HelloWorld.scala
+ daniel@Danielde-MacBook-Pro > ll
+-rwxrwxrwx  1 daniel  staff   670B 11 29 00:01 HelloWorld$.class
+-rwxrwxrwx  1 daniel  staff   608B 11 29 00:01 HelloWorld.class
+-rwxrwxrwx  1 daniel  staff    97B 11 22 22:21 HelloWorld.scala
+
+```
+執行java HelloWorld，卻出現錯誤．
+```console
+daniel@Danielde-MacBook-Pro > java HelloWorld
+Exception in thread "main" java.lang.NoClassDefFoundError: scala/Predef$
+	at HelloWorld$.main(HelloWorld.scala:4)
+	at HelloWorld.main(HelloWorld.scala)
+Caused by: java.lang.ClassNotFoundException: scala.Predef$
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	... 2 more
+```
+上網查了一下說是少了scala-library.jar，所以改成這樣執行：
+```console
+daniel@Danielde-MacBook-Pro > java -cp "scala-2.12.4/lib/scala-library.jar:." HelloWorld
+Hello World!
+```
+執行成功～因為沒有設classpath=. (當前目錄)，所以-cp時要自己加.
+
+
+### 總結
+- - -
+* 由於sacla是基於JVM上的語言，所以complie後還是會產生class檔，可在JVM執行．
+
+
+### 參考資料
+- - -
+https://stackoverflow.com/questions/16821828/classnotfoundexceptionscala-predef-issue
+
+
+
+

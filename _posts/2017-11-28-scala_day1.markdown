@@ -1,0 +1,101 @@
+---
+layout: post
+title:  "Scala day 1"
+date:   2017-11-28 13:44:17 +0800
+categories: scala
+---
+
+## Run scala
+### scala安裝：
+1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz
+> 參考網址：[https://www.scala-lang.org/download/](https://www.scala-lang.org/download/)
+
+2.下載後解壓縮，設定環境變數(vi ~/.bash_profile)
+```
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home
+export SCALA_HOME=/Volumes/Transcend/scala-test/scala-2.12.4
+export PATH=$JAVA_HOME/bin:$SCALA_HOME/bin:$PATH:~/bin
+```
+修改完後，重新讀取設定檔：
+```
+source ~/.bash_profile
+```
+確認java版本
+```console
+daniel@Danielde-MacBook-Pro > java -version
+java version "1.8.0_111"
+Java(TM) SE Runtime Environment (build 1.8.0_111-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 25.111-b14, mixed mode)
+```
+
+
+### 使用指令執行scala：
+#### 使用三種方式印出HelloWorld．  
+* 第1種 使用 **scala shell** 環境印出HelloWorld．  
+執行scala，要離開scala 環境，可下:q 或 :quit
+
+```console
+daniel@Danielde-MacBook-Pro > scala
+Welcome to Scala 2.12.4 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_111).
+Type in expressions for evaluation. Or try :help.
+
+scala> val msg = "Hello World"
+msg: String = Hello World
+scala>
+```
+
+* 第2種 使用 **HelloWorld.scala** 印出HelloWorld．  
+
+```scala
+object HelloWorld {
+
+  def main(args: Array[String]): Unit = {
+    println("Hello World!")
+  }
+}
+```
+直接執行scala程式
+
+```console
+ daniel@Danielde-MacBook-Pro > scala HelloWorld.scala
+ Hello World!
+```
+* 第3種 使用 **HelloWorld.sh** 印出HelloWorld．  
+
+```shell
+#!/usr/bin/env scala
+
+object HelloWorld extends App {
+  print(args(0) + " ")
+  print(args(1) + "\n")
+}
+
+val args = Array("Hello","World!")
+HelloWorld.main(args)
+
+val msg="This is by shell"
+println(msg)
+```
+執行HelloWorld.sh
+```console
+daniel@Danielde-MacBook-Pro > ./HelloWorld.sh
+/Volumes/Transcend/scala-test/./HelloWorld.sh:8: warning: Script has a main object but statement is disallowed
+val args = Array("Hello","World!")
+    ^
+one warning found
+Hello World!
+This is by shell
+```
+
+### 總結
+- - -
+* 安裝scala需要安裝jdk．
+
+* 執行scala有三種方式：
+  1. 使用scala shell．
+  2. 使用scala直接執行scala程式．
+  3. 直接執行shell的方式．
+
+
+
+

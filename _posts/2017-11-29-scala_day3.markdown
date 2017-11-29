@@ -1,0 +1,131 @@
+---
+layout: post
+title:  "Scala day 3"
+date:   2017-11-29 13:44:17 +0800
+categories: scala
+---
+
+
+## Define something in scala
+#### 定義變數
+定義一個變數的基本內容 :  
+* var / val 變數名稱 : 變數型態 = 值
+
+```console
+scala> val msg : String = "Daniel"
+msg: String = Daniel
+```
+#### type inference
+由於 scala 的編譯器有 type inference 可以推測型別，所以宣告時可省略變數型態由編譯器判斷．
+
+scala 有 2 種定義變數的keywords，**var** 及 **val** :  
+#### val  
+* val 初始化後不可再改變，類似 java 的 final．
+
+```console
+scala> val num = 10
+num: Int = 10
+
+scala> num = 5
+<console>:12: error: reassignment to val
+       num = 5
+           ^
+```
+* 初始化後也不可以在把 val 的變數再指派給另一個物件了．
+
+```console
+scala> class Employee {}
+defined class Employee
+
+scala> val e1 = new Employee
+e1: Employee = Employee@36ef1d65
+
+scala> e1 = new Employee
+<console>:13: error: reassignment to val
+       e1 = new Employee
+          ^
+```
+#### var  
+* var 可以改變及重新指派新的值．
+
+```console
+scala> var num = 10
+num: Int = 10
+
+scala> num = 5
+num: Int = 5
+```
+```console
+scala> var e1 = new Employee
+e1: Employee = Employee@23444a36
+
+scala> e1 = new Employee
+e1: Employee = Employee@167a21b
+```
+
+#### 定義方法
+scala 定義方法是使用 **def**．
+#### def 
+定義一個方法的基本內容 :  
+* def 方法名稱(參數:參數型態,參數:參數型態):回傳型態 = {  
+&nbsp;&nbsp;方法內容...  
+&nbsp;&nbsp;return 回傳值  
+}  
+
+```console
+scala> def sum(num1: Int,num2: Int) : Int = { return num1 + num2 }
+sum: (num1: Int, num2: Int)Int
+
+scala> sum(1,2)
+res0: Int = 3
+```
+方法可以省略return，所以可以很簡潔 : 
+```console
+scala> def sum(num1: Int,num2: Int) = num1 + num2
+sum: (num1: Int, num2: Int)Int
+```
+scala function 的參數都是 val 不可改變．
+
+```console
+scala> def sum(num1: Int,num2: Int) : Int = { num1 = num2 + 1 ; return num1 + num2 }
+<console>:11: error: reassignment to val
+       def sum(num1: Int,num2: Int) : Int = { num1 = num2 + 1 ; return num1 + num2 }
+                                                   ^
+```
+
+
+沒傳參數的話，方法看起來會很像是變數，所以要注意 :  
+像下面其實是一個 msg 方法，不用傳參數，然後 return 一個字串．  
+```console
+scala> def msg = "Hello world"
+msg: String
+```
+如果不需要回傳值，則使用 **Unit**
+```console
+scala> def msg : Unit = println("Hello world")
+msg: Unit
+```
+如果方法參數數目不確定的話，可以在變數型態後面加上**\***，就可以傳入多個參數，該變數其實是 scala.Seq[S] 物件：
+```console
+scala> def sum(nums: Int*) = nums.reduceLeft((sum,num) => sum + num)
+sum: (nums: Int*)Int
+
+scala> def sum(nums: Int*) = nums.reduceLeft(_ + _)
+sum: (nums: Int*)Int
+
+scala> sum(1)
+res25: Int = 1
+
+scala> sum(1,5)
+res26: Int = 6
+
+scala> sum(1,5,7)
+res27: Int = 13
+```
+
+### 總結
+- - -
+* scala 編譯器的 type inference，可以推測變數的型別及方法回傳的型態，所以可以讓程式碼更加簡潔．
+* scala function 的參數都是 val 不可改變．
+
+

@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-29T22:22:07+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 4</title><link href="http://localhost:4000/scala/2017/11/29/scala_day4.html" rel="alternate" type="text/html" title="Scala day 4" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day4</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day4.html">&lt;h2 id=&quot;scalas-function-literal&quot;&gt;scala’s function literal&lt;/h2&gt;
+&lt;h4 id=&quot;function-literal-語法&quot;&gt;function literal 語法&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;(num1: Int,num2: Int) =&amp;gt; num1 + num2&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;function literal 由於沒有 function 名稱所以又可稱為匿名函式(anonymous function)，又有另外一個名稱 lambda expressions．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1: Int,num2: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; num1 + num2
+&lt;span class=&quot;gp&quot;&gt;sum: (Int, Int) =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1182&lt;/span&gt;/1936666552@9715d26
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res10: Int = 3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用 underscore (_) 簡化 lambda expressions :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; + &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;sum: (Int, Int) =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1189&lt;/span&gt;/26179918@389a9ff6
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res11: Int = 3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;或著這樣寫&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum : &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Int , Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; _ + _
+&lt;span class=&quot;gp&quot;&gt;sum: (Int, Int) =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1267&lt;/span&gt;/1294798554@2ce987d7
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;再來看下面例子，如果參數只有一個的話，省略到最後會變成只要一個 _ ，且不用指定型態就可代表傳入的參數 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sayHello &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello &quot;&lt;/span&gt; + name
+&lt;span class=&quot;gp&quot;&gt;sayHello: String =&amp;gt;&lt;/span&gt; String &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1195&lt;/span&gt;/2104281815@4d9ad37e
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sayHello &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello &quot;&lt;/span&gt; + &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;sayHello: String =&amp;gt;&lt;/span&gt; String &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1196&lt;/span&gt;/952756535@26401eda
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sayHello &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello &quot;&lt;/span&gt; + _
+&lt;span class=&quot;gp&quot;&gt;sayHello: Any =&amp;gt;&lt;/span&gt; String &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1204&lt;/span&gt;/1132118748@3de507af
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sayHello&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res12: String = Hello Daniel
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;function literal 運用在迴圈上 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1.to&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foreach&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;num:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; print&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num + &lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;1 2 3 4 5
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 to 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;print&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;12345
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，
+所以還需要再花時間研究一下．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala’s function literal function literal 語法 (num1: Int,num2: Int) =&amp;gt; num1 + num2</summary></entry><entry><title type="html">Scala day 3</title><link href="http://localhost:4000/scala/2017/11/29/scala_day3.html" rel="alternate" type="text/html" title="Scala day 3" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day3</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day3.html">&lt;h2 id=&quot;define-something-in-scala&quot;&gt;Define something in scala&lt;/h2&gt;
+&lt;h4 id=&quot;定義變數&quot;&gt;定義變數&lt;/h4&gt;
+&lt;p&gt;定義一個變數的基本內容 :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;var / val 變數名稱 : 變數型態 = 值&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val msg : String &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;msg: String = Daniel
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;type-inference&quot;&gt;type inference&lt;/h4&gt;
+&lt;p&gt;由於 scala 的編譯器有 type inference 可以推測型別，所以宣告時可省略變數型態由編譯器判斷．&lt;/p&gt;
+
+&lt;p&gt;scala 有 2 種定義變數的keywords，&lt;strong&gt;var&lt;/strong&gt; 及 &lt;strong&gt;val&lt;/strong&gt; :&lt;/p&gt;
+&lt;h4 id=&quot;val&quot;&gt;val&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;val 初始化後不可再改變，類似 java 的 final．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 10
+&lt;span class=&quot;go&quot;&gt;num: Int = 10
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; num &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:12: error: reassignment to val
+&lt;span class=&quot;go&quot;&gt;       num = 5
+           ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;初始化後也不可以在把 val 的變數再指派給另一個物件了．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Employee &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;defined class Employee
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val e1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
+&lt;span class=&quot;go&quot;&gt;e1: Employee = Employee@36ef1d65
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; e1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: reassignment to val
+&lt;span class=&quot;go&quot;&gt;       e1 = new Employee
+          ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;var&quot;&gt;var&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;var 可以改變及重新指派新的值．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; var num &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 10
+&lt;span class=&quot;go&quot;&gt;num: Int = 10
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; num &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
+&lt;span class=&quot;go&quot;&gt;num: Int = 5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; var e1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
+&lt;span class=&quot;go&quot;&gt;e1: Employee = Employee@23444a36
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; e1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
+&lt;span class=&quot;go&quot;&gt;e1: Employee = Employee@167a21b
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;定義方法&quot;&gt;定義方法&lt;/h4&gt;
+&lt;p&gt;scala 定義方法是使用 &lt;strong&gt;def&lt;/strong&gt;．&lt;/p&gt;
+&lt;h4 id=&quot;def&quot;&gt;def&lt;/h4&gt;
+&lt;p&gt;定義一個方法的基本內容 :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;def 方法名稱(參數:參數型態,參數:參數型態):回傳型態 = {&lt;br /&gt;
+  方法內容…&lt;br /&gt;
+  return 回傳值&lt;br /&gt;
+}&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1: Int,num2: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;num1 + num2 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;sum: (num1: Int, num2: Int)Int
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res0: Int = 3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;方法可以省略return，所以可以很簡潔 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1: Int,num2: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num1 + num2
+&lt;span class=&quot;go&quot;&gt;sum: (num1: Int, num2: Int)Int
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;scala function 的參數都是 val 不可改變．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1: Int,num2: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; num1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num2 + 1 &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;num1 + num2 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:11: error: reassignment to val
+&lt;span class=&quot;gp&quot;&gt;       def sum(num1: Int,num2: Int) : Int = { num1 = num2 + 1 ;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;num1 + num2 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;                                                   ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;沒傳參數的話，方法看起來會很像是變數，所以要注意 :&lt;br /&gt;
+像下面其實是一個 msg 方法，不用傳參數，然後 return 一個字串．&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def msg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello world&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;msg: String
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;如果不需要回傳值，則使用 &lt;strong&gt;Unit&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def msg : Unit &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello world&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;msg: Unit
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;如果方法參數數目不確定的話，可以在變數型態後面加上&lt;strong&gt;*&lt;/strong&gt;，就可以傳入多個參數，該變數其實是 scala.Seq[S] 物件：&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;nums: Int&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; nums.reduceLeft&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;sum,num&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; sum + num&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;sum: (nums: Int*)Int
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;nums: Int&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; nums.reduceLeft&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ + _&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;sum: (nums: Int*)Int
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res25: Int = 1
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res26: Int = 6
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,5,7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res27: Int = 13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;scala 編譯器的 type inference，可以推測變數的型別及方法回傳的型態，所以可以讓程式碼更加簡潔．&lt;/li&gt;
+  &lt;li&gt;scala function 的參數都是 val 不可改變．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Define something in scala 定義變數 定義一個變數的基本內容 : var / val 變數名稱 : 變數型態 = 值</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2017/11/28/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2017-11-28T16:44:17+08:00</published><updated>2017-11-28T16:44:17+08:00</updated><id>http://localhost:4000/jekyll/update/2017/11/28/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/11/28/welcome-to-jekyll.html">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;https://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry><entry><title type="html">start By Jekyll</title><link href="http://localhost:4000/daniel/update/2017/11/28/startByJekyll.html" rel="alternate" type="text/html" title="start By Jekyll" /><published>2017-11-28T15:43:17+08:00</published><updated>2017-11-28T15:43:17+08:00</updated><id>http://localhost:4000/daniel/update/2017/11/28/startByJekyll</id><content type="html" xml:base="http://localhost:4000/daniel/update/2017/11/28/startByJekyll.html">&lt;h3 id=&quot;安裝使用-jekyll&quot;&gt;安裝使用 Jekyll&lt;/h3&gt;
+
+&lt;p&gt;macOS預設的ruby太舊，只好用brew裝新版&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install ruby
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;安裝後位置(/usr/local/Cellar/ruby/2.4.2_1)，重新讀取環境變數&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;確認ruby版本&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby -v
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;更新gem&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem update --system
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用gym安裝jekyll&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install jekyll
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;確認jekyll版本&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll -v
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;到要建立blog project的目錄底下下指令&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll new danielblog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;會建立danielblog資料夾，cd進去&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd danielblog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;啟動jekyll服務&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll serve
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;結果出現錯誤&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:288:in `block in verify_gemfile_dependencies_are_found!': Could not find gem 'minima (~&amp;gt; 2.0)' in any of the gem sources listed in your Gemfile. (Bundler::GemNotFound)
+from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `each'
+from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `verify_gemfile_dependencies_are_found!'
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;上網查所要裝bundler，所以執行下面兩行指令&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install bundler
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;之後再重新執行一次jekyll serve．然後再打開網址：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://127.0.0.1:4000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/startByJekyll_1.jpg&quot; alt=&quot;startByJekyll_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;補充&quot;&gt;補充&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;想讀取圖片的話，可在project(danielblog)底下建立assets資料夾裡放圖片或resource，可用下面markdown語法：&lt;br /&gt;
+![day1_1.jpg]({{ “/assets/day1_1.jpg” | absolute_url }})
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;![day1_1.jpg](http://localhost:4000/assets/day1_1.jpg)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;在markdown想換行的話直接在後面加兩個空白即可．&lt;/li&gt;
+  &lt;li&gt;寫好_post但文章出不來時，可在_config.yml加上：
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;future: true
+published: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考網址：&lt;br /&gt;
+&lt;a href=&quot;https://mathsigit.github.io/blog_page/2017/11/07/githubpage-with-jekyll/&quot;&gt;Yung-An’s Blog&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;jekyllrb&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://stackoverflow.com/questions/30625044/jekyll-post-not-generated&quot;&gt;jekyll-post-not-generated&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">安裝使用 Jekyll</summary></entry><entry><title type="html">Scala day 2</title><link href="http://localhost:4000/scala/2017/11/28/scala_day2.html" rel="alternate" type="text/html" title="Scala day 2" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day2</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day2.html">&lt;h2 id=&quot;use-scalac-compile-scala&quot;&gt;Use &lt;strong&gt;scalac&lt;/strong&gt; Compile Scala：&lt;/h2&gt;
+&lt;p&gt;HelloWorld.scala&lt;/p&gt;
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello World!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用 &lt;strong&gt;scalac&lt;/strong&gt; compile scala 程式，會出現可以在JVM執行的class檔．&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; scalac HelloWorld.scala
+&lt;span class=&quot;gp&quot;&gt; daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ll
+&lt;span class=&quot;gp&quot;&gt;-rwxrwxrwx  1 daniel  staff   670B 11 29 00:01 HelloWorld$&lt;/span&gt;.class
+&lt;span class=&quot;go&quot;&gt;-rwxrwxrwx  1 daniel  staff   608B 11 29 00:01 HelloWorld.class
+-rwxrwxrwx  1 daniel  staff    97B 11 22 22:21 HelloWorld.scala
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行java HelloWorld，卻出現錯誤．&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; java HelloWorld
+&lt;span class=&quot;gp&quot;&gt;Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: scala/Predef$&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;	at HelloWorld$&lt;/span&gt;.main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HelloWorld.scala:4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;	at HelloWorld.main(HelloWorld.scala)
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;Caused by: java.lang.ClassNotFoundException: scala.Predef$&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;	at sun.misc.Launcher$&lt;/span&gt;AppClassLoader.loadClass&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Launcher.java:331&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	... 2 more
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;上網查了一下說是少了scala-library.jar，所以改成這樣執行：&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;scala-2.12.4/lib/scala-library.jar:.&quot;&lt;/span&gt; HelloWorld
+&lt;span class=&quot;go&quot;&gt;Hello World!
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行成功～因為沒有設classpath=. (當前目錄)，所以-cp時要自己加.&lt;/p&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;由於sacla是基於JVM上的語言，所以complie後還是會產生class檔，可在JVM執行．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;參考資料&quot;&gt;參考資料&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;https://stackoverflow.com/questions/16821828/classnotfoundexceptionscala-predef-issue&lt;/p&gt;</content><author><name></name></author><summary type="html">Use scalac Compile Scala： HelloWorld.scala ```scala object HelloWorld {</summary></entry><entry><title type="html">Scala day 1</title><link href="http://localhost:4000/scala/2017/11/28/scala_day1.html" rel="alternate" type="text/html" title="Scala day 1" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day1</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day1.html">&lt;h2 id=&quot;run-scala&quot;&gt;Run scala&lt;/h2&gt;
+&lt;h3 id=&quot;scala安裝&quot;&gt;scala安裝：&lt;/h3&gt;
+&lt;p&gt;1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;參考網址：&lt;a href=&quot;https://www.scala-lang.org/download/&quot;&gt;https://www.scala-lang.org/download/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;2.下載後解壓縮，設定環境變數(vi ~/.bash_profile)&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home
+export SCALA_HOME=/Volumes/Transcend/scala-test/scala-2.12.4
+export PATH=$JAVA_HOME/bin:$SCALA_HOME/bin:$PATH:~/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;修改完後，重新讀取設定檔：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;確認java版本&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-version&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;java version &quot;1.8.0_111&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_111-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 25.111-b14, mixed mode)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;使用指令執行scala&quot;&gt;使用指令執行scala：&lt;/h3&gt;
+&lt;h4 id=&quot;使用三種方式印出helloworld&quot;&gt;使用三種方式印出HelloWorld．&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;第1種 使用 &lt;strong&gt;scala shell&lt;/strong&gt; 環境印出HelloWorld．&lt;br /&gt;
+執行scala，要離開scala 環境，可下:q 或 :quit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; scala
+&lt;span class=&quot;go&quot;&gt;Welcome to Scala 2.12.4 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_111).
+Type in expressions for evaluation. Or try :help.
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val msg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello World&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;msg: String = Hello World
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;第2種 使用 &lt;strong&gt;HelloWorld.scala&lt;/strong&gt; 印出HelloWorld．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello World!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;直接執行scala程式&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt; daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; scala HelloWorld.scala
+&lt;span class=&quot;go&quot;&gt; Hello World!
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;第3種 使用 &lt;strong&gt;HelloWorld.sh&lt;/strong&gt; 印出HelloWorld．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env scala&lt;/span&gt;
+
+object HelloWorld extends App &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  print&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;args&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; + &lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  print&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;args&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; + &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+val args &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;World!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+HelloWorld.main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;args&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+val &lt;span class=&quot;nv&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;This is by shell&quot;&lt;/span&gt;
+println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;msg&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行HelloWorld.sh&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ./HelloWorld.sh
+&lt;span class=&quot;go&quot;&gt;/Volumes/Transcend/scala-test/./HelloWorld.sh:8: warning: Script has a main object but statement is disallowed
+val args = Array(&quot;Hello&quot;,&quot;World!&quot;)
+    ^
+one warning found
+Hello World!
+This is by shell
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;安裝scala需要安裝jdk．&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;執行scala有三種方式：&lt;/p&gt;
+    &lt;ol&gt;
+      &lt;li&gt;使用scala shell．&lt;/li&gt;
+      &lt;li&gt;使用scala直接執行scala程式．&lt;/li&gt;
+      &lt;li&gt;直接執行shell的方式．&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Run scala scala安裝： 1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz 參考網址：https://www.scala-lang.org/download/</summary></entry></feed>
