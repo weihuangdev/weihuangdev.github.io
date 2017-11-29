@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-29T22:22:07+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 4</title><link href="http://localhost:4000/scala/2017/11/29/scala_day4.html" rel="alternate" type="text/html" title="Scala day 4" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day4</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day4.html">&lt;h2 id=&quot;scalas-function-literal&quot;&gt;scala’s function literal&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-29T23:15:33+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 4</title><link href="http://localhost:4000/scala/2017/11/29/scala_day4.html" rel="alternate" type="text/html" title="Scala day 4" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day4</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day4.html">&lt;h2 id=&quot;scalas-function-literal&quot;&gt;scala’s function literal&lt;/h2&gt;
 &lt;h4 id=&quot;function-literal-語法&quot;&gt;function literal 語法&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;(num1: Int,num2: Int) =&amp;gt; num1 + num2&lt;/strong&gt;&lt;/li&gt;
@@ -239,18 +239,24 @@ from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `verify_gemf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;在markdown想換行的話直接在後面加兩個空白即可．&lt;/li&gt;
-  &lt;li&gt;寫好_post但文章出不來時，可在_config.yml加上：
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;future: true
+  &lt;li&gt;寫好_post但文章出不來時，可在_config.yml加上：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;future: true
 published: true
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;如果要搭配使用 &lt;strong&gt;github pages&lt;/strong&gt; 時，Repository name 一定要是&lt;strong&gt;(github的使用者名稱).github.io&lt;/strong&gt;．&lt;br /&gt;
+假設github的使用者名稱是weihuangdev，Repository name 就要設成 : weihuangdev.github.io&lt;br /&gt;
+然後在網址才會是 &lt;strong&gt;https://weihuangdev.github.io/&lt;/strong&gt;，否則網頁的路徑會跟jekyll的路徑不一樣，顯示會有問題．這坑踩超久…&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;參考網址：&lt;br /&gt;
 &lt;a href=&quot;https://mathsigit.github.io/blog_page/2017/11/07/githubpage-with-jekyll/&quot;&gt;Yung-An’s Blog&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;jekyllrb&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://stackoverflow.com/questions/30625044/jekyll-post-not-generated&quot;&gt;jekyll-post-not-generated&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&quot;https://stackoverflow.com/questions/30625044/jekyll-post-not-generated&quot;&gt;jekyll-post-not-generated&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://jekyllcn.com/docs/github-pages/&quot;&gt;github pages&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;</content><author><name></name></author><summary type="html">安裝使用 Jekyll</summary></entry><entry><title type="html">Scala day 2</title><link href="http://localhost:4000/scala/2017/11/28/scala_day2.html" rel="alternate" type="text/html" title="Scala day 2" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day2</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day2.html">&lt;h2 id=&quot;use-scalac-compile-scala&quot;&gt;Use &lt;strong&gt;scalac&lt;/strong&gt; Compile Scala：&lt;/h2&gt;
 &lt;p&gt;HelloWorld.scala&lt;/p&gt;
 &lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;

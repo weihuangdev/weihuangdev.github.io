@@ -72,14 +72,19 @@ http://127.0.0.1:4000
 ```
 * 在markdown想換行的話直接在後面加兩個空白即可．
 * 寫好_post但文章出不來時，可在_config.yml加上：
+
 ```
 future: true
 published: true
 ```
+* 如果要搭配使用 **github pages** 時，Repository name 一定要是**(github的使用者名稱).github.io**．  
+假設github的使用者名稱是weihuangdev，Repository name 就要設成 : weihuangdev.github.io  
+然後在網址才會是 **https://weihuangdev.github.io/**，否則網頁的路徑會跟jekyll的路徑不一樣，顯示會有問題．這坑踩超久...
+
 
 > 參考網址：  
 > [Yung-An's Blog](https://mathsigit.github.io/blog_page/2017/11/07/githubpage-with-jekyll/)  
 > [jekyllrb](https://jekyllrb.com/docs/posts/)  
-> [jekyll-post-not-generated](https://stackoverflow.com/questions/30625044/jekyll-post-not-generated)
-
+> [jekyll-post-not-generated](https://stackoverflow.com/questions/30625044/jekyll-post-not-generated)  
+> [github pages](http://jekyllcn.com/docs/github-pages/)
 

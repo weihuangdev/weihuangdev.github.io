@@ -135,18 +135,24 @@ from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `verify_gemf
 </code></pre></div>    </div>
   </li>
   <li>在markdown想換行的話直接在後面加兩個空白即可．</li>
-  <li>寫好_post但文章出不來時，可在_config.yml加上：
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>future: true
+  <li>寫好_post但文章出不來時，可在_config.yml加上：</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>future: true
 published: true
-</code></pre></div>    </div>
-  </li>
+</code></pre></div></div>
+<ul>
+  <li>如果要搭配使用 <strong>github pages</strong> 時，Repository name 一定要是<strong>(github的使用者名稱).github.io</strong>．<br />
+假設github的使用者名稱是weihuangdev，Repository name 就要設成 : weihuangdev.github.io<br />
+然後在網址才會是 <strong>https://weihuangdev.github.io/</strong>，否則網頁的路徑會跟jekyll的路徑不一樣，顯示會有問題．這坑踩超久…</li>
 </ul>
 
 <blockquote>
   <p>參考網址：<br />
 <a href="https://mathsigit.github.io/blog_page/2017/11/07/githubpage-with-jekyll/">Yung-An’s Blog</a><br />
 <a href="https://jekyllrb.com/docs/posts/">jekyllrb</a><br />
-<a href="https://stackoverflow.com/questions/30625044/jekyll-post-not-generated">jekyll-post-not-generated</a></p>
+<a href="https://stackoverflow.com/questions/30625044/jekyll-post-not-generated">jekyll-post-not-generated</a><br />
+<a href="http://jekyllcn.com/docs/github-pages/">github pages</a></p>
 </blockquote>
 
 
