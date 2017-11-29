@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-29T23:25:40+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 4</title><link href="http://localhost:4000/scala/2017/11/29/scala_day4.html" rel="alternate" type="text/html" title="Scala day 4" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day4</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day4.html">&lt;h2 id=&quot;scalas-function-literal&quot;&gt;scala’s function literal&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-29T23:27:37+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 4</title><link href="http://localhost:4000/scala/2017/11/29/scala_day4.html" rel="alternate" type="text/html" title="Scala day 4" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day4</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day4.html">&lt;h2 id=&quot;scalas-function-literal&quot;&gt;scala’s function literal&lt;/h2&gt;
 &lt;h4 id=&quot;function-literal-語法&quot;&gt;function literal 語法&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;(num1: Int,num2: Int) =&amp;gt; num1 + num2&lt;/strong&gt;&lt;/li&gt;
@@ -244,12 +244,12 @@ from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `verify_gemf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;在markdown想換行的話直接在後面加兩個空白即可．&lt;/li&gt;
-  &lt;li&gt;寫好_post但文章出不來時，可在_config.yml加上：&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;future: true
+  &lt;li&gt;寫好_post但文章出不來時，可在_config.yml加上：
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;future: true
 published: true
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;參考網址：&lt;br /&gt;

@@ -78,7 +78,6 @@ http://127.0.0.1:4000
 ```
 * 在markdown想換行的話直接在後面加兩個空白即可．
 * 寫好_post但文章出不來時，可在_config.yml加上：
-
 ```
 future: true
 published: true
