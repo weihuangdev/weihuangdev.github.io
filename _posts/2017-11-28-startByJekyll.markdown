@@ -63,6 +63,12 @@ http://127.0.0.1:4000
 
 ![startByJekyll_1.jpg](/assets/startByJekyll_1.jpg)
 
+### github pages + jekyll
+如果要搭配使用 **github pages** 時，在 github 建立 Repository name 一定要是**(github的使用者名稱).github.io**．  
+假設github的使用者名稱是weihuangdev，Repository name 就要設成 : weihuangdev.github.io  
+然後在網址才會是 **https://weihuangdev.github.io/**，否則網頁的路徑會跟jekyll的路徑不一樣，顯示會有問題．這坑踩超久...
+
+
 ### 補充
 - - -
 * 想讀取圖片的話，可在project(danielblog)底下建立assets資料夾裡放圖片或resource，可用下面markdown語法：  
@@ -77,14 +83,10 @@ http://127.0.0.1:4000
 future: true
 published: true
 ```
-* 如果要搭配使用 **github pages** 時，Repository name 一定要是**(github的使用者名稱).github.io**．  
-假設github的使用者名稱是weihuangdev，Repository name 就要設成 : weihuangdev.github.io  
-然後在網址才會是 **https://weihuangdev.github.io/**，否則網頁的路徑會跟jekyll的路徑不一樣，顯示會有問題．這坑踩超久...
-
 
 > 參考網址：  
 > [Yung-An's Blog](https://mathsigit.github.io/blog_page/2017/11/07/githubpage-with-jekyll/)  
 > [jekyllrb](https://jekyllrb.com/docs/posts/)  
 > [jekyll-post-not-generated](https://stackoverflow.com/questions/30625044/jekyll-post-not-generated)  
-> [github pages](http://jekyllcn.com/docs/github-pages/)
+> [github pages](https://pages.github.com/)
 
