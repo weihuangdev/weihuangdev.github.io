@@ -1,0 +1,74 @@
+---
+layout: post
+title:  "Scala day 6 (scala's List)"
+date:   2017-11-30 09:44:17 +0800
+categories: scala
+---
+
+## scala's List
+### scala 的 List 是 **immutable** 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List．
+List 有個 method 是 :::，可將 2 個 List 串接起來．
+
+```console
+scala> val alist = List(1, 2)
+alist: List[Int] = List(1, 2)
+
+scala> val blist = List(3, 4 , 5)
+blist: List[Int] = List(3, 4, 5)
+
+scala> val clist = alist ::: blist
+clist: List[Int] = List(1, 2, 3, 4, 5)
+```
+
+還有一個 method 是 :: ，叫 cons，它會在一個已存在的 List 最前面再加上一個 element :  
+
+```console
+scala> val names = List("Sam","Jack","Mike")
+names: List[String] = List(Sam, Jack, Mike)
+
+scala> val newNames = "Daniel" :: names
+newNames: List[String] = List(Daniel, Sam, Jack, Mike)
+```
+要宣告一個空的 List 可用 List() 或 Nil．
+```console
+scala> val emptyList = Nil
+emptyList: scala.collection.immutable.Nil.type = List()
+```
+
+一般運算子是從左邊優先執行，例如 : (1 * 2) * 3．呼叫方法可以看成 (1).*(2)．
+
+```console
+scala> val sum = 1 * 2 * 3
+sum: Int = 6
+```
+
+但如果運算子的結尾是冒號(Colon, : )，方法會從右邊開始執行，例如 : 1 :: (2 :: (3 :: Nil))．呼叫方法可以看成 Nil.::(3)．
+
+```console
+scala> val testlist = 2 :: 3 :: Nil
+testlist: List[Int] = List(2, 3)
+
+scala> val testlist = Nil.::(3).::(2)
+testlist: List[Int] = List(2, 3)
+```
+Int 2 並沒有提供 :: 方法，所以會出錯，所以要在後面在加上有提供 :: 的物件：
+
+```console
+scala> val testlist = Nil :: 3 :: 2
+<console>:11: error: value :: is not a member of Int
+       val testlist = Nil :: 3 :: 2
+                               ^
+
+scala> val testlist = Nil :: 3 :: 2 :: Nil
+testlist: List[Any] = List(List(), 3, 2)
+```
+
+
+### 總結
+- - -
+* scala 的 List 是 immutable，如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer，它就是 mutable 的．
+* method 又分成 left operand(一般method) 與 right operand(method名稱結尾是冒號)．
+
+
+
+

@@ -1,4 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-30T00:56:33+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 5 (operators are methods)</title><link href="http://localhost:4000/scala/2017/11/29/scala_day5.html" rel="alternate" type="text/html" title="Scala day 5 (operators are methods)" /><published>2017-11-29T14:44:17+08:00</published><updated>2017-11-29T14:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day5</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day5.html">&lt;h2 id=&quot;any-method-can-be-an-operator&quot;&gt;Any method can be an operator&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-30T10:54:37+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 6 (scala’s List)</title><link href="http://localhost:4000/scala/2017/11/30/scala_day6.html" rel="alternate" type="text/html" title="Scala day 6 (scala's List)" /><published>2017-11-30T09:44:17+08:00</published><updated>2017-11-30T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/30/scala_day6</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/30/scala_day6.html">&lt;h2 id=&quot;scalas-list&quot;&gt;scala’s List&lt;/h2&gt;
+&lt;h3 id=&quot;scala-的-list-是-immutable-的所以不管相加或新增元素只要變動的話都會產生一個新的-list&quot;&gt;scala 的 List 是 &lt;strong&gt;immutable&lt;/strong&gt; 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List．&lt;/h3&gt;
+&lt;p&gt;List 有個 method 是 :::，可將 2 個 List 串接起來．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val alist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1, 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;alist: List[Int] = List(1, 2)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val blist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3, 4 , 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;blist: List[Int] = List(3, 4, 5)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val clist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; alist ::: blist
+&lt;span class=&quot;go&quot;&gt;clist: List[Int] = List(1, 2, 3, 4, 5)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;還有一個 method 是 :: ，叫 cons，它會在一個已存在的 List 最前面再加上一個 element :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Mike&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;names: List[String] = List(Sam, Jack, Mike)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val newNames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt; :: names
+&lt;span class=&quot;go&quot;&gt;newNames: List[String] = List(Daniel, Sam, Jack, Mike)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;要宣告一個空的 List 可用 List() 或 Nil．&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val emptyList &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Nil
+&lt;span class=&quot;go&quot;&gt;emptyList: scala.collection.immutable.Nil.type = List()
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;一般運算子是從左邊優先執行，例如 : (1 * 2) * 3．呼叫方法可以看成 (1).*(2)．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 2 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 3
+&lt;span class=&quot;go&quot;&gt;sum: Int = 6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;但如果運算子的結尾是冒號(Colon, : )，方法會從右邊開始執行，例如 : 1 :: (2 :: (3 :: Nil))．呼叫方法可以看成 Nil.::(3)．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val testlist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2 :: 3 :: Nil
+&lt;span class=&quot;go&quot;&gt;testlist: List[Int] = List(2, 3)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val testlist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Nil.::&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.::&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;testlist: List[Int] = List(2, 3)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Int 2 並沒有提供 :: 方法，所以會出錯，所以要在後面在加上有提供 :: 的物件：&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val testlist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Nil :: 3 :: 2
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:11: error: value :: is not a member of Int
+&lt;span class=&quot;go&quot;&gt;       val testlist = Nil :: 3 :: 2
+                               ^
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val testlist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Nil :: 3 :: 2 :: Nil
+&lt;span class=&quot;go&quot;&gt;testlist: List[Any] = List(List(), 3, 2)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;scala 的 List 是 immutable，如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer，它就是 mutable 的．&lt;/li&gt;
+  &lt;li&gt;method 又分成 left operand(一般method) 與 right operand(method名稱結尾是冒號)．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala’s List scala 的 List 是 immutable 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List． List 有個 method 是 :::，可將 2 個 List 串接起來．</summary></entry><entry><title type="html">Scala day 5 (operators are methods)</title><link href="http://localhost:4000/scala/2017/11/29/scala_day5.html" rel="alternate" type="text/html" title="Scala day 5 (operators are methods)" /><published>2017-11-29T14:44:17+08:00</published><updated>2017-11-29T14:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day5</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day5.html">&lt;h2 id=&quot;any-method-can-be-an-operator&quot;&gt;Any method can be an operator&lt;/h2&gt;
 &lt;h3 id=&quot;scala-的方法可當成運算子運算子也可當成方法&quot;&gt;scala 的方法可當成運算子，運算子也可當成方法&lt;/h3&gt;
 &lt;p&gt;以 Int 為例，Int 定義了許多運算子的方法，例如：+,-,*,/,!=,to,…&lt;/p&gt;
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
