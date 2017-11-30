@@ -63,10 +63,69 @@ scala> val testlist = Nil :: 3 :: 2 :: Nil
 testlist: List[Any] = List(List(), 3, 2)
 ```
 
+### List 一些好用的 method
+迴圈
+
+```console
+scala> val numList = 65 :: 81 :: 67 :: 72 :: 73 :: 90 :: Nil
+numList: List[Int] = List(65, 81, 67, 72, 73, 90)
+
+scala> numList.foreach((num: Int) => println(num.toChar))
+A
+Q
+C
+H
+I
+Z
+```
+
+排序：
+
+```console
+scala> val numList = 5 :: 1 :: 7 :: 2 :: 3 :: 9 :: Nil
+numList: List[Int] = List(5, 1, 7, 2, 3, 9)
+
+scala> numList.sortWith(_ < _)
+res9: List[Int] = List(1, 2, 3, 5, 7, 9)
+```
+可以定義排序的方法，給 sortWith 排序
+
+```console
+scala> val names = List("Sam","Daniel","Jack","Loues","Mike")
+names: List[String] = List(Sam, Daniel, Jack, Loues, Mike)
+
+scala> def sortByLength(str1: String ,str2: String) = str1.length < str2.length
+sortByLength: (str1: String, str2: String)Boolean
+
+scala> names.sortWith(sortByLength).foreach(println)
+Sam
+Jack
+Mike
+Loues
+Daniel
+```
+取得 element 只要用 **List名稱(index)**，index 從 0 開始 : 
+```console
+scala> names(3)
+res21: String = Loues
+```
+使用 filter 過濾掉不要的 element : 
+
+```console
+scala> names.filter(_ != "Jack")
+res27: List[String] = List(Sam, Daniel, Loues, Mike)
+```
+
+利用 mkString 將 List 的 elements 組合起來變成一個 String，elements 之間用 mkString 的參數做分隔(這邊用,) : 
+
+```console
+scala> names.mkString(",")
+res18: String = Sam,Daniel,Jack,Loues,Mike
+```
 
 ### 總結
 - - -
-* scala 的 List 是 immutable，如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer，它就是 mutable 的．
+* scala 的 List 是 immutable，所以在使用上無法去直接 update 裡面的元素，可能要運用 insert 及 filter 的功能來達到 update 的效果，但每次的操作都會產生一組新的 List ．如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer．
 * method 又分成 left operand(一般method) 與 right operand(method名稱結尾是冒號)．
 
 

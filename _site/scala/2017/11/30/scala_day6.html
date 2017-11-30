@@ -132,10 +132,64 @@
 <span class="go">testlist: List[Any] = List(List(), 3, 2)
 </span></code></pre></div></div>
 
+<h3 id="list-一些好用的-method">List 一些好用的 method</h3>
+<p>迴圈</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val numList <span class="o">=</span> 65 :: 81 :: 67 :: 72 :: 73 :: 90 :: Nil
+<span class="go">numList: List[Int] = List(65, 81, 67, 72, 73, 90)
+
+</span><span class="gp">scala&gt;</span> numList.foreach<span class="o">((</span>num: Int<span class="o">)</span> <span class="o">=&gt;</span> println<span class="o">(</span>num.toChar<span class="o">))</span>
+<span class="go">A
+Q
+C
+H
+I
+Z
+</span></code></pre></div></div>
+
+<p>排序：</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val numList <span class="o">=</span> 5 :: 1 :: 7 :: 2 :: 3 :: 9 :: Nil
+<span class="go">numList: List[Int] = List(5, 1, 7, 2, 3, 9)
+
+</span><span class="gp">scala&gt;</span> numList.sortWith<span class="o">(</span>_ &lt; _<span class="o">)</span>
+<span class="go">res9: List[Int] = List(1, 2, 3, 5, 7, 9)
+</span></code></pre></div></div>
+<p>可以定義排序的方法，給 sortWith 排序</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val names <span class="o">=</span> List<span class="o">(</span><span class="s2">"Sam"</span>,<span class="s2">"Daniel"</span>,<span class="s2">"Jack"</span>,<span class="s2">"Loues"</span>,<span class="s2">"Mike"</span><span class="o">)</span>
+<span class="go">names: List[String] = List(Sam, Daniel, Jack, Loues, Mike)
+
+</span><span class="gp">scala&gt;</span> def sortByLength<span class="o">(</span>str1: String ,str2: String<span class="o">)</span> <span class="o">=</span> str1.length &lt; str2.length
+<span class="go">sortByLength: (str1: String, str2: String)Boolean
+
+</span><span class="gp">scala&gt;</span> names.sortWith<span class="o">(</span>sortByLength<span class="o">)</span>.foreach<span class="o">(</span>println<span class="o">)</span>
+<span class="go">Sam
+Jack
+Mike
+Loues
+Daniel
+</span></code></pre></div></div>
+<p>取得 element 只要用 <strong>List名稱(index)</strong>，index 從 0 開始 :</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names<span class="o">(</span>3<span class="o">)</span>
+<span class="go">res21: String = Loues
+</span></code></pre></div></div>
+<p>使用 filter 過濾掉不要的 element :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names.filter<span class="o">(</span>_ <span class="o">!=</span> <span class="s2">"Jack"</span><span class="o">)</span>
+<span class="go">res27: List[String] = List(Sam, Daniel, Loues, Mike)
+</span></code></pre></div></div>
+
+<p>利用 mkString 將 List 的 elements 組合起來變成一個 String，elements 之間用 mkString 的參數做分隔(這邊用,) :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names.mkString<span class="o">(</span><span class="s2">","</span><span class="o">)</span>
+<span class="go">res18: String = Sam,Daniel,Jack,Loues,Mike
+</span></code></pre></div></div>
+
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>scala 的 List 是 immutable，如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer，它就是 mutable 的．</li>
+  <li>scala 的 List 是 immutable，所以在使用上無法去直接 update 裡面的元素，可能要運用 insert 及 filter 的功能來達到 update 的效果，但每次的操作都會產生一組新的 List ．如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer．</li>
   <li>method 又分成 left operand(一般method) 與 right operand(method名稱結尾是冒號)．</li>
 </ul>
 
