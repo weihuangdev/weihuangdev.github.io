@@ -1,0 +1,141 @@
+---
+layout: post
+title:  "Scala day 8 (Class & Object)"
+date:   2017-11-30 10:44:17 +0800
+categories: scala
+---
+
+## define Class
+scala 在定義 class 沒給修飾子(private,protected)的話，預設是 public 的．  
+一個 class 的 members 會有屬性(field)或方法(method)，屬性會用來存取該物件的值，物件提供方法讓外部呼叫．
+
+```console
+scala> class Employee {
+     |  val id = "1"
+     |  val name = "Daniel"
+     |  def work = println("working...")
+     | }
+defined class Employee
+```
+使用 new 建立 class 的 object : 
+
+```console
+scala> val emp = new Employee
+emp: Employee = Employee@238015c9
+```
+取得物件的變數值，呼叫物件的方法 : 
+
+```console
+scala> emp.id
+res13: String = 1
+
+scala> emp.work
+working...
+```
+scala function 的參數都是 val 的不可修改，但屬性可以是 var．
+
+```console
+scala> def sum(amt:Int) = amt = 1000
+<console>:11: error: reassignment to val
+       def sum(amt:Int) = amt = 1000
+                              ^
+```
+
+如果不想讓外部直接取得變數值，可以用 private 修飾子，再提供 method 給外部對該變數做修改：
+
+```console
+scala> class Employee {
+     |  val id = "1"
+     |  val name = "Daniel"
+     |  private var skill = "programing"
+     |  def updateSkill(newSkill: String) = skill = newSkill
+     |  def work = println(skill)
+     | }
+defined class Employee
+
+scala> val e1 = new Employee
+e1: Employee = Employee@3767b38b
+
+scala> e1.work
+programing
+
+scala> e1.updateSkill("singing")
+
+scala> e1.work
+singing
+```
+
+在 scala 分號(semicolon)在結尾是可以不必要的，通常都會省略，但如果要把多段程式碼寫成一行，就會需要：
+
+```console
+scala> e1.updateSkill("teaching"); e1.work
+teaching
+```
+
+## define object
+scala 並沒有像 java 一樣有 static members，所以需利用 Singleton object (只會有一個 object)，來達到 static 的效果 : 
+
+```console
+scala> object Account {
+     |  private var sum = 0
+     |  def addAmt(amt: Int) = sum += amt
+     |  def getAmt = sum
+     | }
+defined object Account
+
+scala> class Boss {
+     |  def addSalary(amt: Int) = Account.addAmt(amt)
+     |  def getSum = Account.getAmt
+     | }
+defined class Boss
+
+scala> val boss1 = new Boss
+boss1: Boss = Boss@1f5cb417
+
+scala> val boss2 = new Boss
+boss2: Boss = Boss@5113d1f2
+
+scala> boss1.addSalary(1000)
+
+scala> boss2.getSum
+res25: Int = 1000
+
+scala> boss2.addSalary(5000)
+
+scala> boss1.getSum
+res27: Int = 6000
+
+```
+scala object 是 Singleton 的，在執行時期只會有一份，無法使用 new ．  
+
+```console
+scala> Account.getAmt
+res28: Int = 6000
+
+scala> val account1 = new Account
+<console>:11: error: not found: type Account
+       val account1 = new Account
+                          ^
+```
+## object main method
+在執行 scala 程式時，程式進入點會從 object main method 進入 : 
+
+```console
+scala> object HelloObj {
+     |  def main(args: Array[String]) {
+     |   println("Hello " + args(0))
+     |  }
+     | }
+defined object HelloObj
+
+scala> HelloObj.main(Array("Daniel"))
+Hello Daniel
+```
+
+### 總結
+- - -
+* scala 沒有 static ，但其實 Singleton object 跟 static 在概念上感覺是一樣的，在記憶體裡都只會有一份．
+* scala 的  有宣告 main 方法的話，就可以變成了程式進入點．
+
+
+
