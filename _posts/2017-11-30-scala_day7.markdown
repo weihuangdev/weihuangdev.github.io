@@ -5,13 +5,13 @@ date:   2017-11-30 09:44:17 +0800
 categories: scala
 ---
 
-## tuples
+## tuple
 * tuple 的格式像這樣 (element1 , element1 , ...)
-* tuples 是可存取不同型態的一個物件．
-* tuples 是 **immutable** 的．
+* tuple 是可存取不同型態的一個物件．
+* tuple 是 **immutable** 的．
 * 使用 ._ 取得 tuples 的 element ．
 * 其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , ... , new Tuple22
-* tuples 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當．
+* tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當．
 * tuple 如果只有兩個 element 的話，可以用 **(element1) -> (element2)** 產生．
 * tuple 的值也可以用變數存取．
 

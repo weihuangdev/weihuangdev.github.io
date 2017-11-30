@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 7 (tuples)</title>
-  <meta name="description" content="tuples tuple 的格式像這樣 (element1 , element1 , …) tuples 是可存取不同型態的一個物件． tuples 是 immutable 的． 使用 ._ 取得 tuples 的 element ． 其實 tuple 是根據 element 的數量，scala 幫你 new T...">
+  <meta name="description" content="tuple tuple 的格式像這樣 (element1 , element1 , …) tuple 是可存取不同型態的一個物件． tuple 是 immutable 的． 使用 ._ 取得 tuples 的 element ． 其實 tuple 是根據 element 的數量，scala 幫你 new Tupl...">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/11/30/scala_day7.html">
@@ -80,14 +80,14 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h2 id="tuples">tuples</h2>
+    <h2 id="tuple">tuple</h2>
 <ul>
   <li>tuple 的格式像這樣 (element1 , element1 , …)</li>
-  <li>tuples 是可存取不同型態的一個物件．</li>
-  <li>tuples 是 <strong>immutable</strong> 的．</li>
+  <li>tuple 是可存取不同型態的一個物件．</li>
+  <li>tuple 是 <strong>immutable</strong> 的．</li>
   <li>使用 ._ 取得 tuples 的 element ．</li>
   <li>其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , … , new Tuple22</li>
-  <li>tuples 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當．</li>
+  <li>tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當．</li>
   <li>tuple 如果只有兩個 element 的話，可以用 <strong>(element1) -&gt; (element2)</strong> 產生．</li>
   <li>tuple 的值也可以用變數存取．</li>
 </ul>
