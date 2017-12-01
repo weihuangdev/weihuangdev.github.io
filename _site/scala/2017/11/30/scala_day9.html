@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Scala day 9 (Basic Types)</title>
+  <meta name="description" content="Basic Types">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/scala/2017/11/30/scala_day9.html">
+  <link rel="alternate" type="application/rss+xml" title="Daniel&#39;s Blog" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">Daniel&#39;s Blog</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Scala day 9 (Basic Types)</h1>
+    <p class="post-meta">
+      <time datetime="2017-11-30T11:44:17+08:00" itemprop="datePublished">
+        
+        Nov 30, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="basic-types">Basic Types</h2>
+
+<ul>
+  <li>Byte,Short,Int,Long,Char 稱為 <strong><em>integral types</em></strong>．</li>
+  <li>integral types 再加上 Float,Double 稱為 <strong><em>numeric types</em></strong>．</li>
+  <li>只有 String 是在 java.lang 的 package 裡．</li>
+  <li>基本型態的大小 :</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">型態</th>
+      <th style="text-align: left">大小</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong><em>Byte</em></strong></td>
+      <td style="text-align: left">8-bit</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><em>Short</em></strong></td>
+      <td style="text-align: left">16-bit</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><em>Int</em></strong></td>
+      <td style="text-align: left">32-bit</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><em>Long</em></strong></td>
+      <td style="text-align: left">64-bit</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><em>Char</em></strong></td>
+      <td style="text-align: left">16-bit</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><em>Float</em></strong></td>
+      <td style="text-align: left">32-bit</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><em>Double</em></strong></td>
+      <td style="text-align: left">64-bit</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><em>Boolean</em></strong></td>
+      <td style="text-align: left">true or false</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong><em>String</em></strong></td>
+      <td style="text-align: left">a sequence of Chars</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+<h2 id="literals">Literals</h2>
+
+<p>literals 指的是指說可以直接寫一個常數值在程式碼裡，編譯器會根據程式寫的常數對應到基本型態．</p>
+
+<h3 id="integer-literals">Integer literals</h3>
+<h4 id="longdouble">Long、Double</h4>
+<p>轉成 Long 或 Double，Long 在後面加上 Ｌ 或 l ，Double 在後面加上 D 或 d ．</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val hexNum <span class="o">=</span> 0x1aFL
+<span class="go">hexNum: Long = 431
+
+</span><span class="gp">scala&gt;</span> val hexNum <span class="o">=</span> 168d
+<span class="go">hexNum: Double = 168.0
+</span></code></pre></div></div>
+<h4 id="byteshort">Byte、Short</h4>
+<p>Byte 及 Short 在宣告變數時加上型態，compiler 時會檢查 value 是否超過大小 :<br />
+像 Byte 的範圍是 -2^7 ~ 2^7 - 1</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val num : Byte <span class="o">=</span> 127
+<span class="go">num: Byte = 127
+
+</span><span class="gp">scala&gt;</span> val num : Byte <span class="o">=</span> <span class="nt">-128</span>
+<span class="go">num: Byte = -128
+
+</span><span class="gp">scala&gt;</span> val num : Short <span class="o">=</span> 127
+<span class="go">num: Short = 127
+
+</span></code></pre></div></div>
+
+<h4 id="hexadecimal-literals">hexadecimal literals</h4>
+<p>16進位(hexadecimal)，開頭要寫 0x 或 0X，內容為數字1~9、大小寫字母a~f．<br />
+順便複習一下16進位轉10進位的算法 : <br />
+1AF(16進位)<br />
+-&gt; 1 * 16^2 + 10 * 16^1 + 15 * 16^0<br />
+-&gt; 1 * 16 * 16 + 10 * 16 + 15 * 1 = 256 + 160 + 15 = 431(10進位)</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val hexNum <span class="o">=</span> 0x1aF
+<span class="go">hexNum: Int = 431
+</span></code></pre></div></div>
+<h4 id="octal-literals">octal literals</h4>
+<p>這裡使用的 scala 版本是 2.12.4，所以已經將 8 進位(octal)的 literals 移掉了．<br />
+Remove octal number literals : <a href="https://issues.scala-lang.org/browse/SI-7618">SI-7618</a></p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val num <span class="o">=</span> 035
+<span class="gp">&lt;console&gt;</span>:1: error: Decimal integer literals may not have a leading zero. <span class="o">(</span>Octal syntax is obsolete.<span class="o">)</span>
+<span class="go">       val num = 035
+                 ^
+
+</span></code></pre></div></div>
+<p>scala 有提供一個 BigInt 的物件，可以轉任何進位 :</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val num1 <span class="o">=</span> BigInt<span class="o">(</span><span class="s2">"35"</span> , 10<span class="o">)</span>
+<span class="go">num1: scala.math.BigInt = 35
+
+</span><span class="gp">scala&gt;</span> val num1 <span class="o">=</span> BigInt<span class="o">(</span><span class="s2">"35"</span> , 8<span class="o">)</span>
+<span class="go">num1: scala.math.BigInt = 29
+
+</span><span class="gp">scala&gt;</span> val num1 <span class="o">=</span> BigInt<span class="o">(</span><span class="s2">"35"</span> , 16<span class="o">)</span>
+<span class="go">num1: scala.math.BigInt = 53
+
+</span></code></pre></div></div>
+<h4 id="character-literals">Character literals</h4>
+<p>用單引號包起來的 Unicode 字元 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val c <span class="o">=</span> <span class="s1">'A'</span>
+<span class="go">c: Char = A
+
+</span><span class="gp">scala&gt;</span> val c <span class="o">=</span> <span class="s1">'\u0041'</span>
+<span class="go">c: Char = A
+
+</span><span class="gp">scala&gt;</span> val c <span class="o">=</span> <span class="s1">'\\'</span>
+<span class="go">c: Char = \
+</span></code></pre></div></div>
+
+<h4 id="跳脫字元">跳脫字元</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">跳脫字元</th>
+      <th style="text-align: left">意思</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">\n</td>
+      <td style="text-align: left">換行 (\u000A)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">\b</td>
+      <td style="text-align: left">倒退一個字元 (\u0008)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">\t</td>
+      <td style="text-align: left">tab (\u0009)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">\f</td>
+      <td style="text-align: left">換頁 (\u000C)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">\r</td>
+      <td style="text-align: left">游標移至行首 (\u000D)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">"</td>
+      <td style="text-align: left">double quote (\u0022)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">'</td>
+      <td style="text-align: left">single quote (\u0027)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">\</td>
+      <td style="text-align: left">backslash (＼\u005C)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+<h4 id="string-literals">String literals</h4>
+<p>用雙引號包多個字元組成的字串 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val msg <span class="o">=</span> <span class="s2">"Hello </span><span class="se">\"</span><span class="s2">Daniel</span><span class="se">\"</span><span class="s2">"</span>
+<span class="go">msg: String = Hello "Daniel"
+
+</span></code></pre></div></div>
+<p>Scala 還提供了一個很方便的功能叫 raw strings，是使用三個雙引號包起來的字串，
+裡面的字串都會被當成純文字，不會被跳脫字元影響 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val msg <span class="o">=</span> <span class="s2">"""Hello </span><span class="se">\"</span><span class="s2">Daniel</span><span class="se">\"</span><span class="s2">"""</span>
+<span class="go">msg: String = Hello \"Daniel\"
+</span></code></pre></div></div>
+
+<h4 id="boolean-literals">Boolean literals</h4>
+<p>就是 true 跟 false</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val check <span class="o">=</span> <span class="nb">true</span>
+<span class="go">check: Boolean = true
+</span></code></pre></div></div>
+
+<h4 id="symbol-literals">Symbol literals</h4>
+<p>scala 還有一個比較特別的是 Symbol literals，可以用 .name 取出內容 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val s <span class="o">=</span> <span class="s1">'Daniel
+</span><span class="go">s: Symbol = 'Daniel
+
+</span><span class="gp">scala&gt;</span> s.name
+<span class="go">res0: String = Daniel
+
+</span><span class="gp">scala&gt;</span> def sayHi<span class="o">(</span>names: Symbol<span class="o">)</span> <span class="o">=</span> <span class="s2">"Hi "</span> + names.name
+<span class="go">sayHi: (names: Symbol)String
+
+</span><span class="gp">scala&gt;</span> sayHi<span class="o">(</span><span class="s1">'Daniel)
+</span><span class="go">res5: String = Hi Daniel
+
+</span><span class="gp">scala&gt;</span> sayHi<span class="o">(</span><span class="s1">'Sam)
+</span><span class="go">res6: String = Hi Sam
+</span></code></pre></div></div>
+
+<h3 id="總結">總結</h3>
+<hr />
+<ul>
+  <li>基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．</li>
+</ul>
+
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Daniel&#39;s Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Daniel&#39;s Blog
+            
+            </li>
+            
+            <li><a href="mailto:your-email@example.com">your-email@example.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

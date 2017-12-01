@@ -1,0 +1,171 @@
+---
+layout: post
+title:  "Scala day 9 (Basic Types)"
+date:   2017-11-30 11:44:17 +0800
+categories: scala
+---
+
+## Basic Types
+
+* Byte,Short,Int,Long,Char 稱為 ***integral types***．  
+* integral types 再加上 Float,Double 稱為 ***numeric types***．  
+* 只有 String 是在 java.lang 的 package 裡．
+* 基本型態的大小 : 
+
+| 型態           | 大小   |
+| :------------ |:------ |
+| ***Byte***    | 8-bit  |
+| ***Short***   | 16-bit |
+| ***Int***     | 32-bit |
+| ***Long***    | 64-bit |
+| ***Char***    | 16-bit |
+| ***Float***   | 32-bit |
+| ***Double***  | 64-bit |
+| ***Boolean*** | true or false        |
+| ***String***  | a sequence of Chars |
+
+<br/>
+## Literals
+
+literals 指的是指說可以直接寫一個常數值在程式碼裡，編譯器會根據程式寫的常數對應到基本型態．
+
+### Integer literals
+#### Long、Double
+轉成 Long 或 Double，Long 在後面加上 Ｌ 或 l ，Double 在後面加上 D 或 d ．
+```console
+scala> val hexNum = 0x1aFL
+hexNum: Long = 431
+
+scala> val hexNum = 168d
+hexNum: Double = 168.0
+```
+#### Byte、Short
+Byte 及 Short 在宣告變數時加上型態，compiler 時會檢查 value 是否超過大小 :  
+像 Byte 的範圍是 -2^7 ~ 2^7 - 1  
+
+```console
+scala> val num : Byte = 127
+num: Byte = 127
+
+scala> val num : Byte = -128
+num: Byte = -128
+
+scala> val num : Short = 127
+num: Short = 127
+
+```
+
+#### hexadecimal literals
+16進位(hexadecimal)，開頭要寫 0x 或 0X，內容為數字1~9、大小寫字母a~f．  
+順便複習一下16進位轉10進位的算法 :   
+1AF(16進位)  
+-> 1 * 16^2 + 10 * 16^1 + 15 * 16^0  
+-> 1 * 16 * 16 + 10 * 16 + 15 * 1 = 256 + 160 + 15 = 431(10進位)  
+
+```console
+scala> val hexNum = 0x1aF
+hexNum: Int = 431
+```
+#### octal literals
+這裡使用的 scala 版本是 2.12.4，所以已經將 8 進位(octal)的 literals 移掉了．  
+Remove octal number literals : [SI-7618](https://issues.scala-lang.org/browse/SI-7618)
+
+```console
+scala> val num = 035
+<console>:1: error: Decimal integer literals may not have a leading zero. (Octal syntax is obsolete.)
+       val num = 035
+                 ^
+
+```
+scala 有提供一個 BigInt 的物件，可以轉任何進位 :  
+```console
+scala> val num1 = BigInt("35" , 10)
+num1: scala.math.BigInt = 35
+
+scala> val num1 = BigInt("35" , 8)
+num1: scala.math.BigInt = 29
+
+scala> val num1 = BigInt("35" , 16)
+num1: scala.math.BigInt = 53
+
+```
+#### Character literals
+用單引號包起來的 Unicode 字元 : 
+
+```console
+scala> val c = 'A'
+c: Char = A
+
+scala> val c = '\u0041'
+c: Char = A
+
+scala> val c = '\\'
+c: Char = \
+```
+
+#### 跳脫字元
+
+| 跳脫字元 | 意思              |
+| :------ |:----------------------|
+| \n      | 換行 (\u000A)          |
+| \b      | 倒退一個字元 (\u0008)   |
+| \t      | tab (\u0009)          |
+| \f      | 換頁 (\u000C)          |
+| \r      | 游標移至行首 (\u000D)   |
+| \"      | double quote (\u0022) |
+| \'      | single quote (\u0027) | 
+| \\      | backslash (＼\u005C)  |
+
+<br/>
+#### String literals
+用雙引號包多個字元組成的字串 : 
+
+```console
+scala> val msg = "Hello \"Daniel\""
+msg: String = Hello "Daniel"
+
+```
+Scala 還提供了一個很方便的功能叫 raw strings，是使用三個雙引號包起來的字串，
+裡面的字串都會被當成純文字，不會被跳脫字元影響 : 
+
+```console
+scala> val msg = """Hello \"Daniel\""""
+msg: String = Hello \"Daniel\"
+```
+
+#### Boolean literals
+就是 true 跟 false
+
+```console
+scala> val check = true
+check: Boolean = true
+```
+
+#### Symbol literals
+scala 還有一個比較特別的是 Symbol literals，可以用 .name 取出內容 : 
+
+```console
+scala> val s = 'Daniel
+s: Symbol = 'Daniel
+
+scala> s.name
+res0: String = Daniel
+
+scala> def sayHi(names: Symbol) = "Hi " + names.name
+sayHi: (names: Symbol)String
+
+scala> sayHi('Daniel)
+res5: String = Hi Daniel
+
+scala> sayHi('Sam)
+res6: String = Hi Sam
+```
+
+
+### 總結
+- - -
+* 基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．
+
+
+
+
