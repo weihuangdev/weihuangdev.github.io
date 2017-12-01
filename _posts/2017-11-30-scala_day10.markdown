@@ -1,0 +1,61 @@
+---
+layout: post
+title:  "Scala day 10 (Loop)"
+date:   2017-12-01 09:44:17 +0800
+categories: scala
+---
+
+### For Loop
+Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 : 
+
+```console
+scala> val names = Array("Andy","Jack","Sam","Daniel")
+names: Array[String] = Array(Andy, Jack, Sam, Daniel)
+
+scala> for(name <- names) println(name)
+Andy
+Jack
+Sam
+Daniel
+
+scala> for(name <- names) {
+     |  var upperName = name.toUpperCase
+     |  println(upperName)
+     | }
+ANDY
+JACK
+SAM
+DANIEL
+```
+### For Loop with yield
+透過 Loop 及 yield 處理過元素後，可產生新的 collection : 
+
+```console
+scala> val newNames = for(name <- names) yield name.toUpperCase
+newNames: Array[String] = Array(ANDY, JACK, SAM, DANIEL)
+```
+如果需要 index 的話  
+* 使用 until
+
+```console
+scala> for(i <- 0 until newNames.length) {
+     |  println(s"$i is ${newNames(i)}")
+     | }
+0 is ANDY
+1 is JACK
+2 is SAM
+3 is DANIEL
+```
+* 使用 zipWithIndex
+
+
+
+
+
+### 總結
+- - -
+* 基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．
+
+
+
+

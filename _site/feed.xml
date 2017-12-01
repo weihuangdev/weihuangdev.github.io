@@ -1,4 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-01T14:23:09+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 9 (Basic Types)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day9.html" rel="alternate" type="text/html" title="Scala day 9 (Basic Types)" /><published>2017-12-01T08:44:17+08:00</published><updated>2017-12-01T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day9</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day9.html">&lt;h2 id=&quot;basic-types&quot;&gt;Basic Types&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-01T16:14:59+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 10 (Loop)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day10.html" rel="alternate" type="text/html" title="Scala day 10 (Loop)" /><published>2017-12-01T09:44:17+08:00</published><updated>2017-12-01T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day10</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day10.html">&lt;h3 id=&quot;for-loop&quot;&gt;For Loop&lt;/h3&gt;
+&lt;p&gt;Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Andy&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;names: Array[String] = Array(Andy, Jack, Sam, Daniel)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &amp;lt;- names&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Andy
+Jack
+Sam
+Daniel
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &amp;lt;- names&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  var upperName = name.toUpperCase
+     |  println(upperName)
+     | }
+ANDY
+JACK
+SAM
+DANIEL
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;for-loop-with-yield&quot;&gt;For Loop with yield&lt;/h3&gt;
+&lt;p&gt;透過 Loop 及 yield 處理過元素後，可產生新的 collection :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val newNames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &amp;lt;- names&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; yield name.toUpperCase
+&lt;span class=&quot;go&quot;&gt;newNames: Array[String] = Array(ANDY, JACK, SAM, DANIEL)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;如果需要 index 的話&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;使用 until&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt;- 0 &lt;span class=&quot;k&quot;&gt;until &lt;/span&gt;newNames.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  println(s&quot;$&lt;/span&gt;i is &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;newNames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(i)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;     | }
+0 is ANDY
+1 is JACK
+2 is SAM
+3 is DANIEL
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;使用 zipWithIndex&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">For Loop Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 :</summary></entry><entry><title type="html">Scala day 9 (Basic Types)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day9.html" rel="alternate" type="text/html" title="Scala day 9 (Basic Types)" /><published>2017-12-01T08:44:17+08:00</published><updated>2017-12-01T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day9</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day9.html">&lt;h2 id=&quot;basic-types&quot;&gt;Basic Types&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Byte,Short,Int,Long,Char 稱為 &lt;strong&gt;&lt;em&gt;integral types&lt;/em&gt;&lt;/strong&gt;．&lt;/li&gt;
@@ -936,77 +984,4 @@ This is by shell
       &lt;li&gt;直接執行shell的方式．&lt;/li&gt;
     &lt;/ol&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Run scala scala安裝： 1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz 參考網址：https://www.scala-lang.org/download/</summary></entry><entry><title type="html">start By Jekyll</title><link href="http://localhost:4000/daniel/update/2017/11/28/startByJekyll.html" rel="alternate" type="text/html" title="start By Jekyll" /><published>2017-11-28T11:43:17+08:00</published><updated>2017-11-28T11:43:17+08:00</updated><id>http://localhost:4000/daniel/update/2017/11/28/startByJekyll</id><content type="html" xml:base="http://localhost:4000/daniel/update/2017/11/28/startByJekyll.html">&lt;h3 id=&quot;安裝使用-jekyll&quot;&gt;安裝使用 Jekyll&lt;/h3&gt;
-
-&lt;p&gt;macOS預設的ruby太舊，只好用brew裝新版&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install ruby
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;安裝後位置(/usr/local/Cellar/ruby/2.4.2_1)，重新讀取環境變數&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source ~/.bash_profile
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;確認ruby版本&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby -v
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;更新gem&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem update --system
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用gym安裝jekyll&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install jekyll
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;確認jekyll版本&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll -v
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;到要建立blog project的目錄底下下指令&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll new danielblog
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;會建立danielblog資料夾，cd進去&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd danielblog
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;啟動jekyll服務&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll serve
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;結果出現錯誤&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:288:in `block in verify_gemfile_dependencies_are_found!': Could not find gem 'minima (~&amp;gt; 2.0)' in any of the gem sources listed in your Gemfile. (Bundler::GemNotFound)
-from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `each'
-from /usr/local/lib/ruby/site_ruby/2.4.0/bundler/resolver.rb:256:in `verify_gemfile_dependencies_are_found!'
-...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;上網查所要裝bundler，所以執行下面兩行指令&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install bundler
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;之後再重新執行一次jekyll serve．然後再打開網址：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://127.0.0.1:4000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/startByJekyll_1.jpg&quot; alt=&quot;startByJekyll_1.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;github-pages--jekyll&quot;&gt;github pages + jekyll&lt;/h3&gt;
-&lt;p&gt;如果要搭配使用 &lt;strong&gt;github pages&lt;/strong&gt; 時，在 github 建立 Repository name 一定要是&lt;strong&gt;(github的使用者名稱).github.io&lt;/strong&gt;．&lt;br /&gt;
-假設github的使用者名稱是weihuangdev，Repository name 就要設成 : weihuangdev.github.io&lt;br /&gt;
-然後在網址才會是 &lt;strong&gt;https://weihuangdev.github.io/&lt;/strong&gt;，否則網頁的路徑會跟jekyll的路徑不一樣，顯示會有問題．這坑踩超久…&lt;/p&gt;
-
-&lt;h3 id=&quot;補充&quot;&gt;補充&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;想讀取圖片的話，可在project(danielblog)底下建立assets資料夾裡放圖片或resource，可用下面markdown語法：&lt;br /&gt;
-![day1_1.jpg]({{ “/assets/day1_1.jpg” | absolute_url }})
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;![day1_1.jpg](http://localhost:4000/assets/day1_1.jpg)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;在markdown想換行的話直接在後面加兩個空白即可．&lt;/li&gt;
-  &lt;li&gt;寫好_post但文章出不來時，可在_config.yml加上：
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;future: true
-published: true
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考網址：&lt;br /&gt;
-&lt;a href=&quot;https://mathsigit.github.io/blog_page/2017/11/07/githubpage-with-jekyll/&quot;&gt;Yung-An’s Blog&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://jekyllrb.com/docs/posts/&quot;&gt;jekyllrb&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://stackoverflow.com/questions/30625044/jekyll-post-not-generated&quot;&gt;jekyll-post-not-generated&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://pages.github.com/&quot;&gt;github pages&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">安裝使用 Jekyll</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Run scala scala安裝： 1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz 參考網址：https://www.scala-lang.org/download/</summary></entry></feed>
