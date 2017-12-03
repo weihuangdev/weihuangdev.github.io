@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-01T16:14:59+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 10 (Loop)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day10.html" rel="alternate" type="text/html" title="Scala day 10 (Loop)" /><published>2017-12-01T09:44:17+08:00</published><updated>2017-12-01T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day10</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day10.html">&lt;h3 id=&quot;for-loop&quot;&gt;For Loop&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-03T17:20:38+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 10 (Loop)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day10.html" rel="alternate" type="text/html" title="Scala day 10 (Loop)" /><published>2017-12-01T09:44:17+08:00</published><updated>2017-12-01T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day10</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day10.html">&lt;h3 id=&quot;for-loop&quot;&gt;For Loop&lt;/h3&gt;
 &lt;p&gt;Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Andy&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -38,14 +38,91 @@ DANIEL
 2 is SAM
 3 is DANIEL
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;迴圈搭配條件式 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt;-&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt; , &lt;span class=&quot;s2&quot;&gt;&quot;a2&quot;&lt;/span&gt;-&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt; , &lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt;-&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt; , &lt;span class=&quot;s2&quot;&gt;&quot;a4&quot;&lt;/span&gt;-&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt;- 0 &lt;span class=&quot;k&quot;&gt;until &lt;/span&gt;names.length &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;names&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;._2 &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  println(names(i))
+     | }
+(a1,Sam)
+(a3,Jack)
+(a4,Ray)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;ul&gt;
-  &lt;li&gt;使用 zipWithIndex&lt;/li&gt;
+  &lt;li&gt;使用 zip 與 zipWithIndex&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;zip 可指定 index 開始的數字，zipWithIndex 則是從 0 開始 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;element , index&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;lt;- newNames.zip&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Stream from 5&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  println(s&quot;$&lt;/span&gt;index is &lt;span class=&quot;nv&quot;&gt;$element&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;     | }
+5 is ANDY
+6 is JACK
+7 is SAM
+8 is DANIEL
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;element , index&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;lt;- newNames.zipWithIndex&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  println(s&quot;$&lt;/span&gt;index is &lt;span class=&quot;nv&quot;&gt;$element&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;     | }
+0 is ANDY
+1 is JACK
+2 is SAM
+3 is DANIEL
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;collection 的資料是 Tuple2 的話 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val days &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sunday&quot;&lt;/span&gt;,0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Monday&quot;&lt;/span&gt;,1&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;days: Array[(String, Int)] = Array((Sunday,0), (Monday,1))
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; days.zipWithIndex.foreach &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;day &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;._1._1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; is &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;._1._2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; , index is &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;._2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Sunday is 0 , index is 0
+Monday is 1 , index is 1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;for 迴圈多個計數器變數的寫法 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt;- 1 to 3&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;j &amp;lt;- &lt;span class=&quot;nt&quot;&gt;-2&lt;/span&gt; to &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;k &amp;lt;- 8 to 10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;s2&quot;&gt;&quot; i=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; , j=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; , k=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$k&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt; i=1 , j=-2 , k=8
+ i=1 , j=-2 , k=9
+ i=1 , j=-2 , k=10
+ i=1 , j=-1 , k=8
+ i=1 , j=-1 , k=9
+ i=1 , j=-1 , k=10
+ i=2 , j=-2 , k=8
+ i=2 , j=-2 , k=9
+ i=2 , j=-2 , k=10
+ i=2 , j=-1 , k=8
+ i=2 , j=-1 , k=9
+ i=2 , j=-1 , k=10
+ i=3 , j=-2 , k=8
+ i=3 , j=-2 , k=9
+ i=3 , j=-2 , k=10
+ i=3 , j=-1 , k=8
+ i=3 , j=-1 , k=9
+ i=3 , j=-1 , k=10
+
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt; scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  i &amp;lt;- -3 to 0
+     |  j &amp;lt;- 1 to 3
+     |  if i != 2 &amp;amp;&amp;amp; j != 2
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;     | } println(s&quot;i = $&lt;/span&gt;i , j &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;i = -3 , j = 1
+i = -3 , j = 3
+i = -2 , j = 1
+i = -2 , j = 3
+i = -1 , j = 1
+i = -1 , j = 3
+i = 0 , j = 1
+i = 0 , j = 3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．&lt;/li&gt;
+  &lt;li&gt;scala Loop 的寫法可以用 &amp;lt;- 感覺很直覺&lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">For Loop Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 :</summary></entry><entry><title type="html">Scala day 9 (Basic Types)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day9.html" rel="alternate" type="text/html" title="Scala day 9 (Basic Types)" /><published>2017-12-01T08:44:17+08:00</published><updated>2017-12-01T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day9</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day9.html">&lt;h2 id=&quot;basic-types&quot;&gt;Basic Types&lt;/h2&gt;
 
 &lt;ul&gt;

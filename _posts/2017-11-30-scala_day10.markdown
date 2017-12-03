@@ -46,15 +46,92 @@ scala> for(i <- 0 until newNames.length) {
 2 is SAM
 3 is DANIEL
 ```
-* 使用 zipWithIndex
+迴圈搭配條件式 : 
+
+```console
+scala> val names = Array("a1"->"Sam" , "a2"->"Daniel" , "a3"->"Jack" , "a4"->"Ray")
+
+scala> for(i <- 0 until names.length if names(i)._2 != "Daniel") {
+     |  println(names(i))
+     | }
+(a1,Sam)
+(a3,Jack)
+(a4,Ray)
+```
+
+* 使用 zip 與 zipWithIndex
+
+zip 可指定 index 開始的數字，zipWithIndex 則是從 0 開始 : 
+```console
+scala> for((element , index) <- newNames.zip(Stream from 5)) {
+     |  println(s"$index is $element")
+     | }
+5 is ANDY
+6 is JACK
+7 is SAM
+8 is DANIEL
+
+scala> for((element , index) <- newNames.zipWithIndex) {
+     |  println(s"$index is $element")
+     | }
+0 is ANDY
+1 is JACK
+2 is SAM
+3 is DANIEL
+```
+collection 的資料是 Tuple2 的話 : 
+
+```console
+scala> val days = Array(("Sunday",0), ("Monday",1))
+days: Array[(String, Int)] = Array((Sunday,0), (Monday,1))
+
+scala> days.zipWithIndex.foreach {day => println(s"${day._1._1} is ${day._1._2} , index is ${day._2}")}
+Sunday is 0 , index is 0
+Monday is 1 , index is 1
+```
+
+for 迴圈多個計數器變數的寫法 : 
+
+```console
+scala> for (i <- 1 to 3;j <- -2 to -1;k <- 8 to 10) {println(s" i=$i , j=$j , k=$k ")}
+ i=1 , j=-2 , k=8
+ i=1 , j=-2 , k=9
+ i=1 , j=-2 , k=10
+ i=1 , j=-1 , k=8
+ i=1 , j=-1 , k=9
+ i=1 , j=-1 , k=10
+ i=2 , j=-2 , k=8
+ i=2 , j=-2 , k=9
+ i=2 , j=-2 , k=10
+ i=2 , j=-1 , k=8
+ i=2 , j=-1 , k=9
+ i=2 , j=-1 , k=10
+ i=3 , j=-2 , k=8
+ i=3 , j=-2 , k=9
+ i=3 , j=-2 , k=10
+ i=3 , j=-1 , k=8
+ i=3 , j=-1 , k=9
+ i=3 , j=-1 , k=10
 
 
-
-
+ scala> for{
+     |  i <- -3 to 0
+     |  j <- 1 to 3
+     |  if i != 2 && j != 2
+     | } println(s"i = $i , j = $j")
+i = -3 , j = 1
+i = -3 , j = 3
+i = -2 , j = 1
+i = -2 , j = 3
+i = -1 , j = 1
+i = -1 , j = 3
+i = 0 , j = 1
+i = 0 , j = 3
+```
 
 ### 總結
 - - -
-* 基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．
+* scala Loop 的寫法可以用 <- 感覺很直覺
 
 
 

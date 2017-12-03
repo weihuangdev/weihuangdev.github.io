@@ -120,14 +120,91 @@ DANIEL
 2 is SAM
 3 is DANIEL
 </span></code></pre></div></div>
+<p>迴圈搭配條件式 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val names <span class="o">=</span> Array<span class="o">(</span><span class="s2">"a1"</span>-&gt;<span class="s2">"Sam"</span> , <span class="s2">"a2"</span>-&gt;<span class="s2">"Daniel"</span> , <span class="s2">"a3"</span>-&gt;<span class="s2">"Jack"</span> , <span class="s2">"a4"</span>-&gt;<span class="s2">"Ray"</span><span class="o">)</span>
+<span class="go">
+</span><span class="gp">scala&gt;</span> <span class="k">for</span><span class="o">(</span>i &lt;- 0 <span class="k">until </span>names.length <span class="k">if </span>names<span class="o">(</span>i<span class="o">)</span>._2 <span class="o">!=</span> <span class="s2">"Daniel"</span><span class="o">)</span> <span class="o">{</span>
+<span class="go">     |  println(names(i))
+     | }
+(a1,Sam)
+(a3,Jack)
+(a4,Ray)
+</span></code></pre></div></div>
+
 <ul>
-  <li>使用 zipWithIndex</li>
+  <li>使用 zip 與 zipWithIndex</li>
 </ul>
+
+<p>zip 可指定 index 開始的數字，zipWithIndex 則是從 0 開始 :</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> <span class="k">for</span><span class="o">((</span>element , index<span class="o">)</span> &lt;- newNames.zip<span class="o">(</span>Stream from 5<span class="o">))</span> <span class="o">{</span>
+<span class="gp">     |  println(s"$</span>index is <span class="nv">$element</span><span class="s2">")
+</span><span class="go">     | }
+5 is ANDY
+6 is JACK
+7 is SAM
+8 is DANIEL
+
+</span><span class="gp">scala&gt;</span> <span class="k">for</span><span class="o">((</span>element , index<span class="o">)</span> &lt;- newNames.zipWithIndex<span class="o">)</span> <span class="o">{</span>
+<span class="gp">     |  println(s"$</span>index is <span class="nv">$element</span><span class="s2">")
+</span><span class="go">     | }
+0 is ANDY
+1 is JACK
+2 is SAM
+3 is DANIEL
+</span></code></pre></div></div>
+<p>collection 的資料是 Tuple2 的話 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val days <span class="o">=</span> Array<span class="o">((</span><span class="s2">"Sunday"</span>,0<span class="o">)</span>, <span class="o">(</span><span class="s2">"Monday"</span>,1<span class="o">))</span>
+<span class="go">days: Array[(String, Int)] = Array((Sunday,0), (Monday,1))
+
+</span><span class="gp">scala&gt;</span> days.zipWithIndex.foreach <span class="o">{</span>day <span class="o">=&gt;</span> println<span class="o">(</span>s<span class="s2">"</span><span class="k">${</span><span class="nv">day</span><span class="p">._1._1</span><span class="k">}</span><span class="s2"> is </span><span class="k">${</span><span class="nv">day</span><span class="p">._1._2</span><span class="k">}</span><span class="s2"> , index is </span><span class="k">${</span><span class="nv">day</span><span class="p">._2</span><span class="k">}</span><span class="s2">"</span><span class="o">)}</span>
+<span class="go">Sunday is 0 , index is 0
+Monday is 1 , index is 1
+</span></code></pre></div></div>
+
+<p>for 迴圈多個計數器變數的寫法 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> <span class="k">for</span> <span class="o">(</span>i &lt;- 1 to 3<span class="p">;</span>j &lt;- <span class="nt">-2</span> to <span class="nt">-1</span><span class="p">;</span>k &lt;- 8 to 10<span class="o">)</span> <span class="o">{</span>println<span class="o">(</span>s<span class="s2">" i=</span><span class="nv">$i</span><span class="s2"> , j=</span><span class="nv">$j</span><span class="s2"> , k=</span><span class="nv">$k</span><span class="s2"> "</span><span class="o">)}</span>
+<span class="go"> i=1 , j=-2 , k=8
+ i=1 , j=-2 , k=9
+ i=1 , j=-2 , k=10
+ i=1 , j=-1 , k=8
+ i=1 , j=-1 , k=9
+ i=1 , j=-1 , k=10
+ i=2 , j=-2 , k=8
+ i=2 , j=-2 , k=9
+ i=2 , j=-2 , k=10
+ i=2 , j=-1 , k=8
+ i=2 , j=-1 , k=9
+ i=2 , j=-1 , k=10
+ i=3 , j=-2 , k=8
+ i=3 , j=-2 , k=9
+ i=3 , j=-2 , k=10
+ i=3 , j=-1 , k=8
+ i=3 , j=-1 , k=9
+ i=3 , j=-1 , k=10
+
+
+</span><span class="gp"> scala&gt;</span> <span class="k">for</span><span class="o">{</span>
+<span class="go">     |  i &lt;- -3 to 0
+     |  j &lt;- 1 to 3
+     |  if i != 2 &amp;&amp; j != 2
+</span><span class="gp">     | } println(s"i = $</span>i , j <span class="o">=</span> <span class="nv">$j</span><span class="s2">")
+</span><span class="go">i = -3 , j = 1
+i = -3 , j = 3
+i = -2 , j = 1
+i = -2 , j = 3
+i = -1 , j = 1
+i = -1 , j = 3
+i = 0 , j = 1
+i = 0 , j = 3
+</span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．</li>
+  <li>scala Loop 的寫法可以用 &lt;- 感覺很直覺</li>
 </ul>
 
 
