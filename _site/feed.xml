@@ -1,4 +1,135 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-04T18:15:50+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 11 (Loop &amp;amp; break &amp;amp; continue)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day11.html" rel="alternate" type="text/html" title="Scala day 11 (Loop &amp; break &amp; continue)" /><published>2017-12-04T08:44:17+08:00</published><updated>2017-12-04T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day11</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day11.html">&lt;h3 id=&quot;while--dowhile&quot;&gt;while &amp;amp; do…while&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-05T01:12:45+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 12 (Match Expression)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day12.html" rel="alternate" type="text/html" title="Scala day 12 (Match Expression)" /><published>2017-12-04T09:44:17+08:00</published><updated>2017-12-04T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day12</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day12.html">&lt;h3 id=&quot;match-expression&quot;&gt;Match Expression&lt;/h3&gt;
+&lt;p&gt;Match 可以幫我們省略寫很多 if else，而且可以比對不同型態．&lt;br /&gt;
+scala 的 match 不用寫 break 只會執行符合的那一段，然後 default 是用 _ :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def getNumber&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; num match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case 1 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;one&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case 2 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;two&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case 3 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;three&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case _ =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     | }
+     |}
+getNumber: (num: Int)String
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getNumber&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res83: String = two
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;要判斷符合多個條件時使用 | :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def getNumber&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; num match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case 1 | 3 | 5 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;odd&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case 2 | 4 | 6 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;evens&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case _ =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;null&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  }
+     | }
+getNumber: (num: Int)String
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getNumber&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res86: String = evens
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getNumber&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res87: String = odd
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;將 match 的結果指定給變數 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; var i &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6
+&lt;span class=&quot;go&quot;&gt;i: Int = 6
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val month &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; i match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 1 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;January&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 2 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;February&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 3 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;March&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 4 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;April&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 5 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;May&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 6 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;June&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 7 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;July&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 8 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;August&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 9 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;September&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 10 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;October&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 11 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;November&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case 12 =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;December&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     | case _ =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Invalid month&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     | }
+month: String = June
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;month&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;June
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;match 還可以比對不同的型態非常強大 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def getMultiType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x: Any&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; x match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case true =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;truth&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case 'a' | 'A' =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;this is a&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case x :: xs =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;List&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case Nil =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;empty List&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  case _ =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;null&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     | }
+getMultiType: (x: Any)String
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res88: String = empty List
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,3&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res89: String = List
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res90: String = truth
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;Any 是 scala 所有型態的父類別，底下又分為兩個子類別 AnyVal 和 AnyRef．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;再來看更多例子，可以將 Any 對應到的型態，並取得裡面的值 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def getMultiMatchType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x: Any&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: String &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; x match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case List(0, _, _) =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;List has three element first is 0 &quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case List(1, _*) =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;List element size is dynamic &quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case (a, b) =&amp;gt;&lt;/span&gt; s&lt;span class=&quot;s2&quot;&gt;&quot;Tuple2 &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$a&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; and &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$b&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case (a, b, c) =&amp;gt;&lt;/span&gt; s&lt;span class=&quot;s2&quot;&gt;&quot;Tuple2 &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$a&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;, &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$b&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;, and &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case s: String =&amp;gt;&lt;/span&gt; s&lt;span class=&quot;s2&quot;&gt;&quot;this is string: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case i: Int =&amp;gt;&lt;/span&gt; s&lt;span class=&quot;s2&quot;&gt;&quot;this is int: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case f: Float =&amp;gt;&lt;/span&gt; s&lt;span class=&quot;s2&quot;&gt;&quot;this is float: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$f&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case a: Array[Int] =&amp;gt;&lt;/span&gt; s&lt;span class=&quot;s2&quot;&gt;&quot;an array of int: &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.mkString(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;,&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case as: Array[String] =&amp;gt;&lt;/span&gt; s&lt;span class=&quot;s2&quot;&gt;&quot;an array of strings: &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;as&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.mkString(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;,&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case list: List[_] =&amp;gt;&lt;/span&gt; s&lt;span class=&quot;s2&quot;&gt;&quot;this the List: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$list&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; m: Map[_, _] &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; m.toString
+&lt;span class=&quot;gp&quot;&gt;     |   case _ =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     | }
+getMultiMatchType: (x: Any)String
+
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiMatchType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0,2,3&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res91: String = &quot;List has three element first is 0 &quot;
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiMatchType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,3&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res92: String = &quot;List element size is dynamic &quot;
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiMatchType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,3,4&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res93: String = &quot;List element size is dynamic &quot;
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiMatchType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0,1,2,3&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res94: String = this the List: List(0, 1, 2, 3)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiMatchType&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res1: String = Tuple2 1 and 2
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiMatchType&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;0,1,2&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res2: String = Tuple2 0, 1, and 2
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiMatchType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res3: String = this is int: 1
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiMatchType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,3&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res4: String = an array of int: 1,2,3
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; getMultiMatchType&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res5: String = an array of strings: 1,2,3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;scala 的 Match Expression 可以比對&lt;strong&gt;值&lt;/strong&gt;及&lt;strong&gt;型態&lt;/strong&gt;非常強大．&lt;/li&gt;
+  &lt;li&gt;scala 的 Any 是 scala 所有型態的父類別，底下又分為兩個子類別 AnyVal 和 AnyRef．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Match Expression Match 可以幫我們省略寫很多 if else，而且可以比對不同型態． scala 的 match 不用寫 break 只會執行符合的那一段，然後 default 是用 _ : ```console scala&amp;gt; def getNumber(num:Int) = { num match { | case 1 =&amp;gt; “one” | case 2 =&amp;gt; “two” | case 3 =&amp;gt; “three” | case _ =&amp;gt; “” | } |} getNumber: (num: Int)String</summary></entry><entry><title type="html">Scala day 11 (Loop &amp;amp; break &amp;amp; continue)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day11.html" rel="alternate" type="text/html" title="Scala day 11 (Loop &amp; break &amp; continue)" /><published>2017-12-04T08:44:17+08:00</published><updated>2017-12-04T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day11</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day11.html">&lt;h3 id=&quot;while--dowhile&quot;&gt;while &amp;amp; do…while&lt;/h3&gt;
 &lt;p&gt;while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; var i &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
@@ -103,16 +234,7 @@
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;scala Loop 的寫法跟 java 比較 :&lt;br /&gt;
-java :
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for(int i = 0 ; i &amp;lt; e.length ; i++) ...
-for(String name : names) ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;scala :&lt;/p&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for(i &amp;lt;- 0 until e.length) ...
-for(name &amp;lt;- names) ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
+  &lt;li&gt;scala 沒有提供 break 和 continue，但還是可以運用 breakable 來實作出來．&lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">while &amp;amp; do…while while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :</summary></entry><entry><title type="html">Scala day 10 (Loop)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day10.html" rel="alternate" type="text/html" title="Scala day 10 (Loop)" /><published>2017-12-01T09:44:17+08:00</published><updated>2017-12-01T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day10</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day10.html">&lt;h4 id=&quot;scala-迴圈的寫法很多種但這邊大概整理成-4-項根據需求來決定要使用哪種寫法-&quot;&gt;scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 :&lt;/h4&gt;
 &lt;ol&gt;
   &lt;li&gt;循序取得 collection 元素．&lt;/li&gt;
@@ -1089,47 +1211,4 @@ res2: String = hi jack
 &lt;ul&gt;
   &lt;li&gt;scala 編譯器的 type inference，可以推測變數的型別及方法回傳的型態，所以可以讓程式碼更加簡潔．&lt;/li&gt;
   &lt;li&gt;scala function 的參數都是 val 不可改變．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Define something in scala 定義變數 定義一個變數的基本內容 : var / val 變數名稱 : 變數型態 = 值</summary></entry><entry><title type="html">Scala day 2 (Compile Scala)</title><link href="http://localhost:4000/scala/2017/11/28/scala_day2.html" rel="alternate" type="text/html" title="Scala day 2 (Compile Scala)" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day2</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day2.html">&lt;h2 id=&quot;use-scalac-compile-scala&quot;&gt;Use &lt;strong&gt;scalac&lt;/strong&gt; Compile Scala：&lt;/h2&gt;
-&lt;p&gt;HelloWorld.scala&lt;/p&gt;
-&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello World!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用 &lt;strong&gt;scalac&lt;/strong&gt; compile scala 程式，會出現可以在JVM執行的class檔．&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; scalac HelloWorld.scala
-&lt;span class=&quot;gp&quot;&gt; daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ll
-&lt;span class=&quot;gp&quot;&gt;-rwxrwxrwx  1 daniel  staff   670B 11 29 00:01 HelloWorld$&lt;/span&gt;.class
-&lt;span class=&quot;go&quot;&gt;-rwxrwxrwx  1 daniel  staff   608B 11 29 00:01 HelloWorld.class
--rwxrwxrwx  1 daniel  staff    97B 11 22 22:21 HelloWorld.scala
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;執行java HelloWorld，卻出現錯誤．&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; java HelloWorld
-&lt;span class=&quot;gp&quot;&gt;Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: scala/Predef$&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;	at HelloWorld$&lt;/span&gt;.main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HelloWorld.scala:4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;	at HelloWorld.main(HelloWorld.scala)
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;Caused by: java.lang.ClassNotFoundException: scala.Predef$&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;	at sun.misc.Launcher$&lt;/span&gt;AppClassLoader.loadClass&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Launcher.java:331&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-	... 2 more
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;上網查了一下說是少了scala-library.jar，所以改成這樣執行：&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;scala-2.12.4/lib/scala-library.jar:.&quot;&lt;/span&gt; HelloWorld
-&lt;span class=&quot;go&quot;&gt;Hello World!
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;執行成功～因為沒有設classpath=. (當前目錄)，所以-cp時要自己加.&lt;/p&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;由於sacla是基於JVM上的語言，所以complie後還是會產生class檔，可在JVM執行．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;參考資料&quot;&gt;參考資料&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;p&gt;https://stackoverflow.com/questions/16821828/classnotfoundexceptionscala-predef-issue&lt;/p&gt;</content><author><name></name></author><summary type="html">Use scalac Compile Scala： HelloWorld.scala ```scala object HelloWorld {</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Define something in scala 定義變數 定義一個變數的基本內容 : var / val 變數名稱 : 變數型態 = 值</summary></entry></feed>

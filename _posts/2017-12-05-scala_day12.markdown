@@ -1,0 +1,147 @@
+---
+layout: post
+title:  "Scala day 12 (Match Expression)"
+date:   2017-12-04 09:44:17 +0800
+categories: scala
+---
+
+### Match Expression
+Match 可以幫我們省略寫很多 if else，而且可以比對不同型態．  
+scala 的 match 不用寫 break 只會執行符合的那一段，然後 default 是用 _ : 
+```console
+scala> def getNumber(num:Int) = { num match {
+     |  case 1 => "one"
+     |  case 2 => "two"
+     |  case 3 => "three"
+     |  case _ => ""
+     | }
+     |}
+getNumber: (num: Int)String
+
+scala> getNumber(2)
+res83: String = two
+
+```
+要判斷符合多個條件時使用 | : 
+
+```console
+scala> def getNumber(num:Int) = { num match {
+     |  case 1 | 3 | 5 => "odd"
+     |  case 2 | 4 | 6 => "evens"
+     |  case _ => "null"
+     |  }
+     | }
+getNumber: (num: Int)String
+
+scala> getNumber(6)
+res86: String = evens
+
+scala> getNumber(3)
+res87: String = odd
+```
+將 match 的結果指定給變數 : 
+```console
+scala> var i = 6
+i: Int = 6
+
+scala> val month = i match {
+     | case 1 => "January"
+     | case 2 => "February"
+     | case 3 => "March"
+     | case 4 => "April"
+     | case 5 => "May"
+     | case 6 => "June"
+     | case 7 => "July"
+     | case 8 => "August"
+     | case 9 => "September"
+     | case 10 => "October"
+     | case 11 => "November"
+     | case 12 => "December"
+     | case _ => "Invalid month"
+     | }
+month: String = June
+
+scala> println(month)
+June
+```
+match 還可以比對不同的型態非常強大 : 
+
+```console
+scala> def getMultiType(x: Any) = x match {
+     |  case true => "truth"
+     |  case 'a' | 'A' => "this is a"
+     |  case x :: xs => "List"
+     |  case Nil => "empty List"
+     |  case _ => "null"
+     | }
+getMultiType: (x: Any)String
+
+scala> getMultiType(List())
+res88: String = empty List
+
+scala> getMultiType(List(1,2,3))
+res89: String = List
+
+scala> getMultiType(true)
+res90: String = truth
+```
+* Any 是 scala 所有型態的父類別，底下又分為兩個子類別 AnyVal 和 AnyRef．
+
+再來看更多例子，可以將 Any 對應到的型態，並取得裡面的值 : 
+
+```console
+scala> def getMultiMatchType(x: Any): String = x match {
+     |   case List(0, _, _) => "List has three element first is 0 "
+     |   case List(1, _*) => "List element size is dynamic "
+     |   case (a, b) => s"Tuple2 $a and $b"
+     |   case (a, b, c) => s"Tuple2 $a, $b, and $c"
+     |   case s: String => s"this is string: $s"
+     |   case i: Int => s"this is int: $i"
+     |   case f: Float => s"this is float: $f"
+     |   case a: Array[Int] => s"an array of int: ${a.mkString(",")}"
+     |   case as: Array[String] => s"an array of strings: ${as.mkString(",")}"
+     |   case list: List[_] => s"this the List: $list" case m: Map[_, _] => m.toString
+     |   case _ => ""
+     | }
+getMultiMatchType: (x: Any)String
+
+
+scala> getMultiMatchType(List(0,2,3))
+res91: String = "List has three element first is 0 "
+
+scala> getMultiMatchType(List(1,2,3))
+res92: String = "List element size is dynamic "
+
+scala> getMultiMatchType(List(1,2,3,4))
+res93: String = "List element size is dynamic "
+
+scala> getMultiMatchType(List(0,1,2,3))
+res94: String = this the List: List(0, 1, 2, 3)
+
+scala> getMultiMatchType((1,2))
+res1: String = Tuple2 1 and 2
+
+scala> getMultiMatchType((0,1,2))
+res2: String = Tuple2 0, 1, and 2
+
+scala> getMultiMatchType(1)
+res3: String = this is int: 1
+
+scala> getMultiMatchType(Array(1,2,3))
+res4: String = an array of int: 1,2,3
+
+scala> getMultiMatchType(Array("1","2","3"))
+res5: String = an array of strings: 1,2,3
+```
+
+
+
+### 總結
+- - -
+* scala 的 Match Expression 可以比對**值**及**型態**非常強大．
+* scala 的 Any 是 scala 所有型態的父類別，底下又分為兩個子類別 AnyVal 和 AnyRef．
+
+
+
+
+
