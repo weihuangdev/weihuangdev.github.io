@@ -80,13 +80,13 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h4 id="while--dowhile">while &amp; do…while</h4>
+    <h3 id="while--dowhile">while &amp; do…while</h3>
 <p>while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> var i <span class="o">=</span> 0
 <span class="go">i: Int = 0
 
-</span><span class="gp">scala&gt;</span> <span class="k">while</span><span class="o">(</span>i &lt; 6<span class="o">)</span> <span class="o">{</span>
+</span><span class="gp">scala&gt;</span> <span class="k">while</span><span class="o">(</span>i &lt; 5<span class="o">)</span> <span class="o">{</span>
 <span class="go">     |  println(i)
      |  i = i + 1
      | }
@@ -95,8 +95,60 @@
 2
 3
 4
-5
 
+</span><span class="gp">scala&gt;</span> <span class="k">do</span> <span class="o">{</span>
+<span class="go">     |  println(i)
+     |  i = i + 1
+     | } while(i &lt; 5)
+0
+1
+2
+3
+4
+</span></code></pre></div></div>
+<h3 id="no-break--no-continue">no break &amp; no continue</h3>
+<p>scala 沒有提供 break 及 continue 這兩個關鍵字使用，所以需使用其他寫法來替代．<br />
+需要 import scala.util.control.Breaks 套件的 breakable 及 break :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> import scala.util.control.Breaks.breakable
+<span class="go">import scala.util.control.Breaks.breakable
+
+</span><span class="gp">scala&gt;</span> import scala.util.control.Breaks.break
+<span class="go">import scala.util.control.Breaks.break
+</span></code></pre></div></div>
+<p>使用 breakable 區塊替代 break :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> var i <span class="o">=</span> 0
+<span class="go">i: Int = 0
+
+</span><span class="gp">scala&gt;</span> breakable <span class="o">{</span>
+<span class="go">     |  while(i &lt; 5) {
+     |   if(i == 3) {
+     |    break
+     |   }
+     |   println(i)
+     |   i = i + 1
+     |  }
+     | }
+0
+1
+2
+</span></code></pre></div></div>
+
+<p>使用 breakable 區塊替代 continue :</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> <span class="k">while</span><span class="o">(</span>i &lt; 5<span class="o">)</span> <span class="o">{</span>
+<span class="go">     |  breakable {
+     |   if(i == 3) {
+     |    break
+     |   }
+     |   println(i)
+     |  }
+     |  i = i + 1
+     | }
+0
+1
+2
+4
 
 </span></code></pre></div></div>
 

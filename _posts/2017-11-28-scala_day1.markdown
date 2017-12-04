@@ -10,7 +10,7 @@ categories: scala
 在還沒開始之前有些稍微找了一些 scala 的資料．
 scala 基本的核心概念或許就是名字的本身 scalable(sca) language(la)，感覺這語言就是要讓它的擴充性很強大．  
 而且很有意思的是發現它還可以用來實作 functional programming，但 scala 是基於 JVM 的語言，
-Java 確是 object oriented programming，這樣看起來的意思是 scala 可以跨越 functional programming 及 object oriented programming 的一種語言．  
+Java 卻是 object oriented programming，這樣看起來的意思是 scala 可以跨越 functional programming 及 object oriented programming 的一種語言．  
 但由於本身只會一點點 java，也不太了解 functional programming．所以無法很宏觀的來看待 scala．
 不過相信一種語言用久了一定會漸漸了解它的好與不足的地方．
 所以還是別想太多一天一天的來認識 scala 吧～
@@ -56,7 +56,7 @@ scala>
 
 * 第2種 使用 **HelloWorld.scala** 印出HelloWorld．  
 
-```scala
+```console
 object HelloWorld {
 
   def main(args: Array[String]): Unit = {
@@ -105,7 +105,3 @@ This is by shell
   1. 使用scala shell．
   2. 使用scala直接執行scala程式．
   3. 直接執行shell的方式．
-
-
-
-
