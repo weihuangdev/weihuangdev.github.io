@@ -99,7 +99,7 @@ This is by shell
 
 ### 總結
 - - -
-* scala是基於JVM的語言所以安裝時需要安裝jdk．
+* scala 安裝時需要安裝jdk．
 
 * 執行scala有三種方式：
   1. 使用scala shell．
