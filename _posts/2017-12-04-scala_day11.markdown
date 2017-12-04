@@ -32,7 +32,7 @@ scala> do {
 3
 4
 ```
-### no break & no continue
+### scala no break & no continue
 scala 沒有提供 break 及 continue 這兩個關鍵字使用，所以需使用其他寫法來替代．  
 需要 import scala.util.control.Breaks 套件的 breakable 及 break : 
 
@@ -43,7 +43,7 @@ import scala.util.control.Breaks.breakable
 scala> import scala.util.control.Breaks.break
 import scala.util.control.Breaks.break
 ```
-使用 breakable 區塊替代 break : 
+使用 breakable 區塊替代 break，下面例子 i == 3 就會 break : 
 
 ```console
 scala> var i = 0
@@ -63,7 +63,7 @@ scala> breakable {
 2
 ```
 
-使用 breakable 區塊替代 continue : 
+使用 breakable 區塊替代 continue，下面例子 i == 3 就會 continue 不 println : 
 ```console
 scala> while(i < 5) {
      |  breakable {
@@ -80,6 +80,39 @@ scala> while(i < 5) {
 4
 
 ```
+
+所以利用 breakable 區塊的位置可以達到 break 及 continue 的效果．
+下面例子是使用 scala.util.control.Breaks 物件，搭配混合使用，偶數的話 continue , i == 7 時就 break : 
+
+```console
+scala> import scala.util.control.Breaks
+import scala.util.control.Breaks
+
+scala> val breakobj = new Breaks
+breakobj: scala.util.control.Breaks = scala.util.control.Breaks@5284ae6e
+
+scala> val continuobj = new Breaks
+continuobj: scala.util.control.Breaks = scala.util.control.Breaks@1bcf8661
+
+scala> breakobj.breakable {
+     |  while (i < 10) {
+     |   continuobj.breakable {
+     |    if (i % 2 == 0) {
+     |     continuobj.break
+     |    } else if(i == 7) {
+     |     breakobj.break
+     |    }
+     |    println(i)
+     |   }
+     |   i = i + 1
+     |  }
+     | }
+1
+3
+5
+```
+
+
 
 ### 總結
 - - -
