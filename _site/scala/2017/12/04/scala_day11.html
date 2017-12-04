@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Daniel&#39;s Blog</title>
-  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search resu...">
+  <title>Scala day 11 (Loop &amp; break &amp; continue)</title>
+  <meta name="description" content="while &amp;amp; do…while while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/">
+  <link rel="canonical" href="http://localhost:4000/scala/2017/12/04/scala_day11.html">
   <link rel="alternate" type="application/rss+xml" title="Daniel&#39;s Blog" href="/feed.xml">
   
   
@@ -67,137 +67,59 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Scala day 11 (Loop &amp; break &amp; continue)</h1>
+    <p class="post-meta">
+      <time datetime="2017-12-04T08:44:17+08:00" itemprop="datePublished">
+        
+        Dec 4, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h4 id="while--dowhile">while &amp; do…while</h4>
+<p>while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> var i <span class="o">=</span> 0
+<span class="go">i: Int = 0
+
+</span><span class="gp">scala&gt;</span> <span class="k">while</span><span class="o">(</span>i &lt; 6<span class="o">)</span> <span class="o">{</span>
+<span class="go">     |  println(i)
+     |  i = i + 1
+     | }
+0
+1
+2
+3
+4
+5
+
+
+</span></code></pre></div></div>
+
+<h3 id="總結">總結</h3>
+<hr />
+<ul>
+  <li>scala Loop 的寫法跟 java 比較 :<br />
+java :
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for(int i = 0 ; i &lt; e.length ; i++) ...
+for(String name : names) ...
+</code></pre></div>    </div>
+    <p>scala :</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for(i &lt;- 0 until e.length) ...
+for(name &lt;- names) ...
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+
+  </div>
+
   
-  
-
-
-  <ul class="post-list">
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day11.html">Scala day 11 (Loop &amp; break &amp; continue)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 1, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/01/scala_day10.html">Scala day 10 (Loop)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 1, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/01/scala_day9.html">Scala day 9 (Basic Types)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day8.html">Scala day 8 (Class &amp; Object)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day7.html">Scala day 7 (tuples)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day6.html">Scala day 6 (scala&#39;s List)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day5.html">Scala day 5 (operators are methods)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day4.html">Scala day 4 (function literal)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day3.html">Scala day 3 (Define something)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/28/scala_day2.html">Scala day 2 (Compile Scala)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/28/scala_day1.html">Scala day 1 (Run scala)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/daniel/update/2017/11/28/startByJekyll.html">start By Jekyll</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/jekyll/update/2017/11/28/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </main>

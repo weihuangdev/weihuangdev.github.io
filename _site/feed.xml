@@ -1,4 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-04T11:48:37+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 10 (Loop)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day10.html" rel="alternate" type="text/html" title="Scala day 10 (Loop)" /><published>2017-12-01T09:44:17+08:00</published><updated>2017-12-01T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day10</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day10.html">&lt;h4 id=&quot;scala-迴圈的寫法很多種但這邊大概整理成-4-項根據需求來決定要使用哪種寫法-&quot;&gt;scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 :&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-04T16:04:29+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 11 (Loop &amp;amp; break &amp;amp; continue)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day11.html" rel="alternate" type="text/html" title="Scala day 11 (Loop &amp; break &amp; continue)" /><published>2017-12-04T08:44:17+08:00</published><updated>2017-12-04T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day11</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day11.html">&lt;h4 id=&quot;while--dowhile&quot;&gt;while &amp;amp; do…while&lt;/h4&gt;
+&lt;p&gt;while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; var i &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+&lt;span class=&quot;go&quot;&gt;i: Int = 0
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt; 6&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  println(i)
+     |  i = i + 1
+     | }
+0
+1
+2
+3
+4
+5
+
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;scala Loop 的寫法跟 java 比較 :&lt;br /&gt;
+java :
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for(int i = 0 ; i &amp;lt; e.length ; i++) ...
+for(String name : names) ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;scala :&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for(i &amp;lt;- 0 until e.length) ...
+for(name &amp;lt;- names) ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">while &amp;amp; do…while while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :</summary></entry><entry><title type="html">Scala day 10 (Loop)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day10.html" rel="alternate" type="text/html" title="Scala day 10 (Loop)" /><published>2017-12-01T09:44:17+08:00</published><updated>2017-12-01T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day10</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day10.html">&lt;h4 id=&quot;scala-迴圈的寫法很多種但這邊大概整理成-4-項根據需求來決定要使用哪種寫法-&quot;&gt;scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 :&lt;/h4&gt;
 &lt;ol&gt;
   &lt;li&gt;循序取得 collection 元素．&lt;/li&gt;
   &lt;li&gt;需要有 index 取得 collection 元素．&lt;/li&gt;
@@ -1017,99 +1050,4 @@ res2: String = hi jack
 
 &lt;h3 id=&quot;參考資料&quot;&gt;參考資料&lt;/h3&gt;
 &lt;hr /&gt;
-&lt;p&gt;https://stackoverflow.com/questions/16821828/classnotfoundexceptionscala-predef-issue&lt;/p&gt;</content><author><name></name></author><summary type="html">Use scalac Compile Scala： HelloWorld.scala ```scala object HelloWorld {</summary></entry><entry><title type="html">Scala day 1 (Run scala)</title><link href="http://localhost:4000/scala/2017/11/28/scala_day1.html" rel="alternate" type="text/html" title="Scala day 1 (Run scala)" /><published>2017-11-28T13:44:17+08:00</published><updated>2017-11-28T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/28/scala_day1</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/28/scala_day1.html">&lt;h2 id=&quot;run-scala&quot;&gt;Run scala&lt;/h2&gt;
-&lt;h3 id=&quot;scala安裝&quot;&gt;scala安裝：&lt;/h3&gt;
-&lt;p&gt;1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;參考網址：&lt;a href=&quot;https://www.scala-lang.org/download/&quot;&gt;https://www.scala-lang.org/download/&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;2.下載後解壓縮，設定環境變數(vi ~/.bash_profile)&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home
-export SCALA_HOME=/Volumes/Transcend/scala-test/scala-2.12.4
-export PATH=$JAVA_HOME/bin:$SCALA_HOME/bin:$PATH:~/bin
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;修改完後，重新讀取設定檔：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source ~/.bash_profile
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;確認java版本&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-version&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;java version &quot;1.8.0_111&quot;
-Java(TM) SE Runtime Environment (build 1.8.0_111-b14)
-Java HotSpot(TM) 64-Bit Server VM (build 25.111-b14, mixed mode)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;使用指令執行scala&quot;&gt;使用指令執行scala：&lt;/h3&gt;
-&lt;h4 id=&quot;使用三種方式印出helloworld&quot;&gt;使用三種方式印出HelloWorld．&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;第1種 使用 &lt;strong&gt;scala shell&lt;/strong&gt; 環境印出HelloWorld．&lt;br /&gt;
-執行scala，要離開scala 環境，可下:q 或 :quit&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; scala
-&lt;span class=&quot;go&quot;&gt;Welcome to Scala 2.12.4 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_111).
-Type in expressions for evaluation. Or try :help.
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val msg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello World&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;msg: String = Hello World
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;第2種 使用 &lt;strong&gt;HelloWorld.scala&lt;/strong&gt; 印出HelloWorld．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello World!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;直接執行scala程式&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt; daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; scala HelloWorld.scala
-&lt;span class=&quot;go&quot;&gt; Hello World!
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;第3種 使用 &lt;strong&gt;HelloWorld.sh&lt;/strong&gt; 印出HelloWorld．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env scala&lt;/span&gt;
-
-object HelloWorld extends App &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  print&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;args&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; + &lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  print&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;args&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; + &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-val args &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;World!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-HelloWorld.main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;args&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-val &lt;span class=&quot;nv&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;This is by shell&quot;&lt;/span&gt;
-println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;msg&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;執行HelloWorld.sh&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ./HelloWorld.sh
-&lt;span class=&quot;go&quot;&gt;/Volumes/Transcend/scala-test/./HelloWorld.sh:8: warning: Script has a main object but statement is disallowed
-val args = Array(&quot;Hello&quot;,&quot;World!&quot;)
-    ^
-one warning found
-Hello World!
-This is by shell
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝scala需要安裝jdk．&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;執行scala有三種方式：&lt;/p&gt;
-    &lt;ol&gt;
-      &lt;li&gt;使用scala shell．&lt;/li&gt;
-      &lt;li&gt;使用scala直接執行scala程式．&lt;/li&gt;
-      &lt;li&gt;直接執行shell的方式．&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Run scala scala安裝： 1.下載scala-2.12.4版本(需要jdk1.8)，這邊使用的是scala-2.12.4.tgz 參考網址：https://www.scala-lang.org/download/</summary></entry></feed>
+&lt;p&gt;https://stackoverflow.com/questions/16821828/classnotfoundexceptionscala-predef-issue&lt;/p&gt;</content><author><name></name></author><summary type="html">Use scalac Compile Scala： HelloWorld.scala ```scala object HelloWorld {</summary></entry></feed>

@@ -1,0 +1,49 @@
+---
+layout: post
+title:  "Scala day 11 (Loop & break & continue)"
+date:   2017-12-04 08:44:17 +0800
+categories: scala
+---
+
+#### while & do...while
+while 和 do...while 用法和 java 差不多，條件都是放 boolean 值即可 : 
+
+```console
+scala> var i = 0
+i: Int = 0
+
+scala> while(i < 6) {
+     |  println(i)
+     |  i = i + 1
+     | }
+0
+1
+2
+3
+4
+5
+
+
+```
+
+
+
+
+### 總結
+- - -
+* scala Loop 的寫法跟 java 比較 :  
+java :  
+```
+for(int i = 0 ; i < e.length ; i++) ...
+for(String name : names) ...
+```
+scala :  
+```
+for(i <- 0 until e.length) ...
+for(name <- names) ...
+```
+
+
+
+
+
