@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 10 (Loop)</title>
-  <meta name="description" content="For Loop Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 :">
+  <meta name="description" content="scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 : 循序取得 collection 元素． 需要有 index 取得 collection 元素． 需要多個計數器時． 迴圈需要產生一組新個 collection 物件．">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/12/01/scala_day10.html">
@@ -80,9 +80,17 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h3 id="for-loop">For Loop</h3>
-<p>Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 :</p>
+    <h4 id="scala-迴圈的寫法很多種但這邊大概整理成-4-項根據需求來決定要使用哪種寫法-">scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 :</h4>
+<ol>
+  <li>循序取得 collection 元素．</li>
+  <li>需要有 index 取得 collection 元素．</li>
+  <li>需要多個計數器時．</li>
+  <li>迴圈需要產生一組新個 collection 物件．</li>
+</ol>
 
+<p><br /></p>
+<h4 id="循序取得-collection-元素">循序取得 collection 元素．</h4>
+<p>for</p>
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val names <span class="o">=</span> Array<span class="o">(</span><span class="s2">"Andy"</span>,<span class="s2">"Jack"</span>,<span class="s2">"Sam"</span>,<span class="s2">"Daniel"</span><span class="o">)</span>
 <span class="go">names: Array[String] = Array(Andy, Jack, Sam, Daniel)
 
@@ -101,13 +109,36 @@ JACK
 SAM
 DANIEL
 </span></code></pre></div></div>
-<h3 id="for-loop-with-yield">For Loop with yield</h3>
-<p>透過 Loop 及 yield 處理過元素後，可產生新的 collection :</p>
+<p>foreach</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val newNames <span class="o">=</span> <span class="k">for</span><span class="o">(</span>name &lt;- names<span class="o">)</span> yield name.toUpperCase
-<span class="go">newNames: Array[String] = Array(ANDY, JACK, SAM, DANIEL)
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names.foreach<span class="o">(</span>println<span class="o">)</span>
+<span class="go">Andy
+Jack
+Sam
+Daniel
+
+</span><span class="gp">scala&gt;</span> 1.to<span class="o">(</span>5<span class="o">)</span>.foreach<span class="o">(</span>println<span class="o">)</span>
+<span class="go">1
+2
+3
+4
+5
+
+</span><span class="gp">scala&gt;</span> <span class="o">(</span>1 to 5<span class="o">)</span>.foreach<span class="o">(</span>println<span class="o">)</span>
+<span class="go">1
+2
+3
+4
+5
 </span></code></pre></div></div>
-<p>如果需要 index 的話</p>
+<p>使用 withFilter 過濾元素</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names.withFilter<span class="o">(</span>_ <span class="o">!=</span> <span class="s2">"Sam"</span><span class="o">)</span>.foreach<span class="o">(</span>println<span class="o">)</span>
+<span class="go">Andy
+Jack
+Daniel
+</span></code></pre></div></div>
+
+<h4 id="需要有-index-取得-collection-元素">需要有 index 取得 collection 元素</h4>
 <ul>
   <li>使用 until</li>
 </ul>
@@ -153,7 +184,9 @@ DANIEL
 2 is SAM
 3 is DANIEL
 </span></code></pre></div></div>
-<p>collection 的資料是 Tuple2 的話 :</p>
+<ul>
+  <li>collection 的資料是 Tuple2 的話 :</li>
+</ul>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val days <span class="o">=</span> Array<span class="o">((</span><span class="s2">"Sunday"</span>,0<span class="o">)</span>, <span class="o">(</span><span class="s2">"Monday"</span>,1<span class="o">))</span>
 <span class="go">days: Array[(String, Int)] = Array((Sunday,0), (Monday,1))
@@ -163,6 +196,7 @@ DANIEL
 Monday is 1 , index is 1
 </span></code></pre></div></div>
 
+<h4 id="需要多個計數器時">需要多個計數器時</h4>
 <p>for 迴圈多個計數器變數的寫法 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> <span class="k">for</span> <span class="o">(</span>i &lt;- 1 to 3<span class="p">;</span>j &lt;- <span class="nt">-2</span> to <span class="nt">-1</span><span class="p">;</span>k &lt;- 8 to 10<span class="o">)</span> <span class="o">{</span>println<span class="o">(</span>s<span class="s2">" i=</span><span class="nv">$i</span><span class="s2"> , j=</span><span class="nv">$j</span><span class="s2"> , k=</span><span class="nv">$k</span><span class="s2"> "</span><span class="o">)}</span>
@@ -201,10 +235,27 @@ i = 0 , j = 1
 i = 0 , j = 3
 </span></code></pre></div></div>
 
+<h4 id="迴圈需要產生一組新個-collection-物件">迴圈需要產生一組新個 collection 物件</h4>
+<p>透過 Loop 及 yield 處理過元素後，可產生新的 collection :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val newNames <span class="o">=</span> <span class="k">for</span><span class="o">(</span>name &lt;- names<span class="o">)</span> yield name.toUpperCase
+<span class="go">newNames: Array[String] = Array(ANDY, JACK, SAM, DANIEL)
+</span></code></pre></div></div>
+
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>scala Loop 的寫法可以用 &lt;- 感覺很直覺</li>
+  <li>scala Loop 的寫法跟 java 比較 :<br />
+java :
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for(int i = 0 ; i &lt; e.length ; i++) ...
+for(String name : names) ...
+</code></pre></div>    </div>
+    <p>scala :</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for(i &lt;- 0 until e.length) ...
+for(name &lt;- names) ...
+</code></pre></div>    </div>
+  </li>
+  <li>迴圈的寫法很多種，但主要還是根據需求來決定．</li>
 </ul>
 
 

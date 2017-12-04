@@ -5,9 +5,15 @@ date:   2017-12-01 09:44:17 +0800
 categories: scala
 ---
 
-### For Loop
-Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 : 
+#### scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 : 
+1. 循序取得 collection 元素．
+2. 需要有 index 取得 collection 元素．
+3. 需要多個計數器時．
+4. 迴圈需要產生一組新個 collection 物件．
 
+<br/>
+#### 循序取得 collection 元素．
+for
 ```console
 scala> val names = Array("Andy","Jack","Sam","Daniel")
 names: Array[String] = Array(Andy, Jack, Sam, Daniel)
@@ -27,14 +33,38 @@ JACK
 SAM
 DANIEL
 ```
-### For Loop with yield
-透過 Loop 及 yield 處理過元素後，可產生新的 collection : 
+foreach
 
 ```console
-scala> val newNames = for(name <- names) yield name.toUpperCase
-newNames: Array[String] = Array(ANDY, JACK, SAM, DANIEL)
+scala> names.foreach(println)
+Andy
+Jack
+Sam
+Daniel
+
+scala> 1.to(5).foreach(println)
+1
+2
+3
+4
+5
+
+scala> (1 to 5).foreach(println)
+1
+2
+3
+4
+5
 ```
-如果需要 index 的話  
+使用 withFilter 過濾元素
+```console
+scala> names.withFilter(_ != "Sam").foreach(println)
+Andy
+Jack
+Daniel
+```
+
+#### 需要有 index 取得 collection 元素
 * 使用 until
 
 ```console
@@ -79,7 +109,7 @@ scala> for((element , index) <- newNames.zipWithIndex) {
 2 is SAM
 3 is DANIEL
 ```
-collection 的資料是 Tuple2 的話 : 
+* collection 的資料是 Tuple2 的話 : 
 
 ```console
 scala> val days = Array(("Sunday",0), ("Monday",1))
@@ -90,6 +120,7 @@ Sunday is 0 , index is 0
 Monday is 1 , index is 1
 ```
 
+#### 需要多個計數器時
 for 迴圈多個計數器變數的寫法 : 
 
 ```console
@@ -129,10 +160,30 @@ i = 0 , j = 1
 i = 0 , j = 3
 ```
 
+#### 迴圈需要產生一組新個 collection 物件
+透過 Loop 及 yield 處理過元素後，可產生新的 collection : 
+
+```console
+scala> val newNames = for(name <- names) yield name.toUpperCase
+newNames: Array[String] = Array(ANDY, JACK, SAM, DANIEL)
+```
+
+
 ### 總結
 - - -
-* scala Loop 的寫法可以用 <- 感覺很直覺
+* scala Loop 的寫法跟 java 比較 :  
+java :  
+```
+for(int i = 0 ; i < e.length ; i++) ...
+for(String name : names) ...
+```
+scala :  
+```
+for(i <- 0 until e.length) ...
+for(name <- names) ...
+```
 
+* 迴圈的寫法很多種，但主要還是根據需求來決定．
 
 
 

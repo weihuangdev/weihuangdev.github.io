@@ -1,6 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-03T17:20:38+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 10 (Loop)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day10.html" rel="alternate" type="text/html" title="Scala day 10 (Loop)" /><published>2017-12-01T09:44:17+08:00</published><updated>2017-12-01T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day10</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day10.html">&lt;h3 id=&quot;for-loop&quot;&gt;For Loop&lt;/h3&gt;
-&lt;p&gt;Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 :&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-04T11:48:37+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 10 (Loop)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day10.html" rel="alternate" type="text/html" title="Scala day 10 (Loop)" /><published>2017-12-01T09:44:17+08:00</published><updated>2017-12-01T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day10</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day10.html">&lt;h4 id=&quot;scala-迴圈的寫法很多種但這邊大概整理成-4-項根據需求來決定要使用哪種寫法-&quot;&gt;scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 :&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;循序取得 collection 元素．&lt;/li&gt;
+  &lt;li&gt;需要有 index 取得 collection 元素．&lt;/li&gt;
+  &lt;li&gt;需要多個計數器時．&lt;/li&gt;
+  &lt;li&gt;迴圈需要產生一組新個 collection 物件．&lt;/li&gt;
+&lt;/ol&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;循序取得-collection-元素&quot;&gt;循序取得 collection 元素．&lt;/h4&gt;
+&lt;p&gt;for&lt;/p&gt;
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Andy&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;names: Array[String] = Array(Andy, Jack, Sam, Daniel)
 
@@ -19,13 +27,36 @@ JACK
 SAM
 DANIEL
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;for-loop-with-yield&quot;&gt;For Loop with yield&lt;/h3&gt;
-&lt;p&gt;透過 Loop 及 yield 處理過元素後，可產生新的 collection :&lt;/p&gt;
+&lt;p&gt;foreach&lt;/p&gt;
 
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val newNames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &amp;lt;- names&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; yield name.toUpperCase
-&lt;span class=&quot;go&quot;&gt;newNames: Array[String] = Array(ANDY, JACK, SAM, DANIEL)
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Andy
+Jack
+Sam
+Daniel
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1.to&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;1
+2
+3
+4
+5
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 to 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;1
+2
+3
+4
+5
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果需要 index 的話&lt;/p&gt;
+&lt;p&gt;使用 withFilter 過濾元素&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.withFilter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Andy
+Jack
+Daniel
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;需要有-index-取得-collection-元素&quot;&gt;需要有 index 取得 collection 元素&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;使用 until&lt;/li&gt;
 &lt;/ul&gt;
@@ -71,7 +102,9 @@ DANIEL
 2 is SAM
 3 is DANIEL
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;collection 的資料是 Tuple2 的話 :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;collection 的資料是 Tuple2 的話 :&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val days &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sunday&quot;&lt;/span&gt;,0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Monday&quot;&lt;/span&gt;,1&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;days: Array[(String, Int)] = Array((Sunday,0), (Monday,1))
@@ -81,6 +114,7 @@ DANIEL
 Monday is 1 , index is 1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;h4 id=&quot;需要多個計數器時&quot;&gt;需要多個計數器時&lt;/h4&gt;
 &lt;p&gt;for 迴圈多個計數器變數的寫法 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt;- 1 to 3&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;j &amp;lt;- &lt;span class=&quot;nt&quot;&gt;-2&lt;/span&gt; to &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;k &amp;lt;- 8 to 10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;s2&quot;&gt;&quot; i=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; , j=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; , k=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$k&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)}&lt;/span&gt;
@@ -119,11 +153,28 @@ i = 0 , j = 1
 i = 0 , j = 3
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;h4 id=&quot;迴圈需要產生一組新個-collection-物件&quot;&gt;迴圈需要產生一組新個 collection 物件&lt;/h4&gt;
+&lt;p&gt;透過 Loop 及 yield 處理過元素後，可產生新的 collection :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val newNames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &amp;lt;- names&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; yield name.toUpperCase
+&lt;span class=&quot;go&quot;&gt;newNames: Array[String] = Array(ANDY, JACK, SAM, DANIEL)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;scala Loop 的寫法可以用 &amp;lt;- 感覺很直覺&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">For Loop Scala 的 for Loop 可以寫的很簡潔，當有多行指令也可以用{}包起來 :</summary></entry><entry><title type="html">Scala day 9 (Basic Types)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day9.html" rel="alternate" type="text/html" title="Scala day 9 (Basic Types)" /><published>2017-12-01T08:44:17+08:00</published><updated>2017-12-01T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day9</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day9.html">&lt;h2 id=&quot;basic-types&quot;&gt;Basic Types&lt;/h2&gt;
+  &lt;li&gt;scala Loop 的寫法跟 java 比較 :&lt;br /&gt;
+java :
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for(int i = 0 ; i &amp;lt; e.length ; i++) ...
+for(String name : names) ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;scala :&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for(i &amp;lt;- 0 until e.length) ...
+for(name &amp;lt;- names) ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;迴圈的寫法很多種，但主要還是根據需求來決定．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 : 循序取得 collection 元素． 需要有 index 取得 collection 元素． 需要多個計數器時． 迴圈需要產生一組新個 collection 物件．</summary></entry><entry><title type="html">Scala day 9 (Basic Types)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day9.html" rel="alternate" type="text/html" title="Scala day 9 (Basic Types)" /><published>2017-12-01T08:44:17+08:00</published><updated>2017-12-01T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day9</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day9.html">&lt;h2 id=&quot;basic-types&quot;&gt;Basic Types&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Byte,Short,Int,Long,Char 稱為 &lt;strong&gt;&lt;em&gt;integral types&lt;/em&gt;&lt;/strong&gt;．&lt;/li&gt;
