@@ -1,0 +1,42 @@
+---
+layout: post
+title:  "Scala day 14 (traits)"
+date:   2017-12-05 10:44:17 +0800
+categories: scala
+---
+
+### traits
+在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 或使用 with 特徵(trait)．
+
+```console
+scala> trait Fly {
+     |  def flying(name:String) = name + " is flying..."
+     | }
+defined trait Fly
+```
+trait 不可被 new : 
+
+```console
+scala> val f = new Fly
+<console>:12: error: trait Fly is abstract; cannot be instantiated
+       val f = new Fly
+               ^
+```
+
+```console
+scala> class Birds extends Fly
+defined class Birds
+
+scala> val bird = new Birds
+bird: Birds = Birds@13bdf540
+
+scala> bird.flying("bird")
+res0: String = bird is flying...
+```
+
+
+
+### 總結
+- - -
+* scala 的 case classes 使用上感覺很像 java 存資料時都會封裝成一個 bean 物件．
+而且又實作了 equals 和 hashCode 兩個方法，比對也很方便，再搭配 Match Expression 使用起來真得很方便．
