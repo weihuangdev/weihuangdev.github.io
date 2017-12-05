@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 2 (Compile Scala)</title>
-  <meta name="description" content="Use scalac Compile Scala： HelloWorld.scala ```scala object HelloWorld {">
+  <meta name="description" content="Use scalac Compile Scala： 寫一隻 HelloWorld.scala ```scala object HelloWorld {">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/11/28/scala_day2.html">
@@ -81,7 +81,7 @@
 
   <div class="post-content" itemprop="articleBody">
     <h2 id="use-scalac-compile-scala">Use <strong>scalac</strong> Compile Scala：</h2>
-<p>HelloWorld.scala</p>
+<p>寫一隻 HelloWorld.scala</p>
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">object</span> <span class="nc">HelloWorld</span> <span class="o">{</span>
 
   <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
@@ -115,6 +115,40 @@
 </span></code></pre></div></div>
 <p>執行成功～因為沒有設classpath=. (當前目錄)，所以-cp時要自己加.</p>
 
+<p>另外上面的例子 compiler 後會產生兩個.class 檔的原因是因為 HelloWorld.scala 是 objcet 的關係．
+object HelloWorld 會轉成 HelloWorld$.class，但由於 sacala 的 object 都是 singleton 的，
+在 JVM 裡類似 static 的物件，所以會產生一個 HelloWorld.class 裡面放的是 static 一些成員給 
+HelloWorld$.class 使用．<br />
+如果是 class 的話只會產生一個class檔．</p>
+
+<p>寫一隻 Student class :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">class Student {
+ val id = ""
+ val name = ""
+}
+</span></code></pre></div></div>
+<p>然後再 compiler 看看，就只會產生一個 class 檔了 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">daniel@Danielde-MacBook-Pro &gt;</span> ll
+<span class="go">total 1536
+</span><span class="gp">-rwxrwxrwx  1 daniel  staff   670B 11 29 00:01 HelloWorld$</span>.class
+<span class="go">-rwxrwxrwx  1 daniel  staff   608B 11 29 00:01 HelloWorld.class
+-rwxrwxrwx  1 daniel  staff    97B 11 22 22:21 HelloWorld.scala
+-rwxrwxrwx  1 daniel  staff   202B 11 22 23:44 HelloWorld.sh
+-rwxrwxrwx  1 daniel  staff    46B 12  5 11:39 Student.scala
+drwxrwxrwx@ 1 daniel  staff   128K 11 22 22:29 scala-2.12.4
+</span><span class="gp"> daniel@Danielde-MacBook-Pro &gt;</span> scalac Student.scala
+<span class="gp"> daniel@Danielde-MacBook-Pro &gt;</span> ll
+<span class="go">total 1792
+</span><span class="gp">-rwxrwxrwx  1 daniel  staff   670B 11 29 00:01 HelloWorld$</span>.class
+<span class="go">-rwxrwxrwx  1 daniel  staff   608B 11 29 00:01 HelloWorld.class
+-rwxrwxrwx  1 daniel  staff    97B 11 22 22:21 HelloWorld.scala
+-rwxrwxrwx  1 daniel  staff   202B 11 22 23:44 HelloWorld.sh
+-rwxrwxrwx  1 daniel  staff   857B 12  5 11:41 Student.class
+-rwxrwxrwx  1 daniel  staff    46B 12  5 11:39 Student.scala
+</span></code></pre></div></div>
+
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
@@ -123,7 +157,8 @@
 
 <h3 id="參考資料">參考資料</h3>
 <hr />
-<p>https://stackoverflow.com/questions/16821828/classnotfoundexceptionscala-predef-issue</p>
+<p>https://stackoverflow.com/questions/16821828/classnotfoundexceptionscala-predef-issue
+https://stackoverflow.com/questions/30731414/why-there-are-two-class-files-generated-after-compiling-scala-code</p>
 
 
   </div>
