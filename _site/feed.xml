@@ -1,4 +1,129 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-05T12:21:33+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 12 (Match Expression)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day12.html" rel="alternate" type="text/html" title="Scala day 12 (Match Expression)" /><published>2017-12-04T09:44:17+08:00</published><updated>2017-12-04T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day12</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day12.html">&lt;h3 id=&quot;match-expression&quot;&gt;Match Expression&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-05T18:17:32+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 13 (case classes &amp;amp; compare)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day13.html" rel="alternate" type="text/html" title="Scala day 13 (case classes &amp; compare)" /><published>2017-12-04T09:44:17+08:00</published><updated>2017-12-04T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day13</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day13.html">&lt;h3 id=&quot;case-classes&quot;&gt;case classes&lt;/h3&gt;
+&lt;p&gt;case classe 其實跟一般的 class 差不多，只是在建立物件時不用使用 new，
+然後建構子的參數都是val，不可修改但可以直接存取．所以當有很多資訊要存時可以用 case classe 封裝．
+還有一個優點就是比較方便．
+&lt;br /&gt;&lt;br /&gt;
+定義 case classe 只要在 class 前面加上 &lt;strong&gt;case&lt;/strong&gt; 關鍵字即可 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; class Student&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String,tel:String&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;def echoMsg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hi&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;defined class Student
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val s1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Student&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;123&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;s1: Student = Student(1,Daniel,123)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; s1.name
+&lt;span class=&quot;go&quot;&gt;res10: String = Daniel
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; s1.echoMsg
+&lt;span class=&quot;go&quot;&gt;Hi
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;case-classe-的-copy-&quot;&gt;case classe 的 copy :&lt;/h4&gt;
+&lt;p&gt;可以 copy 一份新的物件出來 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val s1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Student&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;456&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;s1: Student = Student(1,Sam,456)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val s2 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; s1.copy&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;s2: Student = Student(1,Sam,456)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;copy 時還可以更新指定的值(更新id)，其他的值會自動複製 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val s3 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; s1.copy&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;s3: Student = Student(2,Sam,456)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;scala-的-eq--equals--&quot;&gt;scala 的 eq , equals , ==&lt;/h4&gt;
+&lt;p&gt;對 copy 的物件與原來的物件作比較 :&lt;br /&gt;
+&lt;strong&gt;eq&lt;/strong&gt;&lt;br /&gt;
+是用來比對 reference，由於兩個物件不一樣所以會是 false :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s1 eq s2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;false
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;equals&lt;/strong&gt;&lt;br /&gt;
+用來比對物件的值，要比對物件的值是否相等要實作 equals 和 hashCode 兩個方法，
+但如果使用 case classe 預設已經實作好了，所以可以直接比較，這邊內容一樣所以為 true :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s1 equals s2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;true
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;==&lt;/strong&gt;&lt;br /&gt;
+一般是用 equals 但如果是比對 null 的話是用 eq :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s1 &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; s2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;true
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;case-classe-搭配-match-expression&quot;&gt;case classe 搭配 match expression&lt;/h4&gt;
+&lt;p&gt;比對值 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; class Student&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String,tel:String&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   def echoMsg = println(&quot;Hi&quot;)
+     | }
+defined class Student
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def chekStudent&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s: Student&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; s match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |     case Student(&quot;1&quot;,&quot;Daniel&quot;,&quot;123&quot;) =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;student1&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |     case Student(&quot;2&quot;,&quot;Sam&quot;,&quot;456&quot;) =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;student2&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |     case Student(&quot;3&quot;,&quot;Jack&quot;,&quot;789&quot;) =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;student3&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |     case _ =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   }
+chekStudent: (s: Student)String
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; chekStudent&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Student&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;456&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res12: String = student2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;比對型態 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class People
+&lt;span class=&quot;go&quot;&gt;defined class People
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; class Student&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; extends People
+&lt;span class=&quot;go&quot;&gt;defined class Student
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; class Teacher&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; extends People
+&lt;span class=&quot;go&quot;&gt;defined class Teacher
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; class Employee&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; extends People
+&lt;span class=&quot;go&quot;&gt;defined class Employee
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def checkPeople&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s: People&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; s match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case Student() =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;this is Student&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case Teacher() =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;this is Teacher&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case Employee() =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;this is Employee&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case _ =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     | }
+checkPeople: (s: People)String
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def checkPeople&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s: People&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; s match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case Student() =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;this is Student&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case Teacher() =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;this is Teacher&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case Employee() =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;this is Employee&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   case _ =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     | }
+checkPeople: (s: People)String
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;checkPeople&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Teacher&lt;span class=&quot;o&quot;&gt;()))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;this is Teacher
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;checkPeople&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Employee&lt;span class=&quot;o&quot;&gt;()))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;this is Employee
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;scala 的 case classes 使用上感覺很像 java 存資料時都會封裝成一個 bean 物件．
+而且又實作了 equals 和 hashCode 兩個方法，比對也很方便，再搭配 Match Expression 使用起來真得很方便．&lt;/li&gt;
+  &lt;li&gt;compare :
+    &lt;ol&gt;
+      &lt;li&gt;比對值時用 equals&lt;/li&gt;
+      &lt;li&gt;比對 reference 時用 eq&lt;/li&gt;
+      &lt;li&gt;== 一般是用 equals ，但如果是比對 null 的話是用 eq&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">case classes case classe 其實跟一般的 class 差不多，只是在建立物件時不用使用 new， 然後建構子的參數都是val，不可修改但可以直接存取．所以當有很多資訊要存時可以用 case classe 封裝． 還有一個優點就是比較方便． 定義 case classe 只要在 class 前面加上 case 關鍵字即可 :</summary></entry><entry><title type="html">Scala day 12 (Match Expression)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day12.html" rel="alternate" type="text/html" title="Scala day 12 (Match Expression)" /><published>2017-12-04T09:44:17+08:00</published><updated>2017-12-04T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day12</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day12.html">&lt;h3 id=&quot;match-expression&quot;&gt;Match Expression&lt;/h3&gt;
 &lt;p&gt;Match 可以幫我們省略寫很多 if else，而且可以比對不同型態．&lt;br /&gt;
 scala 的 match 不用寫 break 只會執行符合的那一段，然後 default 是用 _ :&lt;/p&gt;
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def getNumber&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; num match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
@@ -1091,124 +1216,4 @@ res2: String = hi jack
 &lt;ul&gt;
   &lt;li&gt;function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，
 所以還需要再花時間研究一下．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala’s function literal function literal 語法 (num1: Int,num2: Int) =&amp;gt; num1 + num2</summary></entry><entry><title type="html">Scala day 3 (Define something)</title><link href="http://localhost:4000/scala/2017/11/29/scala_day3.html" rel="alternate" type="text/html" title="Scala day 3 (Define something)" /><published>2017-11-29T13:44:17+08:00</published><updated>2017-11-29T13:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day3</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day3.html">&lt;h2 id=&quot;define-something-in-scala&quot;&gt;Define something in scala&lt;/h2&gt;
-&lt;h4 id=&quot;定義變數&quot;&gt;定義變數&lt;/h4&gt;
-&lt;p&gt;定義一個變數的基本內容 :&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;var / val 變數名稱 : 變數型態 = 值&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val msg : String &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;msg: String = Daniel
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;type-inference&quot;&gt;type inference&lt;/h4&gt;
-&lt;p&gt;由於 scala 的編譯器有 type inference 可以推測型別，所以宣告時可省略變數型態由編譯器判斷．&lt;/p&gt;
-
-&lt;p&gt;scala 有 2 種定義變數的keywords，&lt;strong&gt;var&lt;/strong&gt; 及 &lt;strong&gt;val&lt;/strong&gt; :&lt;/p&gt;
-&lt;h4 id=&quot;val&quot;&gt;val&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;val 初始化後不可再改變，類似 java 的 final．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 10
-&lt;span class=&quot;go&quot;&gt;num: Int = 10
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; num &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:12: error: reassignment to val
-&lt;span class=&quot;go&quot;&gt;       num = 5
-           ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;初始化後也不可以在把 val 的變數再指派給另一個物件了．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Employee &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;defined class Employee
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val e1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
-&lt;span class=&quot;go&quot;&gt;e1: Employee = Employee@36ef1d65
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; e1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: reassignment to val
-&lt;span class=&quot;go&quot;&gt;       e1 = new Employee
-          ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;var&quot;&gt;var&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;var 可以改變及重新指派新的值．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; var num &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 10
-&lt;span class=&quot;go&quot;&gt;num: Int = 10
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; num &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
-&lt;span class=&quot;go&quot;&gt;num: Int = 5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; var e1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
-&lt;span class=&quot;go&quot;&gt;e1: Employee = Employee@23444a36
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; e1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
-&lt;span class=&quot;go&quot;&gt;e1: Employee = Employee@167a21b
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;定義方法&quot;&gt;定義方法&lt;/h4&gt;
-&lt;p&gt;scala 定義方法是使用 &lt;strong&gt;def&lt;/strong&gt;．&lt;/p&gt;
-&lt;h4 id=&quot;def&quot;&gt;def&lt;/h4&gt;
-&lt;p&gt;定義一個方法的基本內容 :&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;def 方法名稱(參數:參數型態,參數:參數型態):回傳型態 = {&lt;br /&gt;
-  方法內容…&lt;br /&gt;
-  return 回傳值&lt;br /&gt;
-}&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1: Int,num2: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;num1 + num2 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;sum: (num1: Int, num2: Int)Int
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res0: Int = 3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;方法可以省略return，所以可以很簡潔 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1: Int,num2: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num1 + num2
-&lt;span class=&quot;go&quot;&gt;sum: (num1: Int, num2: Int)Int
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;scala function 的參數都是 val 不可改變．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1: Int,num2: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; num1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num2 + 1 &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;num1 + num2 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:11: error: reassignment to val
-&lt;span class=&quot;gp&quot;&gt;       def sum(num1: Int,num2: Int) : Int = { num1 = num2 + 1 ;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;num1 + num2 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;                                                   ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;沒傳參數的話，方法看起來會很像是變數，所以要注意 :&lt;br /&gt;
-像下面其實是一個 msg 方法，不用傳參數，然後 return 一個字串．&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def msg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello world&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;msg: String
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果不需要回傳值，則使用 &lt;strong&gt;Unit&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def msg : Unit &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello world&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;msg: Unit
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果方法參數數目不確定的話，可以在變數型態後面加上&lt;strong&gt;*&lt;/strong&gt;，就可以傳入多個參數，該變數其實是 scala.Seq[S] 物件：&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;nums: Int&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; nums.reduceLeft&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;sum,num&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; sum + num&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;sum: (nums: Int*)Int
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;nums: Int&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; nums.reduceLeft&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ + _&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;sum: (nums: Int*)Int
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res25: Int = 1
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res26: Int = 6
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,5,7&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res27: Int = 13
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala 編譯器的 type inference，可以推測變數的型別及方法回傳的型態，所以可以讓程式碼更加簡潔．&lt;/li&gt;
-  &lt;li&gt;scala function 的參數都是 val 不可改變．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Define something in scala 定義變數 定義一個變數的基本內容 : var / val 變數名稱 : 變數型態 = 值</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala’s function literal function literal 語法 (num1: Int,num2: Int) =&amp;gt; num1 + num2</summary></entry></feed>

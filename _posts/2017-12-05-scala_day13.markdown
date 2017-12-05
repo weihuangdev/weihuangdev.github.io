@@ -1,0 +1,136 @@
+---
+layout: post
+title:  "Scala day 13 (case classes & compare)"
+date:   2017-12-04 09:44:17 +0800
+categories: scala
+---
+
+### case classes
+case classe 其實跟一般的 class 差不多，只是在建立物件時不用使用 new，
+然後建構子的參數都是val，不可修改但可以直接存取．所以當有很多資訊要存時可以用 case classe 封裝．
+還有一個優點就是比較方便．
+<br/>  
+定義 case classe 只要在 class 前面加上 **case** 關鍵字即可 : 
+
+```console
+scala> case class Student(id:String,name:String,tel:String) {def echoMsg = println("Hi")}
+defined class Student
+
+scala> val s1 = Student("1","Daniel","123")
+s1: Student = Student(1,Daniel,123)
+
+scala> s1.name
+res10: String = Daniel
+
+scala> s1.echoMsg
+Hi
+```
+#### case classe 的 copy : 
+可以 copy 一份新的物件出來 : 
+
+```console
+scala> val s1 = Student("1","Sam","456")
+s1: Student = Student(1,Sam,456)
+
+scala> val s2 = s1.copy()
+s2: Student = Student(1,Sam,456)
+```
+copy 時還可以更新指定的值(更新id)，其他的值會自動複製 :  
+
+```console
+scala> val s3 = s1.copy("2")
+s3: Student = Student(2,Sam,456)
+```
+
+#### scala 的 eq , equals , ==
+對 copy 的物件與原來的物件作比較 :  
+**eq**  
+是用來比對 reference，由於兩個物件不一樣所以會是 false : 
+
+```console
+scala> println(s1 eq s2)
+false
+```
+**equals**  
+用來比對物件的值，要比對物件的值是否相等要實作 equals 和 hashCode 兩個方法，
+但如果使用 case classe 預設已經實作好了，所以可以直接比較，這邊內容一樣所以為 true : 
+
+```console
+scala> println(s1 equals s2)
+true
+```
+
+**==**  
+一般是用 equals 但如果是比對 null 的話是用 eq : 
+
+```console
+scala> println(s1 == s2)
+true
+```
+
+#### case classe 搭配 match expression  
+比對值 :  
+```console
+scala> case class Student(id:String,name:String,tel:String) {
+     |   def echoMsg = println("Hi")
+     | }
+defined class Student
+
+scala> def chekStudent(s: Student) = s match {
+     |     case Student("1","Daniel","123") => "student1"
+     |     case Student("2","Sam","456") => "student2"
+     |     case Student("3","Jack","789") => "student3"
+     |     case _ => ""
+     |   }
+chekStudent: (s: Student)String
+
+scala> chekStudent(Student("2","Sam","456"))
+res12: String = student2
+```
+
+比對型態 :  
+```console
+scala> class People
+defined class People
+
+scala> case class Student() extends People
+defined class Student
+
+scala> case class Teacher() extends People
+defined class Teacher
+
+scala> case class Employee() extends People
+defined class Employee
+
+scala> def checkPeople(s: People) = s match {
+     |   case Student() => "this is Student"
+     |   case Teacher() => "this is Teacher"
+     |   case Employee() => "this is Employee"
+     |   case _ => ""
+     | }
+checkPeople: (s: People)String
+
+scala> def checkPeople(s: People) = s match {
+     |   case Student() => "this is Student"
+     |   case Teacher() => "this is Teacher"
+     |   case Employee() => "this is Employee"
+     |   case _ => ""
+     | }
+checkPeople: (s: People)String
+
+scala> println(checkPeople(Teacher()))
+this is Teacher
+
+scala> println(checkPeople(Employee()))
+this is Employee
+
+```
+
+### 總結
+- - -
+* scala 的 case classes 使用上感覺很像 java 存資料時都會封裝成一個 bean 物件．
+而且又實作了 equals 和 hashCode 兩個方法，比對也很方便，再搭配 Match Expression 使用起來真得很方便．
+* compare :  
+1. 比對值時用 equals
+2. 比對 reference 時用 eq
+3. == 一般是用 equals ，但如果是比對 null 的話是用 eq 
