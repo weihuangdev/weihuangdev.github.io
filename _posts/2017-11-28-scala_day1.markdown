@@ -41,7 +41,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.111-b14, mixed mode)
 
 ### 使用指令執行scala：
 #### 使用三種方式印出HelloWorld．  
-* 第1種 使用 **scala shell** 環境印出HelloWorld．  
+* 第1種 使用 **scala REPL** 環境印出HelloWorld．  
 執行scala，要離開scala 環境，可下:q 或 :quit
 
 ```console
@@ -102,6 +102,6 @@ This is by shell
 * scala 安裝時需要安裝jdk．
 
 * 執行scala有三種方式：
-  1. 使用scala shell．
+  1. 使用scala REPL．
   2. 使用scala直接執行scala程式．
   3. 直接執行shell的方式．
