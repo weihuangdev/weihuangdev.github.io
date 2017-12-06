@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 14 (traits)</title>
-  <meta name="description" content="traits 在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 或使用 with 特徵(trait)．">
+  <meta name="description" content="traits 在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 特徵(trait)或 extends 並且 with 特徵(trait)．">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/12/05/scala_day14.html">
@@ -81,7 +81,9 @@
 
   <div class="post-content" itemprop="articleBody">
     <h3 id="traits">traits</h3>
-<p>在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 或使用 with 特徵(trait)．</p>
+<p>在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 特徵(trait)或 extends 並且 with 特徵(trait)．</p>
+
+<p>定義一個特徵 Fly :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> trait Fly <span class="o">{</span>
 <span class="go">     |  def flying(name:String) = name + " is flying..."
@@ -95,6 +97,7 @@ defined trait Fly
 <span class="go">       val f = new Fly
                ^
 </span></code></pre></div></div>
+<p>鳥類會飛所以 extends Fly :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class Birds extends Fly
 <span class="go">defined class Birds
@@ -104,6 +107,66 @@ defined trait Fly
 
 </span><span class="gp">scala&gt;</span> bird.flying<span class="o">(</span><span class="s2">"bird"</span><span class="o">)</span>
 <span class="go">res0: String = bird is flying...
+</span></code></pre></div></div>
+<p>再來定義一個類別 Machine， 飛機是 Machine 並且會 Fly，
+所以類別 Airplane extends Machine with Fly :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class Machine
+<span class="go">defined class Machine
+
+</span><span class="gp">scala&gt;</span> class Airplane extends Machine with Fly
+<span class="go">defined class Airplane
+
+</span><span class="gp">scala&gt;</span> val air <span class="o">=</span> new Airplane
+<span class="go">air: Airplane = Airplane@152e7703
+
+</span><span class="gp">scala&gt;</span> air.flying<span class="o">(</span><span class="s2">"air plane"</span><span class="o">)</span>
+<span class="go">res1: String = air plane is flying...
+
+</span></code></pre></div></div>
+<p>在定義一個類別 Animal 及特徵 Eat 並且定義了一個未實作的 method eat :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> trait Eat <span class="o">{</span>
+<span class="go">     |  def eat
+     | }
+defined trait Eat
+
+</span><span class="gp">scala&gt;</span> class Animal
+<span class="go">defined class Animal
+</span></code></pre></div></div>
+<p>當特徵有定義未實作的 method 時，不管是 extends 或 with 它的類別都必須實作它的方法 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class Birds extends Animal with Fly with Eat
+<span class="gp">&lt;console&gt;</span>:14: error: class Birds needs to be abstract, since method eat <span class="k">in </span>trait Eat of <span class="nb">type</span> <span class="o">=&gt;</span> Unit is not defined
+<span class="go">       class Birds extends Animal with Fly with Eat
+             ^
+</span></code></pre></div></div>
+<p>這邊重新定義類別 Birds 由於它是 Animal 而且會飛又會吃，所以 Birds extends Animal with Fly with Eat，
+實作方法時前面可以加上 override 也可以不用加 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class Birds extends Animal with Fly with Eat <span class="o">{</span>
+<span class="go">     |  def eat = println("Birds eating")
+     | }
+defined class Birds
+
+</span><span class="gp">scala&gt;</span> class Birds extends Animal with Fly with Eat <span class="o">{</span>
+<span class="go">     |  override def eat = println("Birds eating")
+     | }
+defined class Birds
+
+</span><span class="gp">scala&gt;</span> val bird <span class="o">=</span> new Birds
+<span class="go">bird: Birds = Birds@53ccbc15
+
+</span><span class="gp">scala&gt;</span> bird.flying<span class="o">(</span><span class="s2">"bird"</span><span class="o">)</span>
+<span class="go">res3: String = bird is flying...
+
+</span><span class="gp">scala&gt;</span> bird.eat
+<span class="go">Birds eating
+</span></code></pre></div></div>
+<p>如果不實作，不然就需宣告成抽象類別(abstract class) :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> abstract class Birds extends Animal with Fly with Eat
+<span class="go">defined class Birds
 </span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>

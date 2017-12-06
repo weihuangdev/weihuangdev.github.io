@@ -6,7 +6,9 @@ categories: scala
 ---
 
 ### traits
-在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 或使用 with 特徵(trait)．
+在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 特徵(trait)或 extends 並且 with 特徵(trait)．
+
+定義一個特徵 Fly : 
 
 ```console
 scala> trait Fly {
@@ -22,6 +24,7 @@ scala> val f = new Fly
        val f = new Fly
                ^
 ```
+鳥類會飛所以 extends Fly : 
 
 ```console
 scala> class Birds extends Fly
@@ -33,7 +36,71 @@ bird: Birds = Birds@13bdf540
 scala> bird.flying("bird")
 res0: String = bird is flying...
 ```
+再來定義一個類別 Machine， 飛機是 Machine 並且會 Fly，
+所以類別 Airplane extends Machine with Fly : 
 
+```console
+scala> class Machine
+defined class Machine
+
+scala> class Airplane extends Machine with Fly
+defined class Airplane
+
+scala> val air = new Airplane
+air: Airplane = Airplane@152e7703
+
+scala> air.flying("air plane")
+res1: String = air plane is flying...
+
+```
+在定義一個類別 Animal 及特徵 Eat 並且定義了一個未實作的 method eat : 
+
+```console
+scala> trait Eat {
+     |  def eat
+     | }
+defined trait Eat
+
+scala> class Animal
+defined class Animal
+```
+當特徵有定義未實作的 method 時，不管是 extends 或 with 它的類別都必須實作它的方法 : 
+
+```console
+scala> class Birds extends Animal with Fly with Eat
+<console>:14: error: class Birds needs to be abstract, since method eat in trait Eat of type => Unit is not defined
+       class Birds extends Animal with Fly with Eat
+             ^
+```
+這邊重新定義類別 Birds 由於它是 Animal 而且會飛又會吃，所以 Birds extends Animal with Fly with Eat，
+實作方法時前面可以加上 override 也可以不用加 : 
+
+```console
+scala> class Birds extends Animal with Fly with Eat {
+     |  def eat = println("Birds eating")
+     | }
+defined class Birds
+
+scala> class Birds extends Animal with Fly with Eat {
+     |  override def eat = println("Birds eating")
+     | }
+defined class Birds
+
+scala> val bird = new Birds
+bird: Birds = Birds@53ccbc15
+
+scala> bird.flying("bird")
+res3: String = bird is flying...
+
+scala> bird.eat
+Birds eating
+```
+如果不實作，不然就需宣告成抽象類別(abstract class) : 
+
+```console
+scala> abstract class Birds extends Animal with Fly with Eat
+defined class Birds
+```
 
 
 ### 總結
