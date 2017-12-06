@@ -1,0 +1,62 @@
+---
+layout: post
+title:  "Scala day 15 (traits & abstract class)"
+date:   2017-12-06 10:44:17 +0800
+categories: scala
+---
+
+### traits VS abstract class
+抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 : 
+
+#### 抽象類別只能被單一繼承，trait 可以被單一繼承又可以 with 多個
+
+```console
+scala> abstract class A
+defined class A
+
+scala> abstract class B
+defined class B
+
+scala> class C extends A
+defined class C
+
+
+scala> trait A
+defined trait A
+
+scala> trait B
+defined trait B
+
+scala> class C extends A with B
+defined class C
+```
+記得使用 with trait 要先 extends 才可以
+
+```console
+scala> class C with A with B
+<console>:1: error: ';' expected but 'with' found.
+       class C with A with B
+               ^
+```
+
+#### 抽象類別有建構子，trait 沒有
+```console
+cala> abstract class Employee(id:String,name:String)
+defined class Employee
+
+scala> trait Employee(id:String,name:String)
+<console>:1: error: traits or objects may not have parameters
+       trait Employee(id:String,name:String)
+                     ^
+```
+
+
+
+
+### 總結
+- - -
+* scala 的 trait 有點類似 java 的 interface，可以用來定義方法的規格(尚未實作)及幫類別定義型態，
+但又多了一個可以定義具體的方法(已實作)．
+* 
+
+

@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Daniel&#39;s Blog</title>
-  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search resu...">
+  <title>Scala day 15 (traits &amp; abstract class)</title>
+  <meta name="description" content="traits VS abstract class 抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/">
+  <link rel="canonical" href="http://localhost:4000/scala/2017/12/06/scala_day15.html">
   <link rel="alternate" type="application/rss+xml" title="Daniel&#39;s Blog" href="/feed.xml">
   
   
@@ -67,173 +67,74 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Scala day 15 (traits &amp; abstract class)</h1>
+    <p class="post-meta">
+      <time datetime="2017-12-06T10:44:17+08:00" itemprop="datePublished">
+        
+        Dec 6, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h3 id="traits-vs-abstract-class">traits VS abstract class</h3>
+<p>抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :</p>
+
+<h4 id="抽象類別只能被單一繼承trait-可以被單一繼承又可以-with-多個">抽象類別只能被單一繼承，trait 可以被單一繼承又可以 with 多個</h4>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> abstract class A
+<span class="go">defined class A
+
+</span><span class="gp">scala&gt;</span> abstract class B
+<span class="go">defined class B
+
+</span><span class="gp">scala&gt;</span> class C extends A
+<span class="go">defined class C
+
+
+</span><span class="gp">scala&gt;</span> trait A
+<span class="go">defined trait A
+
+</span><span class="gp">scala&gt;</span> trait B
+<span class="go">defined trait B
+
+</span><span class="gp">scala&gt;</span> class C extends A with B
+<span class="go">defined class C
+</span></code></pre></div></div>
+<p>記得使用 with trait 要先 extends 才可以</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class C with A with B
+<span class="gp">&lt;console&gt;</span>:1: error: <span class="s1">';'</span> expected but <span class="s1">'with'</span> found.
+<span class="go">       class C with A with B
+               ^
+</span></code></pre></div></div>
+
+<h4 id="抽象類別有建構子trait-沒有">抽象類別有建構子，trait 沒有</h4>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">cala&gt;</span> abstract class Employee<span class="o">(</span>id:String,name:String<span class="o">)</span>
+<span class="go">defined class Employee
+
+</span><span class="gp">scala&gt;</span> trait Employee<span class="o">(</span>id:String,name:String<span class="o">)</span>
+<span class="gp">&lt;console&gt;</span>:1: error: traits or objects may not have parameters
+<span class="go">       trait Employee(id:String,name:String)
+                     ^
+</span></code></pre></div></div>
+
+<h3 id="總結">總結</h3>
+<hr />
+<ul>
+  <li>scala 的 trait 有點類似 java 的 interface，可以用來定義方法的規格(尚未實作)及幫類別定義型態，
+但又多了一個可以定義具體的方法(已實作)．</li>
+  <li></li>
+</ul>
+
+
+  </div>
+
   
-  
-
-
-  <ul class="post-list">
-    
-      <li>
-        
-        <span class="post-meta">Dec 6, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/06/scala_day15.html">Scala day 15 (traits &amp; abstract class)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 5, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/05/scala_day14.html">Scala day 14 (traits)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day13.html">Scala day 13 (case classes &amp; compare)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day12.html">Scala day 12 (Match Expression)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day11.html">Scala day 11 (Loop &amp; break &amp; continue)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 1, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/01/scala_day10.html">Scala day 10 (Loop)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 1, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/01/scala_day9.html">Scala day 9 (Basic Types)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day8.html">Scala day 8 (Class &amp; Object)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day7.html">Scala day 7 (tuples)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day6.html">Scala day 6 (scala&#39;s List)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day5.html">Scala day 5 (operators are methods)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day4.html">Scala day 4 (function literal)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day3.html">Scala day 3 (Define something)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/28/scala_day2.html">Scala day 2 (Compile Scala)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/28/scala_day1.html">Scala day 1 (Run scala)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/daniel/update/2017/11/28/startByJekyll.html">start By Jekyll</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/jekyll/update/2017/11/28/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </main>

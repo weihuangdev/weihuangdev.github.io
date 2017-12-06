@@ -1,4 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-06T15:08:39+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 14 (traits)</title><link href="http://localhost:4000/scala/2017/12/05/scala_day14.html" rel="alternate" type="text/html" title="Scala day 14 (traits)" /><published>2017-12-05T10:44:17+08:00</published><updated>2017-12-05T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/05/scala_day14</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/05/scala_day14.html">&lt;h3 id=&quot;traits&quot;&gt;traits&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-06T17:55:44+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 15 (traits &amp;amp; abstract class)</title><link href="http://localhost:4000/scala/2017/12/06/scala_day15.html" rel="alternate" type="text/html" title="Scala day 15 (traits &amp; abstract class)" /><published>2017-12-06T10:44:17+08:00</published><updated>2017-12-06T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/06/scala_day15</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/06/scala_day15.html">&lt;h3 id=&quot;traits-vs-abstract-class&quot;&gt;traits VS abstract class&lt;/h3&gt;
+&lt;p&gt;抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :&lt;/p&gt;
+
+&lt;h4 id=&quot;抽象類別只能被單一繼承trait-可以被單一繼承又可以-with-多個&quot;&gt;抽象類別只能被單一繼承，trait 可以被單一繼承又可以 with 多個&lt;/h4&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class A
+&lt;span class=&quot;go&quot;&gt;defined class A
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class B
+&lt;span class=&quot;go&quot;&gt;defined class B
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class C extends A
+&lt;span class=&quot;go&quot;&gt;defined class C
+
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait A
+&lt;span class=&quot;go&quot;&gt;defined trait A
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait B
+&lt;span class=&quot;go&quot;&gt;defined trait B
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class C extends A with B
+&lt;span class=&quot;go&quot;&gt;defined class C
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;記得使用 with trait 要先 extends 才可以&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class C with A with B
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:1: error: &lt;span class=&quot;s1&quot;&gt;';'&lt;/span&gt; expected but &lt;span class=&quot;s1&quot;&gt;'with'&lt;/span&gt; found.
+&lt;span class=&quot;go&quot;&gt;       class C with A with B
+               ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;抽象類別有建構子trait-沒有&quot;&gt;抽象類別有建構子，trait 沒有&lt;/h4&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;cala&amp;gt;&lt;/span&gt; abstract class Employee&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;defined class Employee
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Employee&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:1: error: traits or objects may not have parameters
+&lt;span class=&quot;go&quot;&gt;       trait Employee(id:String,name:String)
+                     ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;scala 的 trait 有點類似 java 的 interface，可以用來定義方法的規格(尚未實作)及幫類別定義型態，
+但又多了一個可以定義具體的方法(已實作)．&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">traits VS abstract class 抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :</summary></entry><entry><title type="html">Scala day 14 (traits)</title><link href="http://localhost:4000/scala/2017/12/05/scala_day14.html" rel="alternate" type="text/html" title="Scala day 14 (traits)" /><published>2017-12-05T10:44:17+08:00</published><updated>2017-12-05T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/05/scala_day14</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/05/scala_day14.html">&lt;h3 id=&quot;traits&quot;&gt;traits&lt;/h3&gt;
 &lt;p&gt;在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 特徵(trait)或 extends 並且 with 特徵(trait)．&lt;/p&gt;
 
 &lt;p&gt;定義一個特徵 Fly :&lt;/p&gt;
@@ -90,8 +138,13 @@ defined class Birds
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;scala 的 case classes 使用上感覺很像 java 存資料時都會封裝成一個 bean 物件．
-而且又實作了 equals 和 hashCode 兩個方法，比對也很方便，再搭配 Match Expression 使用起來真得很方便．&lt;/li&gt;
+  &lt;li&gt;scala 的 trait 有點類似 java 的 interface，可以用來 :
+    &lt;ol&gt;
+      &lt;li&gt;定義方法的規格(尚未實作)&lt;/li&gt;
+      &lt;li&gt;幫類別定義型態(同類型的類別都具有同樣的特徵)，&lt;/li&gt;
+      &lt;li&gt;但又多了可以定義具體的方法(已實作)．&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">traits 在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 特徵(trait)或 extends 並且 with 特徵(trait)．</summary></entry><entry><title type="html">Scala day 13 (case classes &amp;amp; compare)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day13.html" rel="alternate" type="text/html" title="Scala day 13 (case classes &amp; compare)" /><published>2017-12-04T09:44:17+08:00</published><updated>2017-12-04T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day13</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day13.html">&lt;h3 id=&quot;case-classes&quot;&gt;case classes&lt;/h3&gt;
 &lt;p&gt;case classe 其實跟一般的 class 差不多，只是在建立物件時不用使用 new，
 然後建構子的參數都是val，不可修改但可以直接存取．所以當有很多資訊要存時可以用 case classe 封裝．
@@ -1160,100 +1213,4 @@ Daniel
 &lt;ul&gt;
   &lt;li&gt;scala 的 List 是 immutable，所以在使用上無法去直接 update 裡面的元素，可能要運用 insert 及 filter 的功能來達到 update 的效果，但每次的操作都會產生一組新的 List ．如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer．&lt;/li&gt;
   &lt;li&gt;method 又分成 left operand(一般method) 與 right operand(method名稱結尾是冒號)．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala’s List scala 的 List 是 immutable 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List． List 有個 method 是 :::，可將 2 個 List 串接起來．</summary></entry><entry><title type="html">Scala day 5 (operators are methods)</title><link href="http://localhost:4000/scala/2017/11/29/scala_day5.html" rel="alternate" type="text/html" title="Scala day 5 (operators are methods)" /><published>2017-11-29T14:44:17+08:00</published><updated>2017-11-29T14:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/29/scala_day5</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/29/scala_day5.html">&lt;h2 id=&quot;any-method-can-be-an-operator&quot;&gt;Any method can be an operator&lt;/h2&gt;
-&lt;h3 id=&quot;scala-的方法可當成運算子運算子也可當成方法&quot;&gt;scala 的方法可當成運算子，運算子也可當成方法&lt;/h3&gt;
-&lt;p&gt;以 Int 為例，Int 定義了許多運算子的方法，例如：+,-,*,/,!=,to,…&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;sum: Int = 6
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + 5
-&lt;span class=&quot;go&quot;&gt;sum: Int = 6
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val nums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 to 5
-&lt;span class=&quot;go&quot;&gt;nums: scala.collection.immutable.Range.Inclusive = Range 1 to 5
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Int 也實作了許多 overload 可帶入不同型態的參數，像 + 就可傳入許多不同型態的參數，回傳型態也不一樣 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + 2
-&lt;span class=&quot;go&quot;&gt;sum: Int = 3
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + &lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;sum: String = 12
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + 2D
-&lt;span class=&quot;go&quot;&gt;sum: Double = 3.0
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 + 2L
-&lt;span class=&quot;go&quot;&gt;sum: Long = 3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;再來看 String，String 的 api 裡有提供 concat 這方法，也可以把他當成運算子使用 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val msg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi &quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;msg: String = &quot;Hi &quot;
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val newMsg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; msg concat &lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;newMsg: String = Hi Jack
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;String 的 toLowerCase ，把 toLowerCase 當作方法呼叫 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; newMsg.toLowerCase
-&lt;span class=&quot;go&quot;&gt;res1: String = hi jack
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;prefix-operators--infix-operator--postfix-operators&quot;&gt;prefix operators 、 infix operator 、 Postfix operators&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;prefix operators 是 +, -, !, and ~&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-5&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res1: Int = -5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;infix operator 就是在物件及方法參數的中間運算子．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1 + 5
-&lt;span class=&quot;go&quot;&gt;res2: Int = 6
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;Postfix operators 是沒有帶參數的方法．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 5 toLong
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:12: warning: postfix operator toLong should be enabled
-&lt;span class=&quot;go&quot;&gt;by making the implicit value scala.language.postfixOps visible.
-This can be achieved by adding the import clause 'import scala.language.postfixOps'
-or by setting the compiler option -language:postfixOps.
-See the Scaladoc for value scala.language.postfixOps for a discussion
-why the feature should be explicitly enabled.
-       5 toLong
-         ^
-res3: Long = 5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;toLowerCase 也算是 Postfix operators，需要 import scala.language.postfixOps 才不會出現 warning :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; newMsg toLowerCase
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: warning: postfix operator toLowerCase should be enabled
-&lt;span class=&quot;go&quot;&gt;by making the implicit value scala.language.postfixOps visible.
-This can be achieved by adding the import clause 'import scala.language.postfixOps'
-or by setting the compiler option -language:postfixOps.
-See the Scaladoc for value scala.language.postfixOps for a discussion
-why the feature should be explicitly enabled.
-       newMsg toLowerCase
-              ^
-res2: String = hi jack
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.language.postfixOps
-&lt;span class=&quot;go&quot;&gt;import scala.language.postfixOps
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; newMsg toLowerCase
-&lt;span class=&quot;go&quot;&gt;res3: String = hi jack
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;在 scala 裡 &lt;strong&gt;&lt;em&gt;operators are methods&lt;/em&gt;&lt;/strong&gt; &amp;amp; &lt;strong&gt;&lt;em&gt;any method can be an operator&lt;/em&gt;&lt;/strong&gt;，就看程式的寫法．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Any method can be an operator scala 的方法可當成運算子，運算子也可當成方法 以 Int 為例，Int 定義了許多運算子的方法，例如：+,-,*,/,!=,to,… ```console scala&amp;gt; val sum = (1).+(5) sum: Int = 6</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala’s List scala 的 List 是 immutable 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List． List 有個 method 是 :::，可將 2 個 List 串接起來．</summary></entry></feed>
