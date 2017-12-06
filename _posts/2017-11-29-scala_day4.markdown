@@ -60,8 +60,8 @@ scala> (1 to 5).foreach(print)
 
 ### 總結
 - - -
-* function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，
-所以還需要再花時間研究一下．
+* function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，所以要再找時間研究研究．
+* underscore (_) 雖然寫起來感覺很簡潔很酷，但程式可讀性可能要思考一下．
 
 
 
