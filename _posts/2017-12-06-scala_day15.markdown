@@ -6,7 +6,7 @@ categories: scala
 ---
 
 ### traits VS abstract class
-抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 : 
+* 抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 : 
 
 #### 抽象類別只能被單一繼承，trait 可以被單一繼承又可以 with 多個
 
@@ -30,7 +30,7 @@ defined trait B
 scala> class C extends A with B
 defined class C
 ```
-記得使用 with trait 要先 extends 才可以
+* 記得使用 with trait 要先 extends 才可以
 
 ```console
 scala> class C with A with B
@@ -50,13 +50,98 @@ scala> trait Employee(id:String,name:String)
                      ^
 ```
 
+#### 抽象類別的 super VS trait 的 super
+* 抽象類別的super是靜態呼叫父類別的方法，trait 是由於可以 with 多個所以 super 是動態的無法知道是哪個父類別，只有在建立類別時才會知道．  
 
+抽象類別的 super :
 
+```console
+scala> abstract class Counter {
+     |  def count(num1: Int , num2: Int) : Unit
+     | }
+defined class Counter
+
+scala> class MyCounter extends Counter {
+     |  var sum = 0
+     |  def count(num1: Int , num2: Int): Unit = sum = num1 + num2
+     |  def getSum = sum
+     | }
+defined class MyCounter
+```
+trait 的 super 由於是動態的所以 with 的順序不同會影響 super 最後的結果，所以又稱 stackable modifications (堆疊修飾) :  
+
+```console
+scala> abstract class Counter {
+     |   def count(num1: Int , num2: Int) : Unit
+     | }
+defined class Counter
+
+scala> class MyCounter extends Counter {
+     |   var sum = 0
+     |   def count(num1: Int , num2: Int): Unit = sum = num1 * num2
+     |   def getSum = sum
+     | }
+defined class MyCounter
+
+scala> trait Counter1 extends MyCounter {
+     |   abstract override def count(num1:Int , num2:Int) = {
+     |     if(num1 < 0 || num2 < 0) {
+     |       super.count(num1,num2)
+     |     } else {
+     |       sum = num1 + num2
+     |     }
+     |   }
+     | }
+defined trait Counter1
+
+scala> trait Filter1 extends MyCounter {
+     |   abstract override def count(num1:Int , num2:Int) = {
+     |     if(num1 < 0 || num2 < 0) {
+     |       super.count(num1,num2)
+     |     } else {
+     |       sum = num1 + num2 * 2
+     |     }
+     |   }
+     | }
+defined trait Filter1
+```
+stackable modifications 會從最右邊開始，例如下面 coutner1 這個物件，
+Filter1 的 super 會呼叫 Counter1 的 method ，Counter1 的 super 會呼叫 MyCounter 的 method :  
+
+```console
+scala> val counter1 = (new MyCounter with Counter1 with Filter1)
+counter1: MyCounter with Counter1 with Filter1 = $anon$1@a5e8260
+
+scala> counter1.count(1,2)
+scala> counter1.sum
+res1: Int = 5
+
+scala> counter1.count(-2,5)
+scala> counter1.sum
+res3: Int = -10
+```
+
+counter2 這個物件，Counter1 的 super 會呼叫 Filter1 的 method ，Filter1 的 super 會呼叫 MyCounter 的 method :  
+
+```console
+scala> val counter2 = (new MyCounter with Filter1 with Counter1)
+counter2: MyCounter with Filter1 with Counter1 = $anon$1@167bb934
+
+scala> counter2.count(1,2)
+
+scala> counter2.sum
+res7: Int = 3
+
+scala> counter2.count(-1,2)
+scala> counter2.sum
+res9: Int = -2
+
+```
 
 ### 總結
 - - -
-* scala 的 trait 有點類似 java 的 interface，可以用來定義方法的規格(尚未實作)及幫類別定義型態，
-但又多了一個可以定義具體的方法(已實作)．
-* 
+* 在 scala trait 的功能跟 abstract class 差不多，但我覺得 trait 可以多重繼承跟實作具體的方法就比 abstract class 好用很多了．
+感覺像是 java interface 的加強版．雖然抽象類別有建構子可以初始化參數，但其實 trait 也可以提供方法傳遞即可．scala 提供了許多 java 額外的東西，
+所以寫法更豐富，或許這也是其中一種理由讓它可以實作OOP(物件導向)也可以實作FP(函數式)．
 
 

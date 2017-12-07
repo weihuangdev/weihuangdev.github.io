@@ -12,22 +12,23 @@ categories: scala
 * 只有 String 是在 java.lang 的 package 裡．
 * 基本型態的大小 : 
 
-| 型態           | 大小   |
-| :------------ |:------ |
-| ***Byte***    | 8-bit  |
-| ***Short***   | 16-bit |
-| ***Int***     | 32-bit |
-| ***Long***    | 64-bit |
-| ***Char***    | 16-bit |
-| ***Float***   | 32-bit |
-| ***Double***  | 64-bit |
-| ***Boolean*** | true or false        |
-| ***String***  | a sequence of Chars |
+| 型態           | 大小   | 數值範圍            |
+| :------------ |:------ | :----------------: |
+| ***Byte***    | 8-bit  | -2^7 ~ 2^7 - 1     |
+| ***Short***   | 16-bit | -2^15 ~ 2^15 - 1   |
+| ***Int***     | 32-bit | -2^31 ~ 2^31 - 1   |
+| ***Long***    | 64-bit | -2^63 ~ 2^63 -1    |
+| ***Char***    | 16-bit | 0 ~ 2^16 - 1       |
+| ***Float***   | 32-bit |                    |
+| ***Double***  | 64-bit |                    |
+| ***Boolean*** | true or false        |      |
+| ***String***  | a sequence of Chars |       |
 
 <br/>
 ## Literals
 
-literals 指的是指說可以直接寫一個常數值在程式碼裡，編譯器會根據程式寫的常數對應到基本型態．
+Literals 想翻成中文還真模糊看了一堆資料感覺還是不知道該怎麼解釋比較好，但可以透過一些例子來了解一下它的觀念．
+目前了解 literals 的概念大概是指的是指說可以直接寫一個常數值在程式碼裡，編譯器會根據程式寫的常數對應到該對應的型態．
 
 ### Integer literals
 #### Long、Double
@@ -77,7 +78,7 @@ scala> val num = 035
                  ^
 
 ```
-scala 有提供一個 BigInt 的物件，可以轉任何進位 :  
+要轉8進位時，scala 有提供一個 BigInt 的物件，可以轉任何進位 :  
 ```console
 scala> val num1 = BigInt("35" , 10)
 num1: scala.math.BigInt = 35
@@ -115,6 +116,27 @@ c: Char = \
 | \"      | double quote (\u0022) |
 | \'      | single quote (\u0027) | 
 | \\      | backslash (＼\u005C)  |
+
+
+要用 unicode 來表示會有一些規則要注意，真的要用到時再查一下，這邊先列幾個例子 : 
+```console
+scala> val c = '\u000A'
+c: Char =
+
+scala> val s = c + "Hi"
+s: String =
+"
+Hi"
+
+scala> val c = '\u0022'
+c: Char = "
+
+scala> val c = '\u005C\u0027'
+c: Char = '
+
+scala> val c = '\u005C\u005C'
+c: Char = \
+```
 
 <br/>
 #### String literals
@@ -164,8 +186,5 @@ res6: String = Hi Sam
 
 ### 總結
 - - -
-* 基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．
-
-
-
+* 基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings (""" """)真的很方便，不用想跳脫字元的問題．
 

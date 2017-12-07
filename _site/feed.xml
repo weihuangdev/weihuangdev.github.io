@@ -1,5 +1,138 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-06T18:07:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 15 (traits &amp;amp; abstract class)</title><link href="http://localhost:4000/scala/2017/12/06/scala_day15.html" rel="alternate" type="text/html" title="Scala day 15 (traits &amp; abstract class)" /><published>2017-12-06T10:44:17+08:00</published><updated>2017-12-06T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/06/scala_day15</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/06/scala_day15.html">&lt;h3 id=&quot;traits-vs-abstract-class&quot;&gt;traits VS abstract class&lt;/h3&gt;
-&lt;p&gt;抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-07T18:26:45+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 16 (traits self type)</title><link href="http://localhost:4000/scala/2017/12/07/scala_day16.html" rel="alternate" type="text/html" title="Scala day 16 (traits self type)" /><published>2017-12-07T10:44:17+08:00</published><updated>2017-12-07T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/07/scala_day16</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/07/scala_day16.html">&lt;h3 id=&quot;self-types&quot;&gt;Self types&lt;/h3&gt;
+&lt;p&gt;Self types 使用的符號是 =&amp;gt;&lt;br /&gt;
+Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Ids &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  val id = &quot;ids&quot;
+     |  def getId : String
+     | }
+defined trait Ids
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Names &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  val name = &quot;names&quot;
+     |  def getName : String
+     | }
+defined trait Names
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;this 只能有一個，所以要多個 Self types 要使用 with :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Users &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  this : Ids with Names =&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  val user = &quot;user&quot;
+     |  def getUser : String
+     | }
+defined trait Users
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;定義一個 class 去 extends Users，這時候會出錯，因為使用 Self types 的 trait 等於強迫定義了如果要 with 它時，也一定要 with 它所混合的 trait．
+這邊 Users 的 Self types 有 Ids 與 Names，所以類別 Customer 也要 with Ids 與 Names :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Customer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String,user:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; extends Users
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:12: error: illegal inheritance&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt; self-type Customer does not conform to Users's selftype Users with Ids with Names
+       class Customer(id:String,name:String,user:String) extends Users
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;如果 class 的變數名稱如果與 trait 的變數相同會產生衝突，所以要注意(Ids已有id,Names已有name,Users已有user) :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Customer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String,user:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; extends Users with Ids with Names &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  def getId = id
+     |  def getName = name
+     |  def getUser = user
+     | }
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: parameter &lt;span class=&quot;s1&quot;&gt;'id'&lt;/span&gt; requires field but conflicts with value id &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;trait Ids
+&lt;span class=&quot;go&quot;&gt;       class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
+                      ^
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: parameter &lt;span class=&quot;s1&quot;&gt;'name'&lt;/span&gt; requires field but conflicts with value name &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;trait Names
+&lt;span class=&quot;go&quot;&gt;       class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
+                                ^
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: parameter &lt;span class=&quot;s1&quot;&gt;'user'&lt;/span&gt; requires field but conflicts with value user &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;trait Users
+&lt;span class=&quot;go&quot;&gt;       class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
+                                            ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;把變數名稱改掉 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Customer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cid:String,cname:String,cuser:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; extends Users with Ids with Names &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  def getId = cid
+     |  def getName = cname
+     |  def getUser = cuser
+     | }
+defined class Customer
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val cu &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Customer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;user1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;cu: Customer = Customer@3a62fa79
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; cu.getId
+&lt;span class=&quot;go&quot;&gt;res4: String = 1
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; cu.id
+&lt;span class=&quot;go&quot;&gt;res7: String = ids
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;self-types-定義-function&quot;&gt;Self types 定義 function&lt;/h3&gt;
+&lt;p&gt;Self types 也可以定義 with 它的類別一定也要具有 Self types 定義好的方法 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  this : {
+     |   def count(mum1:Int,num2:Int): Unit
+     |   def getSum: Int
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;     |  } =&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     | }
+defined trait Counter
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait MyCounter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  this : Counter =&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     | }
+defined trait MyCounter
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;沒實作方法的話，就會出錯 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class RealCounter extends MyCounter with Counter
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: illegal inheritance&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt; self-type RealCounter does not conform to Counter's selftype Counter with AnyRef{def count(mum1: Int,num2: Int): Unit;&lt;/span&gt; def getSum: Int&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;       class RealCounter extends MyCounter with Counter
+                                                ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;再來做個實驗，如果是 abstract class，沒定義的話還是會出錯，但可以不用在 abstract class 實作出方法，可以先定義成抽象方法，就可以過了 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class RealCounter extends MyCounter with Counter
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: illegal inheritance&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt; self-type RealCounter does not conform to Counter's selftype Counter with AnyRef{def count(mum1: Int,num2: Int): Unit;&lt;/span&gt; def getSum: Int&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;       abstract class RealCounter extends MyCounter with Counter
+                                                         ^
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class RealCounter extends MyCounter with Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  def count(num1:Int,num2:Int): Unit
+     |  def getSum: Int
+     | }
+defined class RealCounter
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;最後還是乖乖實作方法吧 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class RealCounter extends MyCounter with Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  var sum = 0
+     |  def count(num1:Int , num2:Int):Unit = sum = num1 + num2
+     |  def getSum = sum
+     | }
+defined class RealCounter
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val counter &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new RealCounter
+&lt;span class=&quot;go&quot;&gt;counter: RealCounter = RealCounter@5e585461
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter.getSum
+&lt;span class=&quot;go&quot;&gt;res9: Int = 5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
+雖然現在還沒了解它的好處，不過可以先玩玩看．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Self types Self types 使用的符號是 =&amp;gt; Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :</summary></entry><entry><title type="html">Scala day 15 (traits &amp;amp; abstract class)</title><link href="http://localhost:4000/scala/2017/12/06/scala_day15.html" rel="alternate" type="text/html" title="Scala day 15 (traits &amp; abstract class)" /><published>2017-12-06T10:44:17+08:00</published><updated>2017-12-06T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/06/scala_day15</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/06/scala_day15.html">&lt;h3 id=&quot;traits-vs-abstract-class&quot;&gt;traits VS abstract class&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h4 id=&quot;抽象類別只能被單一繼承trait-可以被單一繼承又可以-with-多個&quot;&gt;抽象類別只能被單一繼承，trait 可以被單一繼承又可以 with 多個&lt;/h4&gt;
 
@@ -22,7 +155,9 @@
 &lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class C extends A with B
 &lt;span class=&quot;go&quot;&gt;defined class C
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;記得使用 with trait 要先 extends 才可以&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;記得使用 with trait 要先 extends 才可以&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class C with A with B
 &lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:1: error: &lt;span class=&quot;s1&quot;&gt;';'&lt;/span&gt; expected but &lt;span class=&quot;s1&quot;&gt;'with'&lt;/span&gt; found.
@@ -40,12 +175,98 @@
                      ^
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;h4 id=&quot;抽象類別的-super-vs-trait-的-super&quot;&gt;抽象類別的 super VS trait 的 super&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;抽象類別的super是靜態呼叫父類別的方法，trait 是由於可以 with 多個所以 super 是動態的無法知道是哪個父類別，只有在建立類別時才會知道．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;抽象類別的 super :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  def count(num1: Int , num2: Int) : Unit
+     | }
+defined class Counter
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class MyCounter extends Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  var sum = 0
+     |  def count(num1: Int , num2: Int): Unit = sum = num1 + num2
+     |  def getSum = sum
+     | }
+defined class MyCounter
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;trait 的 super 由於是動態的所以 with 的順序不同會影響 super 最後的結果，所以又稱 stackable modifications (堆疊修飾) :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   def count(num1: Int , num2: Int) : Unit
+     | }
+defined class Counter
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class MyCounter extends Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   var sum = 0
+     |   def count(num1: Int , num2: Int): Unit = sum = num1 * num2
+     |   def getSum = sum
+     | }
+defined class MyCounter
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Counter1 extends MyCounter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   abstract override def count(num1:Int , num2:Int) = {
+     |     if(num1 &amp;lt; 0 || num2 &amp;lt; 0) {
+     |       super.count(num1,num2)
+     |     } else {
+     |       sum = num1 + num2
+     |     }
+     |   }
+     | }
+defined trait Counter1
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Filter1 extends MyCounter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   abstract override def count(num1:Int , num2:Int) = {
+     |     if(num1 &amp;lt; 0 || num2 &amp;lt; 0) {
+     |       super.count(num1,num2)
+     |     } else {
+     |       sum = num1 + num2 * 2
+     |     }
+     |   }
+     | }
+defined trait Filter1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;stackable modifications 會從最右邊開始，例如下面 coutner1 這個物件，
+Filter1 的 super 會呼叫 Counter1 的 method ，Counter1 的 super 會呼叫 MyCounter 的 method :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val counter1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new MyCounter with Counter1 with Filter1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;counter1: MyCounter with Counter1 with Filter1 = $&lt;/span&gt;anon&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;@a5e8260
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter1.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter1.sum
+&lt;span class=&quot;go&quot;&gt;res1: Int = 5
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter1.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-2&lt;/span&gt;,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter1.sum
+&lt;span class=&quot;go&quot;&gt;res3: Int = -10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;counter2 這個物件，Counter1 的 super 會呼叫 Filter1 的 method ，Filter1 的 super 會呼叫 MyCounter 的 method :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val counter2 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new MyCounter with Filter1 with Counter1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;counter2: MyCounter with Filter1 with Counter1 = $&lt;/span&gt;anon&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;@167bb934
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter2.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter2.sum
+&lt;span class=&quot;go&quot;&gt;res7: Int = 3
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter2.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter2.sum
+&lt;span class=&quot;go&quot;&gt;res9: Int = -2
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;scala 的 trait 有點類似 java 的 interface，可以用來定義方法的規格(尚未實作)及幫類別定義型態，
-但又多了一個可以定義具體的方法(已實作)．&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
+  &lt;li&gt;在 scala trait 的功能跟 abstract class 差不多，但我覺得 trait 可以多重繼承跟實作具體的方法就比 abstract class 好用很多了．
+感覺像是 java interface 的加強版．雖然抽象類別有建構子可以初始化參數，但其實 trait 也可以提供方法傳遞即可．scala 提供了許多 java 額外的東西，
+所以寫法更豐富，或許這也是其中一種理由讓它可以實作OOP(物件導向)也可以實作FP(函數式)．&lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">traits VS abstract class 抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :</summary></entry><entry><title type="html">Scala day 14 (traits)</title><link href="http://localhost:4000/scala/2017/12/05/scala_day14.html" rel="alternate" type="text/html" title="Scala day 14 (traits)" /><published>2017-12-05T10:44:17+08:00</published><updated>2017-12-05T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/05/scala_day14</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/05/scala_day14.html">&lt;h3 id=&quot;traits&quot;&gt;traits&lt;/h3&gt;
 &lt;p&gt;在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 特徵(trait)或 extends 並且 with 特徵(trait)．&lt;/p&gt;
 
@@ -697,44 +918,54 @@ for(name &amp;lt;- names) ...
     &lt;tr&gt;
       &lt;th style=&quot;text-align: left&quot;&gt;型態&lt;/th&gt;
       &lt;th style=&quot;text-align: left&quot;&gt;大小&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;數值範圍&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Byte&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;8-bit&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;-2^7 ~ 2^7 - 1&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Short&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;16-bit&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;-2^15 ~ 2^15 - 1&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Int&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;32-bit&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;-2^31 ~ 2^31 - 1&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Long&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;64-bit&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;-2^63 ~ 2^63 -1&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Char&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;16-bit&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0 ~ 2^16 - 1&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Float&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;32-bit&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Double&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;64-bit&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Boolean&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;true or false&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;String&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
       &lt;td style=&quot;text-align: left&quot;&gt;a sequence of Chars&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
@@ -742,7 +973,8 @@ for(name &amp;lt;- names) ...
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;h2 id=&quot;literals&quot;&gt;Literals&lt;/h2&gt;
 
-&lt;p&gt;literals 指的是指說可以直接寫一個常數值在程式碼裡，編譯器會根據程式寫的常數對應到基本型態．&lt;/p&gt;
+&lt;p&gt;Literals 想翻成中文還真模糊看了一堆資料感覺還是不知道該怎麼解釋比較好，但可以透過一些例子來了解一下它的觀念．
+目前了解 literals 的概念大概是指的是指說可以直接寫一個常數值在程式碼裡，編譯器會根據程式寫的常數對應到該對應的型態．&lt;/p&gt;
 
 &lt;h3 id=&quot;integer-literals&quot;&gt;Integer literals&lt;/h3&gt;
 &lt;h4 id=&quot;longdouble&quot;&gt;Long、Double&lt;/h4&gt;
@@ -788,7 +1020,7 @@ Remove octal number literals : &lt;a href=&quot;https://issues.scala-lang.org/br
                  ^
 
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;scala 有提供一個 BigInt 的物件，可以轉任何進位 :&lt;/p&gt;
+&lt;p&gt;要轉8進位時，scala 有提供一個 BigInt 的物件，可以轉任何進位 :&lt;/p&gt;
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; BigInt&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;35&quot;&lt;/span&gt; , 10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;num1: scala.math.BigInt = 35
 
@@ -857,6 +1089,25 @@ Remove octal number literals : &lt;a href=&quot;https://issues.scala-lang.org/br
   &lt;/tbody&gt;
 &lt;/table&gt;
 
+&lt;p&gt;要用 unicode 來表示會有一些規則要注意，真的要用到時再查一下，這邊先列幾個例子 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\u000A'&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;c: Char =
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val s &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; c + &lt;span class=&quot;s2&quot;&gt;&quot;Hi&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;s: String =
+&quot;
+Hi&quot;
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\u0022'&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;c: Char = &quot;
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\u005C\u0027'&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;c: Char = '
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\u005C\u005C'&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;c: Char = \
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;h4 id=&quot;string-literals&quot;&gt;String literals&lt;/h4&gt;
 &lt;p&gt;用雙引號包多個字元組成的字串 :&lt;/p&gt;
@@ -901,7 +1152,7 @@ Remove octal number literals : &lt;a href=&quot;https://issues.scala-lang.org/br
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．&lt;/li&gt;
+  &lt;li&gt;基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings (“”” “”“)真的很方便，不用想跳脫字元的問題．&lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">Basic Types</summary></entry><entry><title type="html">Scala day 8 (Class &amp;amp; Object)</title><link href="http://localhost:4000/scala/2017/11/30/scala_day8.html" rel="alternate" type="text/html" title="Scala day 8 (Class &amp; Object)" /><published>2017-11-30T10:44:17+08:00</published><updated>2017-11-30T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/30/scala_day8</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/30/scala_day8.html">&lt;h2 id=&quot;define-class&quot;&gt;define Class&lt;/h2&gt;
 &lt;p&gt;scala 在定義 class 沒給修飾子(private,protected)的話，預設是 public 的．&lt;br /&gt;
 一個 class 的 members 會有屬性(field)或方法(method)，屬性會用來存取該物件的值，物件提供方法讓外部呼叫．&lt;/p&gt;
@@ -1102,115 +1353,4 @@ name: String = Daniel
 &lt;hr /&gt;
 &lt;ul&gt;
   &lt;li&gt;scala 的 tuple 由於可以存放不同型態的物件，所以彈性很大，可以省略定義一些單純存放資料的物件，直接用 tuple 傳遞即可．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">tuple tuple 的格式像這樣 (element1 , element1 , …) tuple 是可存取不同型態的一個物件． tuple 是 immutable 的． 使用 ._ 取得 tuples 的 element ． 其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , … , new Tuple22 tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當． tuple 如果只有兩個 element 的話，可以用 (element1) -&amp;gt; (element2) 產生． tuple 的值也可以用變數存取．</summary></entry><entry><title type="html">Scala day 6 (scala’s List)</title><link href="http://localhost:4000/scala/2017/11/30/scala_day6.html" rel="alternate" type="text/html" title="Scala day 6 (scala's List)" /><published>2017-11-30T09:44:17+08:00</published><updated>2017-11-30T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/30/scala_day6</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/30/scala_day6.html">&lt;h2 id=&quot;scalas-list&quot;&gt;scala’s List&lt;/h2&gt;
-&lt;h3 id=&quot;scala-的-list-是-immutable-的所以不管相加或新增元素只要變動的話都會產生一個新的-list&quot;&gt;scala 的 List 是 &lt;strong&gt;immutable&lt;/strong&gt; 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List．&lt;/h3&gt;
-&lt;p&gt;List 有個 method 是 :::，可將 2 個 List 串接起來．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val alist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1, 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;alist: List[Int] = List(1, 2)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val blist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3, 4 , 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;blist: List[Int] = List(3, 4, 5)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val clist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; alist ::: blist
-&lt;span class=&quot;go&quot;&gt;clist: List[Int] = List(1, 2, 3, 4, 5)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;還有一個 method 是 :: ，叫 cons，它會在一個已存在的 List 最前面再加上一個 element :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Mike&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;names: List[String] = List(Sam, Jack, Mike)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val newNames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt; :: names
-&lt;span class=&quot;go&quot;&gt;newNames: List[String] = List(Daniel, Sam, Jack, Mike)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;要宣告一個空的 List 可用 List() 或 Nil．&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val emptyList &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Nil
-&lt;span class=&quot;go&quot;&gt;emptyList: scala.collection.immutable.Nil.type = List()
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;一般運算子是從左邊優先執行，例如 : (1 * 2) * 3．呼叫方法可以看成 (1).*(2)．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 2 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 3
-&lt;span class=&quot;go&quot;&gt;sum: Int = 6
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;但如果運算子的結尾是冒號(Colon, : )，方法會從右邊開始執行，例如 : 1 :: (2 :: (3 :: Nil))．呼叫方法可以看成 Nil.::(3)．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val testlist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2 :: 3 :: Nil
-&lt;span class=&quot;go&quot;&gt;testlist: List[Int] = List(2, 3)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val testlist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Nil.::&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.::&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;testlist: List[Int] = List(2, 3)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Int 2 並沒有提供 :: 方法，所以會出錯，所以要在後面在加上有提供 :: 的物件：&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val testlist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Nil :: 3 :: 2
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:11: error: value :: is not a member of Int
-&lt;span class=&quot;go&quot;&gt;       val testlist = Nil :: 3 :: 2
-                               ^
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val testlist &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Nil :: 3 :: 2 :: Nil
-&lt;span class=&quot;go&quot;&gt;testlist: List[Any] = List(List(), 3, 2)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;list-一些好用的-method&quot;&gt;List 一些好用的 method&lt;/h3&gt;
-&lt;p&gt;迴圈&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numList &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 65 :: 81 :: 67 :: 72 :: 73 :: 90 :: Nil
-&lt;span class=&quot;go&quot;&gt;numList: List[Int] = List(65, 81, 67, 72, 73, 90)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numList.foreach&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;num: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num.toChar&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;A
-Q
-C
-H
-I
-Z
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;排序：&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numList &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5 :: 1 :: 7 :: 2 :: 3 :: 9 :: Nil
-&lt;span class=&quot;go&quot;&gt;numList: List[Int] = List(5, 1, 7, 2, 3, 9)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numList.sortWith&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &amp;lt; _&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res9: List[Int] = List(1, 2, 3, 5, 7, 9)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;可以定義排序的方法，給 sortWith 排序&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Loues&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Mike&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;names: List[String] = List(Sam, Daniel, Jack, Loues, Mike)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sortByLength&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;str1: String ,str2: String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; str1.length &amp;lt; str2.length
-&lt;span class=&quot;go&quot;&gt;sortByLength: (str1: String, str2: String)Boolean
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.sortWith&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sortByLength&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Sam
-Jack
-Mike
-Loues
-Daniel
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;取得 element 只要用 &lt;strong&gt;List名稱(index)&lt;/strong&gt;，index 從 0 開始 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res21: String = Loues
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用 filter 過濾掉不要的 element :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.filter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res27: List[String] = List(Sam, Daniel, Loues, Mike)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;利用 mkString 將 List 的 elements 組合起來變成一個 String，elements 之間用 mkString 的參數做分隔(這邊用,) :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.mkString&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;,&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res18: String = Sam,Daniel,Jack,Loues,Mike
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala 的 List 是 immutable，所以在使用上無法去直接 update 裡面的元素，可能要運用 insert 及 filter 的功能來達到 update 的效果，但每次的操作都會產生一組新的 List ．如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer．&lt;/li&gt;
-  &lt;li&gt;method 又分成 left operand(一般method) 與 right operand(method名稱結尾是冒號)．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala’s List scala 的 List 是 immutable 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List． List 有個 method 是 :::，可將 2 個 List 串接起來．</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">tuple tuple 的格式像這樣 (element1 , element1 , …) tuple 是可存取不同型態的一個物件． tuple 是 immutable 的． 使用 ._ 取得 tuples 的 element ． 其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , … , new Tuple22 tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當． tuple 如果只有兩個 element 的話，可以用 (element1) -&amp;gt; (element2) 產生． tuple 的值也可以用變數存取．</summary></entry></feed>

@@ -1,0 +1,150 @@
+---
+layout: post
+title:  "Scala day 16 (traits self type)"
+date:   2017-12-07 10:44:17 +0800
+categories: scala
+---
+
+### Self types
+Self types 使用的符號是 =>  
+Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :   
+
+```console
+scala> trait Ids {
+     |  val id = "ids"
+     |  def getId : String
+     | }
+defined trait Ids
+
+scala> trait Names {
+     |  val name = "names"
+     |  def getName : String
+     | }
+defined trait Names
+```
+this 只能有一個，所以要多個 Self types 要使用 with :  
+
+```console
+scala> trait Users {
+     |  this : Ids with Names =>
+     |  val user = "user"
+     |  def getUser : String
+     | }
+defined trait Users
+```
+定義一個 class 去 extends Users，這時候會出錯，因為使用 Self types 的 trait 等於強迫定義了如果要 with 它時，也一定要 with 它所混合的 trait．
+這邊 Users 的 Self types 有 Ids 與 Names，所以類別 Customer 也要 with Ids 與 Names : 
+
+```console
+scala> class Customer(id:String,name:String,user:String) extends Users
+<console>:12: error: illegal inheritance;
+ self-type Customer does not conform to Users's selftype Users with Ids with Names
+       class Customer(id:String,name:String,user:String) extends Users
+```
+如果 class 的變數名稱如果與 trait 的變數相同會產生衝突，所以要注意(Ids已有id,Names已有name,Users已有user) :  
+
+```console
+scala> class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
+     |  def getId = id
+     |  def getName = name
+     |  def getUser = user
+     | }
+<console>:14: error: parameter 'id' requires field but conflicts with value id in trait Ids
+       class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
+                      ^
+<console>:14: error: parameter 'name' requires field but conflicts with value name in trait Names
+       class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
+                                ^
+<console>:14: error: parameter 'user' requires field but conflicts with value user in trait Users
+       class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
+                                            ^
+```
+把變數名稱改掉 :  
+
+```console
+scala> class Customer(cid:String,cname:String,cuser:String) extends Users with Ids with Names {
+     |  def getId = cid
+     |  def getName = cname
+     |  def getUser = cuser
+     | }
+defined class Customer
+
+scala> val cu = new Customer("1","Daniel","user1")
+cu: Customer = Customer@3a62fa79
+
+scala> cu.getId
+res4: String = 1
+
+scala> cu.id
+res7: String = ids
+
+```
+
+### Self types 定義 function
+Self types 也可以定義 with 它的類別一定也要具有 Self types 定義好的方法 :  
+
+```console
+scala> trait Counter {
+     |  this : {
+     |   def count(mum1:Int,num2:Int): Unit
+     |   def getSum: Int
+     |  } =>
+     | }
+defined trait Counter
+
+scala> trait MyCounter {
+     |  this : Counter =>
+     | }
+defined trait MyCounter
+```
+沒實作方法的話，就會出錯 :  
+
+```console
+scala> class RealCounter extends MyCounter with Counter
+<console>:13: error: illegal inheritance;
+ self-type RealCounter does not conform to Counter's selftype Counter with AnyRef{def count(mum1: Int,num2: Int): Unit; def getSum: Int}
+       class RealCounter extends MyCounter with Counter
+                                                ^
+```
+再來做個實驗，如果是 abstract class，沒定義的話還是會出錯，但可以不用在 abstract class 實作出方法，可以先定義成抽象方法，就可以過了 :  
+
+```console
+scala> abstract class RealCounter extends MyCounter with Counter
+<console>:13: error: illegal inheritance;
+ self-type RealCounter does not conform to Counter's selftype Counter with AnyRef{def count(mum1: Int,num2: Int): Unit; def getSum: Int}
+       abstract class RealCounter extends MyCounter with Counter
+                                                         ^
+
+scala> abstract class RealCounter extends MyCounter with Counter {
+     |  def count(num1:Int,num2:Int): Unit
+     |  def getSum: Int
+     | }
+defined class RealCounter
+```
+最後還是乖乖實作方法吧 :  
+
+```console
+scala> class RealCounter extends MyCounter with Counter {
+     |  var sum = 0
+     |  def count(num1:Int , num2:Int):Unit = sum = num1 + num2
+     |  def getSum = sum
+     | }
+defined class RealCounter
+
+scala> val counter = new RealCounter
+counter: RealCounter = RealCounter@5e585461
+
+scala> counter.count(2,3)
+
+scala> counter.getSum
+res9: Int = 5
+```
+
+
+### 總結
+- - -
+* trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
+雖然現在還沒了解它的好處，不過可以先玩玩看．
+
+
+

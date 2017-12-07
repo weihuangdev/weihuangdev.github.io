@@ -94,44 +94,54 @@
     <tr>
       <th style="text-align: left">型態</th>
       <th style="text-align: left">大小</th>
+      <th style="text-align: center">數值範圍</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td style="text-align: left"><strong><em>Byte</em></strong></td>
       <td style="text-align: left">8-bit</td>
+      <td style="text-align: center">-2^7 ~ 2^7 - 1</td>
     </tr>
     <tr>
       <td style="text-align: left"><strong><em>Short</em></strong></td>
       <td style="text-align: left">16-bit</td>
+      <td style="text-align: center">-2^15 ~ 2^15 - 1</td>
     </tr>
     <tr>
       <td style="text-align: left"><strong><em>Int</em></strong></td>
       <td style="text-align: left">32-bit</td>
+      <td style="text-align: center">-2^31 ~ 2^31 - 1</td>
     </tr>
     <tr>
       <td style="text-align: left"><strong><em>Long</em></strong></td>
       <td style="text-align: left">64-bit</td>
+      <td style="text-align: center">-2^63 ~ 2^63 -1</td>
     </tr>
     <tr>
       <td style="text-align: left"><strong><em>Char</em></strong></td>
       <td style="text-align: left">16-bit</td>
+      <td style="text-align: center">0 ~ 2^16 - 1</td>
     </tr>
     <tr>
       <td style="text-align: left"><strong><em>Float</em></strong></td>
       <td style="text-align: left">32-bit</td>
+      <td style="text-align: center"> </td>
     </tr>
     <tr>
       <td style="text-align: left"><strong><em>Double</em></strong></td>
       <td style="text-align: left">64-bit</td>
+      <td style="text-align: center"> </td>
     </tr>
     <tr>
       <td style="text-align: left"><strong><em>Boolean</em></strong></td>
       <td style="text-align: left">true or false</td>
+      <td style="text-align: center"> </td>
     </tr>
     <tr>
       <td style="text-align: left"><strong><em>String</em></strong></td>
       <td style="text-align: left">a sequence of Chars</td>
+      <td style="text-align: center"> </td>
     </tr>
   </tbody>
 </table>
@@ -139,7 +149,8 @@
 <p><br /></p>
 <h2 id="literals">Literals</h2>
 
-<p>literals 指的是指說可以直接寫一個常數值在程式碼裡，編譯器會根據程式寫的常數對應到基本型態．</p>
+<p>Literals 想翻成中文還真模糊看了一堆資料感覺還是不知道該怎麼解釋比較好，但可以透過一些例子來了解一下它的觀念．
+目前了解 literals 的概念大概是指的是指說可以直接寫一個常數值在程式碼裡，編譯器會根據程式寫的常數對應到該對應的型態．</p>
 
 <h3 id="integer-literals">Integer literals</h3>
 <h4 id="longdouble">Long、Double</h4>
@@ -185,7 +196,7 @@ Remove octal number literals : <a href="https://issues.scala-lang.org/browse/SI-
                  ^
 
 </span></code></pre></div></div>
-<p>scala 有提供一個 BigInt 的物件，可以轉任何進位 :</p>
+<p>要轉8進位時，scala 有提供一個 BigInt 的物件，可以轉任何進位 :</p>
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val num1 <span class="o">=</span> BigInt<span class="o">(</span><span class="s2">"35"</span> , 10<span class="o">)</span>
 <span class="go">num1: scala.math.BigInt = 35
 
@@ -254,6 +265,25 @@ Remove octal number literals : <a href="https://issues.scala-lang.org/browse/SI-
   </tbody>
 </table>
 
+<p>要用 unicode 來表示會有一些規則要注意，真的要用到時再查一下，這邊先列幾個例子 :</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val c <span class="o">=</span> <span class="s1">'\u000A'</span>
+<span class="go">c: Char =
+
+</span><span class="gp">scala&gt;</span> val s <span class="o">=</span> c + <span class="s2">"Hi"</span>
+<span class="go">s: String =
+"
+Hi"
+
+</span><span class="gp">scala&gt;</span> val c <span class="o">=</span> <span class="s1">'\u0022'</span>
+<span class="go">c: Char = "
+
+</span><span class="gp">scala&gt;</span> val c <span class="o">=</span> <span class="s1">'\u005C\u0027'</span>
+<span class="go">c: Char = '
+
+</span><span class="gp">scala&gt;</span> val c <span class="o">=</span> <span class="s1">'\u005C\u005C'</span>
+<span class="go">c: Char = \
+</span></code></pre></div></div>
+
 <p><br /></p>
 <h4 id="string-literals">String literals</h4>
 <p>用雙引號包多個字元組成的字串 :</p>
@@ -298,7 +328,7 @@ Remove octal number literals : <a href="https://issues.scala-lang.org/browse/SI-
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings 真的很方便，不用想跳脫字元的問題．</li>
+  <li>基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings (“”” “”“)真的很方便，不用想跳脫字元的問題．</li>
 </ul>
 
 
