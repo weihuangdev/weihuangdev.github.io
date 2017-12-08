@@ -10,6 +10,7 @@ categories: scala
 * **(num1: Int,num2: Int) => num1 + num2**  
 
 function literal 由於沒有 function 名稱所以又可稱為匿名函式(anonymous function)，又有另外一個名稱 lambda expressions．
+之前有提到 val 是在定義變數，但這邊因為匿名函式(anonymous function) 的關係，所以可以把它綁定到一個變數上 :  
 
 ```console
 scala> val sum = (num1: Int,num2: Int) => num1 + num2
@@ -131,6 +132,7 @@ scala> printMsg2
 res5: Int = 1808372623
 ```
 
+
 ### ???
 一開始看到這符號也真的是滿頭問號了，scala 的符號真的很多種．
 ??? 的意思就是可以先定義一個尚未實作的方法，就是已確定會有這個方法，但還不知道這方法的細節時可以先使用 ??? 
@@ -144,7 +146,12 @@ scala.NotImplementedError: an implementation is missing
 
 scala> def printMsg2:Int = ???
 printMsg2: Int
+```
+這邊稍微額外補充一下上面有提到使用 val 及 def 的差異，其實另外還有一種寫法是使用 lazy val 宣告．
+像上面的 printMsg1 會出現錯誤是因為，前面有提到使用 val 定義好就只會 new 一次 function，所以它在定義時就會產生了．
+那如果前面加的 lazy 代表說等真的使用到時再來產生 function ，所以下面的 printMsg3 compiler 會成功 :  
 
+```console
 scala> lazy val printMsg3:Int = ???
 printMsg3: Int = <lazy>
 
@@ -180,7 +187,7 @@ defined class MyCounter
 * function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，
 所以看完這篇應該還是一知半解．但希望透過這篇的一些例子．至少能讓我們會使用 lambda expressions，至於其它觀念要再找時間研究研究．
 * underscore (_) ，在多個參數時要宣告型態， _ 雖然寫起來感覺很簡潔很酷，但程式可讀性可能要思考一下．
-
+* 另外就是要了解用 val、def、lazy val 這三個參數定義 function 時的意義，然後運用在程式上面，如果看了這篇還是不太懂可以再多找些資料研究．
 
 
 
