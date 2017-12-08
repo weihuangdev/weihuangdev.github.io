@@ -57,6 +57,8 @@ scala> 1.to(5).foreach((num:Int) => print(num + " "))
 scala> (1 to 5).foreach(print)
 12345
 ```
+
+#### 傳遞 lambda expressions 到 function
 lambda 函數的運用，function countResult 定義了一個參數 counter 是 (Int,Int) => Int 型態的: 
 
 ```console

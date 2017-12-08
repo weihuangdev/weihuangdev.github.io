@@ -129,6 +129,8 @@
 </span><span class="gp">scala&gt;</span> <span class="o">(</span>1 to 5<span class="o">)</span>.foreach<span class="o">(</span>print<span class="o">)</span>
 <span class="go">12345
 </span></code></pre></div></div>
+
+<h4 id="傳遞-lambda-expressions-到-function">傳遞 lambda expressions 到 function</h4>
 <p>lambda 函數的運用，function countResult 定義了一個參數 counter 是 (Int,Int) =&gt; Int 型態的:</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val plus <span class="o">=</span> <span class="o">(</span>_:Int<span class="o">)</span> + <span class="o">(</span>_:Int<span class="o">)</span>
