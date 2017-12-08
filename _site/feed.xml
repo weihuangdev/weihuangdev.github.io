@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-07T18:26:45+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 16 (traits self type)</title><link href="http://localhost:4000/scala/2017/12/07/scala_day16.html" rel="alternate" type="text/html" title="Scala day 16 (traits self type)" /><published>2017-12-07T10:44:17+08:00</published><updated>2017-12-07T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/07/scala_day16</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/07/scala_day16.html">&lt;h3 id=&quot;self-types&quot;&gt;Self types&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-08T12:16:33+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 16 (traits self type)</title><link href="http://localhost:4000/scala/2017/12/07/scala_day16.html" rel="alternate" type="text/html" title="Scala day 16 (traits self type)" /><published>2017-12-07T10:44:17+08:00</published><updated>2017-12-07T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/07/scala_day16</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/07/scala_day16.html">&lt;h3 id=&quot;self-types&quot;&gt;Self types&lt;/h3&gt;
 &lt;p&gt;Self types 使用的符號是 =&amp;gt;&lt;br /&gt;
 Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :&lt;/p&gt;
 
@@ -359,13 +359,9 @@ defined class Birds
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;scala 的 trait 有點類似 java 的 interface，可以用來 :
-    &lt;ol&gt;
-      &lt;li&gt;定義方法的規格(尚未實作)&lt;/li&gt;
-      &lt;li&gt;幫類別定義型態(同類型的類別都具有同樣的特徵)，&lt;/li&gt;
-      &lt;li&gt;但又多了可以定義具體的方法(已實作)．&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
+  &lt;li&gt;scala 的 trait 有點類似 java 的 interface，可以用來定義方法的規格(尚未實作)及幫類別定義型態，
+但又多了一個可以定義具體的方法(已實作)．跟抽象類別有點類似&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">traits 在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 特徵(trait)或 extends 並且 with 特徵(trait)．</summary></entry><entry><title type="html">Scala day 13 (case classes &amp;amp; compare)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day13.html" rel="alternate" type="text/html" title="Scala day 13 (case classes &amp; compare)" /><published>2017-12-04T09:44:17+08:00</published><updated>2017-12-04T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day13</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day13.html">&lt;h3 id=&quot;case-classes&quot;&gt;case classes&lt;/h3&gt;
 &lt;p&gt;case classe 其實跟一般的 class 差不多，只是在建立物件時不用使用 new，
 然後建構子的參數都是val，不可修改但可以直接存取．所以當有很多資訊要存時可以用 case classe 封裝．

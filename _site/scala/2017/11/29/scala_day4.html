@@ -128,12 +128,123 @@
 </span><span class="gp">scala&gt;</span> <span class="o">(</span>1 to 5<span class="o">)</span>.foreach<span class="o">(</span>print<span class="o">)</span>
 <span class="go">12345
 </span></code></pre></div></div>
+<p>lambda 函數的運用，function countResult 定義了一個參數 counter 是 (Int,Int) =&gt; Int 型態的:</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val plus <span class="o">=</span> <span class="o">(</span>_:Int<span class="o">)</span> + <span class="o">(</span>_:Int<span class="o">)</span>
+<span class="gp">plus: (Int, Int) =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1138</span>/1752601189@5e9355a6
+<span class="go">
+</span><span class="gp">scala&gt;</span> val <span class="nb">times</span> <span class="o">=</span> <span class="o">(</span>_:Int<span class="o">)</span> <span class="k">*</span> <span class="o">(</span>_:Int<span class="o">)</span>
+<span class="gp">times: (Int, Int) =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1139</span>/584593384@2175111e
+<span class="go">
+</span><span class="gp">scala&gt;</span> val minus <span class="o">=</span> <span class="o">(</span>_:Int<span class="o">)</span> - <span class="o">(</span>_:Int<span class="o">)</span>
+<span class="gp">minus: (Int, Int) =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1140</span>/1250176650@6b909973
+<span class="go">
+</span><span class="gp">scala&gt;</span> val divided <span class="o">=</span> <span class="o">(</span>_:Int<span class="o">)</span> / <span class="o">(</span>_:Int<span class="o">)</span>
+<span class="gp">divided: (Int, Int) =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1141</span>/976011906@62910d16
+<span class="go">
+</span><span class="gp">scala&gt;</span> def countResult<span class="o">(</span>num1: Int , num2: Int ,counter: <span class="o">(</span>Int,Int<span class="o">)</span> <span class="o">=&gt;</span> Int<span class="o">)</span> <span class="o">=</span> <span class="o">{</span>
+<span class="go">     |   counter(num1,num2)
+     | }
+</span><span class="gp">countResult: (num1: Int, num2: Int, counter: (Int, Int) =&gt;</span> Int<span class="o">)</span>Int
+<span class="go">
+</span><span class="gp">scala&gt;</span> countResult<span class="o">(</span>2,3,plus<span class="o">)</span>
+<span class="go">res10: Int = 5
+
+</span><span class="gp">scala&gt;</span> countResult<span class="o">(</span>2,3,times<span class="o">)</span>
+<span class="go">res11: Int = 6
+
+</span><span class="gp">scala&gt;</span> countResult<span class="o">(</span>2,3,minus<span class="o">)</span>
+<span class="go">res12: Int = -1
+
+</span><span class="gp">scala&gt;</span> countResult<span class="o">(</span>2,3,divided<span class="o">)</span>
+<span class="go">res13: Int = 0
+</span></code></pre></div></div>
+<p>上面的例子其實把 plus , times , minus , divided 改成用 def 宣告其實也可以 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def plus <span class="o">=</span> <span class="o">(</span>_:Int<span class="o">)</span> + <span class="o">(</span>_:Int<span class="o">)</span>
+<span class="gp">plus: (Int, Int) =&gt;</span> Int
+<span class="go">
+</span><span class="gp">scala&gt;</span> def countResult<span class="o">(</span>num1: Int , num2: Int ,counter: <span class="o">(</span>Int,Int<span class="o">)</span> <span class="o">=&gt;</span> Int<span class="o">)</span> <span class="o">=</span> <span class="o">{</span>
+<span class="go">     |   counter(num1,num2)
+     | }
+</span><span class="gp">countResult: (num1: Int, num2: Int, counter: (Int, Int) =&gt;</span> Int<span class="o">)</span>Int
+<span class="go">
+</span><span class="gp">scala&gt;</span> countResult<span class="o">(</span>2,3,plus<span class="o">)</span>
+<span class="go">res14: Int = 5
+</span></code></pre></div></div>
+<p>那這樣lambda expressions 跟用 def 的差異在哪呢 ? 下面例子可以很明顯看出差異 :<br />
+定義一個 val 及 def 的 function，會隨機印出一個亂數</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val printMsg1 <span class="o">=</span> scala.util.Random.nextInt
+<span class="go">printMsg1: Int = 693378554
+
+</span><span class="gp">scala&gt;</span> def printMsg2 <span class="o">=</span> scala.util.Random.nextInt
+<span class="go">printMsg2: Int
+</span></code></pre></div></div>
+<p>會發現 printMsg1 印出的亂數都會一樣，代表說定義好就只會 new 一次 function :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> printMsg1
+<span class="go">res1: Int = 693378554
+
+</span><span class="gp">scala&gt;</span> printMsg1
+<span class="go">res2: Int = 693378554
+</span></code></pre></div></div>
+<p>printMsg2 則每次呼叫都會產生一個新的亂數，所以每次呼叫都會 new 一次 function :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> printMsg2
+<span class="go">res4: Int = -325259645
+
+</span><span class="gp">scala&gt;</span> printMsg2
+<span class="go">res5: Int = 1808372623
+</span></code></pre></div></div>
+
+<h3>???</h3>
+<p>一開始看到這符號也真的是滿頭問號了，scala 的符號真的很多種．
+??? 的意思就是可以先定義一個尚未實作的方法，就是已確定會有這個方法，但還不知道這方法的細節時可以先使用 ??? 
+先定義該方法，但尚未實作，這時候如果呼叫他會丟出一個 NotImplementedError 的錯誤訊息 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val printMsg1:Int <span class="o">=</span> ???
+<span class="go">scala.NotImplementedError: an implementation is missing
+</span><span class="gp">  at scala.Predef$</span>.<span class="nv">$qmark$qmark$qmark</span><span class="o">(</span>Predef.scala:284<span class="o">)</span>
+<span class="go">  ... 28 elided
+
+</span><span class="gp">scala&gt;</span> def printMsg2:Int <span class="o">=</span> ???
+<span class="go">printMsg2: Int
+
+</span><span class="gp">scala&gt;</span> lazy val printMsg3:Int <span class="o">=</span> ???
+<span class="gp">printMsg3: Int = &lt;lazy&gt;</span>
+<span class="go">
+</span><span class="gp">scala&gt;</span> printMsg2
+<span class="go">scala.NotImplementedError: an implementation is missing
+</span><span class="gp">  at scala.Predef$</span>.<span class="nv">$qmark$qmark$qmark</span><span class="o">(</span>Predef.scala:284<span class="o">)</span>
+<span class="gp">  at .printMsg2(&lt;console&gt;</span>:11<span class="o">)</span>
+<span class="go">  ... 28 elided
+</span></code></pre></div></div>
+<p>假設你需要 extends 一個抽象類別，但裡面需要實作抽象方法，但也許你還沒拿到規格，還不確定裡面的細節該如何實作，這時候可以先用 ???．
+而且別人如果不小心呼叫到，會有 NotImplementedError 這訊息提示對方該方法尚未實作完成．</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> abstract class Counter <span class="o">{</span>
+<span class="go">     |  def count : Int
+     | }
+defined class Counter
+
+</span><span class="gp">scala&gt;</span> class MyCounter extends Counter
+<span class="gp">&lt;console&gt;</span>:12: error: class MyCounter needs to be abstract, since method count <span class="k">in </span>class Counter of <span class="nb">type</span> <span class="o">=&gt;</span> Int is not defined
+<span class="go">       class MyCounter extends Counter
+             ^
+
+</span><span class="gp">scala&gt;</span> class MyCounter extends Counter <span class="o">{</span>
+<span class="go">     |  def count = ???
+     | }
+defined class MyCounter
+</span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，所以要再找時間研究研究．</li>
-  <li>underscore (_) 雖然寫起來感覺很簡潔很酷，但程式可讀性可能要思考一下．</li>
+  <li>function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，
+所以看完這篇應該還是一知半解．但希望透過這篇的一些例子．至少能讓我們會使用 lambda expressions，至於其它觀念要再找時間研究研究．</li>
+  <li>underscore (_) ，在多個參數時要宣告型態， _ 雖然寫起來感覺很簡潔很酷，但程式可讀性可能要思考一下．</li>
 </ul>
 
 

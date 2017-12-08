@@ -56,12 +56,130 @@ scala> 1.to(5).foreach((num:Int) => print(num + " "))
 scala> (1 to 5).foreach(print)
 12345
 ```
+lambda 函數的運用，function countResult 定義了一個參數 counter 是 (Int,Int) => Int 型態的: 
+
+```console
+scala> val plus = (_:Int) + (_:Int)
+plus: (Int, Int) => Int = $$Lambda$1138/1752601189@5e9355a6
+
+scala> val times = (_:Int) * (_:Int)
+times: (Int, Int) => Int = $$Lambda$1139/584593384@2175111e
+
+scala> val minus = (_:Int) - (_:Int)
+minus: (Int, Int) => Int = $$Lambda$1140/1250176650@6b909973
+
+scala> val divided = (_:Int) / (_:Int)
+divided: (Int, Int) => Int = $$Lambda$1141/976011906@62910d16
+
+scala> def countResult(num1: Int , num2: Int ,counter: (Int,Int) => Int) = {
+     |   counter(num1,num2)
+     | }
+countResult: (num1: Int, num2: Int, counter: (Int, Int) => Int)Int
+
+scala> countResult(2,3,plus)
+res10: Int = 5
+
+scala> countResult(2,3,times)
+res11: Int = 6
+
+scala> countResult(2,3,minus)
+res12: Int = -1
+
+scala> countResult(2,3,divided)
+res13: Int = 0
+```
+上面的例子其實把 plus , times , minus , divided 改成用 def 宣告其實也可以 :  
+
+```console
+scala> def plus = (_:Int) + (_:Int)
+plus: (Int, Int) => Int
+
+scala> def countResult(num1: Int , num2: Int ,counter: (Int,Int) => Int) = {
+     |   counter(num1,num2)
+     | }
+countResult: (num1: Int, num2: Int, counter: (Int, Int) => Int)Int
+
+scala> countResult(2,3,plus)
+res14: Int = 5
+```
+那這樣lambda expressions 跟用 def 的差異在哪呢 ? 下面例子可以很明顯看出差異 :  
+定義一個 val 及 def 的 function，會隨機印出一個亂數  
+
+```console
+scala> val printMsg1 = scala.util.Random.nextInt
+printMsg1: Int = 693378554
+
+scala> def printMsg2 = scala.util.Random.nextInt
+printMsg2: Int
+```
+會發現 printMsg1 印出的亂數都會一樣，代表說定義好就只會 new 一次 function :  
+
+```console
+scala> printMsg1
+res1: Int = 693378554
+
+scala> printMsg1
+res2: Int = 693378554
+```
+printMsg2 則每次呼叫都會產生一個新的亂數，所以每次呼叫都會 new 一次 function :  
+
+```console
+scala> printMsg2
+res4: Int = -325259645
+
+scala> printMsg2
+res5: Int = 1808372623
+```
+
+### ???
+一開始看到這符號也真的是滿頭問號了，scala 的符號真的很多種．
+??? 的意思就是可以先定義一個尚未實作的方法，就是已確定會有這個方法，但還不知道這方法的細節時可以先使用 ??? 
+先定義該方法，但尚未實作，這時候如果呼叫他會丟出一個 NotImplementedError 的錯誤訊息 :  
+
+```console
+scala> val printMsg1:Int = ???
+scala.NotImplementedError: an implementation is missing
+  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:284)
+  ... 28 elided
+
+scala> def printMsg2:Int = ???
+printMsg2: Int
+
+scala> lazy val printMsg3:Int = ???
+printMsg3: Int = <lazy>
+
+scala> printMsg2
+scala.NotImplementedError: an implementation is missing
+  at scala.Predef$.$qmark$qmark$qmark(Predef.scala:284)
+  at .printMsg2(<console>:11)
+  ... 28 elided
+```
+假設你需要 extends 一個抽象類別，但裡面需要實作抽象方法，但也許你還沒拿到規格，還不確定裡面的細節該如何實作，這時候可以先用 ???．
+而且別人如果不小心呼叫到，會有 NotImplementedError 這訊息提示對方該方法尚未實作完成．
+
+```console
+scala> abstract class Counter {
+     |  def count : Int
+     | }
+defined class Counter
+
+scala> class MyCounter extends Counter
+<console>:12: error: class MyCounter needs to be abstract, since method count in class Counter of type => Int is not defined
+       class MyCounter extends Counter
+             ^
+
+scala> class MyCounter extends Counter {
+     |  def count = ???
+     | }
+defined class MyCounter
+```
 
 
 ### 總結
 - - -
-* function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，所以要再找時間研究研究．
-* underscore (_) 雖然寫起來感覺很簡潔很酷，但程式可讀性可能要思考一下．
+* function literal 其實很像有很多名詞，像 anonymous function、lambda expressions 而 lambda expressions 又會牽扯到 Closure 的觀念，
+所以看完這篇應該還是一知半解．但希望透過這篇的一些例子．至少能讓我們會使用 lambda expressions，至於其它觀念要再找時間研究研究．
+* underscore (_) ，在多個參數時要宣告型態， _ 雖然寫起來感覺很簡潔很酷，但程式可讀性可能要思考一下．
 
 
 

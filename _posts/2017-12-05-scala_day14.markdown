@@ -102,10 +102,11 @@ scala> abstract class Birds extends Animal with Fly with Eat
 defined class Birds
 ```
 
+
 ### 總結
 - - -
-* scala 的 trait 有點類似 java 的 interface，可以用來 : 
-1. 定義方法的規格(尚未實作)
-2. 幫類別定義型態(同類型的類別都具有同樣的特徵)，
-3. 但又多了可以定義具體的方法(已實作)．
+* scala 的 trait 有點類似 java 的 interface，可以用來定義方法的規格(尚未實作)及幫類別定義型態，
+但又多了一個可以定義具體的方法(已實作)．跟抽象類別有點類似
+* 
+
 
