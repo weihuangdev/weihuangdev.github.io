@@ -6,7 +6,7 @@ categories: scala
 ---
 
 ## scala's function literal
-#### function literal 語法
+#### function literal 語法例子 : 
 * **(num1: Int,num2: Int) => num1 + num2**  
 
 function literal 由於沒有 function 名稱所以又可稱為匿名函式(anonymous function)，又有另外一個名稱 lambda expressions．
