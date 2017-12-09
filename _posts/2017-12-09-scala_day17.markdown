@@ -1,0 +1,53 @@
+---
+layout: post
+title:  "Scala day 17 (Currying)"
+date:   2017-12-09 10:44:17 +0800
+categories: scala
+---
+
+### Currying
+一般函式的寫法 :  
+
+```console
+scala> def sum(num1:Int , num2:Int) = num1 + num2
+sum: (num1: Int, num2: Int)Int
+```
+Currying 的寫法 :  
+
+```console
+scala> def sum(num1:Int)(num2:Int) = num1 + num2
+sum: (num1: Int)(num2: Int)Int
+
+scala> sum(1)(2)
+res20: Int = 3
+
+scala> val tempSum = sum(1)_
+tempSum: Int => Int = $$Lambda$1221/1238850480@744b5bd7
+
+scala> tempSum(2)
+res24: Int = 3
+```
+
+```console
+scala> def sum(num1:Int) = (num2:Int) => num1 + num2
+sum: (num1: Int)Int => Int
+
+scala> sum(1)(2)
+res21: Int = 3
+
+scala> val tempSum = sum(1)
+tempSum: Int => Int = $$Lambda$1215/966153678@59f32d74
+
+scala> tempSum(2)
+res22: Int = 3
+```
+
+
+
+### 總結
+- - -
+* trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
+雖然現在還沒了解它的好處，不過可以先玩玩看．
+
+
+

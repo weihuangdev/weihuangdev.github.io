@@ -93,7 +93,25 @@
 <span class="go">nums: scala.collection.immutable.Range.Inclusive = Range 1 to 5
 
 </span></code></pre></div></div>
-<p>Int 也實作了許多 overload 可帶入不同型態的參數，像 + 就可傳入許多不同型態的參數，回傳型態也不一樣 :</p>
+<p>Int 也實作了許多 overload 可帶入不同型態的參數，overload 就是方法名稱一樣但傳入參數的型態及數量會不一樣．
+如果方法參數都一樣，return type 不一樣還是不能 overload :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class Hello <span class="o">{</span>
+<span class="go">     |  def hi(name:String) : String = "Hi " + name
+     |  def hi(name:String) : Int = 1
+     | }
+</span><span class="gp">&lt;console&gt;</span>:13: error: method hi is defined twice<span class="p">;</span>
+<span class="go">  the conflicting method hi was defined at line 12:6
+        def hi(name:String) : Int = 1
+            ^
+
+</span><span class="gp">scala&gt;</span> class Hello <span class="o">{</span>
+<span class="go">     |  def hi(name:String) : String = "Hi " + name
+     |  def hi(name:Int) : Int = 1
+     | }
+defined class Hello
+</span></code></pre></div></div>
+<p>像 + 就可傳入許多不同型態的參數，回傳型態也不一樣 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val sum <span class="o">=</span> 1 + 2
 <span class="go">sum: Int = 3

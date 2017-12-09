@@ -1,4 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-08T12:35:45+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 16 (traits self type)</title><link href="http://localhost:4000/scala/2017/12/07/scala_day16.html" rel="alternate" type="text/html" title="Scala day 16 (traits self type)" /><published>2017-12-07T10:44:17+08:00</published><updated>2017-12-07T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/07/scala_day16</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/07/scala_day16.html">&lt;h3 id=&quot;self-types&quot;&gt;Self types&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-09T16:15:26+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 17 (Currying)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day17.html" rel="alternate" type="text/html" title="Scala day 17 (Currying)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day17</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day17.html">&lt;h3 id=&quot;currying&quot;&gt;Currying&lt;/h3&gt;
+&lt;p&gt;一般函式的寫法 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int , num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num1 + num2
+&lt;span class=&quot;go&quot;&gt;sum: (num1: Int, num2: Int)Int
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Currying 的寫法 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num1 + num2
+&lt;span class=&quot;go&quot;&gt;sum: (num1: Int)(num2: Int)Int
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res20: Int = 3
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val tempSum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;_
+&lt;span class=&quot;gp&quot;&gt;tempSum: Int =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1221&lt;/span&gt;/1238850480@744b5bd7
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; tempSum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res24: Int = 3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; num1 + num2
+&lt;span class=&quot;gp&quot;&gt;sum: (num1: Int)Int =&amp;gt;&lt;/span&gt; Int
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res21: Int = 3
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val tempSum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;tempSum: Int =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1215&lt;/span&gt;/966153678@59f32d74
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; tempSum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res22: Int = 3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
+雖然現在還沒了解它的好處，不過可以先玩玩看．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Currying 一般函式的寫法 :</summary></entry><entry><title type="html">Scala day 16 (traits self type)</title><link href="http://localhost:4000/scala/2017/12/07/scala_day16.html" rel="alternate" type="text/html" title="Scala day 16 (traits self type)" /><published>2017-12-07T10:44:17+08:00</published><updated>2017-12-07T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/07/scala_day16</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/07/scala_day16.html">&lt;h3 id=&quot;self-types&quot;&gt;Self types&lt;/h3&gt;
 &lt;p&gt;Self types 使用的符號是 =&amp;gt;&lt;br /&gt;
 Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :&lt;/p&gt;
 
@@ -1272,81 +1311,4 @@ defined object HelloObj
 &lt;ul&gt;
   &lt;li&gt;scala 沒有 static ，但其實 Singleton object 跟 static 在概念上感覺是一樣的，在記憶體裡都只會有一份．&lt;/li&gt;
   &lt;li&gt;scala 的  有宣告 main 方法的話，就可以變成了程式進入點．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">define Class scala 在定義 class 沒給修飾子(private,protected)的話，預設是 public 的． 一個 class 的 members 會有屬性(field)或方法(method)，屬性會用來存取該物件的值，物件提供方法讓外部呼叫．</summary></entry><entry><title type="html">Scala day 7 (tuples)</title><link href="http://localhost:4000/scala/2017/11/30/scala_day7.html" rel="alternate" type="text/html" title="Scala day 7 (tuples)" /><published>2017-11-30T09:44:17+08:00</published><updated>2017-11-30T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/30/scala_day7</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/30/scala_day7.html">&lt;h2 id=&quot;tuple&quot;&gt;tuple&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;tuple 的格式像這樣 (element1 , element1 , …)&lt;/li&gt;
-  &lt;li&gt;tuple 是可存取不同型態的一個物件．&lt;/li&gt;
-  &lt;li&gt;tuple 是 &lt;strong&gt;immutable&lt;/strong&gt; 的．&lt;/li&gt;
-  &lt;li&gt;使用 ._ 取得 tuples 的 element ．&lt;/li&gt;
-  &lt;li&gt;其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , … , new Tuple22&lt;/li&gt;
-  &lt;li&gt;tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當．&lt;/li&gt;
-  &lt;li&gt;tuple 如果只有兩個 element 的話，可以用 &lt;strong&gt;(element1) -&amp;gt; (element2)&lt;/strong&gt; 產生．&lt;/li&gt;
-  &lt;li&gt;tuple 的值也可以用變數存取．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Sample Code :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val nums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,&lt;span class=&quot;s2&quot;&gt;&quot;a&quot;&lt;/span&gt;,2D,3L&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;nums: (Int, String, Double, Long) = (1,a,2.0,3)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums._1
-&lt;span class=&quot;go&quot;&gt;res34: Int = 1
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val tupleObj &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:1: error: too many elements &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;tuple: 23, allowed: 22
-&lt;span class=&quot;go&quot;&gt;       val tupleObj = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23)
-                      ^
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val t22 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Tuple22&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;t22: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1 -&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res1: (Int, String) = (1,Daniel)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id,name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1 -&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;id: Int = 1
-name: String = Daniel
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; id
-&lt;span class=&quot;go&quot;&gt;res2: Int = 1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;find-tuple-&quot;&gt;find tuple :&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val empList &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;-&amp;gt;10,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;-&amp;gt;20,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;-&amp;gt;30,&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;-&amp;gt;40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;empList: List[(String, Int)] = List((Sam,10), (Daniel,20), (Jack,30), (Ray,40))
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def findName&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:String,empList:List[&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;String,Int&lt;span class=&quot;o&quot;&gt;)])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; empList.filter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;emp &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; emp._1 &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;findName: (name: String, empList: List[(String, Int)])List[(String, Int)]
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; findName&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,empList&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;._2
-&lt;span class=&quot;go&quot;&gt;res7: Int = 20
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;sum-tuple-&quot;&gt;sum tuple :&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val wordsCount &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt;-&amp;gt;10,&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt;-&amp;gt;20,&lt;span class=&quot;s1&quot;&gt;'E'&lt;/span&gt;-&amp;gt;30,&lt;span class=&quot;s1&quot;&gt;'Y'&lt;/span&gt;-&amp;gt;40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;wordsCount: List[(Char, Int)] = List((A,10), (C,20), (E,30), (Y,40))
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;wordsData:List[&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Char,Int&lt;span class=&quot;o&quot;&gt;)])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; wordsData.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_._2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.sum
-&lt;span class=&quot;go&quot;&gt;sum: (wordsData: List[(Char, Int)])Int
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;wordsCount&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res9: Int = 100
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;foldleft-版本-有foldfoldleftfoldright-之後再介紹-&quot;&gt;foldLeft 版本 (有fold、foldLeft、foldRight 之後再介紹) :&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val wordsCount &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt;-&amp;gt;10,&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt;-&amp;gt;20,&lt;span class=&quot;s1&quot;&gt;'E'&lt;/span&gt;-&amp;gt;30,&lt;span class=&quot;s1&quot;&gt;'Y'&lt;/span&gt;-&amp;gt;40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;wordsCount: List[(Char, Int)] = List((A,10), (C,20), (E,30), (Y,40))
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;wordsData:List[&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Char,Int&lt;span class=&quot;o&quot;&gt;)])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; wordsData.foldLeft&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;){(&lt;/span&gt;sum,tup&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; sum + tup._2&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;sum: (wordsData: List[(Char, Int)])Int
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;wordsCount&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res11: Int = 100
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala 的 tuple 由於可以存放不同型態的物件，所以彈性很大，可以省略定義一些單純存放資料的物件，直接用 tuple 傳遞即可．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">tuple tuple 的格式像這樣 (element1 , element1 , …) tuple 是可存取不同型態的一個物件． tuple 是 immutable 的． 使用 ._ 取得 tuples 的 element ． 其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , … , new Tuple22 tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當． tuple 如果只有兩個 element 的話，可以用 (element1) -&amp;gt; (element2) 產生． tuple 的值也可以用變數存取．</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">define Class scala 在定義 class 沒給修飾子(private,protected)的話，預設是 public 的． 一個 class 的 members 會有屬性(field)或方法(method)，屬性會用來存取該物件的值，物件提供方法讓外部呼叫．</summary></entry></feed>

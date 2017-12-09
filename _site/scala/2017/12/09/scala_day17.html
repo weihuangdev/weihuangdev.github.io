@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Daniel&#39;s Blog</title>
-  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search resu...">
+  <title>Scala day 17 (Currying)</title>
+  <meta name="description" content="Currying 一般函式的寫法 :">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/">
+  <link rel="canonical" href="http://localhost:4000/scala/2017/12/09/scala_day17.html">
   <link rel="alternate" type="application/rss+xml" title="Daniel&#39;s Blog" href="/feed.xml">
   
   
@@ -67,191 +67,65 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Scala day 17 (Currying)</h1>
+    <p class="post-meta">
+      <time datetime="2017-12-09T10:44:17+08:00" itemprop="datePublished">
+        
+        Dec 9, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h3 id="currying">Currying</h3>
+<p>一般函式的寫法 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>num1:Int , num2:Int<span class="o">)</span> <span class="o">=</span> num1 + num2
+<span class="go">sum: (num1: Int, num2: Int)Int
+</span></code></pre></div></div>
+<p>Currying 的寫法 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>num1:Int<span class="o">)(</span>num2:Int<span class="o">)</span> <span class="o">=</span> num1 + num2
+<span class="go">sum: (num1: Int)(num2: Int)Int
+
+</span><span class="gp">scala&gt;</span> sum<span class="o">(</span>1<span class="o">)(</span>2<span class="o">)</span>
+<span class="go">res20: Int = 3
+
+</span><span class="gp">scala&gt;</span> val tempSum <span class="o">=</span> sum<span class="o">(</span>1<span class="o">)</span>_
+<span class="gp">tempSum: Int =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1221</span>/1238850480@744b5bd7
+<span class="go">
+</span><span class="gp">scala&gt;</span> tempSum<span class="o">(</span>2<span class="o">)</span>
+<span class="go">res24: Int = 3
+</span></code></pre></div></div>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>num1:Int<span class="o">)</span> <span class="o">=</span> <span class="o">(</span>num2:Int<span class="o">)</span> <span class="o">=&gt;</span> num1 + num2
+<span class="gp">sum: (num1: Int)Int =&gt;</span> Int
+<span class="go">
+</span><span class="gp">scala&gt;</span> sum<span class="o">(</span>1<span class="o">)(</span>2<span class="o">)</span>
+<span class="go">res21: Int = 3
+
+</span><span class="gp">scala&gt;</span> val tempSum <span class="o">=</span> sum<span class="o">(</span>1<span class="o">)</span>
+<span class="gp">tempSum: Int =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1215</span>/966153678@59f32d74
+<span class="go">
+</span><span class="gp">scala&gt;</span> tempSum<span class="o">(</span>2<span class="o">)</span>
+<span class="go">res22: Int = 3
+</span></code></pre></div></div>
+
+<h3 id="總結">總結</h3>
+<hr />
+<ul>
+  <li>trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
+雖然現在還沒了解它的好處，不過可以先玩玩看．</li>
+</ul>
+
+
+  </div>
+
   
-  
-
-
-  <ul class="post-list">
-    
-      <li>
-        
-        <span class="post-meta">Dec 9, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/09/scala_day17.html">Scala day 17 (Currying)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 7, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/07/scala_day16.html">Scala day 16 (traits self type)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 6, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/06/scala_day15.html">Scala day 15 (traits &amp; abstract class)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 5, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/05/scala_day14.html">Scala day 14 (traits)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day13.html">Scala day 13 (case classes &amp; compare)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day12.html">Scala day 12 (Match Expression)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day11.html">Scala day 11 (Loop &amp; break &amp; continue)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 1, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/01/scala_day10.html">Scala day 10 (Loop)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 1, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/01/scala_day9.html">Scala day 9 (Basic Types)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day8.html">Scala day 8 (Class &amp; Object)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day7.html">Scala day 7 (tuples)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day6.html">Scala day 6 (scala&#39;s List)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day5.html">Scala day 5 (operators are methods)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day4.html">Scala day 4 (function literal)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day3.html">Scala day 3 (Define something)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/28/scala_day2.html">Scala day 2 (Compile Scala)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/28/scala_day1.html">Scala day 1 (Run scala)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/daniel/update/2017/11/28/startByJekyll.html">start By Jekyll</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/jekyll/update/2017/11/28/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </main>
