@@ -12,7 +12,7 @@ categories: scala
 scala> def sum(num1:Int , num2:Int) = num1 + num2
 sum: (num1: Int, num2: Int)Int
 ```
-Currying 的寫法 :  
+Curry 就是將多個參數的函數變成一個參數的函式再將它們curry起來，Curry 的寫法 :  
 
 ```console
 scala> def sum(num1:Int)(num2:Int) = num1 + num2
@@ -20,13 +20,9 @@ sum: (num1: Int)(num2: Int)Int
 
 scala> sum(1)(2)
 res20: Int = 3
-
-scala> val tempSum = sum(1)_
-tempSum: Int => Int = $$Lambda$1221/1238850480@744b5bd7
-
-scala> tempSum(2)
-res24: Int = 3
 ```
+
+Curry 相當於下面例子，但下面例子可以先呼叫一個參數(val tempSum = sum(1))，再呼叫第二個(tempSum(2)) :  
 
 ```console
 scala> def sum(num1:Int) = (num2:Int) => num1 + num2
@@ -41,13 +37,40 @@ tempSum: Int => Int = $$Lambda$1215/966153678@59f32d74
 scala> tempSum(2)
 res22: Int = 3
 ```
+Curry則無法，需要再後面加上 _ 佔位符符號(placeholder notation)當作第二個參數 :  
 
+```console
+scala> val tempSum = sum(1)
+<console>:12: error: not enough arguments for method sum: (num1: Int, num2: Int)Int.
+Unspecified value parameter num2.
+       val tempSum = sum(1)
+                        ^
+
+scala> val tempSum = sum(1)_
+tempSum: Int => Int = $$Lambda$1221/1238850480@744b5bd7
+
+scala> tempSum(2)
+res24: Int = 3
+```
+
+一般函式 _ 的例子 :  
+
+```console
+scala> def sum(num1:Int , num2:Int) = num1 + num2
+sum: (num1: Int, num2: Int)Int
+
+scala> val sum1= sum(1 , _:Int)
+sum1: Int => Int = $$Lambda$1231/433000386@35cc54a7
+
+scala> sum1(2)
+res29: Int = 3
+
+```
 
 
 ### 總結
 - - -
-* trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
-雖然現在還沒了解它的好處，不過可以先玩玩看．
+* Currying 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Currying 也許會更有感覺．
 
 
 

@@ -1,23 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-09T16:15:26+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 17 (Currying)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day17.html" rel="alternate" type="text/html" title="Scala day 17 (Currying)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day17</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day17.html">&lt;h3 id=&quot;currying&quot;&gt;Currying&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-10T01:38:38+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 17 (Currying)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day17.html" rel="alternate" type="text/html" title="Scala day 17 (Currying)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day17</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day17.html">&lt;h3 id=&quot;currying&quot;&gt;Currying&lt;/h3&gt;
 &lt;p&gt;一般函式的寫法 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int , num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num1 + num2
 &lt;span class=&quot;go&quot;&gt;sum: (num1: Int, num2: Int)Int
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Currying 的寫法 :&lt;/p&gt;
+&lt;p&gt;Curry 就是將多個參數的函數變成一個參數的函式再將它們curry起來，Curry 的寫法 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num1 + num2
 &lt;span class=&quot;go&quot;&gt;sum: (num1: Int)(num2: Int)Int
 
 &lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;res20: Int = 3
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val tempSum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;_
-&lt;span class=&quot;gp&quot;&gt;tempSum: Int =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1221&lt;/span&gt;/1238850480@744b5bd7
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; tempSum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res24: Int = 3
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Curry 相當於下面例子，但下面例子可以先呼叫一個參數(val tempSum = sum(1))，再呼叫第二個(tempSum(2)) :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; num1 + num2
 &lt;span class=&quot;gp&quot;&gt;sum: (num1: Int)Int =&amp;gt;&lt;/span&gt; Int
@@ -31,12 +27,38 @@
 &lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; tempSum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;res22: Int = 3
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Curry則無法，需要再後面加上 _ 佔位符符號(placeholder notation)當作第二個參數 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val tempSum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:12: error: not enough arguments &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;method sum: &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1: Int, num2: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;Int.
+&lt;span class=&quot;go&quot;&gt;Unspecified value parameter num2.
+       val tempSum = sum(1)
+                        ^
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val tempSum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;_
+&lt;span class=&quot;gp&quot;&gt;tempSum: Int =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1221&lt;/span&gt;/1238850480@744b5bd7
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; tempSum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res24: Int = 3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;一般函式 _ 的例子 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int , num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num1 + num2
+&lt;span class=&quot;go&quot;&gt;sum: (num1: Int, num2: Int)Int
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val &lt;span class=&quot;nv&quot;&gt;sum1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 , _:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;sum1: Int =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1231&lt;/span&gt;/433000386@35cc54a7
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res29: Int = 3
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
-雖然現在還沒了解它的好處，不過可以先玩玩看．&lt;/li&gt;
+  &lt;li&gt;Currying 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Currying 也許會更有感覺．&lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">Currying 一般函式的寫法 :</summary></entry><entry><title type="html">Scala day 16 (traits self type)</title><link href="http://localhost:4000/scala/2017/12/07/scala_day16.html" rel="alternate" type="text/html" title="Scala day 16 (traits self type)" /><published>2017-12-07T10:44:17+08:00</published><updated>2017-12-07T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/07/scala_day16</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/07/scala_day16.html">&lt;h3 id=&quot;self-types&quot;&gt;Self types&lt;/h3&gt;
 &lt;p&gt;Self types 使用的符號是 =&amp;gt;&lt;br /&gt;
 Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :&lt;/p&gt;

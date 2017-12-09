@@ -86,20 +86,16 @@
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>num1:Int , num2:Int<span class="o">)</span> <span class="o">=</span> num1 + num2
 <span class="go">sum: (num1: Int, num2: Int)Int
 </span></code></pre></div></div>
-<p>Currying 的寫法 :</p>
+<p>Curry 就是將多個參數的函數變成一個參數的函式再將它們curry起來，Curry 的寫法 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>num1:Int<span class="o">)(</span>num2:Int<span class="o">)</span> <span class="o">=</span> num1 + num2
 <span class="go">sum: (num1: Int)(num2: Int)Int
 
 </span><span class="gp">scala&gt;</span> sum<span class="o">(</span>1<span class="o">)(</span>2<span class="o">)</span>
 <span class="go">res20: Int = 3
-
-</span><span class="gp">scala&gt;</span> val tempSum <span class="o">=</span> sum<span class="o">(</span>1<span class="o">)</span>_
-<span class="gp">tempSum: Int =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1221</span>/1238850480@744b5bd7
-<span class="go">
-</span><span class="gp">scala&gt;</span> tempSum<span class="o">(</span>2<span class="o">)</span>
-<span class="go">res24: Int = 3
 </span></code></pre></div></div>
+
+<p>Curry 相當於下面例子，但下面例子可以先呼叫一個參數(val tempSum = sum(1))，再呼叫第二個(tempSum(2)) :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>num1:Int<span class="o">)</span> <span class="o">=</span> <span class="o">(</span>num2:Int<span class="o">)</span> <span class="o">=&gt;</span> num1 + num2
 <span class="gp">sum: (num1: Int)Int =&gt;</span> Int
@@ -113,12 +109,38 @@
 </span><span class="gp">scala&gt;</span> tempSum<span class="o">(</span>2<span class="o">)</span>
 <span class="go">res22: Int = 3
 </span></code></pre></div></div>
+<p>Curry則無法，需要再後面加上 _ 佔位符符號(placeholder notation)當作第二個參數 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val tempSum <span class="o">=</span> sum<span class="o">(</span>1<span class="o">)</span>
+<span class="gp">&lt;console&gt;</span>:12: error: not enough arguments <span class="k">for </span>method sum: <span class="o">(</span>num1: Int, num2: Int<span class="o">)</span>Int.
+<span class="go">Unspecified value parameter num2.
+       val tempSum = sum(1)
+                        ^
+
+</span><span class="gp">scala&gt;</span> val tempSum <span class="o">=</span> sum<span class="o">(</span>1<span class="o">)</span>_
+<span class="gp">tempSum: Int =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1221</span>/1238850480@744b5bd7
+<span class="go">
+</span><span class="gp">scala&gt;</span> tempSum<span class="o">(</span>2<span class="o">)</span>
+<span class="go">res24: Int = 3
+</span></code></pre></div></div>
+
+<p>一般函式 _ 的例子 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>num1:Int , num2:Int<span class="o">)</span> <span class="o">=</span> num1 + num2
+<span class="go">sum: (num1: Int, num2: Int)Int
+
+</span><span class="gp">scala&gt;</span> val <span class="nv">sum1</span><span class="o">=</span> sum<span class="o">(</span>1 , _:Int<span class="o">)</span>
+<span class="gp">sum1: Int =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1231</span>/433000386@35cc54a7
+<span class="go">
+</span><span class="gp">scala&gt;</span> sum1<span class="o">(</span>2<span class="o">)</span>
+<span class="go">res29: Int = 3
+
+</span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
-雖然現在還沒了解它的好處，不過可以先玩玩看．</li>
+  <li>Currying 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Currying 也許會更有感覺．</li>
 </ul>
 
 
