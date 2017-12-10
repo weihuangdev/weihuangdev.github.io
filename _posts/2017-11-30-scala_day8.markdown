@@ -32,7 +32,7 @@ res13: String = 1
 scala> emp.work
 working...
 ```
-scala function 的參數都是 val 的不可修改，但屬性可以是 var．
+scala function 的參數都是 val 的不可修改．
 
 ```console
 scala> def sum(amt:Int) = amt = 1000
@@ -135,7 +135,7 @@ Hello Daniel
 ### 總結
 - - -
 * scala 沒有 static ，但其實 Singleton object 跟 static 在概念上感覺是一樣的，在記憶體裡都只會有一份．
-* scala 的  有宣告 main 方法的話，就可以變成了程式進入點．
+* scala 的 object 有宣告 main 方法的話，就可以變成了程式進入點．
 
 
 
