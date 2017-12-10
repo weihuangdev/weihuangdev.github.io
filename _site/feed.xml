@@ -1,4 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-10T11:58:57+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 17 (Currying)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day17.html" rel="alternate" type="text/html" title="Scala day 17 (Currying)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day17</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day17.html">&lt;h3 id=&quot;currying&quot;&gt;Currying&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-11T00:37:26+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 18 (Mutable List)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day18.html" rel="alternate" type="text/html" title="Scala day 18 (Mutable List)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day18</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day18.html">&lt;h3 id=&quot;mutable-list&quot;&gt;Mutable List&lt;/h3&gt;
+&lt;p&gt;之前介紹的 List 是 immutable，但其實也是有 mutable List 叫 ListBuffer :&lt;br /&gt;
+使用前需要 import scala.collection.mutable.ListBuffer&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.collection.mutable.ListBuffer
+&lt;span class=&quot;go&quot;&gt;import scala.collection.mutable.ListBuffer
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;new 一個空的 ListBuffer :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new ListBuffer[String]&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;names: scala.collection.mutable.ListBuffer[String] = ListBuffer()
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;新增元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res52: names.type = ListBuffer(Daniel)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res53: names.type = ListBuffer(Daniel, Jack, Ray)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;刪除元素 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res54: names.type = ListBuffer(Daniel, Ray)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Lucy&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Allen&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Petty&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res62: names.type = ListBuffer(Daniel, Jack, Ray, Lucy, Allen, Petty)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Allen&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res63: names.type = ListBuffer(Daniel, Ray, Lucy, Petty)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;刪除 Seq 的元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Seq&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Lucy&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res64: names.type = ListBuffer(Ray, Petty)
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;最後可再把它轉成 immutable 的 List :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.toList
+&lt;span class=&quot;go&quot;&gt;res65: List[String] = List(Ray, Petty)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;List 不管 mutable 或 immutable，在程式很常用到，ListBuffer 透過運算子就可以刪除新增元素使用起來很方便．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Mutable List 之前介紹的 List 是 immutable，但其實也是有 mutable List 叫 ListBuffer : 使用前需要 import scala.collection.mutable.ListBuffer</summary></entry><entry><title type="html">Scala day 17 (Currying)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day17.html" rel="alternate" type="text/html" title="Scala day 17 (Currying)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day17</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day17.html">&lt;h3 id=&quot;curry&quot;&gt;Curry&lt;/h3&gt;
 &lt;p&gt;一般函式的寫法 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int , num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num1 + num2
@@ -54,12 +102,64 @@
 &lt;span class=&quot;go&quot;&gt;res29: Int = 3
 
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;再看一個例子，定義一個 sum 函數，參數一是 lambda expressions(Int =&amp;gt; Int)，參數二 是 Int :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;add:Int &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Int , num: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; add&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;add&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;sum: (add: Int =&amp;gt;&lt;/span&gt; Int, num: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;Int
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;接著就可以實作不同的 lambda expressions，產出不同算法的結果&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; num + 1 , 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res34: Int = 4
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; num &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 2 , 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res35: Int = 8
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ + 1 , 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res36: Int = 4
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 2 , 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res37: Int = 8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;改成 Currying 的寫法，&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;add:Int &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Int&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;num: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; add&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;add&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;sum: (add: Int =&amp;gt;&lt;/span&gt; Int&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;num: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;Int
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt; : Int &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; _ &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 3
+&lt;span class=&quot;gp&quot;&gt;times: Int =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1271&lt;/span&gt;/966830519@75c70563
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;在 scala function 參數只有一個時，可以用大括號(curly braces) :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 5 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res40: Int = 45
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;在測試看看 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def hello&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello &quot;&lt;/span&gt; + name
+&lt;span class=&quot;go&quot;&gt;hello: (name: String)String
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; hello &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res45: String = Hello Daniel
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;可接受任何型態 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def hello &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello &quot;&lt;/span&gt; + _
+&lt;span class=&quot;gp&quot;&gt;hello: Any =&amp;gt;&lt;/span&gt; String
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; hello &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res46: String = Hello Daniel
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; hello &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;123&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res47: String = Hello 123
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;Currying 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Currying 也許會更有感覺．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Currying 一般函式的寫法 :</summary></entry><entry><title type="html">Scala day 16 (traits self type)</title><link href="http://localhost:4000/scala/2017/12/07/scala_day16.html" rel="alternate" type="text/html" title="Scala day 16 (traits self type)" /><published>2017-12-07T10:44:17+08:00</published><updated>2017-12-07T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/07/scala_day16</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/07/scala_day16.html">&lt;h3 id=&quot;self-types&quot;&gt;Self types&lt;/h3&gt;
+  &lt;li&gt;Curry 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Curry 也許會更有感覺．&lt;/li&gt;
+  &lt;li&gt;由於 Curry 是把多個參數拆分成一個一個的參數，所以變成只有一個參數這時候可以使用大括號讓程式看起來更有結構性．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Curry 一般函式的寫法 :</summary></entry><entry><title type="html">Scala day 16 (traits self type)</title><link href="http://localhost:4000/scala/2017/12/07/scala_day16.html" rel="alternate" type="text/html" title="Scala day 16 (traits self type)" /><published>2017-12-07T10:44:17+08:00</published><updated>2017-12-07T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/07/scala_day16</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/07/scala_day16.html">&lt;h3 id=&quot;self-types&quot;&gt;Self types&lt;/h3&gt;
 &lt;p&gt;Self types 使用的符號是 =&amp;gt;&lt;br /&gt;
 Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :&lt;/p&gt;
 
@@ -1210,127 +1310,4 @@ Hi&quot;
 &lt;hr /&gt;
 &lt;ul&gt;
   &lt;li&gt;基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings (“”” “”“)真的很方便，不用想跳脫字元的問題．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Basic Types</summary></entry><entry><title type="html">Scala day 8 (Class &amp;amp; Object)</title><link href="http://localhost:4000/scala/2017/11/30/scala_day8.html" rel="alternate" type="text/html" title="Scala day 8 (Class &amp; Object)" /><published>2017-11-30T10:44:17+08:00</published><updated>2017-11-30T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/11/30/scala_day8</id><content type="html" xml:base="http://localhost:4000/scala/2017/11/30/scala_day8.html">&lt;h2 id=&quot;define-class&quot;&gt;define Class&lt;/h2&gt;
-&lt;p&gt;scala 在定義 class 沒給修飾子(private,protected)的話，預設是 public 的．&lt;br /&gt;
-一個 class 的 members 會有屬性(field)或方法(method)，屬性會用來存取該物件的值，物件提供方法讓外部呼叫．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Employee &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  val id = &quot;1&quot;
-     |  val name = &quot;Daniel&quot;
-     |  def work = println(&quot;working...&quot;)
-     | }
-defined class Employee
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用 new 建立 class 的 object :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val emp &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
-&lt;span class=&quot;go&quot;&gt;emp: Employee = Employee@238015c9
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;取得物件的變數值，呼叫物件的方法 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; emp.id
-&lt;span class=&quot;go&quot;&gt;res13: String = 1
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; emp.work
-&lt;span class=&quot;go&quot;&gt;working...
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;scala function 的參數都是 val 的不可修改．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;amt:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; amt &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1000
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:11: error: reassignment to val
-&lt;span class=&quot;go&quot;&gt;       def sum(amt:Int) = amt = 1000
-                              ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如果不想讓外部直接取得變數值，可以用 private 修飾子，再提供 method 給外部對該變數做修改：&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Employee &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  val id = &quot;1&quot;
-     |  val name = &quot;Daniel&quot;
-     |  private var skill = &quot;programing&quot;
-     |  def updateSkill(newSkill: String) = skill = newSkill
-     |  def work = println(skill)
-     | }
-defined class Employee
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val e1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Employee
-&lt;span class=&quot;go&quot;&gt;e1: Employee = Employee@3767b38b
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; e1.work
-&lt;span class=&quot;go&quot;&gt;programing
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; e1.updateSkill&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;singing&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; e1.work
-&lt;span class=&quot;go&quot;&gt;singing
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在 scala 分號(semicolon)在結尾是可以不必要的，通常都會省略，但如果要把多段程式碼寫成一行，就會需要：&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; e1.updateSkill&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;teaching&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; e1.work
-&lt;span class=&quot;go&quot;&gt;teaching
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;define-object&quot;&gt;define object&lt;/h2&gt;
-&lt;p&gt;scala 並沒有像 java 一樣有 static members，所以需利用 Singleton object (只會有一個 object)，來達到 static 的效果 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; object Account &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  private var sum = 0
-     |  def addAmt(amt: Int) = sum += amt
-     |  def getAmt = sum
-     | }
-defined object Account
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Boss &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def addSalary(amt: Int) = Account.addAmt(amt)
-     |  def getSum = Account.getAmt
-     | }
-defined class Boss
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val boss1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Boss
-&lt;span class=&quot;go&quot;&gt;boss1: Boss = Boss@1f5cb417
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val boss2 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Boss
-&lt;span class=&quot;go&quot;&gt;boss2: Boss = Boss@5113d1f2
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; boss1.addSalary&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; boss2.getSum
-&lt;span class=&quot;go&quot;&gt;res25: Int = 1000
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; boss2.addSalary&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; boss1.getSum
-&lt;span class=&quot;go&quot;&gt;res27: Int = 6000
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;scala object 是 Singleton 的，在執行時期只會有一份，無法使用 new ．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Account.getAmt
-&lt;span class=&quot;go&quot;&gt;res28: Int = 6000
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val account1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Account
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:11: error: not found: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;Account
-&lt;span class=&quot;go&quot;&gt;       val account1 = new Account
-                          ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h2 id=&quot;object-main-method&quot;&gt;object main method&lt;/h2&gt;
-&lt;p&gt;在執行 scala 程式時，程式進入點會從 object main method 進入 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; object HelloObj &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def main(args: Array[String]) {
-     |   println(&quot;Hello &quot; + args(0))
-     |  }
-     | }
-defined object HelloObj
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; HelloObj.main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Hello Daniel
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala 沒有 static ，但其實 Singleton object 跟 static 在概念上感覺是一樣的，在記憶體裡都只會有一份．&lt;/li&gt;
-  &lt;li&gt;scala 的 object 有宣告 main 方法的話，就可以變成了程式進入點．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">define Class scala 在定義 class 沒給修飾子(private,protected)的話，預設是 public 的． 一個 class 的 members 會有屬性(field)或方法(method)，屬性會用來存取該物件的值，物件提供方法讓外部呼叫．</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Basic Types</summary></entry></feed>

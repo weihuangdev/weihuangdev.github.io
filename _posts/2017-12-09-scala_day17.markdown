@@ -5,7 +5,7 @@ date:   2017-12-09 10:44:17 +0800
 categories: scala
 ---
 
-### Currying
+### Curry
 一般函式的寫法 :  
 
 ```console
@@ -66,11 +66,67 @@ scala> sum1(2)
 res29: Int = 3
 
 ```
+再看一個例子，定義一個 sum 函數，參數一是 lambda expressions(Int => Int)，參數二 是 Int :  
 
+```console
+scala> def sum(add:Int => Int , num: Int) = add(add(num))
+sum: (add: Int => Int, num: Int)Int
+```
+接著就可以實作不同的 lambda expressions，產出不同算法的結果 
+
+```console
+scala> sum(num => num + 1 , 2)
+res34: Int = 4
+
+scala> sum(num => num * 2 , 2)
+res35: Int = 8
+
+scala> sum(_ + 1 , 2)
+res36: Int = 4
+
+scala> sum(_ * 2 , 2)
+res37: Int = 8
+```
+改成 Currying 的寫法，
+
+```console
+scala> def sum(add:Int => Int)(num: Int) = add(add(num))
+sum: (add: Int => Int)(num: Int)Int
+
+scala> val times : Int => Int = _ * 3
+times: Int => Int = $$Lambda$1271/966830519@75c70563
+```
+在 scala function 參數只有一個時，可以用大括號(curly braces) :  
+
+```console
+scala> sum(times) { 5 }
+res40: Int = 45
+```
+在測試看看 :  
+
+```console
+scala> def hello(name:String) = "Hello " + name
+hello: (name: String)String
+
+scala> hello {"Daniel"}
+res45: String = Hello Daniel
+```
+可接受任何型態 :  
+
+```console
+scala> def hello = "Hello " + _
+hello: Any => String
+
+scala> hello {"Daniel"}
+res46: String = Hello Daniel
+
+scala> hello {123}
+res47: String = Hello 123
+```
 
 ### 總結
 - - -
-* Currying 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Currying 也許會更有感覺．
-
+* Curry 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Curry 也許會更有感覺．
+* 由於 Curry 是把多個參數拆分成一個一個的參數，所以變成只有一個參數這時候可以使用大括號讓程式看起來更有結構性．
 
 

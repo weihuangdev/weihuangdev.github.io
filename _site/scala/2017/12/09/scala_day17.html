@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 17 (Currying)</title>
-  <meta name="description" content="Currying 一般函式的寫法 :">
+  <meta name="description" content="Curry 一般函式的寫法 :">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/12/09/scala_day17.html">
@@ -80,7 +80,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h3 id="currying">Currying</h3>
+    <h3 id="curry">Curry</h3>
 <p>一般函式的寫法 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>num1:Int , num2:Int<span class="o">)</span> <span class="o">=</span> num1 + num2
@@ -136,11 +136,63 @@
 <span class="go">res29: Int = 3
 
 </span></code></pre></div></div>
+<p>再看一個例子，定義一個 sum 函數，參數一是 lambda expressions(Int =&gt; Int)，參數二 是 Int :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>add:Int <span class="o">=&gt;</span> Int , num: Int<span class="o">)</span> <span class="o">=</span> add<span class="o">(</span>add<span class="o">(</span>num<span class="o">))</span>
+<span class="gp">sum: (add: Int =&gt;</span> Int, num: Int<span class="o">)</span>Int
+</code></pre></div></div>
+<p>接著就可以實作不同的 lambda expressions，產出不同算法的結果</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> sum<span class="o">(</span>num <span class="o">=&gt;</span> num + 1 , 2<span class="o">)</span>
+<span class="go">res34: Int = 4
+
+</span><span class="gp">scala&gt;</span> sum<span class="o">(</span>num <span class="o">=&gt;</span> num <span class="k">*</span> 2 , 2<span class="o">)</span>
+<span class="go">res35: Int = 8
+
+</span><span class="gp">scala&gt;</span> sum<span class="o">(</span>_ + 1 , 2<span class="o">)</span>
+<span class="go">res36: Int = 4
+
+</span><span class="gp">scala&gt;</span> sum<span class="o">(</span>_ <span class="k">*</span> 2 , 2<span class="o">)</span>
+<span class="go">res37: Int = 8
+</span></code></pre></div></div>
+<p>改成 Currying 的寫法，</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def sum<span class="o">(</span>add:Int <span class="o">=&gt;</span> Int<span class="o">)(</span>num: Int<span class="o">)</span> <span class="o">=</span> add<span class="o">(</span>add<span class="o">(</span>num<span class="o">))</span>
+<span class="gp">sum: (add: Int =&gt;</span> Int<span class="o">)(</span>num: Int<span class="o">)</span>Int
+<span class="go">
+</span><span class="gp">scala&gt;</span> val <span class="nb">times</span> : Int <span class="o">=&gt;</span> Int <span class="o">=</span> _ <span class="k">*</span> 3
+<span class="gp">times: Int =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1271</span>/966830519@75c70563
+</code></pre></div></div>
+<p>在 scala function 參數只有一個時，可以用大括號(curly braces) :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> sum<span class="o">(</span><span class="nb">times</span><span class="o">)</span> <span class="o">{</span> 5 <span class="o">}</span>
+<span class="go">res40: Int = 45
+</span></code></pre></div></div>
+<p>在測試看看 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def hello<span class="o">(</span>name:String<span class="o">)</span> <span class="o">=</span> <span class="s2">"Hello "</span> + name
+<span class="go">hello: (name: String)String
+
+</span><span class="gp">scala&gt;</span> hello <span class="o">{</span><span class="s2">"Daniel"</span><span class="o">}</span>
+<span class="go">res45: String = Hello Daniel
+</span></code></pre></div></div>
+<p>可接受任何型態 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def hello <span class="o">=</span> <span class="s2">"Hello "</span> + _
+<span class="gp">hello: Any =&gt;</span> String
+<span class="go">
+</span><span class="gp">scala&gt;</span> hello <span class="o">{</span><span class="s2">"Daniel"</span><span class="o">}</span>
+<span class="go">res46: String = Hello Daniel
+
+</span><span class="gp">scala&gt;</span> hello <span class="o">{</span>123<span class="o">}</span>
+<span class="go">res47: String = Hello 123
+</span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>Currying 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Currying 也許會更有感覺．</li>
+  <li>Curry 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Curry 也許會更有感覺．</li>
+  <li>由於 Curry 是把多個參數拆分成一個一個的參數，所以變成只有一個參數這時候可以使用大括號讓程式看起來更有結構性．</li>
 </ul>
 
 
