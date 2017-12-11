@@ -7,7 +7,9 @@ categories: scala
 
 ### Option type
 Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值．
-像下面例子，如果 Map get 有值會回傳 Some(Int)，沒有的話會回傳 None :  
+像下面例子，Map 的 get api 定義 :  
+def get(key: K): Option[V]  
+所以 Map get 回傳的也是 Option 型態，有值會回傳 Some(Int)，沒有的話會回傳 None :  
 
 ```console
 scala> val emps = Map("Sam"->10,"Daniel"->20,"Jack"->30,"Ray"->40)
@@ -19,16 +21,89 @@ res82: Option[Int] = Some(20)
 scala> emps get "Dan"
 res83: Option[Int] = None
 ```
-Map 的 api 定義 :  
-trait Map[K, +V] extends Iterable[(K, V)] with collection.Map[K, V] with MapLike[K, V, Map[K, V]] 
-def get(key: K): Option[V]  
-所以 Map get 回傳的也是 Option 型態．
+#### 運用在 Match Expression :  
 
+```console
+scala> def Hi(name: Option[String]) = name match {
+     |  case Some(nm) => "Hi " + nm
+     |  case None => "Not String"
+     | }
+Hi: (name: Option[String])String
 
+scala> val name:Option[String] = Some("Daniel")
+name: Option[String] = Some(Daniel)
+
+scala> Hi(name)
+res85: String = Hi Daniel
+
+scala> Hi(None)
+res88: String = Not String
+```
+#### 運用在 lambda Expression :  
+
+```console
+scala> val initNum: Option[Int] => Int = {
+     |  case Some(num) => num * 2
+     |  case None => 0
+     | }
+initNum: Option[Int] => Int = $$Lambda$1520/1940548313@253ecbdc
+
+scala> initNum(Some(10))
+res89: Int = 20
+
+scala> initNum(None)
+res90: Int = 0
+```
+#### 運用 map、flatten、flatMap 操作 List :  
+定義一個 function 如果可以轉 Int 則回傳 Some(i) 否則 None
+
+```console
+scala> def initNum(s:Any): Option[Int] = {
+     |  try {
+     |   Some(Integer.parseInt(s.toString))
+     |  } catch {
+     |   case e: Exception => None
+     |  }
+     | }
+initNum: (s: Any)Option[Int]
+```
+定義一個不同元素 type 的 List :  
+
+```console
+scala> val empList = List("1" , 2 , "aa" , "4" , 5D )
+empList: List[Any] = List(1, 2, aa, 4, 5.0)
+```
+使用 map 可將 List 的每個元素帶到 initNum 這方法然後回傳一個新的 List :  
+
+```console
+scala> empList.map(initNum)
+res91: List[Option[Int]] = List(Some(1), Some(2), None, Some(4), None)
+```
+flatten 會把Some(i) 的 i 值取出，None 過濾掉，然後將數值展開 :  
+
+```console
+scala> empList.map(initNum).flatten
+res92: List[Int] = List(1, 2, 4)
+```
+map 搭配 flatten 相當於 flatMap :  
+
+```console
+scala> empList.flatMap(initNum)
+res94: List[Int] = List(1, 2, 4)
+```
+最後透過 sum 算出加總 :  
+
+```console
+scala> empList.map(initNum).flatten.sum
+res93: Int = 7
+
+```
 
 
 ### 總結
 - - -
-* List 不管 mutable 或 immutable，在程式很常用到，ListBuffer 透過運算子就可以刪除新增元素使用起來很方便．
+* Option type 感覺可以避免物件回傳 null，至少會是 None 物件，讓我想到一個 design pattern 是 Null Object Pattern，也是會定義一個 null 物件，不讓值直接變成 null，可預防 NullPointerException．
+* Scala 的某些 collection 已經幫我們訂好回傳 Option type 在使用時可注意一下，很多種不同寫法需要再思考．
+* map、flatten、flatMap 感覺會很容易使用到，這邊先提供個例子，有機會再額外介紹．
 
 

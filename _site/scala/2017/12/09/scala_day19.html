@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 19 (Option type)</title>
-  <meta name="description" content="Option type Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值． 像下面例子，如果 Map get 有值會回傳 Some(Int)，沒有的話會回傳 None :">
+  <meta name="description" content="Option type Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值． 像下面例子，Map 的 get api 定義 : def get(key: K): Option[V] 所以 Map get 回傳的也是 Option 型...">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/12/09/scala_day19.html">
@@ -82,7 +82,9 @@
   <div class="post-content" itemprop="articleBody">
     <h3 id="option-type">Option type</h3>
 <p>Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值．
-像下面例子，如果 Map get 有值會回傳 Some(Int)，沒有的話會回傳 None :</p>
+像下面例子，Map 的 get api 定義 :<br />
+def get(key: K): Option[V]<br />
+所以 Map get 回傳的也是 Option 型態，有值會回傳 Some(Int)，沒有的話會回傳 None :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val emps <span class="o">=</span> Map<span class="o">(</span><span class="s2">"Sam"</span>-&gt;10,<span class="s2">"Daniel"</span>-&gt;20,<span class="s2">"Jack"</span>-&gt;30,<span class="s2">"Ray"</span>-&gt;40<span class="o">)</span>
 <span class="gp">emps: scala.collection.immutable.Map[String,Int] = Map(Sam -&gt;</span> 10, Daniel -&gt; 20, Jack -&gt; 30, Ray -&gt; 40<span class="o">)</span>
@@ -93,15 +95,82 @@
 </span><span class="gp">scala&gt;</span> emps get <span class="s2">"Dan"</span>
 <span class="go">res83: Option[Int] = None
 </span></code></pre></div></div>
-<p>Map 的 api 定義 :<br />
-trait Map[K, +V] extends Iterable[(K, V)] with collection.Map[K, V] with MapLike[K, V, Map[K, V]] 
-def get(key: K): Option[V]<br />
-所以 Map get 回傳的也是 Option 型態．</p>
+<h4 id="運用在-match-expression-">運用在 Match Expression :</h4>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def Hi<span class="o">(</span>name: Option[String]<span class="o">)</span> <span class="o">=</span> name match <span class="o">{</span>
+<span class="gp">     |  case Some(nm) =&gt;</span> <span class="s2">"Hi "</span> + nm
+<span class="gp">     |  case None =&gt;</span> <span class="s2">"Not String"</span>
+<span class="go">     | }
+Hi: (name: Option[String])String
+
+</span><span class="gp">scala&gt;</span> val name:Option[String] <span class="o">=</span> Some<span class="o">(</span><span class="s2">"Daniel"</span><span class="o">)</span>
+<span class="go">name: Option[String] = Some(Daniel)
+
+</span><span class="gp">scala&gt;</span> Hi<span class="o">(</span>name<span class="o">)</span>
+<span class="go">res85: String = Hi Daniel
+
+</span><span class="gp">scala&gt;</span> Hi<span class="o">(</span>None<span class="o">)</span>
+<span class="go">res88: String = Not String
+</span></code></pre></div></div>
+<h4 id="運用在-lambda-expression-">運用在 lambda Expression :</h4>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val initNum: Option[Int] <span class="o">=&gt;</span> Int <span class="o">=</span> <span class="o">{</span>
+<span class="gp">     |  case Some(num) =&gt;</span> num <span class="k">*</span> 2
+<span class="gp">     |  case None =&gt;</span> 0
+<span class="go">     | }
+</span><span class="gp">initNum: Option[Int] =&gt;</span> Int <span class="o">=</span> <span class="nv">$$</span>Lambda<span class="nv">$1520</span>/1940548313@253ecbdc
+<span class="go">
+</span><span class="gp">scala&gt;</span> initNum<span class="o">(</span>Some<span class="o">(</span>10<span class="o">))</span>
+<span class="go">res89: Int = 20
+
+</span><span class="gp">scala&gt;</span> initNum<span class="o">(</span>None<span class="o">)</span>
+<span class="go">res90: Int = 0
+</span></code></pre></div></div>
+<h4 id="運用-mapflattenflatmap-操作-list-">運用 map、flatten、flatMap 操作 List :</h4>
+<p>定義一個 function 如果可以轉 Int 則回傳 Some(i) 否則 None</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def initNum<span class="o">(</span>s:Any<span class="o">)</span>: Option[Int] <span class="o">=</span> <span class="o">{</span>
+<span class="go">     |  try {
+     |   Some(Integer.parseInt(s.toString))
+     |  } catch {
+</span><span class="gp">     |   case e: Exception =&gt;</span> None
+<span class="go">     |  }
+     | }
+initNum: (s: Any)Option[Int]
+</span></code></pre></div></div>
+<p>定義一個不同元素 type 的 List :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val empList <span class="o">=</span> List<span class="o">(</span><span class="s2">"1"</span> , 2 , <span class="s2">"aa"</span> , <span class="s2">"4"</span> , 5D <span class="o">)</span>
+<span class="go">empList: List[Any] = List(1, 2, aa, 4, 5.0)
+</span></code></pre></div></div>
+<p>使用 map 可將 List 的每個元素帶到 initNum 這方法然後回傳一個新的 List :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> empList.map<span class="o">(</span>initNum<span class="o">)</span>
+<span class="go">res91: List[Option[Int]] = List(Some(1), Some(2), None, Some(4), None)
+</span></code></pre></div></div>
+<p>flatten 會把Some(i) 的 i 值取出，None 過濾掉，然後將數值展開 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> empList.map<span class="o">(</span>initNum<span class="o">)</span>.flatten
+<span class="go">res92: List[Int] = List(1, 2, 4)
+</span></code></pre></div></div>
+<p>map 搭配 flatten 相當於 flatMap :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> empList.flatMap<span class="o">(</span>initNum<span class="o">)</span>
+<span class="go">res94: List[Int] = List(1, 2, 4)
+</span></code></pre></div></div>
+<p>最後透過 sum 算出加總 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> empList.map<span class="o">(</span>initNum<span class="o">)</span>.flatten.sum
+<span class="go">res93: Int = 7
+
+</span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>List 不管 mutable 或 immutable，在程式很常用到，ListBuffer 透過運算子就可以刪除新增元素使用起來很方便．</li>
+  <li>Option type 感覺可以避免物件回傳 null，至少會是 None 物件，讓我想到一個 design pattern 是 Null Object Pattern，也是會定義一個 null 物件，不讓值直接變成 null，可預防 NullPointerException．</li>
+  <li>Scala 的某些 collection 已經幫我們訂好回傳 Option type 在使用時可注意一下，很多種不同寫法需要再思考．</li>
+  <li>map、flatten、flatMap 感覺會很容易使用到，這邊先提供個例子，有機會再額外介紹．</li>
 </ul>
 
 
