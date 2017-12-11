@@ -1,0 +1,34 @@
+---
+layout: post
+title:  "Scala day 19 (Option type)"
+date:   2017-12-09 10:44:17 +0800
+categories: scala
+---
+
+### Option type
+Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值．
+像下面例子，如果 Map get 有值會回傳 Some(Int)，沒有的話會回傳 None :  
+
+```console
+scala> val emps = Map("Sam"->10,"Daniel"->20,"Jack"->30,"Ray"->40)
+emps: scala.collection.immutable.Map[String,Int] = Map(Sam -> 10, Daniel -> 20, Jack -> 30, Ray -> 40)
+
+scala> emps get "Daniel"
+res82: Option[Int] = Some(20)
+
+scala> emps get "Dan"
+res83: Option[Int] = None
+```
+Map 的 api 定義 :  
+trait Map[K, +V] extends Iterable[(K, V)] with collection.Map[K, V] with MapLike[K, V, Map[K, V]] 
+def get(key: K): Option[V]  
+所以 Map get 回傳的也是 Option 型態．
+
+
+
+
+### 總結
+- - -
+* List 不管 mutable 或 immutable，在程式很常用到，ListBuffer 透過運算子就可以刪除新增元素使用起來很方便．
+
+

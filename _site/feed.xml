@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-11T11:36:33+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 18 (Mutable List)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day18.html" rel="alternate" type="text/html" title="Scala day 18 (Mutable List)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day18</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day18.html">&lt;h3 id=&quot;mutable-list&quot;&gt;Mutable List&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-11T18:13:24+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 19 (Option type)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day19.html" rel="alternate" type="text/html" title="Scala day 19 (Option type)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day19</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day19.html">&lt;h3 id=&quot;option-type&quot;&gt;Option type&lt;/h3&gt;
+&lt;p&gt;Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值．
+像下面例子，如果 Map get 有值會回傳 Some(Int)，沒有的話會回傳 None :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val emps &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;-&amp;gt;10,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;-&amp;gt;20,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;-&amp;gt;30,&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;-&amp;gt;40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;emps: scala.collection.immutable.Map[String,Int] = Map(Sam -&amp;gt;&lt;/span&gt; 10, Daniel -&amp;gt; 20, Jack -&amp;gt; 30, Ray -&amp;gt; 40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; emps get &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res82: Option[Int] = Some(20)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; emps get &lt;span class=&quot;s2&quot;&gt;&quot;Dan&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res83: Option[Int] = None
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Map 的 api 定義 :&lt;br /&gt;
+trait Map[K, +V] extends Iterable[(K, V)] with collection.Map[K, V] with MapLike[K, V, Map[K, V]] 
+def get(key: K): Option[V]&lt;br /&gt;
+所以 Map get 回傳的也是 Option 型態．&lt;/p&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;List 不管 mutable 或 immutable，在程式很常用到，ListBuffer 透過運算子就可以刪除新增元素使用起來很方便．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Option type Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值． 像下面例子，如果 Map get 有值會回傳 Some(Int)，沒有的話會回傳 None :</summary></entry><entry><title type="html">Scala day 18 (Mutable List)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day18.html" rel="alternate" type="text/html" title="Scala day 18 (Mutable List)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day18</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day18.html">&lt;h3 id=&quot;mutable-list&quot;&gt;Mutable List&lt;/h3&gt;
 &lt;p&gt;之前介紹的 List 是 immutable，但其實也是有 mutable List 叫 ListBuffer :&lt;br /&gt;
 使用前需要 import scala.collection.mutable.ListBuffer&lt;/p&gt;
 
@@ -1061,253 +1083,4 @@ for(name &amp;lt;- names) ...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;迴圈的寫法很多種，但主要還是根據需求來決定．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 : 循序取得 collection 元素． 需要有 index 取得 collection 元素． 需要多個計數器時． 迴圈需要產生一組新個 collection 物件．</summary></entry><entry><title type="html">Scala day 9 (Basic Types)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day9.html" rel="alternate" type="text/html" title="Scala day 9 (Basic Types)" /><published>2017-12-01T08:44:17+08:00</published><updated>2017-12-01T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day9</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day9.html">&lt;h2 id=&quot;basic-types&quot;&gt;Basic Types&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Byte,Short,Int,Long,Char 稱為 &lt;strong&gt;&lt;em&gt;integral types&lt;/em&gt;&lt;/strong&gt;．&lt;/li&gt;
-  &lt;li&gt;integral types 再加上 Float,Double 稱為 &lt;strong&gt;&lt;em&gt;numeric types&lt;/em&gt;&lt;/strong&gt;．&lt;/li&gt;
-  &lt;li&gt;只有 String 是在 java.lang 的 package 裡．&lt;/li&gt;
-  &lt;li&gt;基本型態的大小 :&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;型態&lt;/th&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;大小&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;數值範圍&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Byte&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;8-bit&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;-2^7 ~ 2^7 - 1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Short&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;16-bit&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;-2^15 ~ 2^15 - 1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Int&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;32-bit&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;-2^31 ~ 2^31 - 1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Long&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;64-bit&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;-2^63 ~ 2^63 -1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Char&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;16-bit&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;0 ~ 2^16 - 1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Float&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;32-bit&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Double&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;64-bit&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;Boolean&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;true or false&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&lt;strong&gt;&lt;em&gt;String&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;a sequence of Chars&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;literals&quot;&gt;Literals&lt;/h2&gt;
-
-&lt;p&gt;Literals 想翻成中文還真模糊看了一堆資料感覺還是不知道該怎麼解釋比較好，但可以透過一些例子來了解一下它的觀念．
-目前了解 literals 的概念大概是指的是指說可以直接寫一個常數值在程式碼裡，編譯器會根據程式寫的常數對應到該對應的型態．&lt;/p&gt;
-
-&lt;h3 id=&quot;integer-literals&quot;&gt;Integer literals&lt;/h3&gt;
-&lt;h4 id=&quot;longdouble&quot;&gt;Long、Double&lt;/h4&gt;
-&lt;p&gt;轉成 Long 或 Double，Long 在後面加上 Ｌ 或 l ，Double 在後面加上 D 或 d ．&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val hexNum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x1aFL
-&lt;span class=&quot;go&quot;&gt;hexNum: Long = 431
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val hexNum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 168d
-&lt;span class=&quot;go&quot;&gt;hexNum: Double = 168.0
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;byteshort&quot;&gt;Byte、Short&lt;/h4&gt;
-&lt;p&gt;Byte 及 Short 在宣告變數時加上型態，compiler 時會檢查 value 是否超過大小 :&lt;br /&gt;
-像 Byte 的範圍是 -2^7 ~ 2^7 - 1&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num : Byte &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127
-&lt;span class=&quot;go&quot;&gt;num: Byte = 127
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num : Byte &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-128&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;num: Byte = -128
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num : Short &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 127
-&lt;span class=&quot;go&quot;&gt;num: Short = 127
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;hexadecimal-literals&quot;&gt;hexadecimal literals&lt;/h4&gt;
-&lt;p&gt;16進位(hexadecimal)，開頭要寫 0x 或 0X，內容為數字1~9、大小寫字母a~f．&lt;br /&gt;
-順便複習一下16進位轉10進位的算法 : &lt;br /&gt;
-1AF(16進位)&lt;br /&gt;
--&amp;gt; 1 * 16^2 + 10 * 16^1 + 15 * 16^0&lt;br /&gt;
--&amp;gt; 1 * 16 * 16 + 10 * 16 + 15 * 1 = 256 + 160 + 15 = 431(10進位)&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val hexNum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x1aF
-&lt;span class=&quot;go&quot;&gt;hexNum: Int = 431
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;octal-literals&quot;&gt;octal literals&lt;/h4&gt;
-&lt;p&gt;這裡使用的 scala 版本是 2.12.4，所以已經將 8 進位(octal)的 literals 移掉了．&lt;br /&gt;
-Remove octal number literals : &lt;a href=&quot;https://issues.scala-lang.org/browse/SI-7618&quot;&gt;SI-7618&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 035
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:1: error: Decimal integer literals may not have a leading zero. &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Octal syntax is obsolete.&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;       val num = 035
-                 ^
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;要轉8進位時，scala 有提供一個 BigInt 的物件，可以轉任何進位 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; BigInt&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;35&quot;&lt;/span&gt; , 10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;num1: scala.math.BigInt = 35
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; BigInt&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;35&quot;&lt;/span&gt; , 8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;num1: scala.math.BigInt = 29
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val num1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; BigInt&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;35&quot;&lt;/span&gt; , 16&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;num1: scala.math.BigInt = 53
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;character-literals&quot;&gt;Character literals&lt;/h4&gt;
-&lt;p&gt;用單引號包起來的 Unicode 字元 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;c: Char = A
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\u0041'&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;c: Char = A
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\\'&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;c: Char = \
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;跳脫字元&quot;&gt;跳脫字元&lt;/h4&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;跳脫字元&lt;/th&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;意思&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;\n&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;換行 (\u000A)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;\b&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;倒退一個字元 (\u0008)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;\t&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;tab (\u0009)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;\f&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;換頁 (\u000C)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;\r&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;游標移至行首 (\u000D)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;&quot;&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;double quote (\u0022)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;'&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;single quote (\u0027)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;\&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;backslash (＼\u005C)&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;要用 unicode 來表示會有一些規則要注意，真的要用到時再查一下，這邊先列幾個例子 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\u000A'&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;c: Char =
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val s &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; c + &lt;span class=&quot;s2&quot;&gt;&quot;Hi&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;s: String =
-&quot;
-Hi&quot;
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\u0022'&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;c: Char = &quot;
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\u005C\u0027'&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;c: Char = '
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val c &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\u005C\u005C'&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;c: Char = \
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;h4 id=&quot;string-literals&quot;&gt;String literals&lt;/h4&gt;
-&lt;p&gt;用雙引號包多個字元組成的字串 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val msg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Daniel&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;msg: String = Hello &quot;Daniel&quot;
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Scala 還提供了一個很方便的功能叫 raw strings，是使用三個雙引號包起來的字串，
-裡面的字串都會被當成純文字，不會被跳脫字元影響 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val msg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&quot;Hello &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Daniel&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;msg: String = Hello \&quot;Daniel\&quot;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;boolean-literals&quot;&gt;Boolean literals&lt;/h4&gt;
-&lt;p&gt;就是 true 跟 false&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val check &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;check: Boolean = true
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;symbol-literals&quot;&gt;Symbol literals&lt;/h4&gt;
-&lt;p&gt;scala 還有一個比較特別的是 Symbol literals，可以用 .name 取出內容 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val s &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Daniel
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;s: Symbol = 'Daniel
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; s.name
-&lt;span class=&quot;go&quot;&gt;res0: String = Daniel
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sayHi&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;names: Symbol&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi &quot;&lt;/span&gt; + names.name
-&lt;span class=&quot;go&quot;&gt;sayHi: (names: Symbol)String
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sayHi&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Daniel)
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;res5: String = Hi Daniel
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sayHi&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Sam)
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;res6: String = Hi Sam
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;基本型別使用上感覺跟其他語言差不多，但覺得 String literals 的 raw strings (“”” “”“)真的很方便，不用想跳脫字元的問題．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Basic Types</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 : 循序取得 collection 元素． 需要有 index 取得 collection 元素． 需要多個計數器時． 迴圈需要產生一組新個 collection 物件．</summary></entry></feed>
