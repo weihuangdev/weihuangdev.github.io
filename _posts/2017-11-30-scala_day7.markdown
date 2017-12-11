@@ -6,24 +6,21 @@ categories: scala
 ---
 
 ## tuple
-* tuple 的格式像這樣 (element1 , element1 , ...)
-* tuple 是可存取不同型態的一個物件．
-* tuple 是 **immutable** 的．
-* 使用 ._ 取得 tuples 的 element ．
-* 其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , ... , new Tuple22
-* tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當．
-* tuple 如果只有兩個 element 的話，可以用 **(element1) -> (element2)** 產生．
-* tuple 的值也可以用變數存取．
-
-Sample Code : 
+tuple 是可存取不同型態的一種物件，它是 immutable 的．格式像這樣 (element1 , element1 , ...)
 
 ```console
 scala> val nums = (1,"a",2D,3L)
 nums: (Int, String, Double, Long) = (1,a,2.0,3)
+```
+使用 ._ 取得 tuples 的 element 並從 index 1 開始．
 
+```console
 scala> nums._1
 res34: Int = 1
+```
+其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , ... , new Tuple22．tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當．
 
+```console
 scala> val tupleObj = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23)
 <console>:1: error: too many elements for tuple: 23, allowed: 22
        val tupleObj = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23)
@@ -31,10 +28,16 @@ scala> val tupleObj = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,
 
 scala> val t22 = new Tuple22(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)
 t22: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)
+```
+tuple 如果只有兩個 element 的話，可以用 (element1) -> (element2) 產生．
 
+```console
 scala> 1 -> "Daniel"
 res1: (Int, String) = (1,Daniel)
+```
+tuple 的值也可以用變數存取．
 
+```console
 scala> val (id,name) = 1 -> "Daniel"
 id: Int = 1
 name: String = Daniel
@@ -43,7 +46,8 @@ scala> id
 res2: Int = 1
 ```
 
-#### find tuple : 
+#### 使用 filter find tuple : 
+filter 會根據寫的條件，找到需要的元素．
 
 ```console
 scala> val empList = List("Sam"->10,"Daniel"->20,"Jack"->30,"Ray"->40)
@@ -55,7 +59,8 @@ findName: (name: String, empList: List[(String, Int)])List[(String, Int)]
 scala> findName("Daniel",empList)(0)._2
 res7: Int = 20
 ```
-#### sum tuple : 
+#### 使用 map sum tuple : 
+map 會走訪 collection 的每個元素然後做處理．下面例子是取出每個 tuple 的第二個元素，然後是一個新的 List 最後再使用 sum 方法將 List 所有元素加起來．
 
 ```console
 scala> val wordsCount = List('A'->10,'C'->20,'E'->30,'Y'->40)
@@ -67,7 +72,10 @@ sum: (wordsData: List[(Char, Int)])Int
 scala> sum(wordsCount)
 res9: Int = 100
 ```
-#### foldLeft 版本 (有fold、foldLeft、foldRight 之後再介紹) : 
+
+#### foldLeft 版本 (另外還有有fold、foldRight)
+foldLeft 定義 : def foldLeft\[B\](z: B)(f: (B, A) => B): B  
+foldLeft 需要兩個參數，第一個是初始值(z: B)、第二個是一個函數(f: (B, A) => B)，然後回傳初始值的型態(B)
 
 ```console
 scala> val wordsCount = List('A'->10,'C'->20,'E'->30,'Y'->40)

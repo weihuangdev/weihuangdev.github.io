@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 7 (tuples)</title>
-  <meta name="description" content="tuple tuple 的格式像這樣 (element1 , element1 , …) tuple 是可存取不同型態的一個物件． tuple 是 immutable 的． 使用 ._ 取得 tuples 的 element ． 其實 tuple 是根據 element 的數量，scala 幫你 new Tupl...">
+  <meta name="description" content="tuple tuple 是可存取不同型態的一種物件，它是 immutable 的．格式像這樣 (element1 , element1 , …)">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/11/30/scala_day7.html">
@@ -81,37 +81,34 @@
 
   <div class="post-content" itemprop="articleBody">
     <h2 id="tuple">tuple</h2>
-<ul>
-  <li>tuple 的格式像這樣 (element1 , element1 , …)</li>
-  <li>tuple 是可存取不同型態的一個物件．</li>
-  <li>tuple 是 <strong>immutable</strong> 的．</li>
-  <li>使用 ._ 取得 tuples 的 element ．</li>
-  <li>其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , … , new Tuple22</li>
-  <li>tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當．</li>
-  <li>tuple 如果只有兩個 element 的話，可以用 <strong>(element1) -&gt; (element2)</strong> 產生．</li>
-  <li>tuple 的值也可以用變數存取．</li>
-</ul>
-
-<p>Sample Code :</p>
+<p>tuple 是可存取不同型態的一種物件，它是 immutable 的．格式像這樣 (element1 , element1 , …)</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val nums <span class="o">=</span> <span class="o">(</span>1,<span class="s2">"a"</span>,2D,3L<span class="o">)</span>
 <span class="go">nums: (Int, String, Double, Long) = (1,a,2.0,3)
+</span></code></pre></div></div>
+<p>使用 ._ 取得 tuples 的 element 並從 index 1 開始．</p>
 
-</span><span class="gp">scala&gt;</span> nums._1
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> nums._1
 <span class="go">res34: Int = 1
+</span></code></pre></div></div>
+<p>其實 tuple 是根據 element 的數量，scala 幫你 new Tuple 的物件，例 : new Tuple2 , new Tuple3 , … , new Tuple22．tuple 的 elements 目前最多只能存到 22 個，如果超過可能也要思考一下設計面是否恰當．</p>
 
-</span><span class="gp">scala&gt;</span> val tupleObj <span class="o">=</span> <span class="o">(</span>1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23<span class="o">)</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val tupleObj <span class="o">=</span> <span class="o">(</span>1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23<span class="o">)</span>
 <span class="gp">&lt;console&gt;</span>:1: error: too many elements <span class="k">for </span>tuple: 23, allowed: 22
 <span class="go">       val tupleObj = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23)
                       ^
 
 </span><span class="gp">scala&gt;</span> val t22 <span class="o">=</span> new Tuple22<span class="o">(</span>1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22<span class="o">)</span>
 <span class="go">t22: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int) = (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)
+</span></code></pre></div></div>
+<p>tuple 如果只有兩個 element 的話，可以用 (element1) -&gt; (element2) 產生．</p>
 
-</span><span class="gp">scala&gt;</span> 1 -&gt; <span class="s2">"Daniel"</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> 1 -&gt; <span class="s2">"Daniel"</span>
 <span class="go">res1: (Int, String) = (1,Daniel)
+</span></code></pre></div></div>
+<p>tuple 的值也可以用變數存取．</p>
 
-</span><span class="gp">scala&gt;</span> val <span class="o">(</span>id,name<span class="o">)</span> <span class="o">=</span> 1 -&gt; <span class="s2">"Daniel"</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val <span class="o">(</span>id,name<span class="o">)</span> <span class="o">=</span> 1 -&gt; <span class="s2">"Daniel"</span>
 <span class="go">id: Int = 1
 name: String = Daniel
 
@@ -119,7 +116,8 @@ name: String = Daniel
 <span class="go">res2: Int = 1
 </span></code></pre></div></div>
 
-<h4 id="find-tuple-">find tuple :</h4>
+<h4 id="使用-filter-find-tuple-">使用 filter find tuple :</h4>
+<p>filter 會根據寫的條件，找到需要的元素．</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val empList <span class="o">=</span> List<span class="o">(</span><span class="s2">"Sam"</span>-&gt;10,<span class="s2">"Daniel"</span>-&gt;20,<span class="s2">"Jack"</span>-&gt;30,<span class="s2">"Ray"</span>-&gt;40<span class="o">)</span>
 <span class="go">empList: List[(String, Int)] = List((Sam,10), (Daniel,20), (Jack,30), (Ray,40))
@@ -130,7 +128,8 @@ name: String = Daniel
 </span><span class="gp">scala&gt;</span> findName<span class="o">(</span><span class="s2">"Daniel"</span>,empList<span class="o">)(</span>0<span class="o">)</span>._2
 <span class="go">res7: Int = 20
 </span></code></pre></div></div>
-<h4 id="sum-tuple-">sum tuple :</h4>
+<h4 id="使用-map-sum-tuple-">使用 map sum tuple :</h4>
+<p>map 會走訪 collection 的每個元素然後做處理．下面例子是取出每個 tuple 的第二個元素，然後是一個新的 List 最後再使用 sum 方法將 List 所有元素加起來．</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val wordsCount <span class="o">=</span> List<span class="o">(</span><span class="s1">'A'</span>-&gt;10,<span class="s1">'C'</span>-&gt;20,<span class="s1">'E'</span>-&gt;30,<span class="s1">'Y'</span>-&gt;40<span class="o">)</span>
 <span class="go">wordsCount: List[(Char, Int)] = List((A,10), (C,20), (E,30), (Y,40))
@@ -141,7 +140,10 @@ name: String = Daniel
 </span><span class="gp">scala&gt;</span> sum<span class="o">(</span>wordsCount<span class="o">)</span>
 <span class="go">res9: Int = 100
 </span></code></pre></div></div>
-<h4 id="foldleft-版本-有foldfoldleftfoldright-之後再介紹-">foldLeft 版本 (有fold、foldLeft、foldRight 之後再介紹) :</h4>
+
+<h4 id="foldleft-版本-另外還有有foldfoldright">foldLeft 版本 (另外還有有fold、foldRight)</h4>
+<p>foldLeft 定義 : def foldLeft[B](z: B)(f: (B, A) =&gt; B): B<br />
+foldLeft 需要兩個參數，第一個是初始值(z: B)、第二個是一個函數(f: (B, A) =&gt; B)，然後回傳初始值的型態(B)</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val wordsCount <span class="o">=</span> List<span class="o">(</span><span class="s1">'A'</span>-&gt;10,<span class="s1">'C'</span>-&gt;20,<span class="s1">'E'</span>-&gt;30,<span class="s1">'Y'</span>-&gt;40<span class="o">)</span>
 <span class="go">wordsCount: List[(Char, Int)] = List((A,10), (C,20), (E,30), (Y,40))
