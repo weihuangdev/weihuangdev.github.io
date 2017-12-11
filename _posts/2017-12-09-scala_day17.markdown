@@ -127,6 +127,6 @@ res47: String = Hello 123
 ### 總結
 - - -
 * Curry 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Curry 也許會更有感覺．
-* 由於 Curry 是把多個參數拆分成一個一個的參數，所以變成只有一個參數這時候可以使用大括號讓程式看起來更有結構性．
+* 由於 Curry 是把多個參數拆分成一個一個的參數，所以變成只有一個參數這時候可以使用大括號讓程式看起來更有結構性．例如foldLeft就有運用到，def foldLeft\[B\](z: B)(f: (B, A) => B): B ．程式寫起來可使用大括號 : wordsData.foldLeft(0){(sum,tup) => sum + tup._2}．
 
 
