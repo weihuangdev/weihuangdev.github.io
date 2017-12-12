@@ -37,7 +37,7 @@ tempSum: Int => Int = $$Lambda$1215/966153678@59f32d74
 scala> tempSum(2)
 res22: Int = 3
 ```
-Curry則無法，需要再後面加上 _ 佔位符符號(placeholder notation)當作第二個參數 :  
+Curry 需要再後面加上 _ 佔位符符號(placeholder notation)當作第二個參數 :  
 
 ```console
 scala> val tempSum = sum(1)

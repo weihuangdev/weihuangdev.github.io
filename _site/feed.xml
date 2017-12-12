@@ -1,4 +1,140 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-11T23:59:11+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 19 (Option type)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day19.html" rel="alternate" type="text/html" title="Scala day 19 (Option type)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day19</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day19.html">&lt;h3 id=&quot;option-type&quot;&gt;Option type&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-12T23:12:14+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 20 (Array &amp;amp; ArrayBuffer)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day20.html" rel="alternate" type="text/html" title="Scala day 20 (Array &amp; ArrayBuffer)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day20</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day20.html">&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
+&lt;p&gt;Array 是一個固定長度且有順序性的容器，Array 是 mutable 的，在 new 時需給定長度．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numbers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Array[Int]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;numbers: Array[Int] = Array(0, 0, 0, 0, 0)
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numbers&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numbers&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numbers&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numbers&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numbers
+&lt;span class=&quot;go&quot;&gt;res107: Array[Int] = Array(1, 1, 5, 0, 3)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;直接給 Array 元素，取出元素直接用 index 即可，從 0 開始 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Allen&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Loues&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;names: Array[String] = Array(Allen, Daniel, Jack, Ray, Loues)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res101: String = Allen
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;利用 Array.ofDim 建立多維度的 Array :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val multiNums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array.ofDim[Int]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;multiNums: Array[Array[Int]] = Array(Array(0, 0, 0), Array(0, 0, 0))
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val multiNums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array.ofDim[Int]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,3,4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;multiNums: Array[Array[Array[Int]]] = Array(Array(Array(0, 0, 0, 0), Array(0, 0, 0, 0), Array(0, 0, 0, 0)), Array(Array(0, 0, 0, 0), Array(0, 0, 0, 0), Array(0, 0, 0, 0)))
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; multiNums&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; multiNums&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; multiNums&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; multiNums
+&lt;span class=&quot;go&quot;&gt;res112: Array[Array[Array[Int]]] = Array(Array(Array(1, 2, 0, 3), Array(0, 0, 0, 0), Array(0, 0, 0, 0)), Array(Array(0, 0, 0, 0), Array(0, 0, 0, 0), Array(0, 0, 0, 0)))
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt;- 0 to 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  for(j &amp;lt;- 0 to 2) {
+     |   for(k &amp;lt;- 0 to 3) {
+     |    println(multiNums(i)(j)(k))
+     |   }
+     |  }
+     | }
+1
+2
+0
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;...
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;copy-array-and-compare&quot;&gt;Copy Array and Compare&lt;/h4&gt;
+&lt;p&gt;使用 clone 複製 Array :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Allen&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,1,&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Loues&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;names: Array[Any] = Array(Allen, Daniel, 1, Ray, Loues)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val cnames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; names.clone&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;cnames: Array[Any] = Array(Allen, Daniel, 1, Ray, Loues)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用 == 比較 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; cnames
+&lt;span class=&quot;go&quot;&gt;res127: Boolean = false
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.deep &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; cnames.deep
+&lt;span class=&quot;go&quot;&gt;res128: Boolean = true
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用 sameElements 比較容器的元素內容 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names sameElements cnames
+&lt;span class=&quot;go&quot;&gt;res129: Boolean = true
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;再來看多維度的陣列&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val nums1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array.ofDim[Int]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;nums1: Array[Array[Int]] = Array(Array(0, 0, 0), Array(0, 0, 0))
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3
+&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 4
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums1
+&lt;span class=&quot;go&quot;&gt;res134: Array[Array[Int]] = Array(Array(0, 2, 0), Array(0, 3, 4))
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;多維度陣列 copy 的寫法 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val nums2 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; nums1.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.clone&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;nums2: Array[Array[Int]] = Array(Array(0, 2, 0), Array(0, 3, 4))
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;多維度陣列的比較，這時候使用 sameElements 就會是 false 但使用 == 比較 deep 還是會是 true :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums1 &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; nums2
+&lt;span class=&quot;go&quot;&gt;res135: Boolean = false
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums1.deep &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; nums2.deep
+&lt;span class=&quot;go&quot;&gt;res136: Boolean = true
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums1 sameElements nums2
+&lt;span class=&quot;go&quot;&gt;res138: Boolean = false
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;arraybuffer&quot;&gt;ArrayBuffer&lt;/h3&gt;
+&lt;p&gt;ArrayBuffer 也是 mutable 的，與 Array 差異是它不用給定固定長度．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import collection.mutable.ArrayBuffer
+&lt;span class=&quot;go&quot;&gt;import collection.mutable.ArrayBuffer
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new ArrayBuffer[String]
+&lt;span class=&quot;go&quot;&gt;names: scala.collection.mutable.ArrayBuffer[String] = ArrayBuffer()
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;新增元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Andy&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res142: names.type = ArrayBuffer(Andy)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res143: names.type = ArrayBuffer(Andy, Daniel, Sam)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;刪除元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Andy&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res144: names.type = ArrayBuffer(Daniel)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;轉成 Array&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.toArray
+&lt;span class=&quot;go&quot;&gt;res146: Array[String] = Array(Daniel)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;比較 Array 時，可能用 deep function 後再用 == 比較元素內容會比較準確，因為多維度陣列使用 sameElements 會是錯的．&lt;/li&gt;
+  &lt;li&gt;Array 可知道大小時用 Array，如果預先無法知道大小再用 ArrayBuffer．&lt;/li&gt;
+  &lt;li&gt;建立Array 用 new Array[Int](5)，多維度Array 用 Array.ofDim[Int](2,3)．&lt;/li&gt;
+  &lt;li&gt;copy Array 用 names.clone()，多維度Array 用 nums1.map(_.clone)．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Array Array 是一個固定長度且有順序性的容器，Array 是 mutable 的，在 new 時需給定長度．</summary></entry><entry><title type="html">Scala day 19 (Option type)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day19.html" rel="alternate" type="text/html" title="Scala day 19 (Option type)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day19</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day19.html">&lt;h3 id=&quot;option-type&quot;&gt;Option type&lt;/h3&gt;
 &lt;p&gt;Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值．
 像下面例子，Map 的 get api 定義 :&lt;br /&gt;
 def get(key: K): Option[V]&lt;br /&gt;
@@ -166,7 +302,7 @@ initNum: (s: Any)Option[Int]
 &lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; tempSum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;res22: Int = 3
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Curry則無法，需要再後面加上 _ 佔位符符號(placeholder notation)當作第二個參數 :&lt;/p&gt;
+&lt;p&gt;Curry 需要再後面加上 _ 佔位符符號(placeholder notation)當作第二個參數 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val tempSum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:12: error: not enough arguments &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;method sum: &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1: Int, num2: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;Int.
@@ -976,180 +1112,4 @@ getMultiMatchType: (x: Any)String
 &lt;hr /&gt;
 &lt;ul&gt;
   &lt;li&gt;scala 沒有提供 break 和 continue，但還是可以運用 breakable 來實作出來．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">while &amp;amp; do…while while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :</summary></entry><entry><title type="html">Scala day 10 (Loop)</title><link href="http://localhost:4000/scala/2017/12/01/scala_day10.html" rel="alternate" type="text/html" title="Scala day 10 (Loop)" /><published>2017-12-01T09:44:17+08:00</published><updated>2017-12-01T09:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/01/scala_day10</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/01/scala_day10.html">&lt;h4 id=&quot;scala-迴圈的寫法很多種但這邊大概整理成-4-項根據需求來決定要使用哪種寫法-&quot;&gt;scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 :&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;循序取得 collection 元素．&lt;/li&gt;
-  &lt;li&gt;需要有 index 取得 collection 元素．&lt;/li&gt;
-  &lt;li&gt;需要多個計數器時．&lt;/li&gt;
-  &lt;li&gt;迴圈需要產生一組新個 collection 物件．&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;h4 id=&quot;循序取得-collection-元素&quot;&gt;循序取得 collection 元素．&lt;/h4&gt;
-&lt;p&gt;for&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Andy&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;names: Array[String] = Array(Andy, Jack, Sam, Daniel)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &amp;lt;- names&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Andy
-Jack
-Sam
-Daniel
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &amp;lt;- names&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  var upperName = name.toUpperCase
-     |  println(upperName)
-     | }
-ANDY
-JACK
-SAM
-DANIEL
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;foreach&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Andy
-Jack
-Sam
-Daniel
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1.to&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;1
-2
-3
-4
-5
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 to 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;1
-2
-3
-4
-5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用 withFilter 過濾元素&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.withFilter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foreach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Andy
-Jack
-Daniel
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;需要有-index-取得-collection-元素&quot;&gt;需要有 index 取得 collection 元素&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;使用 until&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt;- 0 &lt;span class=&quot;k&quot;&gt;until &lt;/span&gt;newNames.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |  println(s&quot;$&lt;/span&gt;i is &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;newNames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(i)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;     | }
-0 is ANDY
-1 is JACK
-2 is SAM
-3 is DANIEL
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;迴圈搭配條件式 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt;-&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt; , &lt;span class=&quot;s2&quot;&gt;&quot;a2&quot;&lt;/span&gt;-&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt; , &lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt;-&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt; , &lt;span class=&quot;s2&quot;&gt;&quot;a4&quot;&lt;/span&gt;-&amp;gt;&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt;- 0 &lt;span class=&quot;k&quot;&gt;until &lt;/span&gt;names.length &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;names&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;._2 &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  println(names(i))
-     | }
-(a1,Sam)
-(a3,Jack)
-(a4,Ray)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;使用 zip 與 zipWithIndex&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;zip 可指定 index 開始的數字，zipWithIndex 則是從 0 開始 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;element , index&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;lt;- newNames.zip&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Stream from 5&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |  println(s&quot;$&lt;/span&gt;index is &lt;span class=&quot;nv&quot;&gt;$element&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;     | }
-5 is ANDY
-6 is JACK
-7 is SAM
-8 is DANIEL
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;element , index&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;lt;- newNames.zipWithIndex&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |  println(s&quot;$&lt;/span&gt;index is &lt;span class=&quot;nv&quot;&gt;$element&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;     | }
-0 is ANDY
-1 is JACK
-2 is SAM
-3 is DANIEL
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;collection 的資料是 Tuple2 的話 :&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val days &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Array&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sunday&quot;&lt;/span&gt;,0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Monday&quot;&lt;/span&gt;,1&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;days: Array[(String, Int)] = Array((Sunday,0), (Monday,1))
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; days.zipWithIndex.foreach &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;day &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;._1._1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; is &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;._1._2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; , index is &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;day&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;._2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)}&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Sunday is 0 , index is 0
-Monday is 1 , index is 1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;需要多個計數器時&quot;&gt;需要多個計數器時&lt;/h4&gt;
-&lt;p&gt;for 迴圈多個計數器變數的寫法 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt;- 1 to 3&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;j &amp;lt;- &lt;span class=&quot;nt&quot;&gt;-2&lt;/span&gt; to &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;k &amp;lt;- 8 to 10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;s2&quot;&gt;&quot; i=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; , j=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; , k=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$k&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)}&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt; i=1 , j=-2 , k=8
- i=1 , j=-2 , k=9
- i=1 , j=-2 , k=10
- i=1 , j=-1 , k=8
- i=1 , j=-1 , k=9
- i=1 , j=-1 , k=10
- i=2 , j=-2 , k=8
- i=2 , j=-2 , k=9
- i=2 , j=-2 , k=10
- i=2 , j=-1 , k=8
- i=2 , j=-1 , k=9
- i=2 , j=-1 , k=10
- i=3 , j=-2 , k=8
- i=3 , j=-2 , k=9
- i=3 , j=-2 , k=10
- i=3 , j=-1 , k=8
- i=3 , j=-1 , k=9
- i=3 , j=-1 , k=10
-
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt; scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  i &amp;lt;- -3 to 0
-     |  j &amp;lt;- 1 to 3
-     |  if i != 2 &amp;amp;&amp;amp; j != 2
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;     | } println(s&quot;i = $&lt;/span&gt;i , j &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;)
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;i = -3 , j = 1
-i = -3 , j = 3
-i = -2 , j = 1
-i = -2 , j = 3
-i = -1 , j = 1
-i = -1 , j = 3
-i = 0 , j = 1
-i = 0 , j = 3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;迴圈需要產生一組新個-collection-物件&quot;&gt;迴圈需要產生一組新個 collection 物件&lt;/h4&gt;
-&lt;p&gt;透過 Loop 及 yield 處理過元素後，可產生新的 collection :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val newNames &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &amp;lt;- names&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; yield name.toUpperCase
-&lt;span class=&quot;go&quot;&gt;newNames: Array[String] = Array(ANDY, JACK, SAM, DANIEL)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala Loop 的寫法跟 java 比較 :&lt;br /&gt;
-java :
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for(int i = 0 ; i &amp;lt; e.length ; i++) ...
-for(String name : names) ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;scala :&lt;/p&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;for(i &amp;lt;- 0 until e.length) ...
-for(name &amp;lt;- names) ...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;迴圈的寫法很多種，但主要還是根據需求來決定．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">scala 迴圈的寫法很多種，但這邊大概整理成 4 項，根據需求來決定要使用哪種寫法 : 循序取得 collection 元素． 需要有 index 取得 collection 元素． 需要多個計數器時． 迴圈需要產生一組新個 collection 物件．</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">while &amp;amp; do…while while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :</summary></entry></feed>

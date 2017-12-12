@@ -1,0 +1,157 @@
+---
+layout: post
+title:  "Scala day 20 (Array & ArrayBuffer)"
+date:   2017-12-09 10:44:17 +0800
+categories: scala
+---
+
+### Array
+Array 是一個固定長度且有順序性的容器，Array 是 mutable 的，在 new 時需給定長度．
+
+```console
+scala> val numbers = new Array[Int](5)
+numbers: Array[Int] = Array(0, 0, 0, 0, 0)
+scala> numbers(0) = 1
+scala> numbers(1) = 1
+scala> numbers(2) = 5
+scala> numbers(4) = 3
+
+scala> numbers
+res107: Array[Int] = Array(1, 1, 5, 0, 3)
+```
+直接給 Array 元素，取出元素直接用 index 即可，從 0 開始 : 
+
+```console
+scala> val names = Array("Allen","Daniel","Jack","Ray","Loues")
+names: Array[String] = Array(Allen, Daniel, Jack, Ray, Loues)
+
+scala> names(0)
+res101: String = Allen
+```
+利用 Array.ofDim 建立多維度的 Array : 
+
+```console
+scala> val multiNums = Array.ofDim[Int](2,3)
+multiNums: Array[Array[Int]] = Array(Array(0, 0, 0), Array(0, 0, 0))
+
+scala> val multiNums = Array.ofDim[Int](2,3,4)
+multiNums: Array[Array[Array[Int]]] = Array(Array(Array(0, 0, 0, 0), Array(0, 0, 0, 0), Array(0, 0, 0, 0)), Array(Array(0, 0, 0, 0), Array(0, 0, 0, 0), Array(0, 0, 0, 0)))
+
+scala> multiNums(0)(0)(0) = 1
+scala> multiNums(0)(0)(1) = 2
+scala> multiNums(0)(0)(3) = 3
+
+scala> multiNums
+res112: Array[Array[Array[Int]]] = Array(Array(Array(1, 2, 0, 3), Array(0, 0, 0, 0), Array(0, 0, 0, 0)), Array(Array(0, 0, 0, 0), Array(0, 0, 0, 0), Array(0, 0, 0, 0)))
+
+scala> for(i <- 0 to 1) {
+     |  for(j <- 0 to 2) {
+     |   for(k <- 0 to 3) {
+     |    println(multiNums(i)(j)(k))
+     |   }
+     |  }
+     | }
+1
+2
+0
+...
+
+```
+#### Copy Array and Compare
+使用 clone 複製 Array : 
+
+```console
+scala> val names = Array("Allen","Daniel",1,"Ray","Loues")
+names: Array[Any] = Array(Allen, Daniel, 1, Ray, Loues)
+
+scala> val cnames = names.clone()
+cnames: Array[Any] = Array(Allen, Daniel, 1, Ray, Loues)
+```
+使用 == 比較 :  
+
+```console
+scala> names == cnames
+res127: Boolean = false
+
+scala> names.deep == cnames.deep
+res128: Boolean = true
+```
+使用 sameElements 比較容器的元素內容 : 
+
+```console
+scala> names sameElements cnames
+res129: Boolean = true
+```
+再來看多維度的陣列
+
+```console
+scala> val nums1 = Array.ofDim[Int](2,3)
+nums1: Array[Array[Int]] = Array(Array(0, 0, 0), Array(0, 0, 0))
+
+scala> nums1(0)(1) = 2
+scala> nums1(1)(1) = 3
+scala> nums1(1)(2) = 4
+
+scala> nums1
+res134: Array[Array[Int]] = Array(Array(0, 2, 0), Array(0, 3, 4))
+```
+多維度陣列 copy 的寫法 : 
+
+```console
+scala> val nums2 = nums1.map(_.clone)
+nums2: Array[Array[Int]] = Array(Array(0, 2, 0), Array(0, 3, 4))
+```
+多維度陣列的比較，這時候使用 sameElements 就會是 false 但使用 == 比較 deep 還是會是 true : 
+
+```console
+scala> nums1 == nums2
+res135: Boolean = false
+
+scala> nums1.deep == nums2.deep
+res136: Boolean = true
+
+scala> nums1 sameElements nums2
+res138: Boolean = false
+
+```
+
+### ArrayBuffer
+ArrayBuffer 也是 mutable 的，與 Array 差異是它不用給定固定長度．
+
+```console
+scala> import collection.mutable.ArrayBuffer
+import collection.mutable.ArrayBuffer
+
+scala> val names = new ArrayBuffer[String]
+names: scala.collection.mutable.ArrayBuffer[String] = ArrayBuffer()
+```
+新增元素 :  
+
+```console
+scala> names += "Andy"
+res142: names.type = ArrayBuffer(Andy)
+
+scala> names += ("Daniel","Sam")
+res143: names.type = ArrayBuffer(Andy, Daniel, Sam)
+```
+刪除元素 :  
+
+```console
+scala> names -= ("Andy","Sam")
+res144: names.type = ArrayBuffer(Daniel)
+```
+轉成 Array
+
+```console
+scala> names.toArray
+res146: Array[String] = Array(Daniel)
+```
+
+
+### 總結
+- - -
+* 比較 Array 時，可能用 deep function 後再用 == 比較元素內容會比較準確，因為多維度陣列使用 sameElements 會是錯的．
+* Array 可知道大小時用 Array，如果預先無法知道大小再用 ArrayBuffer．
+* 建立Array 用 new Array\[Int\](5)，多維度Array 用 Array.ofDim\[Int\](2,3)．
+* copy Array 用 names.clone()，多維度Array 用 nums1.map(_.clone)．
+
