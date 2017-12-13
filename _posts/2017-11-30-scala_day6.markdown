@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "Scala day 6 (scala's List)"
+title:  "Scala day 6 (List & ListBuffer)"
 date:   2017-11-30 09:44:17 +0800
 categories: scala
 ---
 
-## scala's List
-### scala 的 List 是 **immutable** 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List．
+## List
+scala 的 List 是 **immutable** 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List．
 List 有個 method 是 :::，可將 2 個 List 串接起來．
 
 ```console
@@ -123,11 +123,61 @@ scala> names.mkString(",")
 res18: String = Sam,Daniel,Jack,Loues,Mike
 ```
 
+## ListBuffer
+List 是 immutable，但是 ListBuffer 是 mutable 的 :  
+使用前需要 import scala.collection.mutable.ListBuffer
+
+```console
+scala> import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ListBuffer
+```
+new 一個空的 ListBuffer :  
+
+```console
+scala> val names = new ListBuffer[String]()
+names: scala.collection.mutable.ListBuffer[String] = ListBuffer()
+```
+
+新增元素 :  
+
+```console
+scala> names += "Daniel"
+res52: names.type = ListBuffer(Daniel)
+
+scala> names += ("Jack","Ray")
+res53: names.type = ListBuffer(Daniel, Jack, Ray)
+```
+
+刪除元素 : 
+```console
+scala> names -= "Jack"
+res54: names.type = ListBuffer(Daniel, Ray)
+
+scala> names += ("Daniel","Jack","Ray","Lucy","Allen","Petty")
+res62: names.type = ListBuffer(Daniel, Jack, Ray, Lucy, Allen, Petty)
+
+scala> names -= ("Jack","Allen")
+res63: names.type = ListBuffer(Daniel, Ray, Lucy, Petty)
+```
+刪除 Seq 的元素 :  
+
+```console
+scala> names --= Seq("Daniel","Lucy")
+res64: names.type = ListBuffer(Ray, Petty)
+
+```
+最後可再把它轉成 immutable 的 List :  
+
+```console
+scala> names.toList
+res65: List[String] = List(Ray, Petty)
+```
+
+
 ### 總結
 - - -
-* scala 的 List 是 immutable，所以在使用上無法去直接 update 裡面的元素，可能要運用 insert 及 filter 的功能來達到 update 的效果，但每次的操作都會產生一組新的 List ．如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer．
-* method 又分成 left operand(一般method) 與 right operand(method名稱結尾是冒號)．
-
+* scala 的 List 是 immutable，所以在使用上無法去直接 update 裡面的元素，可能要運用 insert 及 filter 的功能來達到 update 的效果．
+* List 在程式很常用到，ListBuffer 透過運算子就可以刪除新增元素使用起來很方便．
 
 
 

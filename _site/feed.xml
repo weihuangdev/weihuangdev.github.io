@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-12T23:12:14+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 20 (Array &amp;amp; ArrayBuffer)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day20.html" rel="alternate" type="text/html" title="Scala day 20 (Array &amp; ArrayBuffer)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day20</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day20.html">&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-13T11:52:54+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 20 (Array &amp;amp; ArrayBuffer)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day20.html" rel="alternate" type="text/html" title="Scala day 20 (Array &amp; ArrayBuffer)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day20</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day20.html">&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
 &lt;p&gt;Array 是一個固定長度且有順序性的容器，Array 是 mutable 的，在 new 時需給定長度．&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numbers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Array[Int]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -225,55 +225,29 @@ initNum: (s: Any)Option[Int]
   &lt;li&gt;Option type 感覺可以避免物件回傳 null，至少會是 None 物件，讓我想到一個 design pattern 是 Null Object Pattern，也是會定義一個 null 物件，不讓值直接變成 null，可預防 NullPointerException．&lt;/li&gt;
   &lt;li&gt;Scala 的某些 collection 已經幫我們訂好回傳 Option type 在使用時可注意一下，很多種不同寫法需要再思考．&lt;/li&gt;
   &lt;li&gt;map、flatten、flatMap 感覺會很容易使用到，這邊先提供個例子，有機會再額外介紹．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Option type Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值． 像下面例子，Map 的 get api 定義 : def get(key: K): Option[V] 所以 Map get 回傳的也是 Option 型態，有值會回傳 Some(Int)，沒有的話會回傳 None :</summary></entry><entry><title type="html">Scala day 18 (Mutable List)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day18.html" rel="alternate" type="text/html" title="Scala day 18 (Mutable List)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day18</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day18.html">&lt;h3 id=&quot;mutable-list&quot;&gt;Mutable List&lt;/h3&gt;
-&lt;p&gt;之前介紹的 List 是 immutable，但其實也是有 mutable List 叫 ListBuffer :&lt;br /&gt;
-使用前需要 import scala.collection.mutable.ListBuffer&lt;/p&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Option type Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值． 像下面例子，Map 的 get api 定義 : def get(key: K): Option[V] 所以 Map get 回傳的也是 Option 型態，有值會回傳 Some(Int)，沒有的話會回傳 None :</summary></entry><entry><title type="html">Scala day 18 (Map)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day18.html" rel="alternate" type="text/html" title="Scala day 18 (Map)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day18</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day18.html">&lt;h3 id=&quot;map&quot;&gt;Map&lt;/h3&gt;
+&lt;p&gt;Map 的特色是 key / value．有分為 mutable 及 immutable．&lt;/p&gt;
 
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.collection.mutable.ListBuffer
-&lt;span class=&quot;go&quot;&gt;import scala.collection.mutable.ListBuffer
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;new 一個空的 ListBuffer :&lt;/p&gt;
+&lt;p&gt;immutable 的 Map :&lt;/p&gt;
 
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val names &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new ListBuffer[String]&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;names: scala.collection.mutable.ListBuffer[String] = ListBuffer()
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val m &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt; -&amp;gt; 1 , &lt;span class=&quot;s2&quot;&gt;&quot;a2&quot;&lt;/span&gt; -&amp;gt; 2 , &lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt; -&amp;gt; 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;m: scala.collection.immutable.Map[String,Int] = Map(a1 -&amp;gt;&lt;/span&gt; 1, a2 -&amp;gt; 2, a3 -&amp;gt; 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;新增元素 :&lt;/p&gt;
+&lt;p&gt;mutable 的 Map，需要 import scala.collection.mutable.Map :&lt;/p&gt;
 
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res52: names.type = ListBuffer(Daniel)
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.collection.mutable.Map
+&lt;span class=&quot;go&quot;&gt;import scala.collection.mutable.Map
 
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res53: names.type = ListBuffer(Daniel, Jack, Ray)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;刪除元素 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res54: names.type = ListBuffer(Daniel, Ray)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Lucy&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Allen&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Petty&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res62: names.type = ListBuffer(Daniel, Jack, Ray, Lucy, Allen, Petty)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Allen&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res63: names.type = ListBuffer(Daniel, Ray, Lucy, Petty)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;刪除 Seq 的元素 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Seq&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Lucy&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res64: names.type = ListBuffer(Ray, Petty)
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;最後可再把它轉成 immutable 的 List :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; names.toList
-&lt;span class=&quot;go&quot;&gt;res65: List[String] = List(Ray, Petty)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val m &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt; -&amp;gt; 1 , &lt;span class=&quot;s2&quot;&gt;&quot;a2&quot;&lt;/span&gt; -&amp;gt; 2 , &lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt; -&amp;gt; 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;m: scala.collection.mutable.Map[String,Int] = Map(a1 -&amp;gt;&lt;/span&gt; 1, a3 -&amp;gt; 3, a2 -&amp;gt; 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
   &lt;li&gt;List 不管 mutable 或 immutable，在程式很常用到，ListBuffer 透過運算子就可以刪除新增元素使用起來很方便．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Mutable List 之前介紹的 List 是 immutable，但其實也是有 mutable List 叫 ListBuffer : 使用前需要 import scala.collection.mutable.ListBuffer</summary></entry><entry><title type="html">Scala day 17 (Currying)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day17.html" rel="alternate" type="text/html" title="Scala day 17 (Currying)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day17</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day17.html">&lt;h3 id=&quot;curry&quot;&gt;Curry&lt;/h3&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Map Map 的特色是 key / value．有分為 mutable 及 immutable．</summary></entry><entry><title type="html">Scala day 17 (Currying)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day17.html" rel="alternate" type="text/html" title="Scala day 17 (Currying)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day17</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day17.html">&lt;h3 id=&quot;curry&quot;&gt;Curry&lt;/h3&gt;
 &lt;p&gt;一般函式的寫法 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int , num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; num1 + num2

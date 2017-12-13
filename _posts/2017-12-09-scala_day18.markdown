@@ -1,60 +1,29 @@
 ---
 layout: post
-title:  "Scala day 18 (Mutable List)"
+title:  "Scala day 18 (Map)"
 date:   2017-12-09 10:44:17 +0800
 categories: scala
 ---
 
-### Mutable List
-之前介紹的 List 是 immutable，但其實也是有 mutable List 叫 ListBuffer :  
-使用前需要 import scala.collection.mutable.ListBuffer
+### Map
+Map 的特色是 key / value．有分為 mutable 及 immutable．
+
+immutable 的 Map :  
 
 ```console
-scala> import scala.collection.mutable.ListBuffer
-import scala.collection.mutable.ListBuffer
+scala> val m = Map("a1" -> 1 , "a2" -> 2 , "a3" -> 3)
+m: scala.collection.immutable.Map[String,Int] = Map(a1 -> 1, a2 -> 2, a3 -> 3)
 ```
-new 一個空的 ListBuffer :  
+
+mutable 的 Map，需要 import scala.collection.mutable.Map :  
 
 ```console
-scala> val names = new ListBuffer[String]()
-names: scala.collection.mutable.ListBuffer[String] = ListBuffer()
+scala> import scala.collection.mutable.Map
+import scala.collection.mutable.Map
+
+scala> val m = Map("a1" -> 1 , "a2" -> 2 , "a3" -> 3)
+m: scala.collection.mutable.Map[String,Int] = Map(a1 -> 1, a3 -> 3, a2 -> 2)
 ```
-
-新增元素 :  
-
-```console
-scala> names += "Daniel"
-res52: names.type = ListBuffer(Daniel)
-
-scala> names += ("Jack","Ray")
-res53: names.type = ListBuffer(Daniel, Jack, Ray)
-```
-
-刪除元素 : 
-```console
-scala> names -= "Jack"
-res54: names.type = ListBuffer(Daniel, Ray)
-
-scala> names += ("Daniel","Jack","Ray","Lucy","Allen","Petty")
-res62: names.type = ListBuffer(Daniel, Jack, Ray, Lucy, Allen, Petty)
-
-scala> names -= ("Jack","Allen")
-res63: names.type = ListBuffer(Daniel, Ray, Lucy, Petty)
-```
-刪除 Seq 的元素 :  
-
-```console
-scala> names --= Seq("Daniel","Lucy")
-res64: names.type = ListBuffer(Ray, Petty)
-
-```
-最後可再把它轉成 immutable 的 List :  
-
-```console
-scala> names.toList
-res65: List[String] = List(Ray, Petty)
-```
-
 
 
 

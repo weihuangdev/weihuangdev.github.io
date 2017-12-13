@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Scala day 6 (scala&#39;s List)</title>
-  <meta name="description" content="scala’s List scala 的 List 是 immutable 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List． List 有個 method 是 :::，可將 2 個 List 串接起來．">
+  <title>Scala day 6 (List &amp; ListBuffer)</title>
+  <meta name="description" content="List scala 的 List 是 immutable 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List． List 有個 method 是 :::，可將 2 個 List 串接起來．">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/11/30/scala_day6.html">
@@ -70,7 +70,7 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Scala day 6 (scala&#39;s List)</h1>
+    <h1 class="post-title" itemprop="name headline">Scala day 6 (List &amp; ListBuffer)</h1>
     <p class="post-meta">
       <time datetime="2017-11-30T09:44:17+08:00" itemprop="datePublished">
         
@@ -80,9 +80,9 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h2 id="scalas-list">scala’s List</h2>
-<h3 id="scala-的-list-是-immutable-的所以不管相加或新增元素只要變動的話都會產生一個新的-list">scala 的 List 是 <strong>immutable</strong> 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List．</h3>
-<p>List 有個 method 是 :::，可將 2 個 List 串接起來．</p>
+    <h2 id="list">List</h2>
+<p>scala 的 List 是 <strong>immutable</strong> 的，所以不管相加或新增元素只要變動的話，都會產生一個新的 List．
+List 有個 method 是 :::，可將 2 個 List 串接起來．</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val alist <span class="o">=</span> List<span class="o">(</span>1, 2<span class="o">)</span>
 <span class="go">alist: List[Int] = List(1, 2)
@@ -186,11 +186,55 @@ Daniel
 <span class="go">res18: String = Sam,Daniel,Jack,Loues,Mike
 </span></code></pre></div></div>
 
+<h2 id="listbuffer">ListBuffer</h2>
+<p>List 是 immutable，但是 ListBuffer 是 mutable 的 :<br />
+使用前需要 import scala.collection.mutable.ListBuffer</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> import scala.collection.mutable.ListBuffer
+<span class="go">import scala.collection.mutable.ListBuffer
+</span></code></pre></div></div>
+<p>new 一個空的 ListBuffer :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val names <span class="o">=</span> new ListBuffer[String]<span class="o">()</span>
+<span class="go">names: scala.collection.mutable.ListBuffer[String] = ListBuffer()
+</span></code></pre></div></div>
+
+<p>新增元素 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names +<span class="o">=</span> <span class="s2">"Daniel"</span>
+<span class="go">res52: names.type = ListBuffer(Daniel)
+
+</span><span class="gp">scala&gt;</span> names +<span class="o">=</span> <span class="o">(</span><span class="s2">"Jack"</span>,<span class="s2">"Ray"</span><span class="o">)</span>
+<span class="go">res53: names.type = ListBuffer(Daniel, Jack, Ray)
+</span></code></pre></div></div>
+
+<p>刪除元素 :</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names -<span class="o">=</span> <span class="s2">"Jack"</span>
+<span class="go">res54: names.type = ListBuffer(Daniel, Ray)
+
+</span><span class="gp">scala&gt;</span> names +<span class="o">=</span> <span class="o">(</span><span class="s2">"Daniel"</span>,<span class="s2">"Jack"</span>,<span class="s2">"Ray"</span>,<span class="s2">"Lucy"</span>,<span class="s2">"Allen"</span>,<span class="s2">"Petty"</span><span class="o">)</span>
+<span class="go">res62: names.type = ListBuffer(Daniel, Jack, Ray, Lucy, Allen, Petty)
+
+</span><span class="gp">scala&gt;</span> names -<span class="o">=</span> <span class="o">(</span><span class="s2">"Jack"</span>,<span class="s2">"Allen"</span><span class="o">)</span>
+<span class="go">res63: names.type = ListBuffer(Daniel, Ray, Lucy, Petty)
+</span></code></pre></div></div>
+<p>刪除 Seq 的元素 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names <span class="nt">--</span><span class="o">=</span> Seq<span class="o">(</span><span class="s2">"Daniel"</span>,<span class="s2">"Lucy"</span><span class="o">)</span>
+<span class="go">res64: names.type = ListBuffer(Ray, Petty)
+
+</span></code></pre></div></div>
+<p>最後可再把它轉成 immutable 的 List :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names.toList
+<span class="go">res65: List[String] = List(Ray, Petty)
+</span></code></pre></div></div>
+
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>scala 的 List 是 immutable，所以在使用上無法去直接 update 裡面的元素，可能要運用 insert 及 filter 的功能來達到 update 的效果，但每次的操作都會產生一組新的 List ．如果想要使用 mutable 的 List 還有另外一個叫 ListBuffer．</li>
-  <li>method 又分成 left operand(一般method) 與 right operand(method名稱結尾是冒號)．</li>
+  <li>scala 的 List 是 immutable，所以在使用上無法去直接 update 裡面的元素，可能要運用 insert 及 filter 的功能來達到 update 的效果．</li>
+  <li>List 在程式很常用到，ListBuffer 透過運算子就可以刪除新增元素使用起來很方便．</li>
 </ul>
 
 

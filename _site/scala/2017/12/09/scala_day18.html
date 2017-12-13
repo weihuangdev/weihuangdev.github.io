@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Scala day 18 (Mutable List)</title>
-  <meta name="description" content="Mutable List 之前介紹的 List 是 immutable，但其實也是有 mutable List 叫 ListBuffer : 使用前需要 import scala.collection.mutable.ListBuffer">
+  <title>Scala day 18 (Map)</title>
+  <meta name="description" content="Map Map 的特色是 key / value．有分為 mutable 及 immutable．">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/12/09/scala_day18.html">
@@ -70,7 +70,7 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Scala day 18 (Mutable List)</h1>
+    <h1 class="post-title" itemprop="name headline">Scala day 18 (Map)</h1>
     <p class="post-meta">
       <time datetime="2017-12-09T10:44:17+08:00" itemprop="datePublished">
         
@@ -80,49 +80,23 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h3 id="mutable-list">Mutable List</h3>
-<p>之前介紹的 List 是 immutable，但其實也是有 mutable List 叫 ListBuffer :<br />
-使用前需要 import scala.collection.mutable.ListBuffer</p>
+    <h3 id="map">Map</h3>
+<p>Map 的特色是 key / value．有分為 mutable 及 immutable．</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> import scala.collection.mutable.ListBuffer
-<span class="go">import scala.collection.mutable.ListBuffer
-</span></code></pre></div></div>
-<p>new 一個空的 ListBuffer :</p>
+<p>immutable 的 Map :</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val names <span class="o">=</span> new ListBuffer[String]<span class="o">()</span>
-<span class="go">names: scala.collection.mutable.ListBuffer[String] = ListBuffer()
-</span></code></pre></div></div>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val m <span class="o">=</span> Map<span class="o">(</span><span class="s2">"a1"</span> -&gt; 1 , <span class="s2">"a2"</span> -&gt; 2 , <span class="s2">"a3"</span> -&gt; 3<span class="o">)</span>
+<span class="gp">m: scala.collection.immutable.Map[String,Int] = Map(a1 -&gt;</span> 1, a2 -&gt; 2, a3 -&gt; 3<span class="o">)</span>
+</code></pre></div></div>
 
-<p>新增元素 :</p>
+<p>mutable 的 Map，需要 import scala.collection.mutable.Map :</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names +<span class="o">=</span> <span class="s2">"Daniel"</span>
-<span class="go">res52: names.type = ListBuffer(Daniel)
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> import scala.collection.mutable.Map
+<span class="go">import scala.collection.mutable.Map
 
-</span><span class="gp">scala&gt;</span> names +<span class="o">=</span> <span class="o">(</span><span class="s2">"Jack"</span>,<span class="s2">"Ray"</span><span class="o">)</span>
-<span class="go">res53: names.type = ListBuffer(Daniel, Jack, Ray)
-</span></code></pre></div></div>
-
-<p>刪除元素 :</p>
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names -<span class="o">=</span> <span class="s2">"Jack"</span>
-<span class="go">res54: names.type = ListBuffer(Daniel, Ray)
-
-</span><span class="gp">scala&gt;</span> names +<span class="o">=</span> <span class="o">(</span><span class="s2">"Daniel"</span>,<span class="s2">"Jack"</span>,<span class="s2">"Ray"</span>,<span class="s2">"Lucy"</span>,<span class="s2">"Allen"</span>,<span class="s2">"Petty"</span><span class="o">)</span>
-<span class="go">res62: names.type = ListBuffer(Daniel, Jack, Ray, Lucy, Allen, Petty)
-
-</span><span class="gp">scala&gt;</span> names -<span class="o">=</span> <span class="o">(</span><span class="s2">"Jack"</span>,<span class="s2">"Allen"</span><span class="o">)</span>
-<span class="go">res63: names.type = ListBuffer(Daniel, Ray, Lucy, Petty)
-</span></code></pre></div></div>
-<p>刪除 Seq 的元素 :</p>
-
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names <span class="nt">--</span><span class="o">=</span> Seq<span class="o">(</span><span class="s2">"Daniel"</span>,<span class="s2">"Lucy"</span><span class="o">)</span>
-<span class="go">res64: names.type = ListBuffer(Ray, Petty)
-
-</span></code></pre></div></div>
-<p>最後可再把它轉成 immutable 的 List :</p>
-
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> names.toList
-<span class="go">res65: List[String] = List(Ray, Petty)
-</span></code></pre></div></div>
+</span><span class="gp">scala&gt;</span> val m <span class="o">=</span> Map<span class="o">(</span><span class="s2">"a1"</span> -&gt; 1 , <span class="s2">"a2"</span> -&gt; 2 , <span class="s2">"a3"</span> -&gt; 3<span class="o">)</span>
+<span class="gp">m: scala.collection.mutable.Map[String,Int] = Map(a1 -&gt;</span> 1, a3 -&gt; 3, a2 -&gt; 2<span class="o">)</span>
+</code></pre></div></div>
 
 <h3 id="總結">總結</h3>
 <hr />
