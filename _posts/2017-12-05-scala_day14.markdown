@@ -73,7 +73,7 @@ scala> class Birds extends Animal with Fly with Eat
              ^
 ```
 這邊重新定義類別 Birds 由於鳥是 Animal 而且會飛又會吃，所以 Birds extends Animal with Fly with Eat，
-實作方法時前面可以加上 override 也可以不用加 : 
+實作方法時前面可以加上 override 也可以不用加，但繼承的類別已經實作過的在 scala 裡就要加 override :  
 
 ```console
 scala> class Birds extends Animal with Fly with Eat {
