@@ -8,7 +8,7 @@ categories: scala
 ### Map
 Map 的特色是 key / value．有分為 mutable 及 immutable．
 
-immutable 的 Map :  
+#### immutable 的 Map 
 
 ```console
 scala> val m = Map("a1" -> 1 , "a2" -> 2 , "a3" -> 3)
@@ -47,6 +47,7 @@ getOrElse 取得 key 不存在的話就給參數 2 的值 :
 scala> val msg = m getOrElse ("a5" , "nodata")
 msg: Any = nodata
 ```
+新增元素 : 
 
 ```console
 scala> m + ("a4" -> 4)
@@ -55,34 +56,74 @@ res172: scala.collection.immutable.Map[String,Int] = Map(a1 -> 1, a2 -> 2, a3 ->
 scala> m + ("a5" -> 5 , "a6" -> 6)
 res174: scala.collection.immutable.Map[String,Int] = Map(a6 -> 6, a5 -> 5, a3 -> 3, a1 -> 1, a2 -> 2)
 ```
+使用 ++ 將兩個 Map 相加，並將重複的 key 使用新的 map 代入，a1 原本是 3 會變 33 : 
+
+```console
+scala> val nm = Map("a1" -> 33 , "b1" -> 11 , "b2" -> 22)
+nm: scala.collection.immutable.Map[String,Int] = Map(a1 -> 33, b1 -> 11, b2 -> 22)
+
+scala> m ++ nm
+res179: scala.collection.immutable.Map[String,Int] = Map(b2 -> 22, b1 -> 11, a3 -> 3, a1 -> 33, a2 -> 2)
+
+```
+移除元素 : 
+
+```console
+scala> m - "a2"
+res183: scala.collection.immutable.Map[String,Int] = Map(a1 -> 1, a3 -> 3)
+
+scala> m - ("a1","a3")
+res184: scala.collection.immutable.Map[String,Int] = Map(a2 -> 2)
+
+```
 
 
-
-mutable 的 Map，需要 import scala.collection.mutable.Map :  
+#### mutable 的 Map
+需要 import scala.collection.mutable.Map :  
 
 ```console
 scala> import scala.collection.mutable.Map
 import scala.collection.mutable.Map
 
-scala> val m = Map("a1" -> 1 , "a2" -> 2 , "a3" -> 3)
-m: scala.collection.mutable.Map[String,Int] = Map(a1 -> 1, a3 -> 3, a2 -> 2)
+scala> val im = Map("a1" -> 1 , "a2" -> 2 , "a3" -> 3)
+im: scala.collection.mutable.Map[String,Int] = Map(a1 -> 1, a3 -> 3, a2 -> 2)
+
 ```
 新增元素 :  
 
 ```console
-scala> m += ("a4" -> 4 , "a5" -> 5)
-res160: m.type = Map(a1 -> 1, a3 -> 3, a5 -> 5, a2 -> 2, a4 -> 4)
+scala> im += ("a4" -> 4 , "a5" -> 5)
+res191: im.type = Map(a1 -> 1, a3 -> 3, a5 -> 5, a2 -> 2, a4 -> 4)
 ```
+移除元素 : 
 
 ```console
-scala> m.keys
-res161: Iterable[String] = Set(a1, a3, a5, a2, a4)
+scala> im -= ("a1","a3")
+res192: im.type = Map(a5 -> 5, a2 -> 2, a4 -> 4)
+```
+mutable 的 Map 與 immutable 差異就是 immutable 的不可以變動，所以不能使用 += 或 -= 改變原來的 Map : 
 
-scala> m.values
-res162: Iterable[Int] = HashMap(1, 3, 5, 2, 4)
+```console
+scala> m -= ("a1","a3")
+<console>:20: error: value -= is not a member of scala.collection.immutable.Map[String,Int]
+  Expression does not convert to assignment because receiver is not assignable.
+       m -= ("a1","a3")
+         ^
+```
+
+看 Map 的 kyes 及 values，這裡的 values 跟 immutable Map 的 return type 不太一樣是 HashMap :  
+
+
+```console
+scala> im.keys
+res194: Iterable[String] = Set(a5, a2, a4)
+
+scala> im.values
+res195: Iterable[Int] = HashMap(5, 2, 4)
+
 ```
 
 ### 總結
 - - -
-* Map 的特色是 key / value．有分為 mutable 及 immutable．
+* Map 的特色是 key / value．有分為 mutable 可改變原來的 Map 及 immutable 不可改變原來的 Map．
 

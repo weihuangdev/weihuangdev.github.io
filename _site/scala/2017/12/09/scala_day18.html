@@ -83,7 +83,7 @@
     <h3 id="map">Map</h3>
 <p>Map 的特色是 key / value．有分為 mutable 及 immutable．</p>
 
-<p>immutable 的 Map :</p>
+<h4 id="immutable-的-map">immutable 的 Map</h4>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val m <span class="o">=</span> Map<span class="o">(</span><span class="s2">"a1"</span> -&gt; 1 , <span class="s2">"a2"</span> -&gt; 2 , <span class="s2">"a3"</span> -&gt; 3<span class="o">)</span>
 <span class="gp">m: scala.collection.immutable.Map[String,Int] = Map(a1 -&gt;</span> 1, a2 -&gt; 2, a3 -&gt; 3<span class="o">)</span>
@@ -117,6 +117,7 @@
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val msg <span class="o">=</span> m getOrElse <span class="o">(</span><span class="s2">"a5"</span> , <span class="s2">"nodata"</span><span class="o">)</span>
 <span class="go">msg: Any = nodata
 </span></code></pre></div></div>
+<p>新增元素 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> m + <span class="o">(</span><span class="s2">"a4"</span> -&gt; 4<span class="o">)</span>
 <span class="gp">res172: scala.collection.immutable.Map[String,Int] = Map(a1 -&gt;</span> 1, a2 -&gt; 2, a3 -&gt; 3, a4 -&gt; 4<span class="o">)</span>
@@ -124,32 +125,68 @@
 </span><span class="gp">scala&gt;</span> m + <span class="o">(</span><span class="s2">"a5"</span> -&gt; 5 , <span class="s2">"a6"</span> -&gt; 6<span class="o">)</span>
 <span class="gp">res174: scala.collection.immutable.Map[String,Int] = Map(a6 -&gt;</span> 6, a5 -&gt; 5, a3 -&gt; 3, a1 -&gt; 1, a2 -&gt; 2<span class="o">)</span>
 </code></pre></div></div>
+<p>使用 ++ 將兩個 Map 相加，並將重複的 key 使用新的 map 代入，a1 原本是 3 會變 33 :</p>
 
-<p>mutable 的 Map，需要 import scala.collection.mutable.Map :</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val nm <span class="o">=</span> Map<span class="o">(</span><span class="s2">"a1"</span> -&gt; 33 , <span class="s2">"b1"</span> -&gt; 11 , <span class="s2">"b2"</span> -&gt; 22<span class="o">)</span>
+<span class="gp">nm: scala.collection.immutable.Map[String,Int] = Map(a1 -&gt;</span> 33, b1 -&gt; 11, b2 -&gt; 22<span class="o">)</span>
+<span class="go">
+</span><span class="gp">scala&gt;</span> m ++ nm
+<span class="gp">res179: scala.collection.immutable.Map[String,Int] = Map(b2 -&gt;</span> 22, b1 -&gt; 11, a3 -&gt; 3, a1 -&gt; 33, a2 -&gt; 2<span class="o">)</span>
+<span class="go">
+</span></code></pre></div></div>
+<p>移除元素 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> m - <span class="s2">"a2"</span>
+<span class="gp">res183: scala.collection.immutable.Map[String,Int] = Map(a1 -&gt;</span> 1, a3 -&gt; 3<span class="o">)</span>
+<span class="go">
+</span><span class="gp">scala&gt;</span> m - <span class="o">(</span><span class="s2">"a1"</span>,<span class="s2">"a3"</span><span class="o">)</span>
+<span class="gp">res184: scala.collection.immutable.Map[String,Int] = Map(a2 -&gt;</span> 2<span class="o">)</span>
+<span class="go">
+</span></code></pre></div></div>
+
+<h4 id="mutable-的-map">mutable 的 Map</h4>
+<p>需要 import scala.collection.mutable.Map :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> import scala.collection.mutable.Map
 <span class="go">import scala.collection.mutable.Map
 
-</span><span class="gp">scala&gt;</span> val m <span class="o">=</span> Map<span class="o">(</span><span class="s2">"a1"</span> -&gt; 1 , <span class="s2">"a2"</span> -&gt; 2 , <span class="s2">"a3"</span> -&gt; 3<span class="o">)</span>
-<span class="gp">m: scala.collection.mutable.Map[String,Int] = Map(a1 -&gt;</span> 1, a3 -&gt; 3, a2 -&gt; 2<span class="o">)</span>
-</code></pre></div></div>
+</span><span class="gp">scala&gt;</span> val im <span class="o">=</span> Map<span class="o">(</span><span class="s2">"a1"</span> -&gt; 1 , <span class="s2">"a2"</span> -&gt; 2 , <span class="s2">"a3"</span> -&gt; 3<span class="o">)</span>
+<span class="gp">im: scala.collection.mutable.Map[String,Int] = Map(a1 -&gt;</span> 1, a3 -&gt; 3, a2 -&gt; 2<span class="o">)</span>
+<span class="go">
+</span></code></pre></div></div>
 <p>新增元素 :</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> m +<span class="o">=</span> <span class="o">(</span><span class="s2">"a4"</span> -&gt; 4 , <span class="s2">"a5"</span> -&gt; 5<span class="o">)</span>
-<span class="gp">res160: m.type = Map(a1 -&gt;</span> 1, a3 -&gt; 3, a5 -&gt; 5, a2 -&gt; 2, a4 -&gt; 4<span class="o">)</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> im +<span class="o">=</span> <span class="o">(</span><span class="s2">"a4"</span> -&gt; 4 , <span class="s2">"a5"</span> -&gt; 5<span class="o">)</span>
+<span class="gp">res191: im.type = Map(a1 -&gt;</span> 1, a3 -&gt; 3, a5 -&gt; 5, a2 -&gt; 2, a4 -&gt; 4<span class="o">)</span>
 </code></pre></div></div>
+<p>移除元素 :</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> m.keys
-<span class="go">res161: Iterable[String] = Set(a1, a3, a5, a2, a4)
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> im -<span class="o">=</span> <span class="o">(</span><span class="s2">"a1"</span>,<span class="s2">"a3"</span><span class="o">)</span>
+<span class="gp">res192: im.type = Map(a5 -&gt;</span> 5, a2 -&gt; 2, a4 -&gt; 4<span class="o">)</span>
+</code></pre></div></div>
+<p>mutable 的 Map 與 immutable 差異就是 immutable 的不可以變動，所以不能使用 += 或 -= 改變原來的 Map :</p>
 
-</span><span class="gp">scala&gt;</span> m.values
-<span class="go">res162: Iterable[Int] = HashMap(1, 3, 5, 2, 4)
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> m -<span class="o">=</span> <span class="o">(</span><span class="s2">"a1"</span>,<span class="s2">"a3"</span><span class="o">)</span>
+<span class="gp">&lt;console&gt;</span>:20: error: value -<span class="o">=</span> is not a member of scala.collection.immutable.Map[String,Int]
+<span class="go">  Expression does not convert to assignment because receiver is not assignable.
+       m -= ("a1","a3")
+         ^
+</span></code></pre></div></div>
+
+<p>看 Map 的 kyes 及 values，這裡的 values 跟 immutable Map 的 return type 不太一樣是 HashMap :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> im.keys
+<span class="go">res194: Iterable[String] = Set(a5, a2, a4)
+
+</span><span class="gp">scala&gt;</span> im.values
+<span class="go">res195: Iterable[Int] = HashMap(5, 2, 4)
+
 </span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>Map 的特色是 key / value．有分為 mutable 及 immutable．</li>
+  <li>Map 的特色是 key / value．有分為 mutable 可改變原來的 Map 及 immutable 不可改變原來的 Map．</li>
 </ul>
 
 

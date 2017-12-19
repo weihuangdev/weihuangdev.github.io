@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-17T02:16:11+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 20 (Array &amp;amp; ArrayBuffer)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day20.html" rel="alternate" type="text/html" title="Scala day 20 (Array &amp; ArrayBuffer)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day20</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day20.html">&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-19T18:57:14+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 20 (Array &amp;amp; ArrayBuffer)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day20.html" rel="alternate" type="text/html" title="Scala day 20 (Array &amp; ArrayBuffer)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day20</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day20.html">&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
 &lt;p&gt;Array 是一個固定長度且有順序性的容器，Array 是 mutable 的，在 new 時需給定長度．&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numbers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Array[Int]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -228,7 +228,7 @@ initNum: (s: Any)Option[Int]
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">Option type Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值． 像下面例子，Map 的 get api 定義 : def get(key: K): Option[V] 所以 Map get 回傳的也是 Option 型態，有值會回傳 Some(Int)，沒有的話會回傳 None :</summary></entry><entry><title type="html">Scala day 18 (Map)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day18.html" rel="alternate" type="text/html" title="Scala day 18 (Map)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day18</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day18.html">&lt;h3 id=&quot;map&quot;&gt;Map&lt;/h3&gt;
 &lt;p&gt;Map 的特色是 key / value．有分為 mutable 及 immutable．&lt;/p&gt;
 
-&lt;p&gt;immutable 的 Map :&lt;/p&gt;
+&lt;h4 id=&quot;immutable-的-map&quot;&gt;immutable 的 Map&lt;/h4&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val m &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt; -&amp;gt; 1 , &lt;span class=&quot;s2&quot;&gt;&quot;a2&quot;&lt;/span&gt; -&amp;gt; 2 , &lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt; -&amp;gt; 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;gp&quot;&gt;m: scala.collection.immutable.Map[String,Int] = Map(a1 -&amp;gt;&lt;/span&gt; 1, a2 -&amp;gt; 2, a3 -&amp;gt; 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -262,6 +262,7 @@ initNum: (s: Any)Option[Int]
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val msg &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; m getOrElse &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a5&quot;&lt;/span&gt; , &lt;span class=&quot;s2&quot;&gt;&quot;nodata&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;msg: Any = nodata
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;新增元素 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m + &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a4&quot;&lt;/span&gt; -&amp;gt; 4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;gp&quot;&gt;res172: scala.collection.immutable.Map[String,Int] = Map(a1 -&amp;gt;&lt;/span&gt; 1, a2 -&amp;gt; 2, a3 -&amp;gt; 3, a4 -&amp;gt; 4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -269,32 +270,68 @@ initNum: (s: Any)Option[Int]
 &lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m + &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a5&quot;&lt;/span&gt; -&amp;gt; 5 , &lt;span class=&quot;s2&quot;&gt;&quot;a6&quot;&lt;/span&gt; -&amp;gt; 6&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;gp&quot;&gt;res174: scala.collection.immutable.Map[String,Int] = Map(a6 -&amp;gt;&lt;/span&gt; 6, a5 -&amp;gt; 5, a3 -&amp;gt; 3, a1 -&amp;gt; 1, a2 -&amp;gt; 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用 ++ 將兩個 Map 相加，並將重複的 key 使用新的 map 代入，a1 原本是 3 會變 33 :&lt;/p&gt;
 
-&lt;p&gt;mutable 的 Map，需要 import scala.collection.mutable.Map :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val nm &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt; -&amp;gt; 33 , &lt;span class=&quot;s2&quot;&gt;&quot;b1&quot;&lt;/span&gt; -&amp;gt; 11 , &lt;span class=&quot;s2&quot;&gt;&quot;b2&quot;&lt;/span&gt; -&amp;gt; 22&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;nm: scala.collection.immutable.Map[String,Int] = Map(a1 -&amp;gt;&lt;/span&gt; 33, b1 -&amp;gt; 11, b2 -&amp;gt; 22&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m ++ nm
+&lt;span class=&quot;gp&quot;&gt;res179: scala.collection.immutable.Map[String,Int] = Map(b2 -&amp;gt;&lt;/span&gt; 22, b1 -&amp;gt; 11, a3 -&amp;gt; 3, a1 -&amp;gt; 33, a2 -&amp;gt; 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;移除元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m - &lt;span class=&quot;s2&quot;&gt;&quot;a2&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;res183: scala.collection.immutable.Map[String,Int] = Map(a1 -&amp;gt;&lt;/span&gt; 1, a3 -&amp;gt; 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m - &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;res184: scala.collection.immutable.Map[String,Int] = Map(a2 -&amp;gt;&lt;/span&gt; 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;mutable-的-map&quot;&gt;mutable 的 Map&lt;/h4&gt;
+&lt;p&gt;需要 import scala.collection.mutable.Map :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.collection.mutable.Map
 &lt;span class=&quot;go&quot;&gt;import scala.collection.mutable.Map
 
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val m &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt; -&amp;gt; 1 , &lt;span class=&quot;s2&quot;&gt;&quot;a2&quot;&lt;/span&gt; -&amp;gt; 2 , &lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt; -&amp;gt; 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;m: scala.collection.mutable.Map[String,Int] = Map(a1 -&amp;gt;&lt;/span&gt; 1, a3 -&amp;gt; 3, a2 -&amp;gt; 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val im &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt; -&amp;gt; 1 , &lt;span class=&quot;s2&quot;&gt;&quot;a2&quot;&lt;/span&gt; -&amp;gt; 2 , &lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt; -&amp;gt; 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;im: scala.collection.mutable.Map[String,Int] = Map(a1 -&amp;gt;&lt;/span&gt; 1, a3 -&amp;gt; 3, a2 -&amp;gt; 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;新增元素 :&lt;/p&gt;
 
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a4&quot;&lt;/span&gt; -&amp;gt; 4 , &lt;span class=&quot;s2&quot;&gt;&quot;a5&quot;&lt;/span&gt; -&amp;gt; 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;res160: m.type = Map(a1 -&amp;gt;&lt;/span&gt; 1, a3 -&amp;gt; 3, a5 -&amp;gt; 5, a2 -&amp;gt; 2, a4 -&amp;gt; 4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; im +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a4&quot;&lt;/span&gt; -&amp;gt; 4 , &lt;span class=&quot;s2&quot;&gt;&quot;a5&quot;&lt;/span&gt; -&amp;gt; 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;res191: im.type = Map(a1 -&amp;gt;&lt;/span&gt; 1, a3 -&amp;gt; 3, a5 -&amp;gt; 5, a2 -&amp;gt; 2, a4 -&amp;gt; 4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;移除元素 :&lt;/p&gt;
 
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m.keys
-&lt;span class=&quot;go&quot;&gt;res161: Iterable[String] = Set(a1, a3, a5, a2, a4)
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; im -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;res192: im.type = Map(a5 -&amp;gt;&lt;/span&gt; 5, a2 -&amp;gt; 2, a4 -&amp;gt; 4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;mutable 的 Map 與 immutable 差異就是 immutable 的不可以變動，所以不能使用 += 或 -= 改變原來的 Map :&lt;/p&gt;
 
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m.values
-&lt;span class=&quot;go&quot;&gt;res162: Iterable[Int] = HashMap(1, 3, 5, 2, 4)
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;a3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:20: error: value -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; is not a member of scala.collection.immutable.Map[String,Int]
+&lt;span class=&quot;go&quot;&gt;  Expression does not convert to assignment because receiver is not assignable.
+       m -= (&quot;a1&quot;,&quot;a3&quot;)
+         ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;看 Map 的 kyes 及 values，這裡的 values 跟 immutable Map 的 return type 不太一樣是 HashMap :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; im.keys
+&lt;span class=&quot;go&quot;&gt;res194: Iterable[String] = Set(a5, a2, a4)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; im.values
+&lt;span class=&quot;go&quot;&gt;res195: Iterable[Int] = HashMap(5, 2, 4)
+
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;Map 的特色是 key / value．有分為 mutable 及 immutable．&lt;/li&gt;
+  &lt;li&gt;Map 的特色是 key / value．有分為 mutable 可改變原來的 Map 及 immutable 不可改變原來的 Map．&lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">Map Map 的特色是 key / value．有分為 mutable 及 immutable．</summary></entry><entry><title type="html">Scala day 17 (Currying)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day17.html" rel="alternate" type="text/html" title="Scala day 17 (Currying)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day17</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day17.html">&lt;h3 id=&quot;curry&quot;&gt;Curry&lt;/h3&gt;
 &lt;p&gt;一般函式的寫法 :&lt;/p&gt;
 
