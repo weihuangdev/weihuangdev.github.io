@@ -76,6 +76,15 @@ scala> m - ("a1","a3")
 res184: scala.collection.immutable.Map[String,Int] = Map(a2 -> 2)
 
 ```
+使用 filterKeys 找到想要的元素 : 
+
+```console
+scala> m
+res196: scala.collection.immutable.Map[String,Int] = Map(a1 -> 1, a2 -> 2, a3 -> 3)
+
+scala> m.filterKeys(_ == "a2")
+res197: scala.collection.immutable.Map[String,Int] = Map(a2 -> 2)
+```
 
 
 #### mutable 的 Map
@@ -110,9 +119,17 @@ scala> m -= ("a1","a3")
        m -= ("a1","a3")
          ^
 ```
+使用 ++= 可將新的 Map 加入原來的 Map : 
+
+```console
+scala> val nm = Map("c1" -> 11,"c2" -> 22,"c3" -> 33)
+nm: scala.collection.mutable.Map[String,Int] = Map(c1 -> 11, c3 -> 33, c2 -> 22)
+
+scala> im ++= nm
+res199: im.type = Map(c1 -> 11, c3 -> 33, a5 -> 5, a2 -> 2, c2 -> 22, a4 -> 4)
+```
 
 看 Map 的 kyes 及 values，這裡的 values 跟 immutable Map 的 return type 不太一樣是 HashMap :  
-
 
 ```console
 scala> im.keys
@@ -122,6 +139,20 @@ scala> im.values
 res195: Iterable[Int] = HashMap(5, 2, 4)
 
 ```
+mutable 的 Map 可以使用 clear 清空，immutable 的不行 :  
+
+```console
+scala> im.clear
+
+scala> im
+res205: scala.collection.mutable.Map[String,Int] = Map()
+
+scala> m.clear
+<console>:20: error: value clear is not a member of scala.collection.immutable.Map[String,Int]
+       m.clear
+         ^
+```
+
 
 ### 總結
 - - -

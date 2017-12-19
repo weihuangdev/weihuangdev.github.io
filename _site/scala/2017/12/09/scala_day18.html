@@ -143,6 +143,14 @@
 <span class="gp">res184: scala.collection.immutable.Map[String,Int] = Map(a2 -&gt;</span> 2<span class="o">)</span>
 <span class="go">
 </span></code></pre></div></div>
+<p>使用 filterKeys 找到想要的元素 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> m
+<span class="gp">res196: scala.collection.immutable.Map[String,Int] = Map(a1 -&gt;</span> 1, a2 -&gt; 2, a3 -&gt; 3<span class="o">)</span>
+<span class="go">
+</span><span class="gp">scala&gt;</span> m.filterKeys<span class="o">(</span>_ <span class="o">==</span> <span class="s2">"a2"</span><span class="o">)</span>
+<span class="gp">res197: scala.collection.immutable.Map[String,Int] = Map(a2 -&gt;</span> 2<span class="o">)</span>
+</code></pre></div></div>
 
 <h4 id="mutable-的-map">mutable 的 Map</h4>
 <p>需要 import scala.collection.mutable.Map :</p>
@@ -172,6 +180,14 @@
        m -= ("a1","a3")
          ^
 </span></code></pre></div></div>
+<p>使用 ++= 可將新的 Map 加入原來的 Map :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val nm <span class="o">=</span> Map<span class="o">(</span><span class="s2">"c1"</span> -&gt; 11,<span class="s2">"c2"</span> -&gt; 22,<span class="s2">"c3"</span> -&gt; 33<span class="o">)</span>
+<span class="gp">nm: scala.collection.mutable.Map[String,Int] = Map(c1 -&gt;</span> 11, c3 -&gt; 33, c2 -&gt; 22<span class="o">)</span>
+<span class="go">
+</span><span class="gp">scala&gt;</span> im ++<span class="o">=</span> nm
+<span class="gp">res199: im.type = Map(c1 -&gt;</span> 11, c3 -&gt; 33, a5 -&gt; 5, a2 -&gt; 2, c2 -&gt; 22, a4 -&gt; 4<span class="o">)</span>
+</code></pre></div></div>
 
 <p>看 Map 的 kyes 及 values，這裡的 values 跟 immutable Map 的 return type 不太一樣是 HashMap :</p>
 
@@ -181,6 +197,18 @@
 </span><span class="gp">scala&gt;</span> im.values
 <span class="go">res195: Iterable[Int] = HashMap(5, 2, 4)
 
+</span></code></pre></div></div>
+<p>mutable 的 Map 可以使用 clear 清空，immutable 的不行 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> im.clear
+<span class="go">
+</span><span class="gp">scala&gt;</span> im
+<span class="go">res205: scala.collection.mutable.Map[String,Int] = Map()
+
+</span><span class="gp">scala&gt;</span> m.clear
+<span class="gp">&lt;console&gt;</span>:20: error: value clear is not a member of scala.collection.immutable.Map[String,Int]
+<span class="go">       m.clear
+         ^
 </span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>

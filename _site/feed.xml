@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-19T18:57:14+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 20 (Array &amp;amp; ArrayBuffer)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day20.html" rel="alternate" type="text/html" title="Scala day 20 (Array &amp; ArrayBuffer)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day20</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day20.html">&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-19T23:41:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 20 (Array &amp;amp; ArrayBuffer)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day20.html" rel="alternate" type="text/html" title="Scala day 20 (Array &amp; ArrayBuffer)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day20</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day20.html">&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
 &lt;p&gt;Array 是一個固定長度且有順序性的容器，Array 是 mutable 的，在 new 時需給定長度．&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numbers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Array[Int]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -288,6 +288,14 @@ initNum: (s: Any)Option[Int]
 &lt;span class=&quot;gp&quot;&gt;res184: scala.collection.immutable.Map[String,Int] = Map(a2 -&amp;gt;&lt;/span&gt; 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用 filterKeys 找到想要的元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m
+&lt;span class=&quot;gp&quot;&gt;res196: scala.collection.immutable.Map[String,Int] = Map(a1 -&amp;gt;&lt;/span&gt; 1, a2 -&amp;gt; 2, a3 -&amp;gt; 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m.filterKeys&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;a2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;res197: scala.collection.immutable.Map[String,Int] = Map(a2 -&amp;gt;&lt;/span&gt; 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;mutable-的-map&quot;&gt;mutable 的 Map&lt;/h4&gt;
 &lt;p&gt;需要 import scala.collection.mutable.Map :&lt;/p&gt;
@@ -317,6 +325,14 @@ initNum: (s: Any)Option[Int]
        m -= (&quot;a1&quot;,&quot;a3&quot;)
          ^
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用 ++= 可將新的 Map 加入原來的 Map :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val nm &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;c1&quot;&lt;/span&gt; -&amp;gt; 11,&lt;span class=&quot;s2&quot;&gt;&quot;c2&quot;&lt;/span&gt; -&amp;gt; 22,&lt;span class=&quot;s2&quot;&gt;&quot;c3&quot;&lt;/span&gt; -&amp;gt; 33&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;nm: scala.collection.mutable.Map[String,Int] = Map(c1 -&amp;gt;&lt;/span&gt; 11, c3 -&amp;gt; 33, c2 -&amp;gt; 22&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; im ++&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; nm
+&lt;span class=&quot;gp&quot;&gt;res199: im.type = Map(c1 -&amp;gt;&lt;/span&gt; 11, c3 -&amp;gt; 33, a5 -&amp;gt; 5, a2 -&amp;gt; 2, c2 -&amp;gt; 22, a4 -&amp;gt; 4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;看 Map 的 kyes 及 values，這裡的 values 跟 immutable Map 的 return type 不太一樣是 HashMap :&lt;/p&gt;
 
@@ -326,6 +342,18 @@ initNum: (s: Any)Option[Int]
 &lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; im.values
 &lt;span class=&quot;go&quot;&gt;res195: Iterable[Int] = HashMap(5, 2, 4)
 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;mutable 的 Map 可以使用 clear 清空，immutable 的不行 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; im.clear
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; im
+&lt;span class=&quot;go&quot;&gt;res205: scala.collection.mutable.Map[String,Int] = Map()
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; m.clear
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:20: error: value clear is not a member of scala.collection.immutable.Map[String,Int]
+&lt;span class=&quot;go&quot;&gt;       m.clear
+         ^
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
