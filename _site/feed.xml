@@ -1,4 +1,124 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-19T23:41:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 20 (Array &amp;amp; ArrayBuffer)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day20.html" rel="alternate" type="text/html" title="Scala day 20 (Array &amp; ArrayBuffer)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day20</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day20.html">&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-21T00:01:33+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 21 (Set)</title><link href="http://localhost:4000/scala/2017/12/20/scala_day21.html" rel="alternate" type="text/html" title="Scala day 21 (Set)" /><published>2017-12-20T10:44:17+08:00</published><updated>2017-12-20T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/20/scala_day21</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/20/scala_day21.html">&lt;h3 id=&quot;set&quot;&gt;Set&lt;/h3&gt;
+&lt;p&gt;Set 是一個無法放置相同元素的容器，元素都是唯一的，不會重複．有分為 mutable 及 immutable．&lt;/p&gt;
+
+&lt;h4 id=&quot;immutable-set&quot;&gt;immutable Set&lt;/h4&gt;
+&lt;p&gt;內容不可以變動&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val nums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Set&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,3,4,5,2,3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;nums: scala.collection.immutable.Set[Int] = Set(5, 1, 2, 3, 4)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;判斷該元素是否存在 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res207: Boolean = true
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res208: Boolean = false
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums contains 3
+&lt;span class=&quot;go&quot;&gt;res213: Boolean = true
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;新增元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums + 6
+&lt;span class=&quot;go&quot;&gt;res210: scala.collection.immutable.Set[Int] = Set(5, 1, 6, 2, 3, 4)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums + &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6,7,8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res214: scala.collection.immutable.Set[Int] = Set(5, 1, 6, 2, 7, 3, 8, 4)
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;移除元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums - 3
+&lt;span class=&quot;go&quot;&gt;res212: scala.collection.immutable.Set[Int] = Set(5, 1, 2, 4)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums - &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res215: scala.collection.immutable.Set[Int] = Set(5, 1, 4)
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用位元符號做運算 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val newnums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Set&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;11,22,33,44,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;newnums: scala.collection.immutable.Set[Int] = Set(5, 33, 22, 44, 11)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums &amp;amp; newnums
+&lt;span class=&quot;go&quot;&gt;res218: scala.collection.immutable.Set[Int] = Set(5)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums | newnums
+&lt;span class=&quot;go&quot;&gt;res219: scala.collection.immutable.Set[Int] = Set(5, 1, 33, 2, 22, 44, 3, 11, 4)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums union newnums
+&lt;span class=&quot;go&quot;&gt;res220: scala.collection.immutable.Set[Int] = Set(5, 1, 33, 2, 22, 44, 3, 11, 4)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; nums &amp;amp;~ newnums
+&lt;span class=&quot;go&quot;&gt;res221: scala.collection.immutable.Set[Int] = Set(1, 2, 3, 4)
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;mutable-set&quot;&gt;mutable Set&lt;/h4&gt;
+&lt;p&gt;內容可以變動&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.collection.mutable.Set
+&lt;span class=&quot;go&quot;&gt;import scala.collection.mutable.Set
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val mnums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Set&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,3,4,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;mnums: scala.collection.mutable.Set[Int] = Set(1, 5, 2, 3, 4)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; mnums&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res0: Boolean = true
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; mnums&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res1: Boolean = false
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;新增元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; mnums +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 6
+&lt;span class=&quot;go&quot;&gt;res2: mnums.type = Set(1, 5, 2, 6, 3, 4)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; mnums
+&lt;span class=&quot;go&quot;&gt;res3: scala.collection.mutable.Set[Int] = Set(1, 5, 2, 6, 3, 4)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; mnums +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;7,8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res4: mnums.type = Set(1, 5, 2, 6, 3, 7, 4, 8)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; mnums
+&lt;span class=&quot;go&quot;&gt;res5: scala.collection.mutable.Set[Int] = Set(1, 5, 2, 6, 3, 7, 4, 8)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;移除元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; mnums -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3
+&lt;span class=&quot;go&quot;&gt;res6: mnums.type = Set(1, 5, 2, 6, 7, 4, 8)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; mnums -&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res7: mnums.type = Set(1, 5, 6, 7, 8)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; mnums
+&lt;span class=&quot;go&quot;&gt;res8: scala.collection.mutable.Set[Int] = Set(1, 5, 6, 7, 8)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;複製元素 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val mnewnums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; mnums.clone
+&lt;span class=&quot;go&quot;&gt;mnewnums: scala.collection.mutable.Set[Int] = Set(1, 5, 6, 7, 8)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Sort 排序 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val nums &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Set&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3,1,5,4,8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;nums: scala.collection.mutable.Set[Int] = Set(1, 5, 3, 4, 8)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; collection.immutable.SortedSet[Int]&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; ++ nums
+&lt;span class=&quot;go&quot;&gt;res10: scala.collection.immutable.SortedSet[Int] = TreeSet(1, 3, 4, 5, 8)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; collection.immutable.TreeSet[Int]&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; ++ nums
+&lt;span class=&quot;go&quot;&gt;res11: scala.collection.immutable.TreeSet[Int] = TreeSet(1, 3, 4, 5, 8)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;Set 的元素都是唯一的，不會重複．又分為 mutable 及 immutable．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Set Set 是一個無法放置相同元素的容器，元素都是唯一的，不會重複．有分為 mutable 及 immutable．</summary></entry><entry><title type="html">Scala day 20 (Array &amp;amp; ArrayBuffer)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day20.html" rel="alternate" type="text/html" title="Scala day 20 (Array &amp; ArrayBuffer)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day20</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day20.html">&lt;h3 id=&quot;array&quot;&gt;Array&lt;/h3&gt;
 &lt;p&gt;Array 是一個固定長度且有順序性的容器，Array 是 mutable 的，在 new 時需給定長度．&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numbers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Array[Int]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -1093,110 +1213,4 @@ getMultiMatchType: (x: Any)String
 &lt;ul&gt;
   &lt;li&gt;scala 的 Match Expression 可以比對&lt;strong&gt;值&lt;/strong&gt;及&lt;strong&gt;型態&lt;/strong&gt;非常強大．&lt;/li&gt;
   &lt;li&gt;scala 的 Any 是 scala 所有型態的父類別，底下又分為兩個子類別 AnyVal 和 AnyRef．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Match Expression Match 可以幫我們省略寫很多 if else，而且可以比對不同型態． scala 的 match 不用寫 break 只會執行符合的那一段，然後 default 是用 _ : ```console scala&amp;gt; def getNumber(num:Int) = { num match { | case 1 =&amp;gt; “one” | case 2 =&amp;gt; “two” | case 3 =&amp;gt; “three” | case _ =&amp;gt; “” | } |} getNumber: (num: Int)String</summary></entry><entry><title type="html">Scala day 11 (Loop &amp;amp; break &amp;amp; continue)</title><link href="http://localhost:4000/scala/2017/12/04/scala_day11.html" rel="alternate" type="text/html" title="Scala day 11 (Loop &amp; break &amp; continue)" /><published>2017-12-04T08:44:17+08:00</published><updated>2017-12-04T08:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/04/scala_day11</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/04/scala_day11.html">&lt;h3 id=&quot;while--dowhile&quot;&gt;while &amp;amp; do…while&lt;/h3&gt;
-&lt;p&gt;while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; var i &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
-&lt;span class=&quot;go&quot;&gt;i: Int = 0
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt; 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  println(i)
-     |  i = i + 1
-     | }
-0
-1
-2
-3
-4
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  println(i)
-     |  i = i + 1
-     | } while(i &amp;lt; 5)
-0
-1
-2
-3
-4
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h3 id=&quot;scala-no-break--no-continue&quot;&gt;scala no break &amp;amp; no continue&lt;/h3&gt;
-&lt;p&gt;scala 沒有提供 break 及 continue 這兩個關鍵字使用，所以需使用其他寫法來替代．&lt;br /&gt;
-需要 import scala.util.control.Breaks 套件的 breakable 及 break :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.util.control.Breaks.breakable
-&lt;span class=&quot;go&quot;&gt;import scala.util.control.Breaks.breakable
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.util.control.Breaks.break
-&lt;span class=&quot;go&quot;&gt;import scala.util.control.Breaks.break
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用 breakable 區塊替代 break，下面例子 i == 3 就會 break :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; var i &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
-&lt;span class=&quot;go&quot;&gt;i: Int = 0
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; breakable &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  while(i &amp;lt; 5) {
-     |   if(i == 3) {
-     |    break
-     |   }
-     |   println(i)
-     |   i = i + 1
-     |  }
-     | }
-0
-1
-2
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;使用 breakable 區塊替代 continue，下面例子 i == 3 就會 continue 不 println :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &amp;lt; 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  breakable {
-     |   if(i == 3) {
-     |    break
-     |   }
-     |   println(i)
-     |  }
-     |  i = i + 1
-     | }
-0
-1
-2
-4
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;所以利用 breakable 區塊的位置可以達到 break 及 continue 的效果．
-下面例子是使用 scala.util.control.Breaks 物件，搭配混合使用，偶數的話 continue , i == 7 時就 break :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.util.control.Breaks
-&lt;span class=&quot;go&quot;&gt;import scala.util.control.Breaks
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val breakobj &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Breaks
-&lt;span class=&quot;go&quot;&gt;breakobj: scala.util.control.Breaks = scala.util.control.Breaks@5284ae6e
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val continuobj &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Breaks
-&lt;span class=&quot;go&quot;&gt;continuobj: scala.util.control.Breaks = scala.util.control.Breaks@1bcf8661
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; breakobj.breakable &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  while (i &amp;lt; 10) {
-     |   continuobj.breakable {
-     |    if (i % 2 == 0) {
-     |     continuobj.break
-     |    } else if(i == 7) {
-     |     breakobj.break
-     |    }
-     |    println(i)
-     |   }
-     |   i = i + 1
-     |  }
-     | }
-1
-3
-5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala 沒有提供 break 和 continue，但還是可以運用 breakable 來實作出來．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">while &amp;amp; do…while while 和 do…while 用法和 java 差不多，條件都是放 boolean 值即可 :</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Match Expression Match 可以幫我們省略寫很多 if else，而且可以比對不同型態． scala 的 match 不用寫 break 只會執行符合的那一段，然後 default 是用 _ : ```console scala&amp;gt; def getNumber(num:Int) = { num match { | case 1 =&amp;gt; “one” | case 2 =&amp;gt; “two” | case 3 =&amp;gt; “three” | case _ =&amp;gt; “” | } |} getNumber: (num: Int)String</summary></entry></feed>
