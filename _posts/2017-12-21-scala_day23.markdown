@@ -1,0 +1,58 @@
+---
+layout: post
+title:  "Scala day 23 (implicit conversion)"
+date:   2017-12-21 11:44:17 +0800
+categories: scala
+---
+
+### implicit conversion
+就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件．  
+由於 Int 沒有 append 方法所以下面執行會失敗 : 
+
+```console
+scala> 1 append 2
+<console>:13: error: value append is not a member of Int
+       1 append 2
+         ^
+```
+定義一個 MyAppend 及 append 方法 : 
+
+```console
+scala> class MyAppend(num: Int) {
+     |  def append(newNum: Int) = num.toString + newNum.toString
+     | }
+defined class MyAppend
+```
+
+```console
+scala> implicit def intToMyAppend(x:Int) = new MyAppend(x)
+<console>:13: warning: implicit conversion method intToMyAppend should be enabled
+by making the implicit value scala.language.implicitConversions visible.
+This can be achieved by adding the import clause 'import scala.language.implicitConversions'
+or by setting the compiler option -language:implicitConversions.
+See the Scaladoc for value scala.language.implicitConversions for a discussion
+why the feature should be explicitly enabled.
+       implicit def intToMyAppend(x:Int) = new MyAppend(x)
+                    ^
+intToMyAppend: (x: Int)MyAppend
+```
+這時候 Int 就可以用 append 了
+
+
+```console
+scala> 1 append 2
+res8: String = 12
+```
+
+
+
+### 總結
+- - -
+* 在 scala 裡 object 可被視為 function，function 也可被視為 object，這觀念跟物件導向的觀念不太一樣，感覺 Companion Object 、apply、update 等功能也是為了要實作 functional programming．
+
+
+### 參考資料
+- - -
+https://stackoverflow.com/questions/9737352/what-is-the-apply-function-in-scala
+
+

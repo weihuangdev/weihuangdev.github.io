@@ -1,4 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-21T12:02:53+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 22 (Companion Object &amp;amp; apply &amp;amp; update)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day22.html" rel="alternate" type="text/html" title="Scala day 22 (Companion Object &amp; apply &amp; update)" /><published>2017-12-21T10:44:17+08:00</published><updated>2017-12-21T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day22</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day22.html">&lt;h3 id=&quot;companion-object&quot;&gt;Companion Object&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-21T16:37:53+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 23 (implicit conversion)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day23.html" rel="alternate" type="text/html" title="Scala day 23 (implicit conversion)" /><published>2017-12-21T11:44:17+08:00</published><updated>2017-12-21T11:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day23</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day23.html">&lt;h3 id=&quot;implicit-conversion&quot;&gt;implicit conversion&lt;/h3&gt;
+&lt;p&gt;就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件．&lt;br /&gt;
+由於 Int 沒有 append 方法所以下面執行會失敗 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1 append 2
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: value append is not a member of Int
+&lt;span class=&quot;go&quot;&gt;       1 append 2
+         ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;定義一個 MyAppend 及 append 方法 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class MyAppend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  def append(newNum: Int) = num.toString + newNum.toString
+     | }
+defined class MyAppend
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; implicit def intToMyAppend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new MyAppend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: warning: implicit conversion method intToMyAppend should be enabled
+&lt;span class=&quot;go&quot;&gt;by making the implicit value scala.language.implicitConversions visible.
+This can be achieved by adding the import clause 'import scala.language.implicitConversions'
+or by setting the compiler option -language:implicitConversions.
+See the Scaladoc for value scala.language.implicitConversions for a discussion
+why the feature should be explicitly enabled.
+       implicit def intToMyAppend(x:Int) = new MyAppend(x)
+                    ^
+intToMyAppend: (x: Int)MyAppend
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;這時候 Int 就可以用 append 了&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1 append 2
+&lt;span class=&quot;go&quot;&gt;res8: String = 12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;在 scala 裡 object 可被視為 function，function 也可被視為 object，這觀念跟物件導向的觀念不太一樣，感覺 Companion Object 、apply、update 等功能也是為了要實作 functional programming．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;參考資料&quot;&gt;參考資料&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;https://stackoverflow.com/questions/9737352/what-is-the-apply-function-in-scala&lt;/p&gt;</content><author><name></name></author><summary type="html">implicit conversion 就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件． 由於 Int 沒有 append 方法所以下面執行會失敗 :</summary></entry><entry><title type="html">Scala day 22 (Companion Object &amp;amp; apply &amp;amp; update)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day22.html" rel="alternate" type="text/html" title="Scala day 22 (Companion Object &amp; apply &amp; update)" /><published>2017-12-21T10:44:17+08:00</published><updated>2017-12-21T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day22</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day22.html">&lt;h3 id=&quot;companion-object&quot;&gt;Companion Object&lt;/h3&gt;
 &lt;p&gt;如果 object 的名稱和 class 名稱相同，稱為 Companion Object (Employee)．
 由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo，
 所以再用一個 object(Emp) 把它們包起來，否則 REPL 的環境不會被視為是 Companion Object，如果是定義在一個 Employee.scala 檔案裡，則不用 Emp 包起來 :&lt;/p&gt;
@@ -1122,99 +1164,4 @@ Filter1 的 super 會呼叫 Counter1 的 method ，Counter1 的 super 會呼叫 
   &lt;li&gt;在 scala trait 的功能跟 abstract class 差不多，但我覺得 trait 可以多重繼承跟實作具體的方法就比 abstract class 好用很多了．
 感覺像是 java interface 的加強版．雖然抽象類別有建構子可以初始化參數，但其實 trait 也可以提供方法傳遞即可．scala 提供了許多 java 額外的東西，
 所以寫法更豐富，或許這也是其中一種理由讓它可以實作OOP(物件導向)也可以實作FP(函數式)．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">traits VS abstract class 抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :</summary></entry><entry><title type="html">Scala day 14 (traits)</title><link href="http://localhost:4000/scala/2017/12/05/scala_day14.html" rel="alternate" type="text/html" title="Scala day 14 (traits)" /><published>2017-12-05T10:44:17+08:00</published><updated>2017-12-05T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/05/scala_day14</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/05/scala_day14.html">&lt;h3 id=&quot;traits&quot;&gt;traits&lt;/h3&gt;
-&lt;p&gt;在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 特徵(trait)或 extends 並且 with 特徵(trait)．&lt;/p&gt;
-
-&lt;p&gt;定義一個特徵 Fly :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Fly &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def flying(name:String) = name + &quot; is flying...&quot;
-     | }
-defined trait Fly
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;trait 不可被 new :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val f &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Fly
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:12: error: trait Fly is abstract&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; cannot be instantiated
-&lt;span class=&quot;go&quot;&gt;       val f = new Fly
-               ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;鳥類會飛所以 extends Fly :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Birds extends Fly
-&lt;span class=&quot;go&quot;&gt;defined class Birds
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val bird &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Birds
-&lt;span class=&quot;go&quot;&gt;bird: Birds = Birds@13bdf540
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; bird.flying&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bird&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res0: String = bird is flying...
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;再來定義一個類別 Machine， 飛機是 Machine 並且會 Fly，
-所以類別 Airplane extends Machine with Fly :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Machine
-&lt;span class=&quot;go&quot;&gt;defined class Machine
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Airplane extends Machine with Fly
-&lt;span class=&quot;go&quot;&gt;defined class Airplane
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val air &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Airplane
-&lt;span class=&quot;go&quot;&gt;air: Airplane = Airplane@152e7703
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; air.flying&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;air plane&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res1: String = air plane is flying...
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;在定義一個類別 Animal 及特徵 Eat 並且定義了一個未實作的 method eat :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Eat &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def eat
-     | }
-defined trait Eat
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Animal
-&lt;span class=&quot;go&quot;&gt;defined class Animal
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;當特徵有定義未實作的 method 時，不管是 extends 或 with 它的類別都必須實作它的方法 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Birds extends Animal with Fly with Eat
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: class Birds needs to be abstract, since method eat &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;trait Eat of &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Unit is not defined
-&lt;span class=&quot;go&quot;&gt;       class Birds extends Animal with Fly with Eat
-             ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;這邊重新定義類別 Birds 由於鳥是 Animal 而且會飛又會吃，所以 Birds extends Animal with Fly with Eat，
-實作方法時前面可以加上 override 也可以不用加，但繼承的類別已經實作過的在 scala 裡就要加 override :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Birds extends Animal with Fly with Eat &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def eat = println(&quot;Birds eating&quot;)
-     | }
-defined class Birds
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Birds extends Animal with Fly with Eat &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  override def eat = println(&quot;Birds eating&quot;)
-     | }
-defined class Birds
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val bird &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Birds
-&lt;span class=&quot;go&quot;&gt;bird: Birds = Birds@53ccbc15
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; bird.flying&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bird&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res3: String = bird is flying...
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; bird.eat
-&lt;span class=&quot;go&quot;&gt;Birds eating
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果不實作，不然就需宣告成抽象類別(abstract class) :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class Birds extends Animal with Fly with Eat
-&lt;span class=&quot;go&quot;&gt;defined class Birds
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala 的 trait 有點類似 java 的 interface，可以用來定義方法的規格(尚未實作)及幫類別定義型態，
-但又多了一個可以定義具體的方法(已實作)．跟抽象類別有點類似&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">traits 在 scala 裡類別也是單一繼承，但是可以有多個特徵(trait)． 類別可以 extends 特徵(trait)或 extends 並且 with 特徵(trait)．</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">traits VS abstract class 抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :</summary></entry></feed>
