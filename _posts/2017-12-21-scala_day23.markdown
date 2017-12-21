@@ -52,10 +52,86 @@ intToMyAppend: (x: Int)MyAppend
 scala> 1 append 2
 res8: String = 12
 ```
+也可以把 implicit 函式抽成一個 object．
+
+寫一隻 MyAppend.scala 並 compiler :
+
+```console
+class MyAppend(num: Int) {
+ def append(newNum: Int) = num.toString + newNum.toString
+}
+
+scalac MyAppend.scala
+```
+
+寫一隻 MyConvert.scala 並 compiler : 
+
+```console
+object MyConvert {
+ implicit def intToMyAppend(x:Int) = new MyAppend(x)
+}
+
+scalac MyConvert.scala
+```
+寫一隻 ConvertTest.scala，並將有定義隱含函式的 object(MyConvert) import 進來 : 
+
+```console
+import MyConvert._
+
+object ConvertTest {
+    def main(args: Array[String]): Unit = {
+    val result = 1 + 2
+    println(result)
+    val res = 1 append 2
+    println(res)
+  }
+}
+```
+接著執行 ConvertTest.scala : 
+
+```console
+daniel@Danielde-MacBook-Pro > scala ConvertTest.scala
+3
+12
+```
+在方法裡使用 implicit 物件，如果使用該方法時沒傳入物件，則會使用 implicit 物件傳入．
+寫一隻 Employee.scala : 
+
+```console
+import scala.collection.mutable.ListBuffer
+
+object Employee {
+
+  implicit val employee: Employee = new Employee("Daniel",50)
+
+  private var id = 1
+  private val employees:ListBuffer[Employee] = new ListBuffer[Employee]
+  private var sum = 0
+
+  def addEmployee(emp:Employee) = employees += emp
+
+  def countAmt = {
+    employees.foreach(emp => sum += emp.amt)
+    sum
+  }
+
+  def sayHello(implicit employee: Employee) = "Hello " + employee.getName
+}
+```
+寫一隻 EmployeeTest.scala : 
+
+```console
+object EmployeeTest {
+  def main(args: Array[String]): Unit = {
+    println(Employee.sayHello)//Hello Daniel
+    println(Employee.sayHello(new Employee("Sam",5000)))//Hello Sam
+  }
+}
+```
+
 
 
 ### 總結
 - - -
-* 在 scala 裡 object 可被視為 function，function 也可被視為 object，這觀念跟物件導向的觀念不太一樣，感覺 Companion Object 、apply、update 等功能也是為了要實作 functional programming．
-
+* 在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．
 
