@@ -1,15 +1,48 @@
 ---
 layout: post
-title:  "Scala day 22 (Companion Object & apply)"
+title:  "Scala day 22 (Companion Object & apply & update)"
 date:   2017-12-21 10:44:17 +0800
 categories: scala
 ---
 
 ### Companion Object
-如果 object 的名稱和 class 名稱相同，稱為 Companion Object．
+如果 object 的名稱和 class 名稱相同，稱為 Companion Object (Employee)．
+由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo，
+所以再用一個 object(Emp) 把它們包起來，否則 REPL 的環境不會被視為是 Companion Object，如果是定義在一個 Employee.scala 檔案裡，則不用 Emp 包起來 : 
 
+```console
+scala> import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ListBuffer
 
+scala> object Emp {
+     |
+     |   class Employee(val salary: Int)
+     |
+     |   object Employee {
+     |
+     |     private val emps: ListBuffer[Employee] = new ListBuffer[Employee]
+     |
+     |     private var sum = 0
+     |
+     |     def addEmp(emp:Employee) = emps += emp
+     |
+     |     def sumSalary = {
+     |       emps.foreach(emp => sum += emp.salary)
+     |       sum
+     |     }
+     |   }
+     | }
+defined object Emp
 
+scala> Emp.Employee.addEmp(new Emp.Employee(10))
+res0: scala.collection.mutable.ListBuffer[Emp.Employee] = ListBuffer(Emp$Employee@35eee641)
+
+scala> Emp.Employee.addEmp(new Emp.Employee(20))
+res1: scala.collection.mutable.ListBuffer[Emp.Employee] = ListBuffer(Emp$Employee@35eee641, Emp$Employee@4f3c7808)
+
+scala> Emp.Employee.sumSalary
+res2: Int = 30
+```
 
 ### apply function
 就是將參數傳給(apply) function 的意思
@@ -37,10 +70,42 @@ scala> Counter(2,3)
 res16: Int = 15
 ```
 
+### update function
+定義 : 
+a(x) = y 相當於 a.update(x, y)，a(x,y) = x 相當於 a.update(x,y,z) 以此類推．
+
+```console
+scala> class Cellphone {
+     |
+     |   val numbers = scala.collection.mutable.Map[String,(Int,Int)]()
+     |
+     |   def apply(name:String) = numbers(name)
+     |   def update(name:String, number:(Int,Int)) = numbers(name) = number
+     | }
+defined class Cellphone
+
+scala> val phonebook = new Cellphone
+phonebook: Cellphone = Cellphone@1d9af731
+```
+會呼叫 Cellphone 的 update 方法 : 
+
+```console
+scala> phonebook("Daniel")=(123,45678)
+
+scala> phonebook("Sam")=(321,876543)
+```
+會呼叫 Cellphone 的 apply 方法 : 
+
+```console
+scala> phonebook("Daniel")
+res5: (Int, Int) = (123,45678)
+
+scala> phonebook("Sam")
+res6: (Int, Int) = (321,876543)
+```
 
 ### Companion Object with apply
-由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo，
-所以再用一個 object(Trans) 把它們包起來 : 
+apply 可以設計成為 factory pattern : 
 
 ```console
 scala> object Trans {
@@ -80,13 +145,13 @@ drive boat
 ```
 
 
-
-
-
-
-
-
 ### 總結
 - - -
-* Set 的元素都是唯一的，不會重複．又分為 mutable 及 immutable．
+* 在 scala 裡 object 可被視為 function，function 也可被視為 object，這觀念跟物件導向的觀念不太一樣，感覺 Companion Object 、apply、update 等功能也是為了要實作 functional programming．
+
+
+### 參考資料
+- - -
+https://stackoverflow.com/questions/9737352/what-is-the-apply-function-in-scala
+
 

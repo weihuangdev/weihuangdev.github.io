@@ -1,5 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-21T10:47:17+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 22 (Companion Object &amp;amp; apply)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day22.html" rel="alternate" type="text/html" title="Scala day 22 (Companion Object &amp; apply)" /><published>2017-12-21T10:44:17+08:00</published><updated>2017-12-21T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day22</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day22.html">&lt;h3 id=&quot;companion-object&quot;&gt;Companion Object&lt;/h3&gt;
-&lt;p&gt;如果 object 的名稱和 class 名稱相同，稱為 Companion Object．&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-21T12:02:53+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 22 (Companion Object &amp;amp; apply &amp;amp; update)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day22.html" rel="alternate" type="text/html" title="Scala day 22 (Companion Object &amp; apply &amp; update)" /><published>2017-12-21T10:44:17+08:00</published><updated>2017-12-21T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day22</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day22.html">&lt;h3 id=&quot;companion-object&quot;&gt;Companion Object&lt;/h3&gt;
+&lt;p&gt;如果 object 的名稱和 class 名稱相同，稱為 Companion Object (Employee)．
+由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo，
+所以再用一個 object(Emp) 把它們包起來，否則 REPL 的環境不會被視為是 Companion Object，如果是定義在一個 Employee.scala 檔案裡，則不用 Emp 包起來 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.collection.mutable.ListBuffer
+&lt;span class=&quot;go&quot;&gt;import scala.collection.mutable.ListBuffer
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; object Emp &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |
+     |   class Employee(val salary: Int)
+     |
+     |   object Employee {
+     |
+     |     private val emps: ListBuffer[Employee] = new ListBuffer[Employee]
+     |
+     |     private var sum = 0
+     |
+     |     def addEmp(emp:Employee) = emps += emp
+     |
+     |     def sumSalary = {
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;     |       emps.foreach(emp =&amp;gt;&lt;/span&gt; sum +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; emp.salary&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |       sum
+     |     }
+     |   }
+     | }
+defined object Emp
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Emp.Employee.addEmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new Emp.Employee&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;res0: scala.collection.mutable.ListBuffer[Emp.Employee] = ListBuffer(Emp$&lt;/span&gt;Employee@35eee641&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Emp.Employee.addEmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new Emp.Employee&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;res1: scala.collection.mutable.ListBuffer[Emp.Employee] = ListBuffer(Emp$&lt;/span&gt;Employee@35eee641, Emp&lt;span class=&quot;nv&quot;&gt;$Employee&lt;/span&gt;@4f3c7808&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Emp.Employee.sumSalary
+&lt;span class=&quot;go&quot;&gt;res2: Int = 30
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;apply-function&quot;&gt;apply function&lt;/h3&gt;
 &lt;p&gt;就是將參數傳給(apply) function 的意思&lt;/p&gt;
@@ -25,9 +60,39 @@ defined object Counter
 &lt;span class=&quot;go&quot;&gt;res16: Int = 15
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;h3 id=&quot;update-function&quot;&gt;update function&lt;/h3&gt;
+&lt;p&gt;定義 : 
+a(x) = y 相當於 a.update(x, y)，a(x,y) = x 相當於 a.update(x,y,z) 以此類推．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Cellphone &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |
+     |   val numbers = scala.collection.mutable.Map[String,(Int,Int)]()
+     |
+     |   def apply(name:String) = numbers(name)
+     |   def update(name:String, number:(Int,Int)) = numbers(name) = number
+     | }
+defined class Cellphone
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val phonebook &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Cellphone
+&lt;span class=&quot;go&quot;&gt;phonebook: Cellphone = Cellphone@1d9af731
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;會呼叫 Cellphone 的 update 方法 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; phonebook&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)=(&lt;/span&gt;123,45678&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; phonebook&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)=(&lt;/span&gt;321,876543&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;會呼叫 Cellphone 的 apply 方法 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; phonebook&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res5: (Int, Int) = (123,45678)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; phonebook&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res6: (Int, Int) = (321,876543)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h3 id=&quot;companion-object-with-apply&quot;&gt;Companion Object with apply&lt;/h3&gt;
-&lt;p&gt;由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo，
-所以再用一個 object(Trans) 把它們包起來 :&lt;/p&gt;
+&lt;p&gt;apply 可以設計成為 factory pattern :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; object Trans &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;     |   trait Transportation {
@@ -68,8 +133,12 @@ defined object Trans
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;Set 的元素都是唯一的，不會重複．又分為 mutable 及 immutable．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Companion Object 如果 object 的名稱和 class 名稱相同，稱為 Companion Object．</summary></entry><entry><title type="html">Scala day 21 (Set)</title><link href="http://localhost:4000/scala/2017/12/20/scala_day21.html" rel="alternate" type="text/html" title="Scala day 21 (Set)" /><published>2017-12-20T10:44:17+08:00</published><updated>2017-12-20T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/20/scala_day21</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/20/scala_day21.html">&lt;h3 id=&quot;set&quot;&gt;Set&lt;/h3&gt;
+  &lt;li&gt;在 scala 裡 object 可被視為 function，function 也可被視為 object，這觀念跟物件導向的觀念不太一樣，感覺 Companion Object 、apply、update 等功能也是為了要實作 functional programming．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;參考資料&quot;&gt;參考資料&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;https://stackoverflow.com/questions/9737352/what-is-the-apply-function-in-scala&lt;/p&gt;</content><author><name></name></author><summary type="html">Companion Object 如果 object 的名稱和 class 名稱相同，稱為 Companion Object (Employee)． 由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo， 所以再用一個 object(Emp) 把它們包起來，否則 REPL 的環境不會被視為是 Companion Object，如果是定義在一個 Employee.scala 檔案裡，則不用 Emp 包起來 :</summary></entry><entry><title type="html">Scala day 21 (Set)</title><link href="http://localhost:4000/scala/2017/12/20/scala_day21.html" rel="alternate" type="text/html" title="Scala day 21 (Set)" /><published>2017-12-20T10:44:17+08:00</published><updated>2017-12-20T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/20/scala_day21</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/20/scala_day21.html">&lt;h3 id=&quot;set&quot;&gt;Set&lt;/h3&gt;
 &lt;p&gt;Set 是一個無法放置相同元素的容器，元素都是唯一的，不會重複．有分為 mutable 及 immutable．&lt;/p&gt;
 
 &lt;h4 id=&quot;immutable-set&quot;&gt;immutable Set&lt;/h4&gt;
