@@ -1,0 +1,92 @@
+---
+layout: post
+title:  "Scala day 22 (Companion Object & apply)"
+date:   2017-12-21 10:44:17 +0800
+categories: scala
+---
+
+### Companion Object
+如果 object 的名稱和 class 名稱相同，稱為 Companion Object．
+
+
+
+
+### apply function
+就是將參數傳給(apply) function 的意思
+
+```console
+scala> val sum = (num1:Int,num2:Int) => num1 + num2
+sum: (Int, Int) => Int = $$Lambda$1197/530446114@3f06abd
+
+scala> sum(2,3)
+res15: Int = 5
+
+scala> sum.apply(2,3)
+res14: Int = 5
+```
+將參數傳給(apply) object
+
+```console
+scala> object Counter {
+     |  val baseNum = 10
+     |  def apply(num1:Int , num2:Int) = baseNum + num1 + num2
+     | }
+defined object Counter
+
+scala> Counter(2,3)
+res16: Int = 15
+```
+
+
+### Companion Object with apply
+由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo，
+所以再用一個 object(Trans) 把它們包起來 : 
+
+```console
+scala> object Trans {
+     |   trait Transportation {
+     |     def go
+     |   }
+     |   object Transportation {
+     |     private class Car extends Transportation {
+     |       override def go {println("drive car")}
+     |     }
+     |     private class Boat extends Transportation {
+     |       override def go {println("drive boat")}
+     |     }
+     |     def apply(name:String): Transportation = {
+     |       if(name == "car") {
+     |         new Car
+     |       } else {
+     |         new Boat
+     |       }
+     |     }
+     |   }
+     | }
+defined object Trans
+
+scala> val car = Trans.Transportation("car")
+car: Trans.Transportation = Trans$Transportation$Car@178cfe5e
+
+scala> car.go
+drive car
+
+scala> val boat = Trans.Transportation("boat")
+boat: Trans.Transportation = Trans$Transportation$Boat@31e90355
+
+scala> boat.go
+drive boat
+
+```
+
+
+
+
+
+
+
+
+### 總結
+- - -
+* Set 的元素都是唯一的，不會重複．又分為 mutable 及 immutable．
+
