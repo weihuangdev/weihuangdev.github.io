@@ -96,6 +96,7 @@
      | }
 defined class MyAppend
 </span></code></pre></div></div>
+<p>在 REPL 直接寫 implicit 會出現 warning，但還是可以使用的 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> implicit def intToMyAppend<span class="o">(</span>x:Int<span class="o">)</span> <span class="o">=</span> new MyAppend<span class="o">(</span>x<span class="o">)</span>
 <span class="gp">&lt;console&gt;</span>:13: warning: implicit conversion method intToMyAppend should be enabled
@@ -108,7 +109,15 @@ why the feature should be explicitly enabled.
                     ^
 intToMyAppend: (x: Int)MyAppend
 </span></code></pre></div></div>
-<p>這時候 Int 就可以用 append 了</p>
+<p>如果不要有 warning 可以 import scala.language.implicitConversions :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> import scala.language.implicitConversions
+<span class="go">import scala.language.implicitConversions
+
+</span><span class="gp">scala&gt;</span> implicit def intToMyAppend<span class="o">(</span>x:Int<span class="o">)</span> <span class="o">=</span> new MyAppend<span class="o">(</span>x<span class="o">)</span>
+<span class="go">intToMyAppend: (x: Int)MyAppend
+</span></code></pre></div></div>
+<p>加上 implicit 函式後，編譯器會在範圍內找到對應型態的 implicit 函式呼叫．所以會變成 intToMyAppend(1) append 2</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> 1 append 2
 <span class="go">res8: String = 12
@@ -119,10 +128,6 @@ intToMyAppend: (x: Int)MyAppend
 <ul>
   <li>在 scala 裡 object 可被視為 function，function 也可被視為 object，這觀念跟物件導向的觀念不太一樣，感覺 Companion Object 、apply、update 等功能也是為了要實作 functional programming．</li>
 </ul>
-
-<h3 id="參考資料">參考資料</h3>
-<hr />
-<p>https://stackoverflow.com/questions/9737352/what-is-the-apply-function-in-scala</p>
 
 
   </div>
