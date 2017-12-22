@@ -1,0 +1,114 @@
+---
+layout: post
+title:  "Scala day 24 (variances)"
+date:   2017-12-22 10:44:17 +0800
+categories: scala
+---
+
+### variances
+就是定義可用的型別，以及可用的型別的父子類別的繼承關係．
+
+```console
+abstract class Animal {
+  def name: String
+}
+class Cat(catName: String) extends Animal {
+  def name = catName
+}
+
+class MexCat(MexCatName: String) extends Cat(MexCatName) {
+  override def name = MexCatName
+}
+
+```
+
+
+### Invariant
+
+```console
+scala> class InvariantClass[A]
+defined class InvariantClass
+
+scala> def invarMethod(x: InvariantClass[Cat]) {}
+invarMethod: (x: InvariantClass[Cat])Unit
+
+scala> invarMethod(new InvariantClass[MexCat])
+<console>:15: error: type mismatch;
+ found   : InvariantClass[MexCat]
+ required: InvariantClass[Cat]
+Note: MexCat <: Cat, but class InvariantClass is invariant in type A.
+You may wish to define A as +A instead. (SLS 4.5)
+       invarMethod(new InvariantClass[MexCat])
+                   ^
+
+scala>   invarMethod(new InvariantClass[Cat])
+
+scala>   invarMethod(new InvariantClass[Animal])
+<console>:15: error: type mismatch;
+ found   : InvariantClass[Animal]
+ required: InvariantClass[Cat]
+Note: Animal >: Cat, but class InvariantClass is invariant in type A.
+You may wish to define A as -A instead. (SLS 4.5)
+         invarMethod(new InvariantClass[Animal])
+                     ^
+
+```
+
+### covariant
+
+```console
+scala> class CovariantClass[+A]
+defined class CovariantClass
+
+scala> covarMethod(new CovariantClass[MexCat])
+
+scala> covarMethod(new CovariantClass[Cat])
+
+scala> covarMethod(new CovariantClass[Animal])
+<console>:15: error: type mismatch;
+ found   : CovariantClass[Animal]
+ required: CovariantClass[Cat]
+         covarMethod(new CovariantClass[Animal])
+                     ^
+
+```
+
+### Contravariant
+```console
+scala> class ContravariantClass[-A]
+defined class ContravariantClass
+
+scala> def contraMethod(x: ContravariantClass[Cat]) {}
+contraMethod: (x: ContravariantClass[Cat])Unit
+
+
+scala> contraMethod(new ContravariantClass[MexCat])
+<console>:15: error: type mismatch;
+ found   : ContravariantClass[MexCat]
+ required: ContravariantClass[Cat]
+         contraMethod(new ContravariantClass[MexCat])
+                      ^
+
+scala> contraMethod(new ContravariantClass[Cat])
+
+scala> contraMethod(new ContravariantClass[Animal])
+
+```
+
+
+### Bounds
+A <: B Upper bound  
+
+A >: B Lower bound  
+
+A <: Upper >: Lower Lower and upper bounds used together  
+
+
+
+
+
+### 總結
+- - -
+* 在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．
+
+
