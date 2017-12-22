@@ -95,43 +95,34 @@ daniel@Danielde-MacBook-Pro > scala ConvertTest.scala
 12
 ```
 在方法裡使用 implicit 物件，如果使用該方法時沒傳入物件，則會使用 implicit 物件傳入．
-寫一隻 Employee.scala : 
+寫一隻 Employees.scala : 
 
 ```console
-import scala.collection.mutable.ListBuffer
-
-object Employee {
-
-  implicit val employee: Employee = new Employee("Daniel",50)
-
-  private var id = 1
-  private val employees:ListBuffer[Employee] = new ListBuffer[Employee]
-  private var sum = 0
-
-  def addEmployee(emp:Employee) = employees += emp
-
-  def countAmt = {
-    employees.foreach(emp => sum += emp.amt)
-    sum
-  }
-
-  def sayHello(implicit employee: Employee) = "Hello " + employee.getName
+class Employees(name:String ,val amt:Int) {
+  def getName = name
 }
+
+object Employees {
+
+  implicit val employee: Employees = new Employees("Daniel",50)
+
+  def sayHello(implicit employee: Employees) = "Hello " + employee.getName
+}
+
 ```
-寫一隻 EmployeeTest.scala : 
+寫一隻 EmployeeTest.scala，sayHello 沒給參數的話，會帶隱含物件，所以會印出 Daniel．
 
 ```console
 object EmployeeTest {
   def main(args: Array[String]): Unit = {
-    println(Employee.sayHello)//Hello Daniel
-    println(Employee.sayHello(new Employee("Sam",5000)))//Hello Sam
+    println(Employees.sayHello)//Hello Daniel
+    println(Employees.sayHello(new Employees("Sam",5000)))//Hello Sam
   }
 }
 ```
 
-
-
 ### 總結
 - - -
 * 在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．
+
 

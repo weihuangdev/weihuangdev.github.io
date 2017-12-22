@@ -161,34 +161,26 @@ object ConvertTest {
 12
 </span></code></pre></div></div>
 <p>在方法裡使用 implicit 物件，如果使用該方法時沒傳入物件，則會使用 implicit 物件傳入．
-寫一隻 Employee.scala :</p>
+寫一隻 Employees.scala :</p>
 
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">import scala.collection.mutable.ListBuffer
-
-object Employee {
-
-  implicit val employee: Employee = new Employee("Daniel",50)
-
-  private var id = 1
-  private val employees:ListBuffer[Employee] = new ListBuffer[Employee]
-  private var sum = 0
-
-  def addEmployee(emp:Employee) = employees += emp
-
-  def countAmt = {
-</span><span class="gp">    employees.foreach(emp =&gt;</span> sum +<span class="o">=</span> emp.amt<span class="o">)</span>
-<span class="go">    sum
-  }
-
-  def sayHello(implicit employee: Employee) = "Hello " + employee.getName
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">class Employees(name:String ,val amt:Int) {
+  def getName = name
 }
+
+object Employees {
+
+  implicit val employee: Employees = new Employees("Daniel",50)
+
+  def sayHello(implicit employee: Employees) = "Hello " + employee.getName
+}
+
 </span></code></pre></div></div>
-<p>寫一隻 EmployeeTest.scala :</p>
+<p>寫一隻 EmployeeTest.scala，sayHello 沒給參數的話，會帶隱含物件，所以會印出 Daniel．</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">object EmployeeTest {
   def main(args: Array[String]): Unit = {
-    println(Employee.sayHello)//Hello Daniel
-    println(Employee.sayHello(new Employee("Sam",5000)))//Hello Sam
+    println(Employees.sayHello)//Hello Daniel
+    println(Employees.sayHello(new Employees("Sam",5000)))//Hello Sam
   }
 }
 </span></code></pre></div></div>
