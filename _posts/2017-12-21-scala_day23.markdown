@@ -95,7 +95,7 @@ daniel@Danielde-MacBook-Pro > scala ConvertTest.scala
 12
 ```
 在方法裡使用 implicit 物件，如果使用該方法時沒傳入物件，則會使用 implicit 物件傳入．
-寫一隻 Employees.scala : 
+寫一隻 Employees.scala，並 compiler : 
 
 ```console
 class Employees(name:String ,val amt:Int) {
@@ -104,21 +104,32 @@ class Employees(name:String ,val amt:Int) {
 
 object Employees {
 
+  import Employees._
+
   implicit val employee: Employees = new Employees("Daniel",50)
 
   def sayHello(implicit employee: Employees) = "Hello " + employee.getName
 }
 
+
+scalac Employees.scala
 ```
-寫一隻 EmployeeTest.scala，sayHello 沒給參數的話，會帶隱含物件，所以會印出 Daniel．
+寫一隻 EmployeesTest.scala，sayHello 沒給參數的話，會帶隱含物件，所以會印出 Daniel．
 
 ```console
-object EmployeeTest {
+object EmployeesTest {
   def main(args: Array[String]): Unit = {
     println(Employees.sayHello)//Hello Daniel
     println(Employees.sayHello(new Employees("Sam",5000)))//Hello Sam
   }
 }
+```
+執行時，加上 classpath : 
+
+```console
+daniel@Danielde-MacBook-Pro > scala -cp "./" EmployeesTest.scala
+Hello Daniel
+Hello Sam
 ```
 
 ### 總結

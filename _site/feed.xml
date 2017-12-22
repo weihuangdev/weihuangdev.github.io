@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-22T11:04:21+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 23 (implicit conversion)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day23.html" rel="alternate" type="text/html" title="Scala day 23 (implicit conversion)" /><published>2017-12-21T11:44:17+08:00</published><updated>2017-12-21T11:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day23</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day23.html">&lt;h3 id=&quot;implicit-conversion&quot;&gt;implicit conversion&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-22T13:23:04+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 23 (implicit conversion)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day23.html" rel="alternate" type="text/html" title="Scala day 23 (implicit conversion)" /><published>2017-12-21T11:44:17+08:00</published><updated>2017-12-21T11:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day23</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day23.html">&lt;h3 id=&quot;implicit-conversion&quot;&gt;implicit conversion&lt;/h3&gt;
 &lt;p&gt;就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件．&lt;br /&gt;
 由於 Int 沒有 append 方法所以下面執行會失敗 :&lt;/p&gt;
 
@@ -79,7 +79,7 @@ object ConvertTest {
 12
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;在方法裡使用 implicit 物件，如果使用該方法時沒傳入物件，則會使用 implicit 物件傳入．
-寫一隻 Employees.scala :&lt;/p&gt;
+寫一隻 Employees.scala，並 compiler :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;class Employees(name:String ,val amt:Int) {
   def getName = name
@@ -87,20 +87,30 @@ object ConvertTest {
 
 object Employees {
 
+  import Employees._
+
   implicit val employee: Employees = new Employees(&quot;Daniel&quot;,50)
 
   def sayHello(implicit employee: Employees) = &quot;Hello &quot; + employee.getName
 }
 
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;寫一隻 EmployeeTest.scala，sayHello 沒給參數的話，會帶隱含物件，所以會印出 Daniel．&lt;/p&gt;
 
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;object EmployeeTest {
+scalac Employees.scala
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;寫一隻 EmployeesTest.scala，sayHello 沒給參數的話，會帶隱含物件，所以會印出 Daniel．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;object EmployeesTest {
   def main(args: Array[String]): Unit = {
     println(Employees.sayHello)//Hello Daniel
     println(Employees.sayHello(new Employees(&quot;Sam&quot;,5000)))//Hello Sam
   }
 }
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行時，加上 classpath :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; scala &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;./&quot;&lt;/span&gt; EmployeesTest.scala
+&lt;span class=&quot;go&quot;&gt;Hello Daniel
+Hello Sam
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
