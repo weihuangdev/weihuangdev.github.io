@@ -6,7 +6,9 @@ categories: scala
 ---
 
 ### variances
-就是定義可用的型別，以及可用的型別的父子類別的繼承關係．
+就是定義型別，以及型別的父子類別的繼承關係．  
+首先先訂幾個類別並有繼承關係 : 
+抽象類別 Animal、繼承 Animal 的 Cat、繼承 Cat 的 MexCat．
 
 ```console
 abstract class Animal {
@@ -24,14 +26,21 @@ class MexCat(MexCatName: String) extends Cat(MexCatName) {
 
 
 ### Invariant
+Invariant 的寫法 : 
 
 ```console
 scala> class InvariantClass[A]
 defined class InvariantClass
+```
+Invariant 代表說該型態就一定是要定義的那一個，像這邊定義的是 Cat 類別，所以使用時都只能用 Cat : 
 
+```console
 scala> def invarMethod(x: InvariantClass[Cat]) {}
 invarMethod: (x: InvariantClass[Cat])Unit
+```
+所以這邊呼叫 invarMethod 方法時，只有 Cat 不會錯誤，MexCat 及 Animal 都會出錯 : 
 
+```console
 scala> invarMethod(new InvariantClass[MexCat])
 <console>:15: error: type mismatch;
  found   : InvariantClass[MexCat]
@@ -55,11 +64,21 @@ You may wish to define A as -A instead. (SLS 4.5)
 ```
 
 ### covariant
+covariant 的寫法 : 
 
 ```console
 scala> class CovariantClass[+A]
 defined class CovariantClass
+```
+covariant 代表說，只要是 A 與有繼承 A 這個形態的類別(也就是 A 的子類別)，也都可以使用 : 
 
+```console
+scala> def covarMethod(x: CovariantClass[Cat]) {}
+covarMethod: (x: CovariantClass[Cat])Unit
+```
+所以呼叫 covarMethod 方法時，MexCat(Cat的子類別)以及 Cat 都會成功，只有 Animal 會失敗．
+
+```console
 scala> covarMethod(new CovariantClass[MexCat])
 
 scala> covarMethod(new CovariantClass[Cat])
@@ -73,15 +92,22 @@ scala> covarMethod(new CovariantClass[Animal])
 
 ```
 
-### Contravariant
+### contravariant
+contravariant 的寫法 : 
+
 ```console
 scala> class ContravariantClass[-A]
 defined class ContravariantClass
+```
+contravariant 代表說，只要是 A 與 A 這個形態的父類別，也都可以使用 : 
 
+```console
 scala> def contraMethod(x: ContravariantClass[Cat]) {}
 contraMethod: (x: ContravariantClass[Cat])Unit
+```
+所以呼叫 contraMethod 方法時，Cat 以及 Animal(Cat 的父類別) 都會成功，只有 MexCat 會失敗．
 
-
+```console
 scala> contraMethod(new ContravariantClass[MexCat])
 <console>:15: error: type mismatch;
  found   : ContravariantClass[MexCat]
@@ -94,21 +120,38 @@ scala> contraMethod(new ContravariantClass[Cat])
 scala> contraMethod(new ContravariantClass[Animal])
 
 ```
+接著再來用 trait 測試看看 :  
+定義兩個 trait OntheRoad 及 LikeFish
 
+```console
+scala> trait OntheRoad
+defined trait OntheRoad
 
-### Bounds
-A <: B Upper bound  
+scala> trait LikeFish
+defined trait LikeFish
+```
+讓 Cat 除了繼承 Animal 並同時擁有 OntheRoad 及 LikeFish 這兩個特徵 : 
 
-A >: B Lower bound  
+```console
+scala> class Cat(catName: String) extends Animal with OntheRoad with LikeFish {
+     |   def name = catName
+     | }
+defined class Cat
+```
+接著重新定義一次 function 再呼叫看看，trait 都可以成功 : 
 
-A <: Upper >: Lower Lower and upper bounds used together  
+```console
+scala> def contraMethod(x: ContravariantClass[Cat]) {}
+contraMethod: (x: ContravariantClass[Cat])Unit
 
+scala> contraMethod(new ContravariantClass[OntheRoad])
 
+scala> contraMethod(new ContravariantClass[LikeFish])
 
-
+```
 
 ### 總結
 - - -
-* 在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．
+* 在 scala 的 variances 除了可以定義型別(Invariant)又加上了可用父類別(contravariant)及子類別(covariant)的選擇，讓型態上擴充性更強．
 
 

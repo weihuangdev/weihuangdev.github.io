@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 24 (variances)</title>
-  <meta name="description" content="variances 就是定義可用的型別，以及可用的型別的父子類別的繼承關係．">
+  <meta name="description" content="variances 就是定義型別，以及型別的父子類別的繼承關係． 首先先訂幾個類別並有繼承關係 : 抽象類別 Animal、繼承 Animal 的 Cat、繼承 Cat 的 MexCat．">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2017/12/22/scala_day24.html">
@@ -81,7 +81,9 @@
 
   <div class="post-content" itemprop="articleBody">
     <h3 id="variances">variances</h3>
-<p>就是定義可用的型別，以及可用的型別的父子類別的繼承關係．</p>
+<p>就是定義型別，以及型別的父子類別的繼承關係．<br />
+首先先訂幾個類別並有繼承關係 : 
+抽象類別 Animal、繼承 Animal 的 Cat、繼承 Cat 的 MexCat．</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">abstract class Animal {
   def name: String
@@ -97,14 +99,19 @@ class MexCat(MexCatName: String) extends Cat(MexCatName) {
 </span></code></pre></div></div>
 
 <h3 id="invariant">Invariant</h3>
+<p>Invariant 的寫法 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class InvariantClass[A]
 <span class="go">defined class InvariantClass
+</span></code></pre></div></div>
+<p>Invariant 代表說該型態就一定是要定義的那一個，像這邊定義的是 Cat 類別，所以使用時都只能用 Cat :</p>
 
-</span><span class="gp">scala&gt;</span> def invarMethod<span class="o">(</span>x: InvariantClass[Cat]<span class="o">)</span> <span class="o">{}</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def invarMethod<span class="o">(</span>x: InvariantClass[Cat]<span class="o">)</span> <span class="o">{}</span>
 <span class="go">invarMethod: (x: InvariantClass[Cat])Unit
+</span></code></pre></div></div>
+<p>所以這邊呼叫 invarMethod 方法時，只有 Cat 不會錯誤，MexCat 及 Animal 都會出錯 :</p>
 
-</span><span class="gp">scala&gt;</span> invarMethod<span class="o">(</span>new InvariantClass[MexCat]<span class="o">)</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> invarMethod<span class="o">(</span>new InvariantClass[MexCat]<span class="o">)</span>
 <span class="gp">&lt;console&gt;</span>:15: error: <span class="nb">type </span>mismatch<span class="p">;</span>
 <span class="go"> found   : InvariantClass[MexCat]
  required: InvariantClass[Cat]
@@ -127,11 +134,19 @@ You may wish to define A as +A instead. (SLS 4.5)
 </span></code></pre></div></div>
 
 <h3 id="covariant">covariant</h3>
+<p>covariant 的寫法 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class CovariantClass[+A]
 <span class="go">defined class CovariantClass
+</span></code></pre></div></div>
+<p>covariant 代表說，只要是 A 與有繼承 A 這個形態的類別(也就是 A 的子類別)，也都可以使用 :</p>
 
-</span><span class="gp">scala&gt;</span> covarMethod<span class="o">(</span>new CovariantClass[MexCat]<span class="o">)</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def covarMethod<span class="o">(</span>x: CovariantClass[Cat]<span class="o">)</span> <span class="o">{}</span>
+<span class="go">covarMethod: (x: CovariantClass[Cat])Unit
+</span></code></pre></div></div>
+<p>所以呼叫 covarMethod 方法時，MexCat(Cat的子類別)以及 Cat 都會成功，只有 Animal 會失敗．</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> covarMethod<span class="o">(</span>new CovariantClass[MexCat]<span class="o">)</span>
 <span class="go">
 </span><span class="gp">scala&gt;</span> covarMethod<span class="o">(</span>new CovariantClass[Cat]<span class="o">)</span>
 <span class="go">
@@ -144,15 +159,20 @@ You may wish to define A as +A instead. (SLS 4.5)
 
 </span></code></pre></div></div>
 
-<h3 id="contravariant">Contravariant</h3>
+<h3 id="contravariant">contravariant</h3>
+<p>contravariant 的寫法 :</p>
+
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class ContravariantClass[-A]
 <span class="go">defined class ContravariantClass
+</span></code></pre></div></div>
+<p>contravariant 代表說，只要是 A 與 A 這個形態的父類別，也都可以使用 :</p>
 
-</span><span class="gp">scala&gt;</span> def contraMethod<span class="o">(</span>x: ContravariantClass[Cat]<span class="o">)</span> <span class="o">{}</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def contraMethod<span class="o">(</span>x: ContravariantClass[Cat]<span class="o">)</span> <span class="o">{}</span>
 <span class="go">contraMethod: (x: ContravariantClass[Cat])Unit
+</span></code></pre></div></div>
+<p>所以呼叫 contraMethod 方法時，Cat 以及 Animal(Cat 的父類別) 都會成功，只有 MexCat 會失敗．</p>
 
-
-</span><span class="gp">scala&gt;</span> contraMethod<span class="o">(</span>new ContravariantClass[MexCat]<span class="o">)</span>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> contraMethod<span class="o">(</span>new ContravariantClass[MexCat]<span class="o">)</span>
 <span class="gp">&lt;console&gt;</span>:15: error: <span class="nb">type </span>mismatch<span class="p">;</span>
 <span class="go"> found   : ContravariantClass[MexCat]
  required: ContravariantClass[Cat]
@@ -164,18 +184,37 @@ You may wish to define A as +A instead. (SLS 4.5)
 </span><span class="gp">scala&gt;</span> contraMethod<span class="o">(</span>new ContravariantClass[Animal]<span class="o">)</span>
 <span class="go">
 </span></code></pre></div></div>
+<p>接著再來用 trait 測試看看 :<br />
+定義兩個 trait OntheRoad 及 LikeFish</p>
 
-<h3 id="bounds">Bounds</h3>
-<p>A &lt;: B Upper bound</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> trait OntheRoad
+<span class="go">defined trait OntheRoad
 
-<p>A &gt;: B Lower bound</p>
+</span><span class="gp">scala&gt;</span> trait LikeFish
+<span class="go">defined trait LikeFish
+</span></code></pre></div></div>
+<p>讓 Cat 除了繼承 Animal 並同時擁有 OntheRoad 及 LikeFish 這兩個特徵 :</p>
 
-<p>A <: Upper="">: Lower Lower and upper bounds used together</:></p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class Cat<span class="o">(</span>catName: String<span class="o">)</span> extends Animal with OntheRoad with LikeFish <span class="o">{</span>
+<span class="go">     |   def name = catName
+     | }
+defined class Cat
+</span></code></pre></div></div>
+<p>接著重新定義一次 function 再呼叫看看，trait 都可以成功 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def contraMethod<span class="o">(</span>x: ContravariantClass[Cat]<span class="o">)</span> <span class="o">{}</span>
+<span class="go">contraMethod: (x: ContravariantClass[Cat])Unit
+
+</span><span class="gp">scala&gt;</span> contraMethod<span class="o">(</span>new ContravariantClass[OntheRoad]<span class="o">)</span>
+<span class="go">
+</span><span class="gp">scala&gt;</span> contraMethod<span class="o">(</span>new ContravariantClass[LikeFish]<span class="o">)</span>
+<span class="go">
+</span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
-  <li>在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．</li>
+  <li>在 scala 的 variances 除了可以定義型別(Invariant)又加上了可用父類別(contravariant)及子類別(covariant)的選擇，讓型態上擴充性更強．</li>
 </ul>
 
 

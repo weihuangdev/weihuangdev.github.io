@@ -1,5 +1,159 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-23T00:57:50+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 24 (variances)</title><link href="http://localhost:4000/scala/2017/12/22/scala_day24.html" rel="alternate" type="text/html" title="Scala day 24 (variances)" /><published>2017-12-22T10:44:17+08:00</published><updated>2017-12-22T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/22/scala_day24</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/22/scala_day24.html">&lt;h3 id=&quot;variances&quot;&gt;variances&lt;/h3&gt;
-&lt;p&gt;就是定義可用的型別，以及可用的型別的父子類別的繼承關係．&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-24T21:44:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 25 (Bounds)</title><link href="http://localhost:4000/scala/2017/12/23/scala_day25.html" rel="alternate" type="text/html" title="Scala day 25 (Bounds)" /><published>2017-12-23T10:44:17+08:00</published><updated>2017-12-23T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/23/scala_day25</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/23/scala_day25.html">&lt;h3 id=&quot;bounds&quot;&gt;Bounds&lt;/h3&gt;
+
+&lt;h4 id=&quot;a--b-upper-bound&quot;&gt;A &amp;lt;: B Upper bound&lt;/h4&gt;
+&lt;p&gt;再了解 Upper bound 之前也先來定義一些類別 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;trait OntheRoad
+
+trait LikeFish
+
+abstract class Animal {
+  def name: String
+}
+
+class Cat(catName: String) extends Animal with OntheRoad with LikeFish {
+  def name = catName
+}
+
+class MexCat(MexCatName: String) extends Cat(MexCatName) {
+  override def name = MexCatName
+}
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;這次定義除了用 Invariant 再加上了 Upper bound，代表 A 這類別上界是 Cat，不能再往上了(最初的父類別要是 Cat)．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class InvariantClass[A &amp;lt;: Cat]
+&lt;span class=&quot;go&quot;&gt;defined class InvariantClass
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;所以 Cat 及 MexCat 都會成功，Animal 會失敗 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Cat]
+&lt;span class=&quot;go&quot;&gt;res0: InvariantClass[Cat] = InvariantClass@2248d140
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[MexCat]
+&lt;span class=&quot;go&quot;&gt;res1: InvariantClass[MexCat] = InvariantClass@5f82209e
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Animal]
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Animal] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;lt;: Cat]
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       val res2 =
+           ^
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Animal] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;lt;: Cat]
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       new InvariantClass[Animal]
+           ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;再定義一個 Dog 類別，這時候雖然是 InvariantClass 但由於已經定義了 Upper bound 是 Cat，所以 Dog 會出錯 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Dog
+&lt;span class=&quot;go&quot;&gt;defined class Dog
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Dog]
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Dog] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;lt;: Cat]
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       val res3 =
+           ^
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Dog] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;lt;: Cat]
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       new InvariantClass[Dog]
+           ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;a--b-lower-bound&quot;&gt;A &amp;gt;: B Lower bound&lt;/h4&gt;
+&lt;p&gt;這次換用 Invariant 加上了 Lower bound，代表 A 這類別下界是 Cat，不能再往下了(最後的子類別是 Cat)．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class InvariantClass[A &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;: Cat]
+&lt;span class=&quot;go&quot;&gt;defined class InvariantClass
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;所以 Cat 的子類別 MexCat 就會失敗，而至於 Animal、OntheRoad、LikeFish 的會成功，而 Dog 跟 Cat 目前毫無關係所以繼續失敗．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Cat]
+&lt;span class=&quot;go&quot;&gt;res4: InvariantClass[Cat] = InvariantClass@56820446
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[MexCat]
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;MexCat] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;gt;: Cat]
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       val res5 =
+           ^
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;MexCat] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;gt;: Cat]
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       new InvariantClass[MexCat]
+           ^
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Animal]
+&lt;span class=&quot;go&quot;&gt;res6: InvariantClass[Animal] = InvariantClass@28f3a218
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Dog]
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Dog] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;gt;: Cat]
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       val res7 =
+           ^
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Dog] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;gt;: Cat]
+&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       new InvariantClass[Dog]
+           ^
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[OntheRoad]
+&lt;span class=&quot;go&quot;&gt;res8: InvariantClass[OntheRoad] = InvariantClass@45ecdd32
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[LikeFish]
+&lt;span class=&quot;go&quot;&gt;res9: InvariantClass[LikeFish] = InvariantClass@fe38d1e
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;a--b-view-bound&quot;&gt;A &amp;lt;% B View Bound&lt;/h4&gt;
+&lt;p&gt;View Bound 代表可被視為 B 的 A 都可以成功．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Trat1
+&lt;span class=&quot;go&quot;&gt;defined trait Trat1
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Printer[A]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;value: A&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   def print() = println(value.toString)
+     | }
+defined class Printer
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class SubPrinter[A]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;value: A&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; extends Printer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;value&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with Trat1 &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   override def print() = println(&quot;Sub print&quot;)
+     | }
+defined class SubPrinter
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; implicit def int2print &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Printer[Int] &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Printer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;int2print: (i: Int)Printer[Int]
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; implicit def string2print &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Printer[String] &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Printer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;string2print: (s: String)Printer[String]
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def f1[A &amp;lt;% Printer[A]]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;a: A&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; a.print&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;f1: [A](a: A)(implicit evidence$&lt;/span&gt;1: A &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Printer[A]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;Unit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;由於隱含轉換的關係 int 、String 會轉換成 Printer，所以也都可以印出來 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;3
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;3
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3D&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:22: error: No implicit view available from Double &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Printer[Double].
+&lt;span class=&quot;go&quot;&gt;       f1(3D)
+         ^
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;View Bound 如果是用 Curry 表示的話如下，將 A 轉換成 Printer 再列印出來:&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def f2[A]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;a: A&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;implicit trans: A &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Printer[A]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; trans&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;a&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.print&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;f2: [A](a: A)(implicit trans: A =&amp;gt;&lt;/span&gt; Printer[A]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;Unit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f2&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;5
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f2&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;123&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;123
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A =:= B 代表 A 必須要等於 B&lt;br /&gt;
+A &amp;lt;:&amp;lt; B 代表 A 必須要是 B 的子類別&lt;br /&gt;
+A &amp;lt;%&amp;lt; B 代表 A 必須要可讓 B 查看&lt;/p&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Bounds</summary></entry><entry><title type="html">Scala day 24 (variances)</title><link href="http://localhost:4000/scala/2017/12/22/scala_day24.html" rel="alternate" type="text/html" title="Scala day 24 (variances)" /><published>2017-12-22T10:44:17+08:00</published><updated>2017-12-22T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/22/scala_day24</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/22/scala_day24.html">&lt;h3 id=&quot;variances&quot;&gt;variances&lt;/h3&gt;
+&lt;p&gt;就是定義型別，以及型別的父子類別的繼承關係．&lt;br /&gt;
+首先先訂幾個類別並有繼承關係 : 
+抽象類別 Animal、繼承 Animal 的 Cat、繼承 Cat 的 MexCat．&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;abstract class Animal {
   def name: String
@@ -15,14 +169,19 @@ class MexCat(MexCatName: String) extends Cat(MexCatName) {
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;invariant&quot;&gt;Invariant&lt;/h3&gt;
+&lt;p&gt;Invariant 的寫法 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class InvariantClass[A]
 &lt;span class=&quot;go&quot;&gt;defined class InvariantClass
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Invariant 代表說該型態就一定是要定義的那一個，像這邊定義的是 Cat 類別，所以使用時都只能用 Cat :&lt;/p&gt;
 
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def invarMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x: InvariantClass[Cat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def invarMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x: InvariantClass[Cat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;invarMethod: (x: InvariantClass[Cat])Unit
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;所以這邊呼叫 invarMethod 方法時，只有 Cat 不會錯誤，MexCat 及 Animal 都會出錯 :&lt;/p&gt;
 
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; invarMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new InvariantClass[MexCat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; invarMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new InvariantClass[MexCat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:15: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;mismatch&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt; found   : InvariantClass[MexCat]
  required: InvariantClass[Cat]
@@ -45,11 +204,19 @@ You may wish to define A as +A instead. (SLS 4.5)
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;covariant&quot;&gt;covariant&lt;/h3&gt;
+&lt;p&gt;covariant 的寫法 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class CovariantClass[+A]
 &lt;span class=&quot;go&quot;&gt;defined class CovariantClass
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;covariant 代表說，只要是 A 與有繼承 A 這個形態的類別(也就是 A 的子類別)，也都可以使用 :&lt;/p&gt;
 
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; covarMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new CovariantClass[MexCat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def covarMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x: CovariantClass[Cat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;covarMethod: (x: CovariantClass[Cat])Unit
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;所以呼叫 covarMethod 方法時，MexCat(Cat的子類別)以及 Cat 都會成功，只有 Animal 會失敗．&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; covarMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new CovariantClass[MexCat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; covarMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new CovariantClass[Cat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;
@@ -62,15 +229,20 @@ You may wish to define A as +A instead. (SLS 4.5)
 
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;contravariant&quot;&gt;Contravariant&lt;/h3&gt;
+&lt;h3 id=&quot;contravariant&quot;&gt;contravariant&lt;/h3&gt;
+&lt;p&gt;contravariant 的寫法 :&lt;/p&gt;
+
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class ContravariantClass[-A]
 &lt;span class=&quot;go&quot;&gt;defined class ContravariantClass
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;contravariant 代表說，只要是 A 與 A 這個形態的父類別，也都可以使用 :&lt;/p&gt;
 
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def contraMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x: ContravariantClass[Cat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def contraMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x: ContravariantClass[Cat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;contraMethod: (x: ContravariantClass[Cat])Unit
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;所以呼叫 contraMethod 方法時，Cat 以及 Animal(Cat 的父類別) 都會成功，只有 MexCat 會失敗．&lt;/p&gt;
 
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; contraMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new ContravariantClass[MexCat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; contraMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new ContravariantClass[MexCat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:15: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;mismatch&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt; found   : ContravariantClass[MexCat]
  required: ContravariantClass[Cat]
@@ -82,19 +254,38 @@ You may wish to define A as +A instead. (SLS 4.5)
 &lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; contraMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new ContravariantClass[Animal]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;接著再來用 trait 測試看看 :&lt;br /&gt;
+定義兩個 trait OntheRoad 及 LikeFish&lt;/p&gt;
 
-&lt;h3 id=&quot;bounds&quot;&gt;Bounds&lt;/h3&gt;
-&lt;p&gt;A &amp;lt;: B Upper bound&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait OntheRoad
+&lt;span class=&quot;go&quot;&gt;defined trait OntheRoad
 
-&lt;p&gt;A &amp;gt;: B Lower bound&lt;/p&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait LikeFish
+&lt;span class=&quot;go&quot;&gt;defined trait LikeFish
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;讓 Cat 除了繼承 Animal 並同時擁有 OntheRoad 及 LikeFish 這兩個特徵 :&lt;/p&gt;
 
-&lt;p&gt;A &lt;: Upper=&quot;&quot;&gt;: Lower Lower and upper bounds used together&lt;/:&gt;&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Cat&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;catName: String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; extends Animal with OntheRoad with LikeFish &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   def name = catName
+     | }
+defined class Cat
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;接著重新定義一次 function 再呼叫看看，trait 都可以成功 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def contraMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x: ContravariantClass[Cat]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;contraMethod: (x: ContravariantClass[Cat])Unit
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; contraMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new ContravariantClass[OntheRoad]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; contraMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new ContravariantClass[LikeFish]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">variances 就是定義可用的型別，以及可用的型別的父子類別的繼承關係．</summary></entry><entry><title type="html">Scala day 23 (implicit conversion)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day23.html" rel="alternate" type="text/html" title="Scala day 23 (implicit conversion)" /><published>2017-12-21T11:44:17+08:00</published><updated>2017-12-21T11:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day23</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day23.html">&lt;h3 id=&quot;implicit-conversion&quot;&gt;implicit conversion&lt;/h3&gt;
+  &lt;li&gt;在 scala 的 variances 除了可以定義型別(Invariant)又加上了可用父類別(contravariant)及子類別(covariant)的選擇，讓型態上擴充性更強．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">variances 就是定義型別，以及型別的父子類別的繼承關係． 首先先訂幾個類別並有繼承關係 : 抽象類別 Animal、繼承 Animal 的 Cat、繼承 Cat 的 MexCat．</summary></entry><entry><title type="html">Scala day 23 (implicit conversion)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day23.html" rel="alternate" type="text/html" title="Scala day 23 (implicit conversion)" /><published>2017-12-21T11:44:17+08:00</published><updated>2017-12-21T11:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day23</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day23.html">&lt;h3 id=&quot;implicit-conversion&quot;&gt;implicit conversion&lt;/h3&gt;
 &lt;p&gt;就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件．&lt;br /&gt;
 由於 Int 沒有 append 方法所以下面執行會失敗 :&lt;/p&gt;
 
@@ -1079,142 +1270,4 @@ defined class RealCounter
 &lt;ul&gt;
   &lt;li&gt;trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
 雖然現在還沒了解它的好處，不過可以先玩玩看．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Self types Self types 使用的符號是 =&amp;gt; Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :</summary></entry><entry><title type="html">Scala day 15 (traits &amp;amp; abstract class)</title><link href="http://localhost:4000/scala/2017/12/06/scala_day15.html" rel="alternate" type="text/html" title="Scala day 15 (traits &amp; abstract class)" /><published>2017-12-06T10:44:17+08:00</published><updated>2017-12-06T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/06/scala_day15</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/06/scala_day15.html">&lt;h3 id=&quot;traits-vs-abstract-class&quot;&gt;traits VS abstract class&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;抽象類別只能被單一繼承trait-可以被單一繼承又可以-with-多個&quot;&gt;抽象類別只能被單一繼承，trait 可以被單一繼承又可以 with 多個&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class A
-&lt;span class=&quot;go&quot;&gt;defined class A
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class B
-&lt;span class=&quot;go&quot;&gt;defined class B
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class C extends A
-&lt;span class=&quot;go&quot;&gt;defined class C
-
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait A
-&lt;span class=&quot;go&quot;&gt;defined trait A
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait B
-&lt;span class=&quot;go&quot;&gt;defined trait B
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class C extends A with B
-&lt;span class=&quot;go&quot;&gt;defined class C
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;記得使用 with trait 要先 extends 才可以&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class C with A with B
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:1: error: &lt;span class=&quot;s1&quot;&gt;';'&lt;/span&gt; expected but &lt;span class=&quot;s1&quot;&gt;'with'&lt;/span&gt; found.
-&lt;span class=&quot;go&quot;&gt;       class C with A with B
-               ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;抽象類別有建構子trait-沒有&quot;&gt;抽象類別有建構子，trait 沒有&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;cala&amp;gt;&lt;/span&gt; abstract class Employee&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;defined class Employee
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Employee&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:1: error: traits or objects may not have parameters
-&lt;span class=&quot;go&quot;&gt;       trait Employee(id:String,name:String)
-                     ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;抽象類別的-super-vs-trait-的-super&quot;&gt;抽象類別的 super VS trait 的 super&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;抽象類別的super是靜態呼叫父類別的方法，trait 是由於可以 with 多個所以 super 是動態的無法知道是哪個父類別，只有在建立類別時才會知道．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;抽象類別的 super :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def count(num1: Int , num2: Int) : Unit
-     | }
-defined class Counter
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class MyCounter extends Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  var sum = 0
-     |  def count(num1: Int , num2: Int): Unit = sum = num1 + num2
-     |  def getSum = sum
-     | }
-defined class MyCounter
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;trait 的 super 由於是動態的所以 with 的順序不同會影響 super 最後的結果，所以又稱 stackable modifications (堆疊修飾) :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   def count(num1: Int , num2: Int) : Unit
-     | }
-defined class Counter
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class MyCounter extends Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   var sum = 0
-     |   def count(num1: Int , num2: Int): Unit = sum = num1 * num2
-     |   def getSum = sum
-     | }
-defined class MyCounter
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Counter1 extends MyCounter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   abstract override def count(num1:Int , num2:Int) = {
-     |     if(num1 &amp;lt; 0 || num2 &amp;lt; 0) {
-     |       super.count(num1,num2)
-     |     } else {
-     |       sum = num1 + num2
-     |     }
-     |   }
-     | }
-defined trait Counter1
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Filter1 extends MyCounter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   abstract override def count(num1:Int , num2:Int) = {
-     |     if(num1 &amp;lt; 0 || num2 &amp;lt; 0) {
-     |       super.count(num1,num2)
-     |     } else {
-     |       sum = num1 + num2 * 2
-     |     }
-     |   }
-     | }
-defined trait Filter1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;stackable modifications 會從最右邊開始，例如下面 coutner1 這個物件，
-Filter1 的 super 會呼叫 Counter1 的 method ，Counter1 的 super 會呼叫 MyCounter 的 method :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val counter1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new MyCounter with Counter1 with Filter1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;counter1: MyCounter with Counter1 with Filter1 = $&lt;/span&gt;anon&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;@a5e8260
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter1.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter1.sum
-&lt;span class=&quot;go&quot;&gt;res1: Int = 5
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter1.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-2&lt;/span&gt;,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter1.sum
-&lt;span class=&quot;go&quot;&gt;res3: Int = -10
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;counter2 這個物件，Counter1 的 super 會呼叫 Filter1 的 method ，Filter1 的 super 會呼叫 MyCounter 的 method :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val counter2 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new MyCounter with Filter1 with Counter1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;counter2: MyCounter with Filter1 with Counter1 = $&lt;/span&gt;anon&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;@167bb934
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter2.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter2.sum
-&lt;span class=&quot;go&quot;&gt;res7: Int = 3
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter2.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter2.sum
-&lt;span class=&quot;go&quot;&gt;res9: Int = -2
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;在 scala trait 的功能跟 abstract class 差不多，但我覺得 trait 可以多重繼承跟實作具體的方法就比 abstract class 好用很多了．
-感覺像是 java interface 的加強版．雖然抽象類別有建構子可以初始化參數，但其實 trait 也可以提供方法傳遞即可．scala 提供了許多 java 額外的東西，
-所以寫法更豐富，或許這也是其中一種理由讓它可以實作OOP(物件導向)也可以實作FP(函數式)．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">traits VS abstract class 抽象類別跟 trait 其實很像，跟 trait 還是有一些差異 :</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Self types Self types 使用的符號是 =&amp;gt; Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :</summary></entry></feed>

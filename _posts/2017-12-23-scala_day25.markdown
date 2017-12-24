@@ -1,0 +1,176 @@
+---
+layout: post
+title:  "Scala day 25 (Bounds)"
+date:   2017-12-23 10:44:17 +0800
+categories: scala
+---
+
+### Bounds
+
+#### A <: B Upper bound  
+再了解 Upper bound 之前也先來定義一些類別 : 
+
+```console
+trait OntheRoad
+
+trait LikeFish
+
+abstract class Animal {
+  def name: String
+}
+
+class Cat(catName: String) extends Animal with OntheRoad with LikeFish {
+  def name = catName
+}
+
+class MexCat(MexCatName: String) extends Cat(MexCatName) {
+  override def name = MexCatName
+}
+
+```
+這次定義除了用 Invariant 再加上了 Upper bound，代表 A 這類別上界是 Cat，不能再往上了(最初的父類別要是 Cat)．
+
+```console
+scala> class InvariantClass[A <: Cat]
+defined class InvariantClass
+```
+所以 Cat 及 MexCat 都會成功，Animal 會失敗 : 
+
+```console
+scala> new InvariantClass[Cat]
+res0: InvariantClass[Cat] = InvariantClass@2248d140
+
+scala> new InvariantClass[MexCat]
+res1: InvariantClass[MexCat] = InvariantClass@5f82209e
+
+scala> new InvariantClass[Animal]
+<console>:13: error: type arguments [Animal] do not conform to class InvariantClass's type parameter bounds [A <: Cat]
+       val res2 =
+           ^
+<console>:14: error: type arguments [Animal] do not conform to class InvariantClass's type parameter bounds [A <: Cat]
+       new InvariantClass[Animal]
+           ^
+```
+再定義一個 Dog 類別，這時候雖然是 InvariantClass 但由於已經定義了 Upper bound 是 Cat，所以 Dog 會出錯 : 
+
+```console
+scala> class Dog
+defined class Dog
+
+scala> new InvariantClass[Dog]
+<console>:13: error: type arguments [Dog] do not conform to class InvariantClass's type parameter bounds [A <: Cat]
+       val res3 =
+           ^
+<console>:14: error: type arguments [Dog] do not conform to class InvariantClass's type parameter bounds [A <: Cat]
+       new InvariantClass[Dog]
+           ^
+```
+
+#### A >: B Lower bound  
+這次換用 Invariant 加上了 Lower bound，代表 A 這類別下界是 Cat，不能再往下了(最後的子類別是 Cat)．
+
+```console
+scala> class InvariantClass[A >: Cat]
+defined class InvariantClass
+```
+所以 Cat 的子類別 MexCat 就會失敗，而至於 Animal、OntheRoad、LikeFish 的會成功，而 Dog 跟 Cat 目前毫無關係所以繼續失敗．
+
+```console
+scala> new InvariantClass[Cat]
+res4: InvariantClass[Cat] = InvariantClass@56820446
+
+scala> new InvariantClass[MexCat]
+<console>:13: error: type arguments [MexCat] do not conform to class InvariantClass's type parameter bounds [A >: Cat]
+       val res5 =
+           ^
+<console>:14: error: type arguments [MexCat] do not conform to class InvariantClass's type parameter bounds [A >: Cat]
+       new InvariantClass[MexCat]
+           ^
+
+scala> new InvariantClass[Animal]
+res6: InvariantClass[Animal] = InvariantClass@28f3a218
+
+scala> new InvariantClass[Dog]
+<console>:13: error: type arguments [Dog] do not conform to class InvariantClass's type parameter bounds [A >: Cat]
+       val res7 =
+           ^
+<console>:14: error: type arguments [Dog] do not conform to class InvariantClass's type parameter bounds [A >: Cat]
+       new InvariantClass[Dog]
+           ^
+
+scala> new InvariantClass[OntheRoad]
+res8: InvariantClass[OntheRoad] = InvariantClass@45ecdd32
+
+scala> new InvariantClass[LikeFish]
+res9: InvariantClass[LikeFish] = InvariantClass@fe38d1e
+
+```
+
+#### A <% B View Bound
+View Bound 代表可被視為 B 的 A 都可以成功．
+
+```console
+scala> trait Trat1
+defined trait Trat1
+
+scala> class Printer[A](value: A) {
+     |   def print() = println(value.toString)
+     | }
+defined class Printer
+
+scala> class SubPrinter[A](value: A) extends Printer(value) with Trat1 {
+     |   override def print() = println("Sub print")
+     | }
+defined class SubPrinter
+
+scala> implicit def int2print (i:Int) : Printer[Int] = new Printer(i)
+int2print: (i: Int)Printer[Int]
+
+scala> implicit def string2print (s:String) : Printer[String] = new Printer(s)
+string2print: (s: String)Printer[String]
+
+scala> def f1[A <% Printer[A]](a: A) = a.print()
+f1: [A](a: A)(implicit evidence$1: A => Printer[A])Unit
+```
+由於隱含轉換的關係 int 、String 會轉換成 Printer，所以也都可以印出來 : 
+
+```console
+scala> f1(3)
+3
+scala> f1("3")
+3
+scala> f1(3D)
+<console>:22: error: No implicit view available from Double => Printer[Double].
+       f1(3D)
+         ^
+```
+View Bound 如果是用 Curry 表示的話如下，將 A 轉換成 Printer 再列印出來: 
+
+```console
+scala> def f2[A](a: A)(implicit trans: A => Printer[A]) = trans(a).print()
+f2: [A](a: A)(implicit trans: A => Printer[A])Unit
+```
+
+```console
+scala> f2(5)
+5
+
+scala> f2("123")
+123
+```
+
+
+
+
+
+A =:= B 代表 A 必須要等於 B  
+A <:< B 代表 A 必須要是 B 的子類別  
+A <%< B 代表 A 必須要可讓 B 查看  
+
+
+
+### 總結
+- - -
+* 在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．
+
+
