@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-24T21:44:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 25 (Bounds)</title><link href="http://localhost:4000/scala/2017/12/23/scala_day25.html" rel="alternate" type="text/html" title="Scala day 25 (Bounds)" /><published>2017-12-23T10:44:17+08:00</published><updated>2017-12-23T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/23/scala_day25</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/23/scala_day25.html">&lt;h3 id=&quot;bounds&quot;&gt;Bounds&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-25T23:27:04+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 25 (Bounds)</title><link href="http://localhost:4000/scala/2017/12/23/scala_day25.html" rel="alternate" type="text/html" title="Scala day 25 (Bounds)" /><published>2017-12-23T10:44:17+08:00</published><updated>2017-12-23T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/23/scala_day25</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/23/scala_day25.html">&lt;h3 id=&quot;bounds&quot;&gt;Bounds&lt;/h3&gt;
 
 &lt;h4 id=&quot;a--b-upper-bound&quot;&gt;A &amp;lt;: B Upper bound&lt;/h4&gt;
 &lt;p&gt;再了解 Upper bound 之前也先來定義一些類別 :&lt;/p&gt;
@@ -142,14 +142,10 @@ defined class SubPrinter
 &lt;span class=&quot;go&quot;&gt;123
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;A =:= B 代表 A 必須要等於 B&lt;br /&gt;
-A &amp;lt;:&amp;lt; B 代表 A 必須要是 B 的子類別&lt;br /&gt;
-A &amp;lt;%&amp;lt; B 代表 A 必須要可讓 B 查看&lt;/p&gt;
-
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．&lt;/li&gt;
+  &lt;li&gt;Bound 讓我們在定義型態可以擁有更多選擇(Upper bound、Lower bound、View Bound)，也更有彈性．&lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">Bounds</summary></entry><entry><title type="html">Scala day 24 (variances)</title><link href="http://localhost:4000/scala/2017/12/22/scala_day24.html" rel="alternate" type="text/html" title="Scala day 24 (variances)" /><published>2017-12-22T10:44:17+08:00</published><updated>2017-12-22T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/22/scala_day24</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/22/scala_day24.html">&lt;h3 id=&quot;variances&quot;&gt;variances&lt;/h3&gt;
 &lt;p&gt;就是定義型別，以及型別的父子類別的繼承關係．&lt;br /&gt;
 首先先訂幾個類別並有繼承關係 : 

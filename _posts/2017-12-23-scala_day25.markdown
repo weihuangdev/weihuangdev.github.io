@@ -159,18 +159,8 @@ scala> f2("123")
 123
 ```
 
-
-
-
-
-A =:= B 代表 A 必須要等於 B  
-A <:< B 代表 A 必須要是 B 的子類別  
-A <%< B 代表 A 必須要可讓 B 查看  
-
-
-
 ### 總結
 - - -
-* 在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．
+* Bound 讓我們在定義型態可以擁有更多選擇(Upper bound、Lower bound、View Bound)，也更有彈性．
 
 
