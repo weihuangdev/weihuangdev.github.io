@@ -1,0 +1,114 @@
+---
+layout: post
+title:  "Scala day 26 (Read Files)"
+date:   2017-12-23 10:44:17 +0800
+categories: scala
+---
+
+### Read file
+建立一個 a.txt，內容為 :  
+12345  
+abcde  
+~*_+=  
+您好  
+- - -
+
+使用 scala.io.Source 套件 : 
+```console
+scala> import scala.io.Source
+import scala.io.Source
+
+scala> val fileName = "/Volumes/Transcend/scala-test/a.txt"
+fileName: String = /Volumes/Transcend/scala-test/a.txt
+```
+透過 Source.fromFile 一行一行讀取 : 
+
+```console
+scala> for(line <- Source.fromFile(fileName).getLines) {
+     |  println(line)
+     | }
+12345
+abcde
+~*_+=
+您好
+```
+可以把每一行的內容裝到一個 collection 裡 : 
+
+```console
+scala> val lines = Source.fromFile(fileName).getLines.toList
+lines: List[String] = List(12345, abcde, ~*_+=, 您好)
+```
+透過 mkString 將每行資料用其他符號做分隔(",") : 
+
+```console
+scala> val lines = Source.fromFile(fileName).getLines.mkString(",")
+lines: String = 12345,abcde,~*_+=,您好
+```
+上述的寫法檔案並不會 close，使用 lsof 查看 : 
+
+```console
+daniel@Danielde-MacBook-Pro > lsof | grep 'a.txt'
+java      88789 daniel   39r      REG                1,6         25  127247 /Volumes/Transcend/scala-test/a.txt
+```
+
+所以最後還是要加上 close 比較好 : 
+
+```console
+scala> val bufferedSource = Source.fromFile("/Volumes/Transcend/scala-test/a.txt")
+bufferedSource: scala.io.BufferedSource = non-empty iterator
+
+scala> for (line <- bufferedSource.getLines) {
+     |     println(line.toUpperCase)
+     | }
+12345
+ABCDE
+~*_+=
+您好
+
+scala> bufferedSource.close
+```
+使用 Loan Pattern 實作自動 close file 的方式，類似 java 1.7 版本以後的 try-with-resource statement 的寫法 : 
+
+```console
+scala> object Control {
+     |   def using[A <: { def close(): Unit }, B](resource: A)(f: A => B): B =
+     |     try {
+     |       f(resource)
+     |     } finally {
+     |       resource.close()
+     |     }
+     | }
+<console>:16: warning: reflective access of structural type member method close should be enabled
+by making the implicit value scala.language.reflectiveCalls visible.
+This can be achieved by adding the import clause 'import scala.language.reflectiveCalls'
+or by setting the compiler option -language:reflectiveCalls.
+See the Scaladoc for value scala.language.reflectiveCalls for a discussion
+why the feature should be explicitly enabled.
+             resource.close()
+                      ^
+defined object Control
+```
+這邊也運用到了 Curry 的寫法，只不過第二個參數是用 {}，最後將結果 B 回傳 : 
+
+```console
+scala> Control.using(io.Source.fromFile("/Volumes/Transcend/scala-test/a.txt")) {
+     |  source => {
+     |   for (line <- source.getLines) {
+     |     println(line)
+     |   }
+     |  }
+     | }
+12345
+abcde
+~*_+=
+您好
+
+```
+
+
+
+### 總結
+- - -
+* Bound 讓我們在定義型態可以擁有更多選擇(Upper bound、Lower bound、View Bound)，也更有彈性．
+
+

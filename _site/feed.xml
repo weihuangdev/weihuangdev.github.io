@@ -1,4 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-25T23:27:04+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 25 (Bounds)</title><link href="http://localhost:4000/scala/2017/12/23/scala_day25.html" rel="alternate" type="text/html" title="Scala day 25 (Bounds)" /><published>2017-12-23T10:44:17+08:00</published><updated>2017-12-23T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/23/scala_day25</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/23/scala_day25.html">&lt;h3 id=&quot;bounds&quot;&gt;Bounds&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-26T14:31:45+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 26 (Read Files)</title><link href="http://localhost:4000/scala/2017/12/23/scala_day26.html" rel="alternate" type="text/html" title="Scala day 26 (Read Files)" /><published>2017-12-23T10:44:17+08:00</published><updated>2017-12-23T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/23/scala_day26</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/23/scala_day26.html">&lt;h3 id=&quot;read-file&quot;&gt;Read file&lt;/h3&gt;
+&lt;p&gt;建立一個 a.txt，內容為 :&lt;br /&gt;
+12345&lt;br /&gt;
+abcde&lt;br /&gt;
+~*_+=&lt;br /&gt;
+您好&lt;/p&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;使用 scala.io.Source 套件 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.io.Source
+&lt;span class=&quot;go&quot;&gt;import scala.io.Source
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val fileName &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/Volumes/Transcend/scala-test/a.txt&quot;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;fileName: String = /Volumes/Transcend/scala-test/a.txt
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;透過 Source.fromFile 一行一行讀取 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;line &amp;lt;- Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;fileName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.getLines&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |  println(line)
+     | }
+12345
+abcde
+~*_+=
+您好
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;可以把每一行的內容裝到一個 collection 裡 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lines &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;fileName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.getLines.toList
+&lt;span class=&quot;go&quot;&gt;lines: List[String] = List(12345, abcde, ~*_+=, 您好)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;透過 mkString 將每行資料用其他符號做分隔(“,”) :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lines &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;fileName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.getLines.mkString&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;,&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;lines: String = 12345,abcde,~*_+=,您好
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;上述的寫法檔案並不會 close，使用 lsof 查看 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; lsof | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'a.txt'&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;java      88789 daniel   39r      REG                1,6         25  127247 /Volumes/Transcend/scala-test/a.txt
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;所以最後還是要加上 close 比較好 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val bufferedSource &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Volumes/Transcend/scala-test/a.txt&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;bufferedSource: scala.io.BufferedSource = non-empty iterator
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;line &amp;lt;- bufferedSource.getLines&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |     println(line.toUpperCase)
+     | }
+12345
+ABCDE
+~*_+=
+您好
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; bufferedSource.close
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用 Loan Pattern 實作自動 close file 的方式，類似 java 1.7 版本以後的 try-with-resource statement 的寫法 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; object Control &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |   def using[A &amp;lt;: { def close(): Unit }, B](resource: A)(f: A =&amp;gt;&lt;/span&gt; B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: B &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |     try {
+     |       f(resource)
+     |     } finally {
+     |       resource.close()
+     |     }
+     | }
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:16: warning: reflective access of structural &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;member method close should be enabled
+&lt;span class=&quot;go&quot;&gt;by making the implicit value scala.language.reflectiveCalls visible.
+This can be achieved by adding the import clause 'import scala.language.reflectiveCalls'
+or by setting the compiler option -language:reflectiveCalls.
+See the Scaladoc for value scala.language.reflectiveCalls for a discussion
+why the feature should be explicitly enabled.
+             resource.close()
+                      ^
+defined object Control
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;這邊也運用到了 Curry 的寫法，只不過第二個參數是用 {}，最後將結果 B 回傳 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Control.using&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;io.Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Volumes/Transcend/scala-test/a.txt&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;     |  source =&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   for (line &amp;lt;- source.getLines) {
+     |     println(line)
+     |   }
+     |  }
+     | }
+12345
+abcde
+~*_+=
+您好
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;Bound 讓我們在定義型態可以擁有更多選擇(Upper bound、Lower bound、View Bound)，也更有彈性．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Read file 建立一個 a.txt，內容為 : 12345 abcde ~*_+= 您好</summary></entry><entry><title type="html">Scala day 25 (Bounds)</title><link href="http://localhost:4000/scala/2017/12/23/scala_day25.html" rel="alternate" type="text/html" title="Scala day 25 (Bounds)" /><published>2017-12-23T10:44:17+08:00</published><updated>2017-12-23T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/23/scala_day25</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/23/scala_day25.html">&lt;h3 id=&quot;bounds&quot;&gt;Bounds&lt;/h3&gt;
 
 &lt;h4 id=&quot;a--b-upper-bound&quot;&gt;A &amp;lt;: B Upper bound&lt;/h4&gt;
 &lt;p&gt;再了解 Upper bound 之前也先來定義一些類別 :&lt;/p&gt;
@@ -1135,135 +1231,4 @@ initNum: (s: Any)Option[Int]
 &lt;ul&gt;
   &lt;li&gt;Curry 似乎是 functional programming 很重要的一個觀念，這邊先知道是什麼，之後學習 functional programming 時再來思考 Curry 也許會更有感覺．&lt;/li&gt;
   &lt;li&gt;由於 Curry 是把多個參數拆分成一個一個的參數，所以變成只有一個參數這時候可以使用大括號讓程式看起來更有結構性．例如foldLeft就有運用到，def foldLeft[B](z: B)(f: (B, A) =&amp;gt; B): B ．程式寫起來可使用大括號 : wordsData.foldLeft(0){(sum,tup) =&amp;gt; sum + tup._2}．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Curry 一般函式的寫法 :</summary></entry><entry><title type="html">Scala day 16 (traits self type)</title><link href="http://localhost:4000/scala/2017/12/07/scala_day16.html" rel="alternate" type="text/html" title="Scala day 16 (traits self type)" /><published>2017-12-07T10:44:17+08:00</published><updated>2017-12-07T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/07/scala_day16</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/07/scala_day16.html">&lt;h3 id=&quot;self-types&quot;&gt;Self types&lt;/h3&gt;
-&lt;p&gt;Self types 使用的符號是 =&amp;gt;&lt;br /&gt;
-Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Ids &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  val id = &quot;ids&quot;
-     |  def getId : String
-     | }
-defined trait Ids
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Names &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  val name = &quot;names&quot;
-     |  def getName : String
-     | }
-defined trait Names
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;this 只能有一個，所以要多個 Self types 要使用 with :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Users &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |  this : Ids with Names =&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  val user = &quot;user&quot;
-     |  def getUser : String
-     | }
-defined trait Users
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;定義一個 class 去 extends Users，這時候會出錯，因為使用 Self types 的 trait 等於強迫定義了如果要 with 它時，也一定要 with 它所混合的 trait．
-這邊 Users 的 Self types 有 Ids 與 Names，所以類別 Customer 也要 with Ids 與 Names :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Customer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String,user:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; extends Users
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:12: error: illegal inheritance&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt; self-type Customer does not conform to Users's selftype Users with Ids with Names
-       class Customer(id:String,name:String,user:String) extends Users
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果 class 的變數名稱如果與 trait 的變數相同會產生衝突，所以要注意(Ids已有id,Names已有name,Users已有user) :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Customer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id:String,name:String,user:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; extends Users with Ids with Names &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def getId = id
-     |  def getName = name
-     |  def getUser = user
-     | }
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: parameter &lt;span class=&quot;s1&quot;&gt;'id'&lt;/span&gt; requires field but conflicts with value id &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;trait Ids
-&lt;span class=&quot;go&quot;&gt;       class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
-                      ^
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: parameter &lt;span class=&quot;s1&quot;&gt;'name'&lt;/span&gt; requires field but conflicts with value name &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;trait Names
-&lt;span class=&quot;go&quot;&gt;       class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
-                                ^
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: parameter &lt;span class=&quot;s1&quot;&gt;'user'&lt;/span&gt; requires field but conflicts with value user &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;trait Users
-&lt;span class=&quot;go&quot;&gt;       class Customer(id:String,name:String,user:String) extends Users with Ids with Names {
-                                            ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;把變數名稱改掉 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Customer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cid:String,cname:String,cuser:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; extends Users with Ids with Names &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def getId = cid
-     |  def getName = cname
-     |  def getUser = cuser
-     | }
-defined class Customer
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val cu &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Customer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;user1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;cu: Customer = Customer@3a62fa79
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; cu.getId
-&lt;span class=&quot;go&quot;&gt;res4: String = 1
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; cu.id
-&lt;span class=&quot;go&quot;&gt;res7: String = ids
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;self-types-定義-function&quot;&gt;Self types 定義 function&lt;/h3&gt;
-&lt;p&gt;Self types 也可以定義 with 它的類別一定也要具有 Self types 定義好的方法 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  this : {
-     |   def count(mum1:Int,num2:Int): Unit
-     |   def getSum: Int
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;     |  } =&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     | }
-defined trait Counter
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait MyCounter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |  this : Counter =&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     | }
-defined trait MyCounter
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;沒實作方法的話，就會出錯 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class RealCounter extends MyCounter with Counter
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: illegal inheritance&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt; self-type RealCounter does not conform to Counter's selftype Counter with AnyRef{def count(mum1: Int,num2: Int): Unit;&lt;/span&gt; def getSum: Int&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;       class RealCounter extends MyCounter with Counter
-                                                ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;再來做個實驗，如果是 abstract class，沒定義的話還是會出錯，但可以不用在 abstract class 實作出方法，可以先定義成抽象方法，就可以過了 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class RealCounter extends MyCounter with Counter
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: illegal inheritance&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt; self-type RealCounter does not conform to Counter's selftype Counter with AnyRef{def count(mum1: Int,num2: Int): Unit;&lt;/span&gt; def getSum: Int&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;       abstract class RealCounter extends MyCounter with Counter
-                                                         ^
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; abstract class RealCounter extends MyCounter with Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def count(num1:Int,num2:Int): Unit
-     |  def getSum: Int
-     | }
-defined class RealCounter
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;最後還是乖乖實作方法吧 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class RealCounter extends MyCounter with Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  var sum = 0
-     |  def count(num1:Int , num2:Int):Unit = sum = num1 + num2
-     |  def getSum = sum
-     | }
-defined class RealCounter
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val counter &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new RealCounter
-&lt;span class=&quot;go&quot;&gt;counter: RealCounter = RealCounter@5e585461
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter.count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; counter.getSum
-&lt;span class=&quot;go&quot;&gt;res9: Int = 5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;trait 本身其實已經是在定義方法及型態了，所以 Self types 概念上好像差不多．差異是不用寫很多 extends 和 with 定義在 this 裡就好．
-雖然現在還沒了解它的好處，不過可以先玩玩看．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Self types Self types 使用的符號是 =&amp;gt; Self types 的作用是把不同的 trait 混合(mixed)在一起，並且定義了要 with 它的話，也必須同時具有它 this 的 trait :</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Curry 一般函式的寫法 :</summary></entry></feed>
