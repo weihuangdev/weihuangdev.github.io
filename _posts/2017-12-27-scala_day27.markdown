@@ -1,0 +1,110 @@
+---
+layout: post
+title:  "Scala day 27 (Write Files)"
+date:   2017-12-27 10:44:17 +0800
+categories: scala
+---
+
+### Write file
+使用 java io 的 package，來建立檔案 : 
+用 PrintWriter
+
+```console
+scala> import java.io._
+import java.io._
+
+scala> val pw = new PrintWriter(new File("/Volumes/Transcend/scala-test/b.txt"))
+pw: java.io.PrintWriter = java.io.PrintWriter@1ee11117
+
+scala> pw.write("您好")
+
+scala> pw.close
+```
+用 FileWriter
+
+```console
+val file = new File("/Volumes/Transcend/scala-test/c.txt")
+
+scala> val file = new File("/Volumes/Transcend/scala-test/c.txt")
+file: java.io.File = /Volumes/Transcend/scala-test/c.txt
+
+scala> val bw = new BufferedWriter(new FileWriter(file))
+bw: java.io.BufferedWriter = java.io.BufferedWriter@577953cb
+
+scala> bw.write("Hello 您好啊")
+
+scala> bw.close()
+
+```
+
+
+### 使用第三方元件 better-files : 
+下載 better-files 的 jar (這邊用 better-files_2.12-3.4.0.jar)
+
+```console
+scala> :require better-files_2.12-3.4.0.jar
+Added '/Volumes/Transcend/scala-test/better-files_2.12-3.4.0.jar' to classpath.
+```
+import better.files : 
+
+```console
+scala> import better.files._
+import better.files._
+
+scala> import java.io.{File => JFile}
+import java.io.{File=>JFile}
+```
+
+```console
+scala> val file = file"/Volumes/Transcend/scala-test/d.txt"
+file: better.files.File = /Volumes/Transcend/scala-test/d.txt
+
+scala> file.overwrite("hello")
+res17: file.type = /Volumes/Transcend/scala-test/d.txt
+
+scala> file.appendLine().append("world")
+res18: file.type = /Volumes/Transcend/scala-test/d.txt
+```
+使用 symbol 的寫法 : 
+
+```console
+scala> import better.files.Dsl.SymbolicOperations
+import better.files.Dsl.SymbolicOperations
+
+scala> import scala.language.existentials
+import scala.language.existentials
+
+```
+< 用來覆寫檔案，<\< 用來新增一行及內容 : 
+
+```console
+scala> file < "Hi"
+res26: qual$1.file.type forSome { val qual$1: better.files.Dsl.SymbolicOperations } = /Volumes/Transcend/scala-test/d.txt
+
+scala> file << " Daniel"
+res27: qual$1.file.type forSome { val qual$1: better.files.Dsl.SymbolicOperations } = /Volumes/Transcend/scala-test/d.txt
+```
+換個寫法也可以 : 
+ `>:` 用來覆寫檔案，>>: 用來新增一行及內容
+
+```console
+cala> "Scala" `>:` file
+res29: qual$1.file.type forSome { val qual$1: better.files.Dsl.SymbolicOperations } = /Volumes/Transcend/scala-test/d.txt
+
+scala> "Test" >>: file
+res31: qual$1.file.type forSome { val qual$1: better.files.Dsl.SymbolicOperations } = /Volumes/Transcend/scala-test/d.txt
+```
+
+better-files 還有許多功能，詳細寫法可以參考下面網址．
+
+### 總結
+- - -
+* scala 的 io 目前好像比較偏向使用 java io 或著 better files 第三方元件，未來不知道本身會不會提供．
+
+
+### 參考資料
+- - -
+better file : https://github.com/pathikrit/better-files
+
+
+

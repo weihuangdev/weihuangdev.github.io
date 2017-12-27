@@ -79,6 +79,17 @@ scala> cu.id
 res7: String = ids
 
 ```
+with Names 與 Ids 的順序，不用一定要照 Self types 順序一樣，但要小心 stackable modifications : 
+
+```console
+scala> class Customer(cid:String,cname:String,cuser:String) extends Users with Names with Ids {
+     |  def getId = cid
+     |  def getName = cname
+     |  def getUser = cuser
+     | }
+defined class Customer
+```
+
 
 ### Self types 定義 function
 Self types 也可以定義 with 它的類別一定也要具有 Self types 定義好的方法 :  

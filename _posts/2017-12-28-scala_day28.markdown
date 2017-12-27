@@ -1,0 +1,118 @@
+---
+layout: post
+title:  "Scala day 28 (json)"
+date:   2017-12-28 10:44:17 +0800
+categories: scala
+---
+
+### lift-json
+使用 lift-json 的套件(lift-json_2.12-3.1.1.jar)，來對 json 資料做處理 : 
+
+```console
+scala> :require lift-json_2.12-3.1.1.jar
+Added '/Volumes/Transcend/scala-test/lift-json_2.12-3.1.1.jar' to classpath.
+
+scala> :require paranamer-2.8.jar
+Added '/Volumes/Transcend/scala-test/paranamer-2.8.jar' to classpath.
+```
+需 import 下列兩個套件 : 
+
+```console
+scala> import net.liftweb.json._
+import net.liftweb.json._
+
+scala> import net.liftweb.json.Serialization.write
+import net.liftweb.json.Serialization.write
+```
+需加上 implicit val formats = DefaultFormats
+
+```console
+scala> case class Address(city: String, state: String)
+defined class Address
+
+scala> case class Person(name: String, address: Address)
+defined class Person
+
+scala> implicit val formats = DefaultFormats
+formats: net.liftweb.json.DefaultFormats.type = net.liftweb.json.DefaultFormats$@ac417a2
+```
+將物件轉成 json 格式 : 
+
+```console
+scala> val p = Person("Daniel", Address("Daniel", "Taipei"))
+p: Person = Person(Daniel,Address(Daniel,Taipei))
+
+scala> val jsonString = write(p)
+jsonString: String = {"name":"Daniel","address":{"city":"Daniel","state":"Taipei"}}
+
+```
+將 json string 轉成 object : 
+
+```console
+scala> parse(""" { "numbers" : [1, 2, 3, 4] } """)
+res0: net.liftweb.json.JValue = JObject(List(JField(numbers,JArray(List(JInt(1), JInt(2), JInt(3), JInt(4))))))
+```
+使用 DSL 做轉換 : 
+
+```console
+scala> import net.liftweb.json.JsonDSL._
+import net.liftweb.json.JsonDSL._
+
+scala> val json = List(1, 2, 3)
+json: List[Int] = List(1, 2, 3)
+
+scala> compact(render(json))
+<console>:21: warning: method compact in package json is deprecated (since 3.0): Please switch to using compactRender instead.
+       compact(render(json))
+       ^
+<console>:21: warning: method render in package json is deprecated (since 3.0): Please switch to using prettyRender or compactRender instead.
+       compact(render(json))
+               ^
+res1: String = [1,2,3]
+```
+compact(render(json)) 的方式已經被 deprecated，所以改用 compactRender．  
+Tuple2 轉 json : 
+
+```console
+scala> val json = ("name" -> "joe")
+json: (String, String) = (name,joe)
+
+scala> compactRender(json)
+res3: String = {"name":"joe"}
+```
+使用 ~ 符號 : 
+
+```console
+scala> val json = ("name" -> "joe") ~ ("age" -> 35) ~ ("tel" -> "12345")
+json: net.liftweb.json.JsonAST.JObject = JObject(List(JField(name,JString(joe)), JField(age,JInt(35)), JField(tel,JString(12345))))
+
+scala> compactRender(json)
+res4: String = {"name":"joe","age":35,"tel":"12345"}
+```
+型態如果是 Option ，None 物件就不會轉了 : 
+
+```console
+scala> val json = ("name" -> "joe") ~ ("age" -> Some(35))
+json: net.liftweb.json.JsonAST.JObject = JObject(List(JField(name,JString(joe)), JField(age,JInt(35))))
+
+scala> compactRender(json)
+res5: String = {"name":"joe","age":35}
+
+scala> val json = ("name" -> "joe") ~ ("age" -> (None:Option[Int]))
+json: net.liftweb.json.JsonAST.JObject = JObject(List(JField(name,JString(joe)), JField(age,JNothing)))
+
+scala> compactRender(json)
+res7: String = {"name":"joe"}
+```
+
+### 總結
+- - -
+* scala 的 io 目前好像比較偏向使用 java io 或著 better files 第三方元件，未來不知道本身會不會提供．
+
+
+### 參考資料
+- - -
+lift-json : https://github.com/lift/lift/tree/master/framework/lift-base/lift-json
+
+
+

@@ -116,7 +116,7 @@
                ^
 </span></code></pre></div></div>
 
-<h4 id="抽象類別有建構子trait-沒有">抽象類別有建構子，trait 沒有</h4>
+<h4 id="抽象類別的-constructor-可有參數trait-不能定義有參數的-constructor">抽象類別的 constructor 可有參數，trait 不能定義有參數的 constructor</h4>
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">cala&gt;</span> abstract class Employee<span class="o">(</span>id:String,name:String<span class="o">)</span>
 <span class="go">defined class Employee
 
@@ -124,6 +124,23 @@
 <span class="gp">&lt;console&gt;</span>:1: error: traits or objects may not have parameters
 <span class="go">       trait Employee(id:String,name:String)
                      ^
+</span></code></pre></div></div>
+<p>但其實 trait 還是有 constructor 的 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> trait MyTrait <span class="o">{</span>
+<span class="go">     |   println("Hello")
+     | }
+defined trait MyTrait
+
+</span><span class="gp">scala&gt;</span> class MyClass extends MyTrait <span class="o">{</span>
+<span class="go">     |   println("World")
+     | }
+defined class MyClass
+
+</span><span class="gp">scala&gt;</span> val n1 <span class="o">=</span> new MyClass<span class="o">()</span>
+<span class="go">Hello
+World
+n1: MyClass = MyClass@4b4228cf
 </span></code></pre></div></div>
 
 <h4 id="抽象類別的-super-vs-trait-的-super">抽象類別的 super VS trait 的 super</h4>

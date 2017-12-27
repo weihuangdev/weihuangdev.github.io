@@ -149,6 +149,15 @@ defined class Customer
 <span class="go">res7: String = ids
 
 </span></code></pre></div></div>
+<p>with Names 與 Ids 的順序，不用一定要照 Self types 順序一樣，但要小心 stackable modifications :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> class Customer<span class="o">(</span>cid:String,cname:String,cuser:String<span class="o">)</span> extends Users with Names with Ids <span class="o">{</span>
+<span class="go">     |  def getId = cid
+     |  def getName = cname
+     |  def getUser = cuser
+     | }
+defined class Customer
+</span></code></pre></div></div>
 
 <h3 id="self-types-定義-function">Self types 定義 function</h3>
 <p>Self types 也可以定義 with 它的類別一定也要具有 Self types 定義好的方法 :</p>

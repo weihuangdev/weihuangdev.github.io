@@ -39,7 +39,7 @@ scala> class C with A with B
                ^
 ```
 
-#### 抽象類別有建構子，trait 沒有
+#### 抽象類別的 constructor 可有參數，trait 不能定義有參數的 constructor
 ```console
 cala> abstract class Employee(id:String,name:String)
 defined class Employee
@@ -49,6 +49,25 @@ scala> trait Employee(id:String,name:String)
        trait Employee(id:String,name:String)
                      ^
 ```
+但其實 trait 還是有 constructor 的 : 
+
+```console
+scala> trait MyTrait {
+     |   println("Hello")
+     | }
+defined trait MyTrait
+
+scala> class MyClass extends MyTrait {
+     |   println("World")
+     | }
+defined class MyClass
+
+scala> val n1 = new MyClass()
+Hello
+World
+n1: MyClass = MyClass@4b4228cf
+```
+
 
 #### 抽象類別的 super VS trait 的 super
 * 抽象類別的super是靜態呼叫父類別的方法，trait 是由於可以 with 多個所以 super 是動態的無法知道是哪個父類別，只有在建立類別時才會知道．  
