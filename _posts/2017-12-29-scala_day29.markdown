@@ -1,0 +1,54 @@
+---
+layout: post
+title:  "Scala day 29 (some collection method)"
+date:   2017-12-28 10:44:17 +0800
+categories: scala
+---
+
+### map
+對 collection 每個元素個別處理 : 
+
+```console
+scala> val lst = List("Daniel","Apple","Mac","Taipei","Jack","Hello world","Banana","scala")
+lst: List[String] = List(Daniel, Apple, Mac, Taipei, Jack, Hello world, Banana, scala)
+
+scala> lst.map(name => name.length)
+res16: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
+
+scala> lst.map(_.length)
+res15: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
+```
+
+### reduce
+將 collection 的元素收集處理，第一次先處理兩個元素，產生的解果再跟下個元素處理，最後回傳跟元素一樣型態的值 : 
+
+```console
+scala> lst.map(_.length).reduce((num1:Int,num2:Int) => num1 + num2)
+res17: Int = 46
+
+scala> lst.map(name => name.length)
+res16: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
+```
+
+
+
+### sortWith
+
+```console
+scala> lst.sortWith(_ < _)
+res20: List[String] = List(Apple, Banana, Daniel, Hello world, Jack, Mac, Taipei, scala)
+
+scala> lst.sortWith(_ > _)
+res21: List[String] = List(scala, Taipei, Mac, Jack, Hello world, Daniel, Banana, Apple)
+```
+
+
+
+
+
+### 總結
+- - -
+* scala collection 提供非常多的 api 能讓我們把程式簡化到看起來很簡潔．
+
+
+

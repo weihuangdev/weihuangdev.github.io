@@ -1,4 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-27T18:55:58+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 28 (json)</title><link href="http://localhost:4000/scala/2017/12/28/scala_day28.html" rel="alternate" type="text/html" title="Scala day 28 (json)" /><published>2017-12-28T10:44:17+08:00</published><updated>2017-12-28T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/28/scala_day28</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/28/scala_day28.html">&lt;h3 id=&quot;lift-json&quot;&gt;lift-json&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-28T00:52:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 29 (some collection method)</title><link href="http://localhost:4000/scala/2017/12/28/scala_day29.html" rel="alternate" type="text/html" title="Scala day 29 (some collection method)" /><published>2017-12-28T10:44:17+08:00</published><updated>2017-12-28T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/28/scala_day29</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/28/scala_day29.html">&lt;h3 id=&quot;map&quot;&gt;map&lt;/h3&gt;
+&lt;p&gt;對 collection 每個元素個別處理 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Apple&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Mac&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Taipei&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Hello world&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Banana&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;scala&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;lst: List[String] = List(Daniel, Apple, Mac, Taipei, Jack, Hello world, Banana, scala)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; name.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res16: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res15: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;reduce&quot;&gt;reduce&lt;/h3&gt;
+&lt;p&gt;將 collection 的元素收集處理，第一次先處理兩個元素，產生的解果再跟下個元素處理，最後回傳跟元素一樣型態的值 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.reduce&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;num1:Int,num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; num1 + num2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res17: Int = 46
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; name.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res16: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;sortwith&quot;&gt;sortWith&lt;/h3&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.sortWith&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &amp;lt; _&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res20: List[String] = List(Apple, Banana, Daniel, Hello world, Jack, Mac, Taipei, scala)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.sortWith&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; _&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res21: List[String] = List(scala, Taipei, Mac, Jack, Hello world, Daniel, Banana, Apple)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;scala collection 提供非常多的 api 能讓我們把程式簡化到看起來很簡潔．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">map 對 collection 每個元素個別處理 :</summary></entry><entry><title type="html">Scala day 28 (json)</title><link href="http://localhost:4000/scala/2017/12/28/scala_day28.html" rel="alternate" type="text/html" title="Scala day 28 (json)" /><published>2017-12-28T10:44:17+08:00</published><updated>2017-12-28T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/28/scala_day28</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/28/scala_day28.html">&lt;h3 id=&quot;lift-json&quot;&gt;lift-json&lt;/h3&gt;
 &lt;p&gt;使用 lift-json 的套件(lift-json_2.12-3.1.1.jar)，來對 json 資料做處理 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; :require lift-json_2.12-3.1.1.jar
@@ -1101,95 +1137,4 @@ defined object Trans
   &lt;li&gt;Array 可知道大小時用 Array，如果預先無法知道大小再用 ArrayBuffer．&lt;/li&gt;
   &lt;li&gt;建立Array 用 new Array[Int](5)，多維度Array 用 Array.ofDim[Int](2,3)．&lt;/li&gt;
   &lt;li&gt;copy Array 用 names.clone()，多維度Array 用 nums1.map(_.clone)．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Array Array 是一個固定長度且有順序性的容器，Array 是 mutable 的，在 new 時需給定長度．</summary></entry><entry><title type="html">Scala day 19 (Option type)</title><link href="http://localhost:4000/scala/2017/12/09/scala_day19.html" rel="alternate" type="text/html" title="Scala day 19 (Option type)" /><published>2017-12-09T10:44:17+08:00</published><updated>2017-12-09T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/09/scala_day19</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/09/scala_day19.html">&lt;h3 id=&quot;option-type&quot;&gt;Option type&lt;/h3&gt;
-&lt;p&gt;Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值．
-像下面例子，Map 的 get api 定義 :&lt;br /&gt;
-def get(key: K): Option[V]&lt;br /&gt;
-所以 Map get 回傳的也是 Option 型態，有值會回傳 Some(Int)，沒有的話會回傳 None :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val emps &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;-&amp;gt;10,&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;-&amp;gt;20,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;-&amp;gt;30,&lt;span class=&quot;s2&quot;&gt;&quot;Ray&quot;&lt;/span&gt;-&amp;gt;40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;emps: scala.collection.immutable.Map[String,Int] = Map(Sam -&amp;gt;&lt;/span&gt; 10, Daniel -&amp;gt; 20, Jack -&amp;gt; 30, Ray -&amp;gt; 40&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; emps get &lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res82: Option[Int] = Some(20)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; emps get &lt;span class=&quot;s2&quot;&gt;&quot;Dan&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res83: Option[Int] = None
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;運用在-match-expression-&quot;&gt;運用在 Match Expression :&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def Hi&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name: Option[String]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; name match &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |  case Some(nm) =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi &quot;&lt;/span&gt; + nm
-&lt;span class=&quot;gp&quot;&gt;     |  case None =&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Not String&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     | }
-Hi: (name: Option[String])String
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val name:Option[String] &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Some&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;name: Option[String] = Some(Daniel)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Hi&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res85: String = Hi Daniel
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Hi&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;None&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res88: String = Not String
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;運用在-lambda-expression-&quot;&gt;運用在 lambda Expression :&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val initNum: Option[Int] &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |  case Some(num) =&amp;gt;&lt;/span&gt; num &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 2
-&lt;span class=&quot;gp&quot;&gt;     |  case None =&amp;gt;&lt;/span&gt; 0
-&lt;span class=&quot;go&quot;&gt;     | }
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;initNum: Option[Int] =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1520&lt;/span&gt;/1940548313@253ecbdc
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; initNum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Some&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res89: Int = 20
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; initNum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;None&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res90: Int = 0
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;運用-mapflattenflatmap-操作-list-&quot;&gt;運用 map、flatten、flatMap 操作 List :&lt;/h4&gt;
-&lt;p&gt;定義一個 function 如果可以轉 Int 則回傳 Some(i) 否則 None&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def initNum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s:Any&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Option[Int] &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  try {
-     |   Some(Integer.parseInt(s.toString))
-     |  } catch {
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;     |   case e: Exception =&amp;gt;&lt;/span&gt; None
-&lt;span class=&quot;go&quot;&gt;     |  }
-     | }
-initNum: (s: Any)Option[Int]
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;定義一個不同元素 type 的 List :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val empList &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt; , 2 , &lt;span class=&quot;s2&quot;&gt;&quot;aa&quot;&lt;/span&gt; , &lt;span class=&quot;s2&quot;&gt;&quot;4&quot;&lt;/span&gt; , 5D &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;empList: List[Any] = List(1, 2, aa, 4, 5.0)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用 map 可將 List 的每個元素帶到 initNum 這方法然後回傳一個新的 List :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; empList.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;initNum&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res91: List[Option[Int]] = List(Some(1), Some(2), None, Some(4), None)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;flatten 會把Some(i) 的 i 值取出，None 過濾掉，然後將數值展開 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; empList.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;initNum&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.flatten
-&lt;span class=&quot;go&quot;&gt;res92: List[Int] = List(1, 2, 4)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;map 搭配 flatten 相當於 flatMap :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; empList.flatMap&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;initNum&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res94: List[Int] = List(1, 2, 4)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;最後透過 sum 算出加總 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; empList.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;initNum&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.flatten.sum
-&lt;span class=&quot;go&quot;&gt;res93: Int = 7
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;Option type 感覺可以避免物件回傳 null，至少會是 None 物件，讓我想到一個 design pattern 是 Null Object Pattern，也是會定義一個 null 物件，不讓值直接變成 null，可預防 NullPointerException．&lt;/li&gt;
-  &lt;li&gt;Scala 的某些 collection 已經幫我們訂好回傳 Option type 在使用時可注意一下，很多種不同寫法需要再思考．&lt;/li&gt;
-  &lt;li&gt;map、flatten、flatMap 感覺會很容易使用到，這邊先提供個例子，有機會再額外介紹．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Option type Option[T] 有兩個物件 Some(x) 與 None．Some(x) 的 x 是指型別為 T 的值，None 是指沒有這個值． 像下面例子，Map 的 get api 定義 : def get(key: K): Option[V] 所以 Map get 回傳的也是 Option 型態，有值會回傳 Some(Int)，沒有的話會回傳 None :</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Array Array 是一個固定長度且有順序性的容器，Array 是 mutable 的，在 new 時需給定長度．</summary></entry></feed>
