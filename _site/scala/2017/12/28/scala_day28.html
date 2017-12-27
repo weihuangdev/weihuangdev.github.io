@@ -122,6 +122,25 @@
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> parse<span class="o">(</span><span class="s2">""" { "</span>numbers<span class="s2">" : [1, 2, 3, 4] } """</span><span class="o">)</span>
 <span class="go">res0: net.liftweb.json.JValue = JObject(List(JField(numbers,JArray(List(JInt(1), JInt(2), JInt(3), JInt(4))))))
 </span></code></pre></div></div>
+<p>轉成自訂義的物件(MyNumbers) :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> <span class="k">case</span> class MyNumbers<span class="o">(</span>numbers: Array[Int]<span class="p">)</span>
+<span class="go">defined class MyNumbers
+
+</span><span class="gp">scala&gt;</span> val jvalue <span class="o">=</span> parse<span class="o">(</span><span class="s2">""" { "</span>numbers<span class="s2">" : [1, 2, 3, 4] } """</span><span class="o">)</span>
+<span class="go">jvalue: net.liftweb.json.JValue = JObject(List(JField(numbers,JArray(List(JInt(1), JInt(2), JInt(3), JInt(4))))))
+
+</span><span class="gp">scala&gt;</span> val myNum <span class="o">=</span> jvalue.extract[MyNumbers]
+<span class="go">myNum: MyNumbers = MyNumbers([I@539fe2b8)
+
+</span><span class="gp">scala&gt;</span> <span class="k">for</span><span class="o">(</span>num &lt;- myNum.numbers<span class="o">)</span> println<span class="o">(</span>num<span class="o">)</span>
+<span class="go">1
+2
+3
+4
+
+</span></code></pre></div></div>
+
 <p>使用 DSL 做轉換 :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> import net.liftweb.json.JsonDSL._

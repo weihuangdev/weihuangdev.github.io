@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-27T18:31:29+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 28 (json)</title><link href="http://localhost:4000/scala/2017/12/28/scala_day28.html" rel="alternate" type="text/html" title="Scala day 28 (json)" /><published>2017-12-28T10:44:17+08:00</published><updated>2017-12-28T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/28/scala_day28</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/28/scala_day28.html">&lt;h3 id=&quot;lift-json&quot;&gt;lift-json&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-27T18:55:58+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 28 (json)</title><link href="http://localhost:4000/scala/2017/12/28/scala_day28.html" rel="alternate" type="text/html" title="Scala day 28 (json)" /><published>2017-12-28T10:44:17+08:00</published><updated>2017-12-28T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/28/scala_day28</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/28/scala_day28.html">&lt;h3 id=&quot;lift-json&quot;&gt;lift-json&lt;/h3&gt;
 &lt;p&gt;使用 lift-json 的套件(lift-json_2.12-3.1.1.jar)，來對 json 資料做處理 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; :require lift-json_2.12-3.1.1.jar
@@ -40,6 +40,25 @@
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; parse&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&quot; { &quot;&lt;/span&gt;numbers&lt;span class=&quot;s2&quot;&gt;&quot; : [1, 2, 3, 4] } &quot;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;res0: net.liftweb.json.JValue = JObject(List(JField(numbers,JArray(List(JInt(1), JInt(2), JInt(3), JInt(4))))))
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;轉成自訂義的物件(MyNumbers) :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; class MyNumbers&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;numbers: Array[Int]&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;defined class MyNumbers
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val jvalue &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; parse&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&quot; { &quot;&lt;/span&gt;numbers&lt;span class=&quot;s2&quot;&gt;&quot; : [1, 2, 3, 4] } &quot;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;jvalue: net.liftweb.json.JValue = JObject(List(JField(numbers,JArray(List(JInt(1), JInt(2), JInt(3), JInt(4))))))
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val myNum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; jvalue.extract[MyNumbers]
+&lt;span class=&quot;go&quot;&gt;myNum: MyNumbers = MyNumbers([I@539fe2b8)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num &amp;lt;- myNum.numbers&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; println&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;1
+2
+3
+4
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;使用 DSL 做轉換 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import net.liftweb.json.JsonDSL._

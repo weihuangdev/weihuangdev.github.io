@@ -52,6 +52,26 @@ jsonString: String = {"name":"Daniel","address":{"city":"Daniel","state":"Taipei
 scala> parse(""" { "numbers" : [1, 2, 3, 4] } """)
 res0: net.liftweb.json.JValue = JObject(List(JField(numbers,JArray(List(JInt(1), JInt(2), JInt(3), JInt(4))))))
 ```
+轉成自訂義的物件(MyNumbers) : 
+
+```console
+scala> case class MyNumbers(numbers: Array[Int])
+defined class MyNumbers
+
+scala> val jvalue = parse(""" { "numbers" : [1, 2, 3, 4] } """)
+jvalue: net.liftweb.json.JValue = JObject(List(JField(numbers,JArray(List(JInt(1), JInt(2), JInt(3), JInt(4))))))
+
+scala> val myNum = jvalue.extract[MyNumbers]
+myNum: MyNumbers = MyNumbers([I@539fe2b8)
+
+scala> for(num <- myNum.numbers) println(num)
+1
+2
+3
+4
+
+```
+
 使用 DSL 做轉換 : 
 
 ```console
