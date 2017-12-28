@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-28T00:52:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 29 (some collection method)</title><link href="http://localhost:4000/scala/2017/12/28/scala_day29.html" rel="alternate" type="text/html" title="Scala day 29 (some collection method)" /><published>2017-12-28T10:44:17+08:00</published><updated>2017-12-28T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/28/scala_day29</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/28/scala_day29.html">&lt;h3 id=&quot;map&quot;&gt;map&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-28T12:06:39+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 29 (some collection method)</title><link href="http://localhost:4000/scala/2017/12/28/scala_day29.html" rel="alternate" type="text/html" title="Scala day 29 (some collection method)" /><published>2017-12-28T10:44:17+08:00</published><updated>2017-12-28T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/28/scala_day29</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/28/scala_day29.html">&lt;h3 id=&quot;map&quot;&gt;map&lt;/h3&gt;
 &lt;p&gt;對 collection 每個元素個別處理 :&lt;/p&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Apple&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Mac&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Taipei&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Hello world&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Banana&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;scala&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -21,6 +21,39 @@
 &lt;span class=&quot;go&quot;&gt;res16: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;h3 id=&quot;flatten&quot;&gt;flatten&lt;/h3&gt;
+&lt;p&gt;flatten 可以將 collection 裡的 collections 轉換成一個 collection :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3,4,List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5,6&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;lst: List[List[Any]] = List(List(1, 2), List(3, 4, List(5, 6)))
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.flatten
+&lt;span class=&quot;go&quot;&gt;res26: List[Any] = List(1, 2, 3, 4, List(5, 6))
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;flatmap&quot;&gt;flatMap&lt;/h3&gt;
+&lt;p&gt;flatMap 會先執行 map 之後再處理 flatten，相當於兩個的結合 :&lt;br /&gt;
+下面例子會先對 List 裡的 每個 List 做 distinct，再 flatten 成一個 collection :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5,3,4,1,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,4,6,7&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;lst: List[List[Int]] = List(List(1, 2, 1, 2), List(5, 3, 4, 1, 5), List(2, 4, 6, 7))
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.flatMap&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.distinct&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res33: List[Int] = List(1, 2, 5, 3, 4, 1, 2, 4, 6, 7)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.distinct&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.flatten
+&lt;span class=&quot;go&quot;&gt;res34: List[Int] = List(1, 2, 5, 3, 4, 1, 2, 4, 6, 7)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;distinct&quot;&gt;distinct&lt;/h3&gt;
+&lt;p&gt;distinct 可將重複的元素變成一個 :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3,4,1,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,4,6,7&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;lst: List[List[Int]] = List(List(1, 2), List(3, 4, 1, 5), List(2, 4, 6, 7))
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.flatten.distinct
+&lt;span class=&quot;go&quot;&gt;res27: List[Int] = List(1, 2, 3, 4, 5, 6, 7)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h3 id=&quot;sortwith&quot;&gt;sortWith&lt;/h3&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.sortWith&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &amp;lt; _&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
@@ -30,10 +63,62 @@
 &lt;span class=&quot;go&quot;&gt;res21: List[String] = List(scala, Taipei, Mac, Jack, Hello world, Daniel, Banana, Apple)
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;h3 id=&quot;optionmapflatmapsum-&quot;&gt;Option、map、flatMap、sum :&lt;/h3&gt;
+&lt;p&gt;這邊介紹一個網路上找到的很棒的範例，定義一個 function 將 String 轉成 Option[Int] 的 type :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def toInt&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s: String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Option[Int] &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   try {
+     |     Some(Integer.parseInt(s.trim))
+     |   } catch {
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;     |     case e: Exception =&amp;gt;&lt;/span&gt; None
+&lt;span class=&quot;go&quot;&gt;     |   }
+     | }
+toInt: (s: String)Option[Int]
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;然後定義一組有數字及文字的 Seq[String] 的 collection，然後透過 map 對裡面每個元素做上面定義的 toInt 方法，
+可以轉成 Int 的會回傳 Some(Int) 不行的回傳 None&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val strings &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Seq&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;foo&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;3&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;bar&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;strings: Seq[String] = List(1, 2, foo, 3, bar)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; strings.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;toInt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res35: Seq[Option[Int]] = List(Some(1), Some(2), None, Some(3), None)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;這時候透過 flatMap 展開後，None 物件會被過濾掉，而 Some(Int) 會轉成 Int :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; strings.flatMap&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;toInt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;res36: Seq[Int] = List(1, 2, 3)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;最後透過 sum 將元素的值做加總 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; strings.flatMap&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;toInt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.sum
+&lt;span class=&quot;go&quot;&gt;res37: Int = 6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;fold&quot;&gt;fold&lt;/h3&gt;
+&lt;p&gt;fold 有兩個參數，第一個是代初始值，第二的是 lambda expressions 就是元素要處理的事 :&lt;br /&gt;
+下面例子初始值是 0，然後執行順序參考下面 :&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numbers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5, 4, 8, 6, 2, 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;numbers: List[Int] = List(5, 4, 8, 6, 2, 3)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numbers.fold&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;z, i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;     |   println(z + &quot; , &quot; + i)
+     |   z + i
+     | }
+0 , 5 //初始值 0 跟 第一個元素相加
+5 , 4 //(0 + 5) 上一個的結果跟下個元素 4 做相加
+9 , 8 //上一個的結果(9)跟下個元素 4 做相加，以此類推...
+17 , 6
+23 , 2
+25 , 3
+res38: Int = 28
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;scala collection 提供非常多的 api 能讓我們把程式簡化到看起來很簡潔．&lt;/li&gt;
+  &lt;li&gt;scala collection 提供非常多的 api，這邊只是先列幾個範例，可以再多找些資訊學習．&lt;/li&gt;
 &lt;/ul&gt;</content><author><name></name></author><summary type="html">map 對 collection 每個元素個別處理 :</summary></entry><entry><title type="html">Scala day 28 (json)</title><link href="http://localhost:4000/scala/2017/12/28/scala_day28.html" rel="alternate" type="text/html" title="Scala day 28 (json)" /><published>2017-12-28T10:44:17+08:00</published><updated>2017-12-28T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/28/scala_day28</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/28/scala_day28.html">&lt;h3 id=&quot;lift-json&quot;&gt;lift-json&lt;/h3&gt;
 &lt;p&gt;使用 lift-json 的套件(lift-json_2.12-3.1.1.jar)，來對 json 資料做處理 :&lt;/p&gt;
 

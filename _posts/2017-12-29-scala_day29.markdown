@@ -30,7 +30,41 @@ scala> lst.map(name => name.length)
 res16: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
 ```
 
+### flatten
+flatten 可以將 collection 裡的 collections 轉換成一個 collection : 
 
+```console
+scala> val lst = List(List(1,2), List(3,4,List(5,6)))
+lst: List[List[Any]] = List(List(1, 2), List(3, 4, List(5, 6)))
+
+scala> lst.flatten
+res26: List[Any] = List(1, 2, 3, 4, List(5, 6))
+```
+
+### flatMap
+flatMap 會先執行 map 之後再處理 flatten，相當於兩個的結合 :  
+下面例子會先對 List 裡的 每個 List 做 distinct，再 flatten 成一個 collection : 
+
+```console
+scala> val lst = List(List(1,2,1,2), List(5,3,4,1,5), List(2,4,6,7))
+lst: List[List[Int]] = List(List(1, 2, 1, 2), List(5, 3, 4, 1, 5), List(2, 4, 6, 7))
+
+scala> lst.flatMap(_.distinct)
+res33: List[Int] = List(1, 2, 5, 3, 4, 1, 2, 4, 6, 7)
+
+scala> lst.map(_.distinct).flatten
+res34: List[Int] = List(1, 2, 5, 3, 4, 1, 2, 4, 6, 7)
+```
+
+### distinct
+distinct 可將重複的元素變成一個 : 
+```console
+scala> val lst = List(List(1,2), List(3,4,1,5), List(2,4,6,7))
+lst: List[List[Int]] = List(List(1, 2), List(3, 4, 1, 5), List(2, 4, 6, 7))
+
+scala> lst.flatten.distinct
+res27: List[Int] = List(1, 2, 3, 4, 5, 6, 7)
+```
 
 ### sortWith
 
@@ -42,13 +76,69 @@ scala> lst.sortWith(_ > _)
 res21: List[String] = List(scala, Taipei, Mac, Jack, Hello world, Daniel, Banana, Apple)
 ```
 
+### Option、map、flatMap、sum : 
+這邊介紹一個網路上找到的很棒的範例，定義一個 function 將 String 轉成 Option[Int] 的 type : 
+
+```console
+scala> def toInt(s: String): Option[Int] = {
+     |   try {
+     |     Some(Integer.parseInt(s.trim))
+     |   } catch {
+     |     case e: Exception => None
+     |   }
+     | }
+toInt: (s: String)Option[Int]
+```
+然後定義一組有數字及文字的 Seq[String] 的 collection，然後透過 map 對裡面每個元素做上面定義的 toInt 方法，
+可以轉成 Int 的會回傳 Some(Int) 不行的回傳 None
+
+```console
+scala> val strings = Seq("1", "2", "foo", "3", "bar")
+strings: Seq[String] = List(1, 2, foo, 3, bar)
+
+scala> strings.map(toInt)
+res35: Seq[Option[Int]] = List(Some(1), Some(2), None, Some(3), None)
+```
+這時候透過 flatMap 展開後，None 物件會被過濾掉，而 Some(Int) 會轉成 Int : 
+
+```console
+scala> strings.flatMap(toInt)
+res36: Seq[Int] = List(1, 2, 3)
+```
+最後透過 sum 將元素的值做加總 : 
+
+```console
+scala> strings.flatMap(toInt).sum
+res37: Int = 6
+```
+
+### fold
+fold 有兩個參數，第一個是代初始值，第二的是 lambda expressions 就是元素要處理的事 :  
+下面例子初始值是 0，然後執行順序參考下面 : 
+
+```console
+scala> val numbers = List(5, 4, 8, 6, 2, 3)
+numbers: List[Int] = List(5, 4, 8, 6, 2, 3)
+
+scala> numbers.fold(0) { (z, i) =>
+     |   println(z + " , " + i)
+     |   z + i
+     | }
+0 , 5 //初始值 0 跟 第一個元素相加
+5 , 4 //(0 + 5) 上一個的結果跟下個元素 4 做相加
+9 , 8 //上一個的結果(9)跟下個元素 4 做相加，以此類推...
+17 , 6
+23 , 2
+25 , 3
+res38: Int = 28
+```
 
 
 
 
 ### 總結
 - - -
-* scala collection 提供非常多的 api 能讓我們把程式簡化到看起來很簡潔．
+* scala collection 提供非常多的 api，這邊只是先列幾個範例，可以再多找些資訊學習．
 
 
 
