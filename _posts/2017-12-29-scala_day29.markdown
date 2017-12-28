@@ -77,7 +77,8 @@ res21: List[String] = List(scala, Taipei, Mac, Jack, Hello world, Daniel, Banana
 ```
 
 ### Option、map、flatMap、sum : 
-這邊介紹一個網路上找到的很棒的範例，定義一個 function 將 String 轉成 Option[Int] 的 type : 
+在介紹 List 的時候有先介紹過這範例，不過這邊再來複習一次，會比較有感覺．
+定義一個 function 將 String 轉成 Option[Int] 的 type : 
 
 ```console
 scala> def toInt(s: String): Option[Int] = {
@@ -124,7 +125,7 @@ scala> numbers.fold(0) { (z, i) =>
      |   println(z + " , " + i)
      |   z + i
      | }
-0 , 5 //初始值 0 跟 第一個元素相加
+0 , 5 //初始值 0 跟 第一個元素 5 相加
 5 , 4 //(0 + 5) 上一個的結果跟下個元素 4 做相加
 9 , 8 //上一個的結果(9)跟下個元素 4 做相加，以此類推...
 17 , 6
@@ -132,13 +133,75 @@ scala> numbers.fold(0) { (z, i) =>
 25 , 3
 res38: Int = 28
 ```
+fold 之外還有另外兩個 foldLeft、foldRight，foldLeft 是從左邊開始，foldLeft 是從右邊開始，fold 順序不一定 :  
+foldLeft 範例，初始參數改成 1，從左邊開始加  
 
+```console
+scala> val numbers = List(5, 4, 8, 6, 2, 3)
+numbers: List[Int] = List(5, 4, 8, 6, 2, 3)
 
+scala> numbers.foldLeft(1) { (z, i) =>
+     |   println(z + " , " + i)
+     |   z + i
+     | }
+1 , 5 //初始值 1 跟左邊第一個元素 5 相加
+6 , 4 //(1 + 5) 上一個的結果 6 跟左邊第二個元素 4 作相加...
+10 , 8
+18 , 6
+24 , 2
+26 , 3
+res45: Int = 29
+```
+foldRight 範例，初始參數改成 2，從右邊開始加 : 
 
+```console
+scala> numbers.foldRight(2) { (z, i) =>
+     |   println(z + " , " + i)
+     |   z + i
+     | }
+3 , 2 //初始值 2 跟右邊第一個元素 3 相加
+2 , 5 //(2 + 3) 上一個的結果 5 跟右邊第二個元素 2 作相加...
+6 , 7
+8 , 13
+4 , 21
+5 , 25
+res46: Int = 30
+```
+最後試著了解這段 code 吧 : 
+
+```console
+scala> val lst = List("Daniel","Apple","Mac","Taipei","Jack","Hello world","Banana","scala")
+lst: List[String] = List(Daniel, Apple, Mac, Taipei, Jack, Hello world, Banana, scala)
+
+scala> lst.map(_.length).filter(_ > 4).foldLeft(List.empty[Int]) {
+     |   (s,ele) => if(s.contains(ele)) List(ele) else (s :+ ele)
+     | }.reduce(_ + _)
+res47: Int = 11
+```
 
 ### 總結
 - - -
 * scala collection 提供非常多的 api，這邊只是先列幾個範例，可以再多找些資訊學習．
+* 上述 Code 解析 : 
 
+```console
+scala> lst.map(_.length) // 將每個元素轉成該元素的長度，然後產生一組新的 List[Int]
+res48: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
+
+scala> List(6, 5, 3, 6, 4, 11, 6, 5).filter(_ > 4)
+res49: List[Int] = List(6, 5, 6, 11, 6, 5) // 透過 filter 只取得 > 4 的元素，再產生一組新的 List[Int]
+
+scala> List(6, 5, 6, 11, 6, 5).foldLeft(List.empty[Int]) {
+     |   (s,ele) => if(s.contains(ele)) List(ele) else (s :+ ele)
+     | } // 透過 foldLeft 初始值參數是一個空的 List 也就是(s)，然後判斷左邊第一個元素 6，是否包含在 s 裡，不在就加入回傳新的 List，否則就不加入回傳原來的 List．可去除重複的元素，也可用 distinct．
+res50: List[Int] = List(6, 5)
+
+scala> List(6, 5).reduce(_ + _) //接著透過 reduce 將每個元素做相加回傳跟元素一樣的type Int
+res51: Int = 11
+
+scala> List(6, 5).sum //使用 sum 將元素做加總
+res52: Int = 11
+
+```
 
 

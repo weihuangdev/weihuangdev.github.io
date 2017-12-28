@@ -146,7 +146,8 @@
 </span></code></pre></div></div>
 
 <h3 id="optionmapflatmapsum-">Option、map、flatMap、sum :</h3>
-<p>這邊介紹一個網路上找到的很棒的範例，定義一個 function 將 String 轉成 Option[Int] 的 type :</p>
+<p>在介紹 List 的時候有先介紹過這範例，不過這邊再來複習一次，會比較有感覺．
+定義一個 function 將 String 轉成 Option[Int] 的 type :</p>
 
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> def toInt<span class="o">(</span>s: String<span class="o">)</span>: Option[Int] <span class="o">=</span> <span class="o">{</span>
 <span class="go">     |   try {
@@ -188,7 +189,7 @@ toInt: (s: String)Option[Int]
 <span class="go">     |   println(z + " , " + i)
      |   z + i
      | }
-0 , 5 //初始值 0 跟 第一個元素相加
+0 , 5 //初始值 0 跟 第一個元素 5 相加
 5 , 4 //(0 + 5) 上一個的結果跟下個元素 4 做相加
 9 , 8 //上一個的結果(9)跟下個元素 4 做相加，以此類推...
 17 , 6
@@ -196,12 +197,74 @@ toInt: (s: String)Option[Int]
 25 , 3
 res38: Int = 28
 </span></code></pre></div></div>
+<p>fold 之外還有另外兩個 foldLeft、foldRight，foldLeft 是從左邊開始，foldLeft 是從右邊開始，fold 順序不一定 :<br />
+foldLeft 範例，初始參數改成 1，從左邊開始加</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val numbers <span class="o">=</span> List<span class="o">(</span>5, 4, 8, 6, 2, 3<span class="o">)</span>
+<span class="go">numbers: List[Int] = List(5, 4, 8, 6, 2, 3)
+
+</span><span class="gp">scala&gt;</span> numbers.foldLeft<span class="o">(</span>1<span class="o">)</span> <span class="o">{</span> <span class="o">(</span>z, i<span class="o">)</span> <span class="o">=&gt;</span>
+<span class="go">     |   println(z + " , " + i)
+     |   z + i
+     | }
+1 , 5 //初始值 1 跟左邊第一個元素 5 相加
+6 , 4 //(1 + 5) 上一個的結果 6 跟左邊第二個元素 4 作相加...
+10 , 8
+18 , 6
+24 , 2
+26 , 3
+res45: Int = 29
+</span></code></pre></div></div>
+<p>foldRight 範例，初始參數改成 2，從右邊開始加 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> numbers.foldRight<span class="o">(</span>2<span class="o">)</span> <span class="o">{</span> <span class="o">(</span>z, i<span class="o">)</span> <span class="o">=&gt;</span>
+<span class="go">     |   println(z + " , " + i)
+     |   z + i
+     | }
+3 , 2 //初始值 2 跟右邊第一個元素 3 相加
+2 , 5 //(2 + 3) 上一個的結果 5 跟右邊第二個元素 2 作相加...
+6 , 7
+8 , 13
+4 , 21
+5 , 25
+res46: Int = 30
+</span></code></pre></div></div>
+<p>最後試著了解這段 code 吧 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val lst <span class="o">=</span> List<span class="o">(</span><span class="s2">"Daniel"</span>,<span class="s2">"Apple"</span>,<span class="s2">"Mac"</span>,<span class="s2">"Taipei"</span>,<span class="s2">"Jack"</span>,<span class="s2">"Hello world"</span>,<span class="s2">"Banana"</span>,<span class="s2">"scala"</span><span class="o">)</span>
+<span class="go">lst: List[String] = List(Daniel, Apple, Mac, Taipei, Jack, Hello world, Banana, scala)
+
+</span><span class="gp">scala&gt;</span> lst.map<span class="o">(</span>_.length<span class="o">)</span>.filter<span class="o">(</span>_ <span class="o">&gt;</span> 4<span class="o">)</span>.foldLeft<span class="o">(</span>List.empty[Int]<span class="o">)</span> <span class="o">{</span>
+<span class="gp">     |   (s,ele) =&gt;</span> <span class="k">if</span><span class="o">(</span>s.contains<span class="o">(</span>ele<span class="o">))</span> List<span class="o">(</span>ele<span class="o">)</span> <span class="k">else</span> <span class="o">(</span>s :+ ele<span class="o">)</span>
+<span class="go">     | }.reduce(_ + _)
+res47: Int = 11
+</span></code></pre></div></div>
 
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
   <li>scala collection 提供非常多的 api，這邊只是先列幾個範例，可以再多找些資訊學習．</li>
+  <li>上述 Code 解析 :</li>
 </ul>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> lst.map<span class="o">(</span>_.length<span class="o">)</span> // 將每個元素轉成該元素的長度，然後產生一組新的 List[Int]
+<span class="go">res48: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
+
+</span><span class="gp">scala&gt;</span> List<span class="o">(</span>6, 5, 3, 6, 4, 11, 6, 5<span class="o">)</span>.filter<span class="o">(</span>_ <span class="o">&gt;</span> 4<span class="o">)</span>
+<span class="gp">res49: List[Int] = List(6, 5, 6, 11, 6, 5) // 透過 filter 只取得 &gt;</span> 4 的元素，再產生一組新的 List[Int]
+<span class="go">
+</span><span class="gp">scala&gt;</span> List<span class="o">(</span>6, 5, 6, 11, 6, 5<span class="o">)</span>.foldLeft<span class="o">(</span>List.empty[Int]<span class="o">)</span> <span class="o">{</span>
+<span class="gp">     |   (s,ele) =&gt;</span> <span class="k">if</span><span class="o">(</span>s.contains<span class="o">(</span>ele<span class="o">))</span> List<span class="o">(</span>ele<span class="o">)</span> <span class="k">else</span> <span class="o">(</span>s :+ ele<span class="o">)</span>
+<span class="go">     | } // 透過 foldLeft 初始值參數是一個空的 List 也就是(s)，然後判斷左邊第一個元素 6，是否包含在 s 裡，不在就加入回傳新的 List，否則就不加入回傳原來的 List．可去除重複的元素，也可用 distinct．
+res50: List[Int] = List(6, 5)
+
+</span><span class="gp">scala&gt;</span> List<span class="o">(</span>6, 5<span class="o">)</span>.reduce<span class="o">(</span>_ + _<span class="o">)</span> //接著透過 reduce 將每個元素做相加回傳跟元素一樣的type Int
+<span class="go">res51: Int = 11
+
+</span><span class="gp">scala&gt;</span> List<span class="o">(</span>6, 5<span class="o">)</span>.sum //使用 sum 將元素做加總
+<span class="go">res52: Int = 11
+
+</span></code></pre></div></div>
 
 
   </div>
