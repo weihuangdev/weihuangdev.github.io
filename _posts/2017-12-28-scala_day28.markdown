@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "Scala day 28 (處理 json 格式資料)"
+title:  "Scala day 28 (json)"
 date:   2017-12-28 10:44:17 +0800
 categories: scala
 ---
 
 ### lift-json
-使用 lift-json 的套件(lift-json_2.12-3.1.1.jar)，來對 json 資料做處理 : 
+使用 lift-json 的套件(lift-json_2.12-3.1.1.jar)，來對 json 格式資料做處理 : 
 
 ```console
 scala> :require lift-json_2.12-3.1.1.jar
