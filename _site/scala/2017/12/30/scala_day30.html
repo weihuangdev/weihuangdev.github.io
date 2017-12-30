@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Scala day 30 (Functional Programming)</title>
+  <meta name="description" content="Functional Programming 今天是鐵人賽的最後一天，就來聊聊第一天說到的 scala 可以 Functional Programming 吧．Functional Programming 其實之前就已存在了，但為什麼最近又開始紅了起來了呢？ 因為面對資料量越來越大的時代，單執行緒處理的速度已經撐...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/scala/2017/12/30/scala_day30.html">
+  <link rel="alternate" type="application/rss+xml" title="Daniel&#39;s Blog" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">Daniel&#39;s Blog</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Scala day 30 (Functional Programming)</h1>
+    <p class="post-meta">
+      <time datetime="2017-12-30T10:44:17+08:00" itemprop="datePublished">
+        
+        Dec 30, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h3 id="functional-programming">Functional Programming</h3>
+<p>今天是鐵人賽的最後一天，就來聊聊第一天說到的 scala 可以 Functional Programming 吧．Functional Programming 其實之前就已存在了，但為什麼最近又開始紅了起來了呢？
+因為面對資料量越來越大的時代，單執行緒處理的速度已經撐不住了． 所以才會使用多執行緒、分散式運算、平行處理等來增加處理資料的速度．接著先介紹兩個蠻重要的觀念是Concurrency(並行)以及Parallelism(平行)．</p>
+
+<h4 id="concurrency">Concurrency</h4>
+<p>多個任務在一個 CPU(core) 上面執行，在時間內交互執行，會以為是同時處理多個工作．(multitasking on a single-core machine)．</p>
+
+<h4 id="parallelism">Parallelism</h4>
+<p>多個任務在多個 CPU(cores) 上面同時執行，同時處理多個工作．(tasks run at the same time on a multicore processor)．</p>
+
+<p>那面對 Concurrency 以及 Parallelism 的環境時．Imperative programming(C、C++、Java、Pythin) 在處理這些問題上就會顯得非常複雜．像 java 要寫 multi-thread 的程式時就要很小心，而且要避免一些問題，例如:deadlock．
+有很多共用變數或方法的地方又要加上 synchronize．所以光是處理這些問題就很令人頭痛，那會變成那麼複雜有一個很大的原因就是因為 Imperative programming 用到的變數幾乎都是 mutable 的．mutable 的變數代表它的值可以被改變、而且也可以被重新定義．那在 Concurrency 或 Parallelism 執行上，你無法確定 state 的狀況是什麼．這時候 immutable 的好處出來了，你不用擔心變數或function 在哪邊被重新定義了，因為 immutable 不可以被改變．所以 scala 的 collection 有 mutable 及 immutable．</p>
+
+<h4 id="functional-programming-重點">Functional Programming 重點</h4>
+<p>開發程式時，幾乎都使用 pure functions，程式裡只使用 immutable values (scala 的 val)．</p>
+
+<h4 id="pure-functions">Pure functions</h4>
+<ul>
+  <li>pure function 的結果，只依賴於輸入的參數及內部算法</li>
+  <li>pure function 不會有 side effects(副作用)，它不會讀取外部的東西，及寫入外部東西</li>
+  <li>根據上面兩個性質來看，pure function 傳入的參數(假設是 x)，不管呼叫幾次結果都會是一樣的(y)</li>
+</ul>
+
+<h4 id="example">Example</h4>
+<p>Imperative 的寫法 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">def sum(nums: List[Int]): Int = {
+  var sum = 0
+  for (i &lt;- nums) {
+    sum += i }
+  sum
+}
+
+val lst = List(1,2,3)
+sum(lst) // Int = 6
+</span></code></pre></div></div>
+<p>Functional 的寫法 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">def sums(xs: List[Int]): Int = xs match {
+</span><span class="gp">  case Nil =&gt;</span> 0
+<span class="gp">  case x :: tail =&gt;</span> x + sums<span class="o">(</span>tail<span class="o">)</span>
+<span class="go">}
+sums(lst) // Int = 6
+
+</span></code></pre></div></div>
+<p>Imperative 的寫法 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">def double(ints: List[Int]): List[Int] = {
+  val buffer = new scala.collection.mutable.ListBuffer[Int]()
+  for (i &lt;- ints) {
+    buffer += i * 2
+  }
+  buffer.toList
+}
+val oldNumbers = List(1,2,3)
+val newNumbers = double(oldNumbers) // List(2, 4, 6)
+</span></code></pre></div></div>
+<p>Functional 的寫法 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">val oldNumbers = List(1,2,3)
+val newNumbers = oldNumbers.map(_ * 2) // List(2, 4, 6)
+</span></code></pre></div></div>
+
+<h3 id="總結">總結</h3>
+<hr />
+<ul>
+  <li>在這 30 天介紹了許多 scala 的特色，但其實還有非常多的功能需要去學習．在最後一天也跟大家稍微介紹了一下FP．
+但其實還有許許多多的學問需要研究及實作．鐵人賽結束了，希望這些文章能讓大家有一點點收穫，繼續前進 scala 的世界吧～加油！</li>
+</ul>
+
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Daniel&#39;s Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Daniel&#39;s Blog
+            
+            </li>
+            
+            <li><a href="mailto:your-email@example.com">your-email@example.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
