@@ -68,306 +68,390 @@
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
         <div class="home">
-
-  <h1 class="page-heading">Posts</h1>
-  
   
 
+  
 
+
+<!-- 原來寫法
+  
+  <h2 class="post-list-heading">Posts</h2>
+    <ul class="post-list">
+      
+        <li>
+          
+          <span class="post-meta">Dec 30, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/30/scala_day30.html">Scala day 30 (Functional Programming)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 28, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/28/scala_day29.html">Scala day 29 (some collection method)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 28, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/28/scala_day28.html">Scala day 28 (json)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 27, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/27/scala_day27.html">Scala day 27 (Write Files)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 26, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/26/scala_day26.html">Scala day 26 (Read Files)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 23, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/23/scala_day25.html">Scala day 25 (Bounds)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 22, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/22/scala_day24.html">Scala day 24 (variances)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 21, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/21/scala_day23.html">Scala day 23 (implicit conversion)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 21, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/21/scala_day22.html">Scala day 22 (Companion Object &amp; apply &amp; update)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 20, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/20/scala_day21.html">Scala day 21 (Set)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 9, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/09/scala_day20.html">Scala day 20 (Array &amp; ArrayBuffer)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 9, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/09/scala_day19.html">Scala day 19 (Option type)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 9, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/09/scala_day18.html">Scala day 18 (Map)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 9, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/09/scala_day17.html">Scala day 17 (Currying)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 7, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/07/scala_day16.html">Scala day 16 (traits self type)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 6, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/06/scala_day15.html">Scala day 15 (traits &amp; abstract class)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 5, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/05/scala_day14.html">Scala day 14 (traits)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 4, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/04/scala_day13.html">Scala day 13 (case classes &amp; compare)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 4, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/04/scala_day12.html">Scala day 12 (Match Expression)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 4, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/04/scala_day11.html">Scala day 11 (Loop &amp; break &amp; continue)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 1, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/01/scala_day10.html">Scala day 10 (Loop)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Dec 1, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/12/01/scala_day9.html">Scala day 9 (Basic Types)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 30, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/11/30/scala_day8.html">Scala day 8 (Class &amp; Object)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 30, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/11/30/scala_day7.html">Scala day 7 (tuples)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 30, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/11/30/scala_day6.html">Scala day 6 (List &amp; ListBuffer)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 29, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/11/29/scala_day5.html">Scala day 5 (operators are methods)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 29, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/11/29/scala_day4.html">Scala day 4 (function literal)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 29, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/11/29/scala_day3.html">Scala day 3 (Define something)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 28, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/11/28/scala_day2.html">Scala day 2 (Compile Scala)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 28, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/scala/2017/11/28/scala_day1.html">Scala day 1 (Run scala)</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 28, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/jekyll/2017/11/28/startByJekyll.html">start By Jekyll</a>
+          </h3>
+        </li>
+      
+        <li>
+          
+          <span class="post-meta">Nov 28, 2017</span>
+
+          <h3>
+            <a class="post-link" href="/jekyll/2017/11/28/welcome-to-jekyll.html">Welcome to Jekyll!</a>
+          </h3>
+        </li>
+      
+    </ul>
+
+    <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+  
+-->
+
+
+  
+  <h2>Jekyll</h2>
+  </span>
+  <!--blogs count : 2</span>-->
   <ul class="post-list">
-    
-      <li>
-        
-        <span class="post-meta">Dec 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/30/scala_day30.html">Scala day 30 (Functional Programming)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/28/scala_day29.html">Scala day 29 (some collection method)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/28/scala_day28.html">Scala day 28 (json)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 27, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/27/scala_day27.html">Scala day 27 (Write Files)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 26, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/26/scala_day26.html">Scala day 26 (Read Files)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 23, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/23/scala_day25.html">Scala day 25 (Bounds)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 22, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/22/scala_day24.html">Scala day 24 (variances)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 21, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/21/scala_day23.html">Scala day 23 (implicit conversion)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 21, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/21/scala_day22.html">Scala day 22 (Companion Object &amp; apply &amp; update)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 20, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/20/scala_day21.html">Scala day 21 (Set)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 9, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/09/scala_day20.html">Scala day 20 (Array &amp; ArrayBuffer)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 9, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/09/scala_day19.html">Scala day 19 (Option type)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 9, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/09/scala_day18.html">Scala day 18 (Map)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 9, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/09/scala_day17.html">Scala day 17 (Currying)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 7, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/07/scala_day16.html">Scala day 16 (traits self type)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 6, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/06/scala_day15.html">Scala day 15 (traits &amp; abstract class)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 5, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/05/scala_day14.html">Scala day 14 (traits)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day13.html">Scala day 13 (case classes &amp; compare)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day12.html">Scala day 12 (Match Expression)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 4, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/04/scala_day11.html">Scala day 11 (Loop &amp; break &amp; continue)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 1, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/01/scala_day10.html">Scala day 10 (Loop)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Dec 1, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/12/01/scala_day9.html">Scala day 9 (Basic Types)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day8.html">Scala day 8 (Class &amp; Object)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day7.html">Scala day 7 (tuples)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 30, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/30/scala_day6.html">Scala day 6 (List &amp; ListBuffer)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day5.html">Scala day 5 (operators are methods)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day4.html">Scala day 4 (function literal)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 29, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/29/scala_day3.html">Scala day 3 (Define something)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/28/scala_day2.html">Scala day 2 (Compile Scala)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/scala/2017/11/28/scala_day1.html">Scala day 1 (Run scala)</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/daniel/update/2017/11/28/startByJekyll.html">start By Jekyll</a>
-        </h2>
-      </li>
-    
-      <li>
-        
-        <span class="post-meta">Nov 28, 2017</span>
-
-        <h2>
-          <a class="post-link" href="/jekyll/update/2017/11/28/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
+      
+          <li><a class="post-link" href="/jekyll/2017/11/28/startByJekyll.html">start By Jekyll</a></li>
+      
+          <li><a class="post-link" href="/jekyll/2017/11/28/welcome-to-jekyll.html">Welcome to Jekyll!</a></li>
+      
   </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
+  
+  <h2>scala</h2>
+  </span>
+  <!--blogs count : 30</span>-->
+  <ul class="post-list">
+      
+          <li><a class="post-link" href="/scala/2017/12/30/scala_day30.html">Scala day 30 (Functional Programming)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/28/scala_day29.html">Scala day 29 (some collection method)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/28/scala_day28.html">Scala day 28 (json)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/27/scala_day27.html">Scala day 27 (Write Files)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/26/scala_day26.html">Scala day 26 (Read Files)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/23/scala_day25.html">Scala day 25 (Bounds)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/22/scala_day24.html">Scala day 24 (variances)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/21/scala_day23.html">Scala day 23 (implicit conversion)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/21/scala_day22.html">Scala day 22 (Companion Object & apply & update)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/20/scala_day21.html">Scala day 21 (Set)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/09/scala_day20.html">Scala day 20 (Array & ArrayBuffer)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/09/scala_day19.html">Scala day 19 (Option type)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/09/scala_day18.html">Scala day 18 (Map)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/09/scala_day17.html">Scala day 17 (Currying)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/07/scala_day16.html">Scala day 16 (traits self type)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/06/scala_day15.html">Scala day 15 (traits & abstract class)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/05/scala_day14.html">Scala day 14 (traits)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/04/scala_day13.html">Scala day 13 (case classes & compare)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/04/scala_day12.html">Scala day 12 (Match Expression)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/04/scala_day11.html">Scala day 11 (Loop & break & continue)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/01/scala_day10.html">Scala day 10 (Loop)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/12/01/scala_day9.html">Scala day 9 (Basic Types)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/11/30/scala_day8.html">Scala day 8 (Class & Object)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/11/30/scala_day7.html">Scala day 7 (tuples)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/11/30/scala_day6.html">Scala day 6 (List & ListBuffer)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/11/29/scala_day5.html">Scala day 5 (operators are methods)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/11/29/scala_day4.html">Scala day 4 (function literal)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/11/29/scala_day3.html">Scala day 3 (Define something)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/11/28/scala_day2.html">Scala day 2 (Compile Scala)</a></li>
+      
+          <li><a class="post-link" href="/scala/2017/11/28/scala_day1.html">Scala day 1 (Run scala)</a></li>
+      
+  </ul>
+  
 </div>
 
       </div>

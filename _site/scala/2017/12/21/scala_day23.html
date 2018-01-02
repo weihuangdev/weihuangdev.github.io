@@ -67,19 +67,19 @@
 
     <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Scala day 23 (implicit conversion)</h1>
+    <h1 class="post-title p-name" itemprop="name headline">Scala day 23 (implicit conversion)</h1>
     <p class="post-meta">
-      <time datetime="2017-12-21T11:44:17+08:00" itemprop="datePublished">
+      <time class="dt-published" datetime="2017-12-21T11:44:17+08:00" itemprop="datePublished">
         
         Dec 21, 2017
       </time>
       </p>
   </header>
 
-  <div class="post-content" itemprop="articleBody">
+  <div class="post-content e-content" itemprop="articleBody">
     <h3 id="implicit-conversion">implicit conversion</h3>
 <p>就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件．<br />
 由於 Int 沒有 append 方法所以下面執行會失敗 :</p>
@@ -205,6 +205,8 @@ Hello Sam
   </div>
 
   
+
+  <a class="u-url" href="/scala/2017/12/21/scala_day23.html" hidden></a>
 </article>
 
       </div>
