@@ -1,4 +1,115 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-09T14:32:50+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">RabbitMQ day 2 (Message System)</title><link href="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html" rel="alternate" type="text/html" title="RabbitMQ day 2 (Message System)" /><published>2018-01-05T10:44:17+08:00</published><updated>2018-01-05T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html">&lt;h3 id=&quot;message&quot;&gt;Message&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-09T19:00:10+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">RabbitMQ day 3 (Implement)</title><link href="http://localhost:4000/rabbitmq/2018/01/09/rabbitmq_day3.html" rel="alternate" type="text/html" title="RabbitMQ day 3 (Implement)" /><published>2018-01-09T10:44:17+08:00</published><updated>2018-01-09T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/09/rabbitmq_day3</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/09/rabbitmq_day3.html">&lt;ul&gt;
+  &lt;li&gt;Establishing a solid connection to RabbitMQ
+建立 Connection 程式 :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rabt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IOException&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rabbitmq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rabbitmq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConnectionFactory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GetConnection&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;ConnectionFactory&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ConnectionFactory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setUsername&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;rbt-dev&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setPassword&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;123456&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setVirtualHost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;rbt-dev-vhost&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setHost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;192.168.56.102&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setPort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5672&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;Connection&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newConnection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+			&lt;span class=&quot;nf&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isOpen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IOException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行完上述程式後會在管理介面上看到建立的 connection 資訊 :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day3_1.jpg&quot; alt=&quot;rabbitmq_day3_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Working with channels
+用上面建立的 connection 建立 channel :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Channel channel = connection.createChannel();
+System.out.println(channel.isOpen());
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;定義 exchange&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String type = &quot;direct&quot;;
+boolean durable = true;//server restart 之後還會在
+boolean autoDelete = false;//keep it even if nobody is using it
+Map&amp;lt;String, Object&amp;gt; arguments = null;
+String exchangeInBox = &quot;rbt-inboxes&quot;;
+channel.exchangeDeclare(exchangeInBox, type, durable, autoDelete, arguments);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;定義 queue&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String queue = &quot;rbt-queue&quot;;
+durable = true;
+autoDelete = false;
+boolean exclusive = false;// this queue to be consumable by other connections
+arguments = null;
+channel.queueDeclare(queue, durable, exclusive, autoDelete, arguments);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;將 routingKey 與 queue、exchange bind 起來&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String routingKey = queue;
+channel.queueBind(queue, exchangeInBox, routingKey);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;Sending user messages&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;String messageId = UUID.randomUUID().toString();//讓每個 message 有一個唯一識別值，在分散式系統可追查
+BasicProperties props = new BasicProperties.Builder().contentEncoding(&quot;UTF-8&quot;).messageId(messageId).deliveryMode(2).build();
+
+String message = &quot;Hello World~~~&quot;;
+channel.basicPublish(exchangeInBox, routingKey, props, message.getBytes(&quot;UTF-8&quot;));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;deliveryMode : The AMQP speci cation de nes the value for this property as follows: for Non-persistent it is set to 1 and for Persistent it is set to 2.&lt;/li&gt;
+  &lt;li&gt;messageID : important aspect of traceability in messaging and distributed applications.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使用 rbt-admin (admin才可登入)登入管理介面 :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day3_2.jpg&quot; alt=&quot;rabbitmq_day3_2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day3_3.jpg&quot; alt=&quot;rabbitmq_day3_3.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day3_4.jpg&quot; alt=&quot;rabbitmq_day3_4.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;AMQP message structure&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day3_5.jpg&quot; alt=&quot;rabbitmq_day3_5.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;接收 queue 的訊息&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day3_6.jpg&quot; alt=&quot;rabbitmq_day3_6.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可以看到 4 筆 message 都被 consumer 取走了 :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day3_7.jpg&quot; alt=&quot;rabbitmq_day3_7.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;在前一天介紹完架構後，再來看今天介紹的程式會比較有感覺．&lt;/p&gt;</content><author><name></name></author><summary type="html">Establishing a solid connection to RabbitMQ 建立 Connection 程式 :</summary></entry><entry><title type="html">RabbitMQ day 2 (Message System)</title><link href="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html" rel="alternate" type="text/html" title="RabbitMQ day 2 (Message System)" /><published>2018-01-05T10:44:17+08:00</published><updated>2018-01-05T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html">&lt;h3 id=&quot;message&quot;&gt;Message&lt;/h3&gt;
 &lt;p&gt;系統之間彼此交換訊息(message)，根據可靠行及同步可分為四個區塊，這邊列出四個代表 :&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;SMTP(Simple Mail Transfer Protocol)&lt;/li&gt;
@@ -58,7 +169,7 @@
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
-&lt;p&gt;今天安裝好了 RabbitMQ 也 run 了 Hello World Sample Code，之後再詳細介紹 RabbitMQ 的工作及原理．&lt;/p&gt;</content><author><name></name></author><summary type="html">Message 系統之間彼此交換訊息(message)，根據可靠行及同步可分為四個區塊，這邊列出四個代表 : SMTP(Simple Mail Transfer Protocol) AMQP(Advanced Message Queuing Protocol) HTTP(HyperText Transfer Protocol) IIOP(Internet Inter-ORB Protocol)</summary></entry><entry><title type="html">RabbitMQ day 1 (install)</title><link href="http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1.html" rel="alternate" type="text/html" title="RabbitMQ day 1 (install)" /><published>2018-01-04T10:44:17+08:00</published><updated>2018-01-04T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1.html">&lt;h3 id=&quot;rabbitmq-安裝&quot;&gt;RabbitMQ 安裝&lt;/h3&gt;
+&lt;p&gt;今天稍微了解了一下 Message System 的設計以及 AMQP 協定，這樣的架構感覺很彈性．&lt;/p&gt;</content><author><name></name></author><summary type="html">Message 系統之間彼此交換訊息(message)，根據可靠行及同步可分為四個區塊，這邊列出四個代表 : SMTP(Simple Mail Transfer Protocol) AMQP(Advanced Message Queuing Protocol) HTTP(HyperText Transfer Protocol) IIOP(Internet Inter-ORB Protocol)</summary></entry><entry><title type="html">RabbitMQ day 1 (install)</title><link href="http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1.html" rel="alternate" type="text/html" title="RabbitMQ day 1 (install)" /><published>2018-01-04T10:44:17+08:00</published><updated>2018-01-04T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1.html">&lt;h3 id=&quot;rabbitmq-安裝&quot;&gt;RabbitMQ 安裝&lt;/h3&gt;
 &lt;p&gt;這邊使用的是 CentOS-6.8 安裝 rabbitmq． 
 安裝 rabbitmq 前要先安裝 erlang，安裝指令步驟 :&lt;/p&gt;
 
@@ -1127,123 +1238,4 @@ defined class Cat
 &lt;hr /&gt;
 &lt;ul&gt;
   &lt;li&gt;在 scala 的 variances 除了可以定義型別(Invariant)又加上了可用父類別(contravariant)及子類別(covariant)的選擇，讓型態上擴充性更強．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">variances 就是定義型別，以及型別的父子類別的繼承關係． 首先先訂幾個類別並有繼承關係 : 抽象類別 Animal、繼承 Animal 的 Cat、繼承 Cat 的 MexCat．</summary></entry><entry><title type="html">Scala day 23 (implicit conversion)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day23.html" rel="alternate" type="text/html" title="Scala day 23 (implicit conversion)" /><published>2017-12-21T11:44:17+08:00</published><updated>2017-12-21T11:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day23</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day23.html">&lt;h3 id=&quot;implicit-conversion&quot;&gt;implicit conversion&lt;/h3&gt;
-&lt;p&gt;就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件．&lt;br /&gt;
-由於 Int 沒有 append 方法所以下面執行會失敗 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1 append 2
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: value append is not a member of Int
-&lt;span class=&quot;go&quot;&gt;       1 append 2
-         ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;定義一個 MyAppend 及 append 方法 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class MyAppend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num: Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  def append(newNum: Int) = num.toString + newNum.toString
-     | }
-defined class MyAppend
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;在 REPL 直接寫 implicit 會出現 warning，但還是可以使用的 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; implicit def intToMyAppend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new MyAppend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: warning: implicit conversion method intToMyAppend should be enabled
-&lt;span class=&quot;go&quot;&gt;by making the implicit value scala.language.implicitConversions visible.
-This can be achieved by adding the import clause 'import scala.language.implicitConversions'
-or by setting the compiler option -language:implicitConversions.
-See the Scaladoc for value scala.language.implicitConversions for a discussion
-why the feature should be explicitly enabled.
-       implicit def intToMyAppend(x:Int) = new MyAppend(x)
-                    ^
-intToMyAppend: (x: Int)MyAppend
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果不要有 warning 可以 import scala.language.implicitConversions :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.language.implicitConversions
-&lt;span class=&quot;go&quot;&gt;import scala.language.implicitConversions
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; implicit def intToMyAppend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new MyAppend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;intToMyAppend: (x: Int)MyAppend
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;加上 implicit 函式後，編譯器會在範圍內找到對應型態的 implicit 函式呼叫．所以會變成 intToMyAppend(1) append 2&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; 1 append 2
-&lt;span class=&quot;go&quot;&gt;res8: String = 12
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;也可以把 implicit 函式抽成一個 object．&lt;/p&gt;
-
-&lt;p&gt;寫一隻 MyAppend.scala 並 compiler :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;class MyAppend(num: Int) {
- def append(newNum: Int) = num.toString + newNum.toString
-}
-
-scalac MyAppend.scala
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;寫一隻 MyConvert.scala 並 compiler :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;object MyConvert {
- implicit def intToMyAppend(x:Int) = new MyAppend(x)
-}
-
-scalac MyConvert.scala
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;寫一隻 ConvertTest.scala，並將有定義隱含函式的 object(MyConvert) import 進來 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;import MyConvert._
-
-object ConvertTest {
-    def main(args: Array[String]): Unit = {
-    val result = 1 + 2
-    println(result)
-    val res = 1 append 2
-    println(res)
-  }
-}
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;接著執行 ConvertTest.scala :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; scala ConvertTest.scala
-&lt;span class=&quot;go&quot;&gt;3
-12
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;在方法裡使用 implicit 物件，如果使用該方法時沒傳入物件，則會使用 implicit 物件傳入．
-寫一隻 Employees.scala，並 compiler :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;class Employees(name:String ,val amt:Int) {
-  def getName = name
-}
-
-object Employees {
-
-  import Employees._
-
-  implicit val employee: Employees = new Employees(&quot;Daniel&quot;,50)
-
-  def sayHello(implicit employee: Employees) = &quot;Hello &quot; + employee.getName
-}
-
-
-scalac Employees.scala
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;寫一隻 EmployeesTest.scala，sayHello 沒給參數的話，會帶隱含物件，所以會印出 Daniel．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;object EmployeesTest {
-  def main(args: Array[String]): Unit = {
-    println(Employees.sayHello)//Hello Daniel
-    println(Employees.sayHello(new Employees(&quot;Sam&quot;,5000)))//Hello Sam
-  }
-}
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;執行時，加上 classpath :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; scala &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;./&quot;&lt;/span&gt; EmployeesTest.scala
-&lt;span class=&quot;go&quot;&gt;Hello Daniel
-Hello Sam
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">implicit conversion 就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件． 由於 Int 沒有 append 方法所以下面執行會失敗 :</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">variances 就是定義型別，以及型別的父子類別的繼承關係． 首先先訂幾個類別並有繼承關係 : 抽象類別 Animal、繼承 Animal 的 Cat、繼承 Cat 的 MexCat．</summary></entry></feed>

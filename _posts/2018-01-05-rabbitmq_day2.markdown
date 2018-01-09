@@ -52,9 +52,8 @@ RabbitMQ 是用 Erlang 這語言來實作 AMQP．AMQP (Advanced Message Queuing 
 ![rabbitmq_day2_5.jpg]({{ "/assets/rabbitmq/rabbitmq_day2_5.jpg" | absolute_url }})
 
 
-
 ### 總結
 - - -
-今天安裝好了 RabbitMQ 也 run 了 Hello World Sample Code，之後再詳細介紹 RabbitMQ 的工作及原理．
+今天稍微了解了一下 Message System 的設計以及 AMQP 協定，這樣的架構感覺很彈性．
 
 
