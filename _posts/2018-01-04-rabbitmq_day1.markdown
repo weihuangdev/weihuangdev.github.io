@@ -41,15 +41,15 @@ service rabbitmq-server stop
 ```
 重啟 rabbitmq server 後，輸入網址 http://localhost:15672，帳密都使用 guest 登入．
 
-![rabbitmq_day1_1.jpg]({{ "/assets/rabbitmq_day1_1.jpg" | absolute_url }})
+![rabbitmq_day1_1.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_1.jpg" | absolute_url }})
 
 要連到 centos 先關閉防火牆，下 setup :  
 
-![rabbitmq_day1_2.jpg]({{ "/assets/rabbitmq_day1_2.jpg" | absolute_url }})
+![rabbitmq_day1_2.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_2.jpg" | absolute_url }})
 
 不要勾選，接著 OK 確認  
 
-![rabbitmq_day1_3.jpg]({{ "/assets/rabbitmq_day1_3.jpg" | absolute_url }})
+![rabbitmq_day1_3.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_3.jpg" | absolute_url }})
 
 ### Run Sample Code : 
 Maven project pom.xml :  
@@ -159,33 +159,68 @@ public class Consumer {
 ```
 接著先執行 Consumer :  
 
-![rabbitmq_day1_4.jpg]({{ "/assets/rabbitmq_day1_4.jpg" | absolute_url }})
+![rabbitmq_day1_4.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_4.jpg" | absolute_url }})
 
 在 web 管理介面上，會看到有 Connections 在上面 :  
 
-![rabbitmq_day1_5.jpg]({{ "/assets/rabbitmq_day1_5.jpg" | absolute_url }})
+![rabbitmq_day1_5.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_5.jpg" | absolute_url }})
 
 上面看到的 IP 是 192.168.56.1 這 IP 是本機透過這個 Gateway 連到 Virtual Box 的 IP 192.168.56.102．
 附上我 Virtual Box 網卡的設定，設了兩張網卡(NAT是為了連外網、僅限主機介面卡是與本機溝通，在本機下 ifconfig 可看到192.168.56.1) :  
 
-![rabbitmq_day1_8.jpg]({{ "/assets/rabbitmq_day1_8.jpg" | absolute_url }})
+![rabbitmq_day1_8.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_8.jpg" | absolute_url }})
 
-![rabbitmq_day1_9.jpg]({{ "/assets/rabbitmq_day1_9.jpg" | absolute_url }})
+![rabbitmq_day1_9.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_9.jpg" | absolute_url }})
 
-![rabbitmq_day1_10.jpg]({{ "/assets/rabbitmq_day1_10.jpg" | absolute_url }})
+![rabbitmq_day1_10.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_10.jpg" | absolute_url }})
 
 接著再執行 Producer :  
 
-![rabbitmq_day1_6.jpg]({{ "/assets/rabbitmq_day1_6.jpg" | absolute_url }})
+![rabbitmq_day1_6.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_6.jpg" | absolute_url }})
 
 Consumer 會接到 Producer 送出的 message "Hello World" :  
 
-![rabbitmq_day1_7.jpg]({{ "/assets/rabbitmq_day1_7.jpg" | absolute_url }})
+![rabbitmq_day1_7.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_7.jpg" | absolute_url }})
+
+
+### 設定 user
+建立一個 administration user (rbt-admin) : 
+
+![rabbitmq_day1_11.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_11.jpg" | absolute_url }})
+
+![rabbitmq_day1_12.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_12.jpg" | absolute_url }})
+
+這時建立的 user 並沒有 virtual host : 
+
+![rabbitmq_day1_13.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_13.jpg" | absolute_url }})
+
+再建立一個開發用的 user (rbt-dev) : 
+
+![rabbitmq_day1_14.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_14.jpg" | absolute_url }})
+
+接著建立一個 virtual host (rbt-dev-host): 
+
+![rabbitmq_day1_15.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_15.jpg" | absolute_url }})
+
+建立成功後，目前沒 user 可使用這 vhost : 
+
+![rabbitmq_day1_16.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_16.jpg" | absolute_url }})
+
+將 rbt-admin 及 rbt-dev 設定能使用 rbt-dev-host 的權限 : 
+
+![rabbitmq_day1_17.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_17.jpg" | absolute_url }})
+
+".*" ".*" ".*" 這三個參數分別是 grant configure, write, read permissions 這邊設都可以．
+
+![rabbitmq_day1_18.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_18.jpg" | absolute_url }})
+
+![rabbitmq_day1_19.jpg]({{ "/assets/rabbitmq/rabbitmq_day1_19.jpg" | absolute_url }})
+
 
 
 ### 總結
 - - -
-今天安裝好了 RabbitMQ 也 run 了 Hello World Sample Code，之後再詳細介紹 RabbitMQ 的工作及原理．
+今天安裝好了 RabbitMQ 新增了 user 及 virtual host 也 run 了 Hello World Sample Code，之後再詳細介紹 RabbitMQ 的工作及原理．
 
 
 ### 補充

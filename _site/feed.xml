@@ -1,4 +1,64 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-04T23:26:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">RabbitMQ day 1 (install)</title><link href="http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1.html" rel="alternate" type="text/html" title="RabbitMQ day 1 (install)" /><published>2018-01-04T10:44:17+08:00</published><updated>2018-01-04T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1.html">&lt;h3 id=&quot;rabbitmq-安裝&quot;&gt;RabbitMQ 安裝&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-09T14:32:50+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">RabbitMQ day 2 (Message System)</title><link href="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html" rel="alternate" type="text/html" title="RabbitMQ day 2 (Message System)" /><published>2018-01-05T10:44:17+08:00</published><updated>2018-01-05T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html">&lt;h3 id=&quot;message&quot;&gt;Message&lt;/h3&gt;
+&lt;p&gt;系統之間彼此交換訊息(message)，根據可靠行及同步可分為四個區塊，這邊列出四個代表 :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;SMTP(Simple Mail Transfer Protocol)&lt;/li&gt;
+  &lt;li&gt;AMQP(Advanced Message Queuing Protocol)&lt;/li&gt;
+  &lt;li&gt;HTTP(HyperText Transfer Protocol)&lt;/li&gt;
+  &lt;li&gt;IIOP(Internet Inter-ORB Protocol)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_0.jpg&quot; alt=&quot;rabbitmq_day2_0.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;根據系統不一樣的需求，就會有不同交換訊息的設計．&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;request-response 型態 : 系統傳 request 給另一個系統等待回傳 response，一種 point-to-point 的方式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_1.jpg&quot; alt=&quot;rabbitmq_day2_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使用 Message Queue 非同步的設計，會有一個 publishers (producers) 發送 message 給 broker，broker 在將 message 傳給需要的 consumer．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_2.jpg&quot; alt=&quot;rabbitmq_day2_2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;loosely coupled 的架構，publisher 跟 consumer 彼此之間不用知道對方在哪 :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_3.jpg&quot; alt=&quot;rabbitmq_day2_3.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;這樣的設計有幾項優點 :&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;publisher 跟 consumer 的系統如果有損壞的，彼此間不影響．&lt;/li&gt;
+  &lt;li&gt;系統之間的效能不會彼此影響．&lt;/li&gt;
+  &lt;li&gt;publisher 跟 consumer 彼此不知道對方的位址及技術．&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;simple-mail-transfer-protocol-smtp&quot;&gt;Simple Mail Transfer Protocol (SMTP).&lt;/h3&gt;
+&lt;p&gt;e-mails 會發送(published)到一個 SMTP server，然後該 server 會再傳到另一個 SMTP server，直到傳到接收者的 email server．則 message 會被 queue 等待 consumer(POP3“Post Office Protocol 3”或IMAP) 來將 message 取走．在 SMTP publisher 不會知道 e-mail 最後送去哪，只會知道已成功送給 broker(SMTP server) 並且已初始化送出．&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_4.jpg&quot; alt=&quot;rabbitmq_day2_4.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;amqp&quot;&gt;AMQP&lt;/h3&gt;
+&lt;p&gt;RabbitMQ 是用 Erlang 這語言來實作 AMQP．AMQP (Advanced Message Queuing Protocol)，是一種協定，它保証可以傳達(reliable)且可非同步(async)．AMQP 有一些核心的概念 :&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Broker : 是一個中介的應用程式，接收 publisher 的 message 將它傳給 consumer 或下一個 broker&lt;/li&gt;
+  &lt;li&gt;Virtual host : 是在 broker 裡的一個虛擬區塊，用來隔離 publisher、consumer 及 AMQP 的結構，不同 Virtual host 不可共享彼此的資源(Exchange、queue)，為了安全的議題，預設是(/)．&lt;/li&gt;
+  &lt;li&gt;Connection : 指的是 TCP connection，連接於 publisher、consumer 和 broker．client disconnection 或網路、broker 掛掉時 connection 才會關閉．&lt;/li&gt;
+  &lt;li&gt;Channel : channel 會隔離特定的 client 和 broker，以至於它們不會互相影響．多個 Channel 可以成為一個 connection．&lt;/li&gt;
+  &lt;li&gt;Exchange : 會將 publisher 傳送的 message 做初始化找到對應的 routing rules 將 message 送到目的地．routing rules 包括 : direct (point-to-point), topic (publish-subscribe) 和 fanout (multicast)&lt;/li&gt;
+  &lt;li&gt;Queue : 這是 message 準備送到 consumer 的最後階段，單一訊息可被複製到多個 queue 裡，但由 Exchange 決定．&lt;/li&gt;
+  &lt;li&gt;Binding : 是一個介於 Exchange 及 Queue 的虛擬連線， routing key 怎麼做 binding 會根據 Exchange routing rules 決定．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_5.jpg&quot; alt=&quot;rabbitmq_day2_5.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;今天安裝好了 RabbitMQ 也 run 了 Hello World Sample Code，之後再詳細介紹 RabbitMQ 的工作及原理．&lt;/p&gt;</content><author><name></name></author><summary type="html">Message 系統之間彼此交換訊息(message)，根據可靠行及同步可分為四個區塊，這邊列出四個代表 : SMTP(Simple Mail Transfer Protocol) AMQP(Advanced Message Queuing Protocol) HTTP(HyperText Transfer Protocol) IIOP(Internet Inter-ORB Protocol)</summary></entry><entry><title type="html">RabbitMQ day 1 (install)</title><link href="http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1.html" rel="alternate" type="text/html" title="RabbitMQ day 1 (install)" /><published>2018-01-04T10:44:17+08:00</published><updated>2018-01-04T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/04/rabbitmq_day1.html">&lt;h3 id=&quot;rabbitmq-安裝&quot;&gt;RabbitMQ 安裝&lt;/h3&gt;
 &lt;p&gt;這邊使用的是 CentOS-6.8 安裝 rabbitmq． 
 安裝 rabbitmq 前要先安裝 erlang，安裝指令步驟 :&lt;/p&gt;
 
@@ -31,15 +91,15 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;重啟 rabbitmq server 後，輸入網址 http://localhost:15672，帳密都使用 guest 登入．&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_1.jpg&quot; alt=&quot;rabbitmq_day1_1.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_1.jpg&quot; alt=&quot;rabbitmq_day1_1.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;要連到 centos 先關閉防火牆，下 setup :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_2.jpg&quot; alt=&quot;rabbitmq_day1_2.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_2.jpg&quot; alt=&quot;rabbitmq_day1_2.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;不要勾選，接著 OK 確認&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_3.jpg&quot; alt=&quot;rabbitmq_day1_3.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_3.jpg&quot; alt=&quot;rabbitmq_day1_3.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;run-sample-code-&quot;&gt;Run Sample Code :&lt;/h3&gt;
 &lt;p&gt;Maven project pom.xml :&lt;/p&gt;
@@ -146,32 +206,65 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;接著先執行 Consumer :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_4.jpg&quot; alt=&quot;rabbitmq_day1_4.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_4.jpg&quot; alt=&quot;rabbitmq_day1_4.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;在 web 管理介面上，會看到有 Connections 在上面 :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_5.jpg&quot; alt=&quot;rabbitmq_day1_5.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_5.jpg&quot; alt=&quot;rabbitmq_day1_5.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;上面看到的 IP 是 192.168.56.1 這 IP 是本機透過這個 Gateway 連到 Virtual Box 的 IP 192.168.56.102．
 附上我 Virtual Box 網卡的設定，設了兩張網卡(NAT是為了連外網、僅限主機介面卡是與本機溝通，在本機下 ifconfig 可看到192.168.56.1) :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_8.jpg&quot; alt=&quot;rabbitmq_day1_8.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_8.jpg&quot; alt=&quot;rabbitmq_day1_8.jpg&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_9.jpg&quot; alt=&quot;rabbitmq_day1_9.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_9.jpg&quot; alt=&quot;rabbitmq_day1_9.jpg&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_10.jpg&quot; alt=&quot;rabbitmq_day1_10.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_10.jpg&quot; alt=&quot;rabbitmq_day1_10.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;接著再執行 Producer :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_6.jpg&quot; alt=&quot;rabbitmq_day1_6.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_6.jpg&quot; alt=&quot;rabbitmq_day1_6.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Consumer 會接到 Producer 送出的 message “Hello World” :&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq_day1_7.jpg&quot; alt=&quot;rabbitmq_day1_7.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_7.jpg&quot; alt=&quot;rabbitmq_day1_7.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;設定-user&quot;&gt;設定 user&lt;/h3&gt;
+&lt;p&gt;建立一個 administration user (rbt-admin) :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_11.jpg&quot; alt=&quot;rabbitmq_day1_11.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_12.jpg&quot; alt=&quot;rabbitmq_day1_12.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;這時建立的 user 並沒有 virtual host :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_13.jpg&quot; alt=&quot;rabbitmq_day1_13.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;再建立一個開發用的 user (rbt-dev) :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_14.jpg&quot; alt=&quot;rabbitmq_day1_14.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;接著建立一個 virtual host (rbt-dev-host):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_15.jpg&quot; alt=&quot;rabbitmq_day1_15.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;建立成功後，目前沒 user 可使用這 vhost :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_16.jpg&quot; alt=&quot;rabbitmq_day1_16.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;將 rbt-admin 及 rbt-dev 設定能使用 rbt-dev-host 的權限 :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_17.jpg&quot; alt=&quot;rabbitmq_day1_17.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;”.&lt;em&gt;” “.&lt;/em&gt;” “.*” 這三個參數分別是 grant configure, write, read permissions 這邊設都可以．&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_18.jpg&quot; alt=&quot;rabbitmq_day1_18.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day1_19.jpg&quot; alt=&quot;rabbitmq_day1_19.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
-&lt;p&gt;今天安裝好了 RabbitMQ 也 run 了 Hello World Sample Code，之後再詳細介紹 RabbitMQ 的工作及原理．&lt;/p&gt;
+&lt;p&gt;今天安裝好了 RabbitMQ 新增了 user 及 virtual host 也 run 了 Hello World Sample Code，之後再詳細介紹 RabbitMQ 的工作及原理．&lt;/p&gt;
 
 &lt;h3 id=&quot;補充&quot;&gt;補充&lt;/h3&gt;
 &lt;hr /&gt;
@@ -1153,144 +1246,4 @@ Hello Sam
 &lt;hr /&gt;
 &lt;ul&gt;
   &lt;li&gt;在 scala 的 implicit conversion 主要是透過型態來找到對應，並不是 function 或變數的名稱找．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">implicit conversion 就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件． 由於 Int 沒有 append 方法所以下面執行會失敗 :</summary></entry><entry><title type="html">Scala day 22 (Companion Object &amp;amp; apply &amp;amp; update)</title><link href="http://localhost:4000/scala/2017/12/21/scala_day22.html" rel="alternate" type="text/html" title="Scala day 22 (Companion Object &amp; apply &amp; update)" /><published>2017-12-21T10:44:17+08:00</published><updated>2017-12-21T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/21/scala_day22</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/21/scala_day22.html">&lt;h3 id=&quot;companion-object&quot;&gt;Companion Object&lt;/h3&gt;
-&lt;p&gt;如果 object 的名稱和 class 名稱相同，稱為 Companion Object (Employee)．
-由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo，
-所以再用一個 object(Emp) 把它們包起來，否則 REPL 的環境不會被視為是 Companion Object，如果是定義在一個 Employee.scala 檔案裡，則不用 Emp 包起來 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.collection.mutable.ListBuffer
-&lt;span class=&quot;go&quot;&gt;import scala.collection.mutable.ListBuffer
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; object Emp &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |
-     |   class Employee(val salary: Int)
-     |
-     |   object Employee {
-     |
-     |     private val emps: ListBuffer[Employee] = new ListBuffer[Employee]
-     |
-     |     private var sum = 0
-     |
-     |     def addEmp(emp:Employee) = emps += emp
-     |
-     |     def sumSalary = {
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;     |       emps.foreach(emp =&amp;gt;&lt;/span&gt; sum +&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; emp.salary&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |       sum
-     |     }
-     |   }
-     | }
-defined object Emp
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Emp.Employee.addEmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new Emp.Employee&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;res0: scala.collection.mutable.ListBuffer[Emp.Employee] = ListBuffer(Emp$&lt;/span&gt;Employee@35eee641&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Emp.Employee.addEmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new Emp.Employee&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;20&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;res1: scala.collection.mutable.ListBuffer[Emp.Employee] = ListBuffer(Emp$&lt;/span&gt;Employee@35eee641, Emp&lt;span class=&quot;nv&quot;&gt;$Employee&lt;/span&gt;@4f3c7808&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Emp.Employee.sumSalary
-&lt;span class=&quot;go&quot;&gt;res2: Int = 30
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;apply-function&quot;&gt;apply function&lt;/h3&gt;
-&lt;p&gt;就是將參數傳給(apply) function 的意思&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val sum &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;num1:Int,num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; num1 + num2
-&lt;span class=&quot;gp&quot;&gt;sum: (Int, Int) =&amp;gt;&lt;/span&gt; Int &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;Lambda&lt;span class=&quot;nv&quot;&gt;$1197&lt;/span&gt;/530446114@3f06abd
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res15: Int = 5
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; sum.apply&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res14: Int = 5
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;將參數傳給(apply) object&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; object Counter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  val baseNum = 10
-     |  def apply(num1:Int , num2:Int) = baseNum + num1 + num2
-     | }
-defined object Counter
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Counter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res16: Int = 15
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;update-function&quot;&gt;update function&lt;/h3&gt;
-&lt;p&gt;定義 : 
-a(x) = y 相當於 a.update(x, y)，a(x,y) = x 相當於 a.update(x,y,z) 以此類推．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Cellphone &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |
-     |   val numbers = scala.collection.mutable.Map[String,(Int,Int)]()
-     |
-     |   def apply(name:String) = numbers(name)
-     |   def update(name:String, number:(Int,Int)) = numbers(name) = number
-     | }
-defined class Cellphone
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val phonebook &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Cellphone
-&lt;span class=&quot;go&quot;&gt;phonebook: Cellphone = Cellphone@1d9af731
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;會呼叫 Cellphone 的 update 方法 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; phonebook&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)=(&lt;/span&gt;123,45678&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; phonebook&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)=(&lt;/span&gt;321,876543&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;會呼叫 Cellphone 的 apply 方法 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; phonebook&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res5: (Int, Int) = (123,45678)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; phonebook&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res6: (Int, Int) = (321,876543)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;companion-object-with-apply&quot;&gt;Companion Object with apply&lt;/h3&gt;
-&lt;p&gt;apply 可以設計成為 factory pattern :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; object Trans &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   trait Transportation {
-     |     def go
-     |   }
-     |   object Transportation {
-     |     private class Car extends Transportation {
-     |       override def go {println(&quot;drive car&quot;)}
-     |     }
-     |     private class Boat extends Transportation {
-     |       override def go {println(&quot;drive boat&quot;)}
-     |     }
-     |     def apply(name:String): Transportation = {
-     |       if(name == &quot;car&quot;) {
-     |         new Car
-     |       } else {
-     |         new Boat
-     |       }
-     |     }
-     |   }
-     | }
-defined object Trans
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val car &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Trans.Transportation&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;car&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;car: Trans.Transportation = Trans$&lt;/span&gt;Transportation&lt;span class=&quot;nv&quot;&gt;$Car&lt;/span&gt;@178cfe5e
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; car.go
-&lt;span class=&quot;go&quot;&gt;drive car
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val boat &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Trans.Transportation&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;boat&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;boat: Trans.Transportation = Trans$&lt;/span&gt;Transportation&lt;span class=&quot;nv&quot;&gt;$Boat&lt;/span&gt;@31e90355
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; boat.go
-&lt;span class=&quot;go&quot;&gt;drive boat
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;在 scala 裡 object 可被視為 function，function 也可被視為 object，這觀念跟物件導向的觀念不太一樣，感覺 Companion Object 、apply、update 等功能也是為了要實作 functional programming．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;參考資料&quot;&gt;參考資料&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;p&gt;https://stackoverflow.com/questions/9737352/what-is-the-apply-function-in-scala&lt;/p&gt;</content><author><name></name></author><summary type="html">Companion Object 如果 object 的名稱和 class 名稱相同，稱為 Companion Object (Employee)． 由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo， 所以再用一個 object(Emp) 把它們包起來，否則 REPL 的環境不會被視為是 Companion Object，如果是定義在一個 Employee.scala 檔案裡，則不用 Emp 包起來 :</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">implicit conversion 就是在當某物件沒有要呼叫的方法時，可以定義 implicit function 編譯器會嘗試使用 implicit function 來呼叫，將原物件轉換成另一個物件． 由於 Int 沒有 append 方法所以下面執行會失敗 :</summary></entry></feed>
