@@ -191,7 +191,98 @@ channel.basicPublish(exchangeInBox, routingKey, props, message.getBytes("UTF-8")
 
 <h3 id="總結">總結</h3>
 <hr />
-<p>在前一天介紹完架構後，再來看今天介紹的程式會比較有感覺．</p>
+<p>在前一天介紹完架構後，再來看今天介紹的程式會比較有感覺．<br />
+Sample Code :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">sample</span><span class="p">.</span><span class="n">rabt</span><span class="p">;</span>
+
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">IOException</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Map</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">UUID</span><span class="p">;</span>
+
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">rabbitmq</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">AMQP</span><span class="p">.</span><span class="n">BasicProperties</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">rabbitmq</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">Channel</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">rabbitmq</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">Connection</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">rabbitmq</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">ConnectionFactory</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="n">class</span> <span class="n">GetConnection</span> <span class="p">{</span>
+	<span class="k">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="k">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">ConnectionFactory</span> <span class="n">factory</span> <span class="p">=</span> <span class="n">new</span> <span class="n">ConnectionFactory</span><span class="p">();</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setUsername</span><span class="p">(</span><span class="s2">"rbt-dev"</span><span class="p">);</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setPassword</span><span class="p">(</span><span class="s2">"123456"</span><span class="p">);</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setVirtualHost</span><span class="p">(</span><span class="s2">"rbt-dev-vhost"</span><span class="p">);</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setHost</span><span class="p">(</span><span class="s2">"192.168.56.102"</span><span class="p">);</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setPort</span><span class="p">(</span><span class="m">5672</span><span class="p">);</span>
+		<span class="n">try</span> <span class="p">{</span>
+			<span class="n">Connection</span> <span class="n">connection</span> <span class="p">=</span> <span class="n">factory</span><span class="p">.</span><span class="n">newConnection</span><span class="p">();</span>
+			<span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">connection</span><span class="p">.</span><span class="n">isOpen</span><span class="p">());</span>
+			<span class="n">Channel</span> <span class="n">channel</span> <span class="p">=</span> <span class="n">connection</span><span class="p">.</span><span class="n">createChannel</span><span class="p">();</span>
+			<span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">channel</span><span class="p">.</span><span class="n">isOpen</span><span class="p">());</span>
+			
+			
+			<span class="k">String</span> <span class="n">type</span> <span class="p">=</span> <span class="s2">"direct"</span><span class="p">;</span>
+			<span class="k">boolean</span> <span class="n">durable</span> <span class="p">=</span> <span class="nb">true</span><span class="p">;//</span><span class="n">server</span> <span class="n">restart</span> <span class="err">之後還會在</span>
+			<span class="k">boolean</span> <span class="n">autoDelete</span> <span class="p">=</span> <span class="nb">false</span><span class="p">;//</span><span class="n">keep</span> <span class="n">it</span> <span class="n">even</span> <span class="k">if</span> <span class="n">nobody</span> <span class="n">is</span> <span class="n">using</span> <span class="n">it</span>
+			<span class="n">Map</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span> <span class="n">Object</span><span class="p">&gt;</span> <span class="n">arguments</span> <span class="p">=</span> <span class="n">null</span><span class="p">;</span>
+			<span class="k">String</span> <span class="n">exchangeInBox</span> <span class="p">=</span> <span class="s2">"rbt-inboxes"</span><span class="p">;</span>
+			<span class="n">channel</span><span class="p">.</span><span class="n">exchangeDeclare</span><span class="p">(</span><span class="n">exchangeInBox</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">durable</span><span class="p">,</span> <span class="n">autoDelete</span><span class="p">,</span> <span class="n">arguments</span><span class="p">);</span>
+			
+			<span class="k">String</span> <span class="n">queue</span> <span class="p">=</span> <span class="s2">"rbt-queue"</span><span class="p">;</span>
+			<span class="n">durable</span> <span class="p">=</span> <span class="nb">true</span><span class="p">;</span>
+			<span class="n">autoDelete</span> <span class="p">=</span> <span class="nb">false</span><span class="p">;</span>
+			<span class="k">boolean</span> <span class="n">exclusive</span> <span class="p">=</span> <span class="nb">false</span><span class="p">;//</span> <span class="n">this</span> <span class="n">queue</span> <span class="k">to</span> <span class="n">be</span> <span class="n">consumable</span> <span class="n">by</span> <span class="n">other</span> <span class="n">connections</span>
+			<span class="n">arguments</span> <span class="p">=</span> <span class="n">null</span><span class="p">;</span>
+			<span class="n">channel</span><span class="p">.</span><span class="n">queueDeclare</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">durable</span><span class="p">,</span> <span class="n">exclusive</span><span class="p">,</span> <span class="n">autoDelete</span><span class="p">,</span> <span class="n">arguments</span><span class="p">);</span>
+			
+			<span class="k">String</span> <span class="n">routingKey</span> <span class="p">=</span> <span class="n">queue</span><span class="p">;</span>
+			<span class="n">channel</span><span class="p">.</span><span class="n">queueBind</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">exchangeInBox</span><span class="p">,</span> <span class="n">routingKey</span><span class="p">);</span>
+			
+			<span class="k">String</span> <span class="n">messageId</span> <span class="p">=</span> <span class="n">UUID</span><span class="p">.</span><span class="n">randomUUID</span><span class="p">().</span><span class="n">toString</span><span class="p">();</span>
+            <span class="n">BasicProperties</span> <span class="n">props</span> <span class="p">=</span> <span class="n">new</span> <span class="n">BasicProperties</span><span class="p">.</span><span class="n">Builder</span><span class="p">().</span><span class="n">contentEncoding</span><span class="p">(</span><span class="s2">"UTF-8"</span><span class="p">).</span><span class="n">messageId</span><span class="p">(</span><span class="n">messageId</span><span class="p">).</span><span class="n">deliveryMode</span><span class="p">(</span><span class="m">2</span><span class="p">).</span><span class="n">build</span><span class="p">();</span>
+			
+			<span class="k">String</span> <span class="n">message</span> <span class="p">=</span> <span class="s2">"Hello World~~~"</span><span class="p">;</span>
+			<span class="n">channel</span><span class="p">.</span><span class="n">basicPublish</span><span class="p">(</span><span class="n">exchangeInBox</span><span class="p">,</span> <span class="n">routingKey</span><span class="p">,</span> <span class="n">props</span><span class="p">,</span> <span class="n">message</span><span class="p">.</span><span class="n">getBytes</span><span class="p">(</span><span class="s2">"UTF-8"</span><span class="p">));</span>
+		<span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">IOException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">e</span><span class="p">.</span><span class="n">printStackTrace</span><span class="p">();</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">sample</span><span class="p">.</span><span class="n">rabt</span><span class="p">;</span>
+
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">IOException</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">rabbitmq</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">Channel</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">rabbitmq</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">Connection</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">rabbitmq</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">ConnectionFactory</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">rabbitmq</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">GetResponse</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="n">class</span> <span class="n">GetMessages</span> <span class="p">{</span>
+	<span class="k">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="k">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">ConnectionFactory</span> <span class="n">factory</span> <span class="p">=</span> <span class="n">new</span> <span class="n">ConnectionFactory</span><span class="p">();</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setUsername</span><span class="p">(</span><span class="s2">"rbt-dev"</span><span class="p">);</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setPassword</span><span class="p">(</span><span class="s2">"123456"</span><span class="p">);</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setVirtualHost</span><span class="p">(</span><span class="s2">"rbt-dev-vhost"</span><span class="p">);</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setHost</span><span class="p">(</span><span class="s2">"192.168.56.102"</span><span class="p">);</span>
+		<span class="n">factory</span><span class="p">.</span><span class="n">setPort</span><span class="p">(</span><span class="m">5672</span><span class="p">);</span>
+		<span class="n">try</span> <span class="p">{</span>
+			<span class="n">Connection</span> <span class="n">connection</span> <span class="p">=</span> <span class="n">factory</span><span class="p">.</span><span class="n">newConnection</span><span class="p">();</span>
+			<span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">connection</span><span class="p">.</span><span class="n">isOpen</span><span class="p">());</span>
+			<span class="n">Channel</span> <span class="n">channel</span> <span class="p">=</span> <span class="n">connection</span><span class="p">.</span><span class="n">createChannel</span><span class="p">();</span>
+			<span class="k">String</span> <span class="n">queue</span> <span class="p">=</span> <span class="s2">"rbt-queue"</span><span class="p">;</span>
+			<span class="n">GetResponse</span> <span class="n">getResponse</span> <span class="p">=</span> <span class="n">null</span><span class="p">;</span>
+			<span class="k">String</span> <span class="n">contentEncoding</span> <span class="p">=</span> <span class="s2">"UTF-8"</span><span class="p">;</span>
+			<span class="k">while</span><span class="p">((</span><span class="n">getResponse</span> <span class="p">=</span> <span class="n">channel</span><span class="p">.</span><span class="n">basicGet</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="nb">false</span><span class="p">))</span> <span class="c1">!= null) {
+</span>				<span class="k">String</span> <span class="n">retMessage</span> <span class="p">=</span> <span class="n">new</span> <span class="k">String</span><span class="p">(</span><span class="n">getResponse</span><span class="p">.</span><span class="n">getBody</span><span class="p">()</span> <span class="p">,</span> <span class="n">contentEncoding</span><span class="p">);</span>
+				<span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">retMessage</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">IOException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">e</span><span class="p">.</span><span class="n">printStackTrace</span><span class="p">();</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
 
 
   </div>
