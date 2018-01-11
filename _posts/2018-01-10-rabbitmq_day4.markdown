@@ -10,7 +10,7 @@ Exchange 會根據 routing rules 將 message 送到目的．routing rules 有分
 
 
 ### fanout
-將同一個 message 送給所有 binding 該 exchange 的 queue
+將同一個 message 送給所有 binding 該 exchange 的 queue，fanount 模式不用給 routing Key．
 
 ![rabbitmq_day4_1.jpg]({{ "/assets/rabbitmq/rabbitmq_day4_1.jpg" | absolute_url }})
 

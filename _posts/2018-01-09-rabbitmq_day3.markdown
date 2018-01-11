@@ -201,8 +201,26 @@ public class GetMessages {
 ```
 
 
+### 總結
+- - -
+* synchronous 的方式 :  
 
+```
+channel.basicGet(queue, false))
+```
 
+* 註冊一個 queue consumer 等待 producer 傳送 message 的方式 : 
+
+```
+DefaultConsumer consumer = new DefaultConsumer(channel) {
+  public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {  
+      String message = new String(body, "UTF-8");  
+      System.out.println("Consume [x] Received '" + message + "'");  
+  }  
+};  
+channel.basicConsume(QUEUE_NAME, true, consumer);  
+```
+當 channel 關閉則該 consumer 則無法繼續接收訊息．
 
 
 

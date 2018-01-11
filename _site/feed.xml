@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-10T23:12:44+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">RabbitMQ day 4 (Exchange)</title><link href="http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4.html" rel="alternate" type="text/html" title="RabbitMQ day 4 (Exchange)" /><published>2018-01-10T10:44:17+08:00</published><updated>2018-01-10T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4.html">&lt;h3 id=&quot;exchange-type-&quot;&gt;Exchange type :&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-11T15:23:33+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">RabbitMQ day 4 (Exchange)</title><link href="http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4.html" rel="alternate" type="text/html" title="RabbitMQ day 4 (Exchange)" /><published>2018-01-10T10:44:17+08:00</published><updated>2018-01-10T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4.html">&lt;h3 id=&quot;exchange-type-&quot;&gt;Exchange type :&lt;/h3&gt;
 &lt;p&gt;Exchange 會根據 routing rules 將 message 送到目的．routing rules 有分 : direct (point-to-point), topic (publish-subscribe), fanout (multicast) 和 headers．&lt;/p&gt;
 
 &lt;h3 id=&quot;fanout&quot;&gt;fanout&lt;/h3&gt;
-&lt;p&gt;將同一個 message 送給所有 binding 該 exchange 的 queue&lt;/p&gt;
+&lt;p&gt;將同一個 message 送給所有 binding 該 exchange 的 queue，fanount 模式不用給 routing Key．&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day4_1.jpg&quot; alt=&quot;rabbitmq_day4_1.jpg&quot; /&gt;&lt;/p&gt;
 
@@ -517,7 +517,30 @@ Sample Code :&lt;/p&gt;
 	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Establishing a solid connection to RabbitMQ 建立 Connection 程式 :</summary></entry><entry><title type="html">RabbitMQ day 2 (Message System)</title><link href="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html" rel="alternate" type="text/html" title="RabbitMQ day 2 (Message System)" /><published>2018-01-05T10:44:17+08:00</published><updated>2018-01-05T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html">&lt;h3 id=&quot;message&quot;&gt;Message&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結-1&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;synchronous 的方式 :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;channel.basicGet(queue, false))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;註冊一個 queue consumer 等待 producer 傳送 message 的方式 :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DefaultConsumer consumer = new DefaultConsumer(channel) {
+  public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {  
+      String message = new String(body, &quot;UTF-8&quot;);  
+      System.out.println(&quot;Consume [x] Received '&quot; + message + &quot;'&quot;);  
+  }  
+};  
+channel.basicConsume(QUEUE_NAME, true, consumer);  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;當 channel 關閉則該 consumer 則無法繼續接收訊息．&lt;/p&gt;</content><author><name></name></author><summary type="html">Establishing a solid connection to RabbitMQ 建立 Connection 程式 :</summary></entry><entry><title type="html">RabbitMQ day 2 (Message System)</title><link href="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html" rel="alternate" type="text/html" title="RabbitMQ day 2 (Message System)" /><published>2018-01-05T10:44:17+08:00</published><updated>2018-01-05T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html">&lt;h3 id=&quot;message&quot;&gt;Message&lt;/h3&gt;
 &lt;p&gt;系統之間彼此交換訊息(message)，根據可靠行及同步可分為四個區塊，這邊列出四個代表 :&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;SMTP(Simple Mail Transfer Protocol)&lt;/li&gt;

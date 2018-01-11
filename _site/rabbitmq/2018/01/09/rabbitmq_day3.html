@@ -284,6 +284,29 @@ Sample Code :</p>
 
 </code></pre></div></div>
 
+<h3 id="總結-1">總結</h3>
+<hr />
+<ul>
+  <li>synchronous 的方式 :</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>channel.basicGet(queue, false))
+</code></pre></div></div>
+
+<ul>
+  <li>註冊一個 queue consumer 等待 producer 傳送 message 的方式 :</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DefaultConsumer consumer = new DefaultConsumer(channel) {
+  public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {  
+      String message = new String(body, "UTF-8");  
+      System.out.println("Consume [x] Received '" + message + "'");  
+  }  
+};  
+channel.basicConsume(QUEUE_NAME, true, consumer);  
+</code></pre></div></div>
+<p>當 channel 關閉則該 consumer 則無法繼續接收訊息．</p>
+
 
   </div>
 
