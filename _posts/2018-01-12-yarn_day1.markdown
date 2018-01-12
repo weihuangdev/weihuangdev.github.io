@@ -1,0 +1,83 @@
+---
+layout: post
+title:  "yarn day 1 (Dynamic Resource Pools)"
+date:   2018-01-12 10:44:17 +0800
+categories: yarn
+---
+
+### Dynamic Resource Pools : 
+用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配．
+它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools．
+一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．
+
+
+### configuration set
+用來設定分配資源，不同 pool 可定義不同的 configuration set 
+
+### scheduling rule
+當 configuration set 被 active 這設定會每小時 update 一次
+
+
+### scheduling policy
+* Dominant Resource Fairness (DRF) (default) :  
+Fair Scheduler 的延伸，不只基於 memory 連 CPU 都會加入來公平分配．
+
+* Fair Scheduler (FAIR) :  
+基於 memory 將資源平均分配給 job．
+
+* First-In, First-Out (FIFO) :  
+先進來的 job 先執行，執行完後才可執行下一個．
+
+
+### DEMO FIFO scheduling policy
+* create resource pool
+
+![yarn_day1_1.jpg]({{ "/assets/yarn/yarn_day1_1.jpg" | absolute_url }})
+
+* 設定 configuration set
+
+![yarn_day1_2.jpg]({{ "/assets/yarn/yarn_day1_2.jpg" | absolute_url }})
+
+* 選擇 scheduling policy ，這邊設定 FIFO
+
+![yarn_day1_3.jpg]({{ "/assets/yarn/yarn_day1_3.jpg" | absolute_url }})
+
+* resource pool 建立起來後再 refresh : 
+
+![yarn_day1_4.jpg]({{ "/assets/yarn/yarn_day1_4.jpg" | absolute_url }})
+
+* 執行 exmple jar  
+
+先到 /usr/lib/hadoop-mapreduce 底下找到 exmples 的 jar．然後執行下列指令，執行時指定 queue name (-Dmapred.job.queue.name=mypool)剛剛建立的 mypool ，同時送出 3 次命令 :  
+
+```
+hadoop jar hadoop-mapreduce-examples.jar pi -Dmapred.job.queue.name=mypool 10 100
+```
+* 由於 scheduling policy 是設定 FIFO，觀察 queue 的執行狀態會發現 job 是一個一個的執行跑完，一個在跑時另外兩個會 pending．
+
+![yarn_day1_5.jpg]({{ "/assets/yarn/yarn_day1_5.jpg" | absolute_url }})
+
+### DEMO FAIR scheduling policy
+* 將剛剛的 mypool scheduling policy 改成 FAIR
+
+![yarn_day1_6.jpg]({{ "/assets/yarn/yarn_day1_6.jpg" | absolute_url }})
+
+
+* max running apps 及 max application master share 設定 :  
+
+max running apps 參數是最多只能有幾個 application 數執行．  
+max application master share 會根據 weight 權重的分配的 application master 執行中的最大數量．  
+這兩個參數一般會有公式來算出大概的值，但我們這邊先故意都不設定看會發生什麼事．
+
+![yarn_day1_7.jpg]({{ "/assets/yarn/yarn_day1_7.jpg" | absolute_url }})
+
+* 接著再一次同時執行三次 exmple jar  
+
+這時候會發現三個 job 都會一直處於 pending 的狀態，因為 FAIR scheduling 資源不夠分配給這三個 job．所以就乾脆公平都不給資源所以會導致，job 都動不了了，這時需要手動下指令去移除這些 job．
+
+![yarn_day1_8.jpg]({{ "/assets/yarn/yarn_day1_8.jpg" | absolute_url }})
+
+
+### 總結
+- - -
+使用 FAIR 及 DRF 要注意計算好可用的資源例如 max running apps 及 max application master share 這兩個參數的設定值．否則同時太多 job 同時進來會造成所有的 job 都 pending 住取不到資源，到時候就需要手動下指令 yarn application -kill {app_id}，kill 掉 pending 住的 job．FIFO 就不會有這樣的問題．

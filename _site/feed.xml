@@ -1,4 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-11T15:23:33+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">RabbitMQ day 4 (Exchange)</title><link href="http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4.html" rel="alternate" type="text/html" title="RabbitMQ day 4 (Exchange)" /><published>2018-01-10T10:44:17+08:00</published><updated>2018-01-10T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4.html">&lt;h3 id=&quot;exchange-type-&quot;&gt;Exchange type :&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-12T18:08:02+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">yarn day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/yarn/2018/01/12/yarn_day1.html" rel="alternate" type="text/html" title="yarn day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/yarn/2018/01/12/yarn_day1</id><content type="html" xml:base="http://localhost:4000/yarn/2018/01/12/yarn_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
+&lt;p&gt;用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配．
+它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools．
+一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．&lt;/p&gt;
+
+&lt;h3 id=&quot;configuration-set&quot;&gt;configuration set&lt;/h3&gt;
+&lt;p&gt;用來設定分配資源，不同 pool 可定義不同的 configuration set&lt;/p&gt;
+
+&lt;h3 id=&quot;scheduling-rule&quot;&gt;scheduling rule&lt;/h3&gt;
+&lt;p&gt;當 configuration set 被 active 這設定會每小時 update 一次&lt;/p&gt;
+
+&lt;h3 id=&quot;scheduling-policy&quot;&gt;scheduling policy&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Dominant Resource Fairness (DRF) (default) :&lt;br /&gt;
+Fair Scheduler 的延伸，不只基於 memory 連 CPU 都會加入來公平分配．&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fair Scheduler (FAIR) :&lt;br /&gt;
+基於 memory 將資源平均分配給 job．&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;First-In, First-Out (FIFO) :&lt;br /&gt;
+先進來的 job 先執行，執行完後才可執行下一個．&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;demo-fifo-scheduling-policy&quot;&gt;DEMO FIFO scheduling policy&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;create resource pool&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_1.jpg&quot; alt=&quot;yarn_day1_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;設定 configuration set&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_2.jpg&quot; alt=&quot;yarn_day1_2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;選擇 scheduling policy ，這邊設定 FIFO&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_3.jpg&quot; alt=&quot;yarn_day1_3.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;resource pool 建立起來後再 refresh :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_4.jpg&quot; alt=&quot;yarn_day1_4.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;執行 exmple jar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;先到 /usr/lib/hadoop-mapreduce 底下找到 exmples 的 jar．然後執行下列指令，執行時指定 queue name (-Dmapred.job.queue.name=mypool)剛剛建立的 mypool ，同時送出 3 次命令 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hadoop jar hadoop-mapreduce-examples.jar pi -Dmapred.job.queue.name=mypool 10 100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;由於 scheduling policy 是設定 FIFO，觀察 queue 的執行狀態會發現 job 是一個一個的執行跑完，一個在跑時另外兩個會 pending．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_5.jpg&quot; alt=&quot;yarn_day1_5.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;demo-fair-scheduling-policy&quot;&gt;DEMO FAIR scheduling policy&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;將剛剛的 mypool scheduling policy 改成 FAIR&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_6.jpg&quot; alt=&quot;yarn_day1_6.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;max running apps 及 max application master share 設定 :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;max running apps 參數是最多只能有幾個 application 數執行．&lt;br /&gt;
+max application master share 會根據 weight 權重的分配的 application master 執行中的最大數量．&lt;br /&gt;
+這兩個參數一般會有公式來算出大概的值，但我們這邊先故意都不設定看會發生什麼事．&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_7.jpg&quot; alt=&quot;yarn_day1_7.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;接著再一次同時執行三次 exmple jar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;這時候會發現三個 job 都會一直處於 pending 的狀態，因為 FAIR scheduling 資源不夠分配給這三個 job．所以就乾脆公平都不給資源所以會導致，job 都動不了了，這時需要手動下指令去移除這些 job．&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_8.jpg&quot; alt=&quot;yarn_day1_8.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;使用 FAIR 及 DRF 要注意計算好可用的資源例如 max running apps 及 max application master share 這兩個參數的設定值．否則同時太多 job 同時進來會造成所有的 job 都 pending 住取不到資源，到時候就需要手動下指令 yarn application -kill {app_id}，kill 掉 pending 住的 job．FIFO 就不會有這樣的問題．&lt;/p&gt;</content><author><name></name></author><summary type="html">Dynamic Resource Pools : 用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配． 它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools． 一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．</summary></entry><entry><title type="html">RabbitMQ day 4 (Exchange)</title><link href="http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4.html" rel="alternate" type="text/html" title="RabbitMQ day 4 (Exchange)" /><published>2018-01-10T10:44:17+08:00</published><updated>2018-01-10T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/10/rabbitmq_day4.html">&lt;h3 id=&quot;exchange-type-&quot;&gt;Exchange type :&lt;/h3&gt;
 &lt;p&gt;Exchange 會根據 routing rules 將 message 送到目的．routing rules 有分 : direct (point-to-point), topic (publish-subscribe), fanout (multicast) 和 headers．&lt;/p&gt;
 
 &lt;h3 id=&quot;fanout&quot;&gt;fanout&lt;/h3&gt;
@@ -1386,152 +1479,4 @@ abcde
 &lt;hr /&gt;
 &lt;ul&gt;
   &lt;li&gt;scala 的 io 也可以搭配 java 的 io 使用，例如 Java FileReader and BufferedReader classes 等．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Read file 建立一個 a.txt，內容為 : 12345 abcde ~*_+= 您好</summary></entry><entry><title type="html">Scala day 25 (Bounds)</title><link href="http://localhost:4000/scala/2017/12/23/scala_day25.html" rel="alternate" type="text/html" title="Scala day 25 (Bounds)" /><published>2017-12-23T10:44:17+08:00</published><updated>2017-12-23T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/23/scala_day25</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/23/scala_day25.html">&lt;h3 id=&quot;bounds&quot;&gt;Bounds&lt;/h3&gt;
-
-&lt;h4 id=&quot;a--b-upper-bound&quot;&gt;A &amp;lt;: B Upper bound&lt;/h4&gt;
-&lt;p&gt;再了解 Upper bound 之前也先來定義一些類別 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;trait OntheRoad
-
-trait LikeFish
-
-abstract class Animal {
-  def name: String
-}
-
-class Cat(catName: String) extends Animal with OntheRoad with LikeFish {
-  def name = catName
-}
-
-class MexCat(MexCatName: String) extends Cat(MexCatName) {
-  override def name = MexCatName
-}
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;這次定義除了用 Invariant 再加上了 Upper bound，代表 A 這類別上界是 Cat，不能再往上了(最初的父類別要是 Cat)．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class InvariantClass[A &amp;lt;: Cat]
-&lt;span class=&quot;go&quot;&gt;defined class InvariantClass
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;所以 Cat 及 MexCat 都會成功，Animal 會失敗 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Cat]
-&lt;span class=&quot;go&quot;&gt;res0: InvariantClass[Cat] = InvariantClass@2248d140
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[MexCat]
-&lt;span class=&quot;go&quot;&gt;res1: InvariantClass[MexCat] = InvariantClass@5f82209e
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Animal]
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Animal] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;lt;: Cat]
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       val res2 =
-           ^
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Animal] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;lt;: Cat]
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       new InvariantClass[Animal]
-           ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;再定義一個 Dog 類別，這時候雖然是 InvariantClass 但由於已經定義了 Upper bound 是 Cat，所以 Dog 會出錯 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Dog
-&lt;span class=&quot;go&quot;&gt;defined class Dog
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Dog]
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Dog] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;lt;: Cat]
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       val res3 =
-           ^
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Dog] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;lt;: Cat]
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       new InvariantClass[Dog]
-           ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;a--b-lower-bound&quot;&gt;A &amp;gt;: B Lower bound&lt;/h4&gt;
-&lt;p&gt;這次換用 Invariant 加上了 Lower bound，代表 A 這類別下界是 Cat，不能再往下了(最後的子類別是 Cat)．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class InvariantClass[A &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;: Cat]
-&lt;span class=&quot;go&quot;&gt;defined class InvariantClass
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;所以 Cat 的子類別 MexCat 就會失敗，而至於 Animal、OntheRoad、LikeFish 的會成功，而 Dog 跟 Cat 目前毫無關係所以繼續失敗．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Cat]
-&lt;span class=&quot;go&quot;&gt;res4: InvariantClass[Cat] = InvariantClass@56820446
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[MexCat]
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;MexCat] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;gt;: Cat]
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       val res5 =
-           ^
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;MexCat] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;gt;: Cat]
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       new InvariantClass[MexCat]
-           ^
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Animal]
-&lt;span class=&quot;go&quot;&gt;res6: InvariantClass[Animal] = InvariantClass@28f3a218
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[Dog]
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:13: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Dog] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;gt;: Cat]
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       val res7 =
-           ^
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:14: error: &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;arguments &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Dog] &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;not conform to class InvariantClass&lt;span class=&quot;s1&quot;&gt;'s type parameter bounds [A &amp;gt;: Cat]
-&lt;/span&gt;&lt;span class=&quot;go&quot;&gt;       new InvariantClass[Dog]
-           ^
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[OntheRoad]
-&lt;span class=&quot;go&quot;&gt;res8: InvariantClass[OntheRoad] = InvariantClass@45ecdd32
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; new InvariantClass[LikeFish]
-&lt;span class=&quot;go&quot;&gt;res9: InvariantClass[LikeFish] = InvariantClass@fe38d1e
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;a--b-view-bound&quot;&gt;A &amp;lt;% B View Bound&lt;/h4&gt;
-&lt;p&gt;View Bound 代表可被視為 B 的 A 都可以成功．&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; trait Trat1
-&lt;span class=&quot;go&quot;&gt;defined trait Trat1
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class Printer[A]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;value: A&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   def print() = println(value.toString)
-     | }
-defined class Printer
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; class SubPrinter[A]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;value: A&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; extends Printer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;value&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; with Trat1 &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   override def print() = println(&quot;Sub print&quot;)
-     | }
-defined class SubPrinter
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; implicit def int2print &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Printer[Int] &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Printer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;int2print: (i: Int)Printer[Int]
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; implicit def string2print &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s:String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Printer[String] &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new Printer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;string2print: (s: String)Printer[String]
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def f1[A &amp;lt;% Printer[A]]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;a: A&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; a.print&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;f1: [A](a: A)(implicit evidence$&lt;/span&gt;1: A &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Printer[A]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;Unit
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;由於隱含轉換的關係 int 、String 會轉換成 Printer，所以也都可以印出來 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;3
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;3
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3D&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:22: error: No implicit view available from Double &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Printer[Double].
-&lt;span class=&quot;go&quot;&gt;       f1(3D)
-         ^
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;View Bound 如果是用 Curry 表示的話如下，將 A 轉換成 Printer 再列印出來:&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def f2[A]&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;a: A&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;implicit trans: A &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; Printer[A]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; trans&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;a&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.print&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;f2: [A](a: A)(implicit trans: A =&amp;gt;&lt;/span&gt; Printer[A]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;Unit
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f2&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;5
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; f2&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;123&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;123
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;Bound 讓我們在定義型態可以擁有更多選擇(Upper bound、Lower bound、View Bound)，也更有彈性．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Bounds</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">Read file 建立一個 a.txt，內容為 : 12345 abcde ~*_+= 您好</summary></entry></feed>
