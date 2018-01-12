@@ -140,6 +140,11 @@ Fair Scheduler 的延伸，不只基於 memory 連 CPU 都會加入來公平分�
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hadoop jar hadoop-mapreduce-examples.jar pi -Dmapred.job.queue.name=mypool 10 100
 </code></pre></div></div>
+<p>如果是使用 spark 則是加上參數(–conf “spark.yarn.queue=mypool”) :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spark-submit --principal kduser --keytab /temp/kduser.keytab --jars postgresql.jar --class com.example.test.SparkQuery --master yarn --conf "spark.yarn.queue=mypool" hcrmSpark.jar AAA
+</code></pre></div></div>
+
 <ul>
   <li>由於 scheduling policy 是設定 FIFO，觀察 queue 的執行狀態會發現 job 是一個一個的執行跑完，一個在跑時另外兩個會 pending．</li>
 </ul>
