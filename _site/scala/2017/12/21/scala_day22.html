@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Scala day 22 (Companion Object &amp; apply &amp; update)</title>
+  <title>Scala day 22 (Companion Object &amp; apply &amp; unapply &amp; update)</title>
   <meta name="description" content="Companion Object 如果 object 的名稱和 class 名稱相同，稱為 Companion Object (Employee)． 由於 Companion Object 是要將 trait 與 object 定義在同一個檔案裡，但由於這邊是使用 REPL 做 demo， 所以再用一個 obje...">
 
   <link rel="stylesheet" href="/assets/main.css">
@@ -70,7 +70,7 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Scala day 22 (Companion Object &amp; apply &amp; update)</h1>
+    <h1 class="post-title p-name" itemprop="name headline">Scala day 22 (Companion Object &amp; apply &amp; unapply &amp; update)</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2017-12-21T10:44:17+08:00" itemprop="datePublished">
         
@@ -140,6 +140,62 @@ defined object Counter
 
 </span><span class="gp">scala&gt;</span> Counter<span class="o">(</span>2,3<span class="o">)</span>
 <span class="go">res16: Int = 15
+</span></code></pre></div></div>
+
+<h3 id="unapply-function">unapply function</h3>
+<p>unapply 這功能可以方便 match expressions．</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> object Student <span class="o">{</span>
+<span class="go">     |     def unapply(str: String): Option[(String, String, String)] = {
+     |         val parts = str.split(",")
+     |         if (parts.length == 3) {
+     |           Some(parts(0), parts(1), parts(2))
+     |         } else {
+     |           None
+     |         }
+     |     }
+     | }
+defined object Student
+</span></code></pre></div></div>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val Student<span class="o">(</span>name,tel,addr<span class="o">)</span> <span class="o">=</span> <span class="s2">"Sam,29837162,新竹市"</span>
+<span class="go">name: String = Sam
+tel: String = 29837162
+addr: String = 新竹市
+</span></code></pre></div></div>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val students <span class="o">=</span> List<span class="o">(</span>
+<span class="go">     |   "Daniel,212345678,台北市",
+     |   "Andy,37164832,桃園市",
+     |   "aaaaaaaaa",
+     |   "Jack,48572617,新北市"
+     | )
+students: List[String] = List(Daniel,212345678,台北市, Andy,37164832,桃園市, aaaaaaaaa, Jack,48572617,新北市)
+
+</span><span class="gp">scala&gt;</span> students.foreach<span class="o">(</span>_ match <span class="o">{</span>
+<span class="gp">     |     case Student(name, tel, addr) if addr == "桃園市" =&gt;</span> println<span class="o">(</span>name<span class="o">)</span>
+<span class="gp">     |     case _ =&gt;</span> println<span class="o">(</span><span class="s2">"no matching"</span><span class="o">)</span>
+<span class="go">     | })
+no matching
+Andy
+no matching
+no matching
+</span></code></pre></div></div>
+
+<p>scala 的 case class 實作了 apply，也已實作了 unapply function，所以很適合用來做 match 比對 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> <span class="k">case</span> class Person<span class="o">(</span>name: String, tel: String<span class="p">)</span>
+<span class="go">defined class Person
+</span></code></pre></div></div>
+<p>實作了 apply 所以不用寫 new :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> val p <span class="o">=</span> Person<span class="o">(</span><span class="s2">"Daniel"</span>,<span class="s2">"29152736"</span><span class="o">)</span>
+<span class="go">p: Person = Person(Daniel,29152736)
+</span></code></pre></div></div>
+<p>實作了 unapply 所以可以 math 比對 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">scala&gt;</span> p match <span class="o">{</span> <span class="k">case</span> Person<span class="o">(</span>n,t<span class="p">)</span> <span class="o">=&gt;</span> println<span class="o">(</span>n,t<span class="o">)</span> <span class="o">}</span>
+<span class="go">(Daniel,29152736)
 </span></code></pre></div></div>
 
 <h3 id="update-function">update function</h3>

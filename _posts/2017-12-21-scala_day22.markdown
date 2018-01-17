@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Scala day 22 (Companion Object & apply & update)"
+title:  "Scala day 22 (Companion Object & apply & unapply & update)"
 date:   2017-12-21 10:44:17 +0800
 categories: scala
 ---
@@ -68,6 +68,68 @@ defined object Counter
 
 scala> Counter(2,3)
 res16: Int = 15
+```
+
+### unapply function
+unapply 這功能可以方便 match expressions．
+
+```console
+scala> object Student {
+     |     def unapply(str: String): Option[(String, String, String)] = {
+     |         val parts = str.split(",")
+     |         if (parts.length == 3) {
+     |           Some(parts(0), parts(1), parts(2))
+     |         } else {
+     |           None
+     |         }
+     |     }
+     | }
+defined object Student
+```
+
+```console
+scala> val Student(name,tel,addr) = "Sam,29837162,新竹市"
+name: String = Sam
+tel: String = 29837162
+addr: String = 新竹市
+```
+
+```console
+scala> val students = List(
+     |   "Daniel,212345678,台北市",
+     |   "Andy,37164832,桃園市",
+     |   "aaaaaaaaa",
+     |   "Jack,48572617,新北市"
+     | )
+students: List[String] = List(Daniel,212345678,台北市, Andy,37164832,桃園市, aaaaaaaaa, Jack,48572617,新北市)
+
+scala> students.foreach(_ match {
+     |     case Student(name, tel, addr) if addr == "桃園市" => println(name)
+     |     case _ => println("no matching")
+     | })
+no matching
+Andy
+no matching
+no matching
+```
+
+scala 的 case class 實作了 apply，也已實作了 unapply function，所以很適合用來做 match 比對 : 
+
+```console
+scala> case class Person(name: String, tel: String)
+defined class Person
+```
+實作了 apply 所以不用寫 new :  
+
+```console
+scala> val p = Person("Daniel","29152736")
+p: Person = Person(Daniel,29152736)
+```
+實作了 unapply 所以可以 math 比對 : 
+
+```console
+scala> p match { case Person(n,t) => println(n,t) }
+(Daniel,29152736)
 ```
 
 ### update function
