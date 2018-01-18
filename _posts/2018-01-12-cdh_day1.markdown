@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "yarn day 1 (Dynamic Resource Pools)"
+title:  "CDH day 1 (Dynamic Resource Pools)"
 date:   2018-01-12 10:44:17 +0800
-categories: yarn
+categories: CDH
 ---
 
 ### Dynamic Resource Pools : 
