@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "CDH day 1 (Dynamic Resource Pools)"
+title:  "yarn day 1 (Dynamic Resource Pools)"
 date:   2018-01-12 10:44:17 +0800
-categories: CDH
+categories: yarn
 ---
 
 ### Dynamic Resource Pools : 
@@ -10,13 +10,12 @@ categories: CDH
 它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools．
 一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．
 
-![cdh_day1_1.jpg]({{ "/assets/cdh/cdh_day1_1.jpg" | absolute_url }})
 
 ### configuration set
-用來設定分配資源，不同 pool 可定義不同的 configuration set．
+用來設定分配資源，不同 pool 可定義不同的 configuration set 
 
 ### scheduling rule
-當 configuration set 被 active 後，會根據設定的時間去 update 設定的 configuration set．
+當 configuration set 被 active 這設定會每小時 update 一次
 
 
 ### scheduling policy
@@ -33,19 +32,19 @@ Fair Scheduler 的延伸，不只基於 memory 連 CPU 都會加入來公平分�
 ### DEMO FIFO scheduling policy
 * create resource pool
 
-![cdh_day1_2.jpg]({{ "/assets/cdh/cdh_day1_2.jpg" | absolute_url }})
+![yarn_day1_1.jpg]({{ "/assets/yarn/yarn_day1_1.jpg" | absolute_url }})
 
 * 設定 configuration set
 
-![cdh_day1_3.jpg]({{ "/assets/cdh/cdh_day1_3.jpg" | absolute_url }})
+![yarn_day1_2.jpg]({{ "/assets/yarn/yarn_day1_2.jpg" | absolute_url }})
 
 * 選擇 scheduling policy ，這邊設定 FIFO
 
-![cdh_day1_4.jpg]({{ "/assets/cdh/cdh_day1_4.jpg" | absolute_url }})
+![yarn_day1_3.jpg]({{ "/assets/yarn/yarn_day1_3.jpg" | absolute_url }})
 
 * resource pool 建立起來後再 refresh : 
 
-![cdh_day1_5.jpg]({{ "/assets/cdh/cdh_day1_5.jpg" | absolute_url }})
+![yarn_day1_4.jpg]({{ "/assets/yarn/yarn_day1_4.jpg" | absolute_url }})
 
 * 執行 exmple jar  
 
@@ -62,12 +61,12 @@ spark-submit --principal kduser --keytab /temp/kduser.keytab --jars postgresql.j
 
 * 由於 scheduling policy 是設定 FIFO，觀察 queue 的執行狀態會發現 job 是一個一個的執行跑完，一個在跑時另外兩個會 pending．
 
-![cdh_day1_6.jpg]({{ "/assets/cdh/cdh_day1_6.jpg" | absolute_url }})
+![yarn_day1_5.jpg]({{ "/assets/yarn/yarn_day1_5.jpg" | absolute_url }})
 
 ### DEMO FAIR scheduling policy
 * 將剛剛的 mypool scheduling policy 改成 FAIR
 
-![cdh_day1_7.jpg]({{ "/assets/cdh/cdh_day1_7.jpg" | absolute_url }})
+![yarn_day1_6.jpg]({{ "/assets/yarn/yarn_day1_6.jpg" | absolute_url }})
 
 
 * max running apps 及 max application master share 設定 :  
@@ -76,13 +75,13 @@ max running apps 參數是最多只能有幾個 application 數執行．
 max application master share 會根據 weight 權重的分配的 application master 執行中的最大數量．  
 這兩個參數一般會有公式來算出大概的值，但我們這邊先故意都不設定看會發生什麼事．
 
-![cdh_day1_8.jpg]({{ "/assets/cdh/cdh_day1_8.jpg" | absolute_url }})
+![yarn_day1_7.jpg]({{ "/assets/yarn/yarn_day1_7.jpg" | absolute_url }})
 
 * 接著再一次同時執行三次 exmple jar  
 
 這時候會發現三個 job 都會一直處於 pending 的狀態，因為 FAIR scheduling 資源不夠分配給這三個 job．所以就乾脆公平都不給資源所以會導致，job 都動不了了，這時需要手動下指令去移除這些 job．
 
-![cdh_day1_9.jpg]({{ "/assets/cdh/cdh_day1_9.jpg" | absolute_url }})
+![yarn_day1_8.jpg]({{ "/assets/yarn/yarn_day1_8.jpg" | absolute_url }})
 
 
 ### 總結

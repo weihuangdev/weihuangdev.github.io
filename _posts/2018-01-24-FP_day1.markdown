@@ -1,0 +1,107 @@
+---
+layout: post
+title:  "Functional Game"
+date:   2018-01-12 10:44:17 +0800
+categories: Functional-Programming
+---
+
+### 程式範例 : 
+小遊戲:猜硬幣正反面，並記錄"猜的次數"及"猜對次數"．"猜的次數"及"猜對次數"這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．  
+
+```java
+package com.simple.job
+
+import scala.annotation.tailrec
+import scala.util.Random
+
+case class GameState(numFlips: Int, numCorrect: Int)
+/**
+  * Created by daniel on 2018/1/16.
+  */
+object PlayFlipCoin {
+
+  def main(args: Array[String]): Unit = {
+    val r = Random
+    val s = GameState(0, 0)
+    mainLoop(s, r)
+  }
+
+  @tailrec
+  def mainLoop(gameState: GameState, random: Random) {
+
+    showPrompt()
+    val userInput = getUserInput()
+
+    // handle the result
+    userInput match {
+      case "H" | "T" => {
+        val coinTossResult = tossCoin(random)
+        val newNumFlips = gameState.numFlips + 1
+        if (userInput == coinTossResult) {
+          val newNumCorrect = gameState.numCorrect + 1
+          val newGameState = gameState.copy(numFlips = newNumFlips, numCorrect = newNumCorrect)
+          printGameState(printableFlipResult(coinTossResult), newGameState)
+          mainLoop(newGameState, random)
+        } else {
+          val newGameState = gameState.copy(numFlips = newNumFlips)
+          printGameState(printableFlipResult(coinTossResult), newGameState)
+          mainLoop(newGameState, random)
+        }
+      }
+      case _   => {
+        printGameOver()
+        printGameState(gameState)
+        // return out of the recursion here
+      }
+    }
+  }
+
+  def showPrompt(): Unit = { print("\n(h)eads, (t)ails, or (q)uit: ") }
+
+  def getUserInput(): String = readLine.trim.toUpperCase
+
+  def printableFlipResult(flip: String): String = flip match {
+    case "H" => "Heads"
+    case "T" => "Tails"
+  }
+
+  def printGameState(printableFlipResult: String, gameState: GameState): Unit = {
+    print(s"Flip was $printableFlipResult. ")
+    printGameState(gameState)
+  }
+
+  def printGameState(gameState: GameState): Unit = {
+    println(s"#Flips: ${gameState.numFlips}, #Correct: ${gameState.numCorrect}")
+  }
+
+  def printGameOver(): Unit = println("\n=== GAME OVER ===")
+
+  // returns "H" for heads, "T" for tails
+  def tossCoin(r: Random): String = {
+    val i = r.nextInt(2)
+    i match {
+      case 0 => "H"
+      case 1 => "T"
+    }
+  }
+}
+```
+### 程式執行結果 :  
+
+```console
+(h)eads, (t)ails, or (q)uit: h
+Flip was Heads. #Flips: 1, #Correct: 1
+
+(h)eads, (t)ails, or (q)uit: T
+Flip was Heads. #Flips: 2, #Correct: 1
+
+(h)eads, (t)ails, or (q)uit: h
+Flip was Heads. #Flips: 3, #Correct: 2
+
+(h)eads, (t)ails, or (q)uit: q
+
+=== GAME OVER ===
+#Flips: 3, #Correct: 2
+
+Process finished with exit code 0
+```

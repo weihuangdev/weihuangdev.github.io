@@ -1,4 +1,101 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-18T14:38:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">CDH day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/cdh/2018/01/12/cdh_day1.html" rel="alternate" type="text/html" title="CDH day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/cdh/2018/01/12/cdh_day1</id><content type="html" xml:base="http://localhost:4000/cdh/2018/01/12/cdh_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-24T23:57:47+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Functional Game</title><link href="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html" rel="alternate" type="text/html" title="Functional Game" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/functional-programming/2018/01/12/FP_day1</id><content type="html" xml:base="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html">&lt;h3 id=&quot;程式範例-&quot;&gt;程式範例 :&lt;/h3&gt;
+&lt;p&gt;小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;simple&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;job&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;scala.annotation.tailrec&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;scala.util.Random&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;numFlips:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;numCorrect:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/**
+  * Created by daniel on 2018/1/16.
+  */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PlayFlipCoin&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;args:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Random&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;mainLoop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;nd&quot;&gt;@tailrec&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mainLoop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;gameState:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;random:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;showPrompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userInput&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getUserInput&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// handle the result&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;userInput&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;H&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;T&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coinTossResult&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tossCoin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newNumFlips&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;numFlips&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userInput&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coinTossResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newNumCorrect&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;numCorrect&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newGameState&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;copy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numFlips&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newNumFlips&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numCorrect&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newNumCorrect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;printGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;printableFlipResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;coinTossResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;mainLoop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newGameState&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;copy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;numFlips&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newNumFlips&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;printGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;printableFlipResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;coinTossResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;n&quot;&gt;mainLoop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;printGameOver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;printGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// return out of the recursion here&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;showPrompt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;\n(h)eads, (t)ails, or (q)uit: &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getUserInput&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;readLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;trim&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toUpperCase&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;printableFlipResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;flip:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flip&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;H&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Heads&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;T&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Tails&quot;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;printGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;printableFlipResult:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;gameState:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Flip was $printableFlipResult. &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;printGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;printGameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;gameState:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GameState&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;#Flips: ${gameState.numFlips}, #Correct: ${gameState.numCorrect}&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;printGameOver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;():&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;\n=== GAME OVER ===&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// returns &quot;H&quot; for heads, &quot;T&quot; for tails&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;tossCoin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;r:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;nextInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;H&quot;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;T&quot;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;程式執行結果-&quot;&gt;程式執行結果 :&lt;/h3&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;(h)eads, (t)ails, or (q)uit: h
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;Flip was Heads. #&lt;/span&gt;Flips: 1, &lt;span class=&quot;c&quot;&gt;#Correct: 1&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+(h)eads, (t)ails, or (q)uit: T
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;Flip was Heads. #&lt;/span&gt;Flips: 2, &lt;span class=&quot;c&quot;&gt;#Correct: 1&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+(h)eads, (t)ails, or (q)uit: h
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;Flip was Heads. #&lt;/span&gt;Flips: 3, &lt;span class=&quot;c&quot;&gt;#Correct: 2&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+(h)eads, (t)ails, or (q)uit: q
+
+=== GAME OVER ===
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt;Flips: 3, &lt;span class=&quot;c&quot;&gt;#Correct: 2&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;
+Process finished with exit code 0
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">程式範例 : 小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．</summary></entry><entry><title type="html">yarn day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/yarn/2018/01/12/yarn_day1.html" rel="alternate" type="text/html" title="yarn day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/yarn/2018/01/12/yarn_day1</id><content type="html" xml:base="http://localhost:4000/yarn/2018/01/12/yarn_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
 &lt;p&gt;用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配．
 它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools．
 一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．&lt;/p&gt;
@@ -93,6 +190,106 @@ max application master share 會根據 weight 權重的分配的 application mas
 &lt;p&gt;這時候會發現三個 job 都會一直處於 pending 的狀態，因為 FAIR scheduling 資源不夠分配給這三個 job．所以就乾脆公平都不給資源所以會導致，job 都動不了了，這時需要手動下指令去移除這些 job．&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_8.jpg&quot; alt=&quot;yarn_day1_8.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;使用 FAIR 及 DRF 要注意計算好可用的資源例如 max running apps 及 max application master share 這兩個參數的設定值．否則同時太多 job 同時進來會造成所有的 job 都 pending 住取不到資源，到時候就需要手動下指令 yarn application -kill {app_id}，kill 掉 pending 住的 job．FIFO 就不會有這樣的問題．&lt;/p&gt;</content><author><name></name></author><summary type="html">Dynamic Resource Pools : 用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配． 它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools． 一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．</summary></entry><entry><title type="html">CDH day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/cdh/2018/01/12/cdh_day1.html" rel="alternate" type="text/html" title="CDH day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/cdh/2018/01/12/cdh_day1</id><content type="html" xml:base="http://localhost:4000/cdh/2018/01/12/cdh_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
+&lt;p&gt;用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配．
+它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools．
+一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_1.jpg&quot; alt=&quot;cdh_day1_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;configuration-set&quot;&gt;configuration set&lt;/h3&gt;
+&lt;p&gt;用來設定分配資源，不同 pool 可定義不同的 configuration set．&lt;/p&gt;
+
+&lt;h3 id=&quot;scheduling-rule&quot;&gt;scheduling rule&lt;/h3&gt;
+&lt;p&gt;當 configuration set 被 active 後，會根據設定的時間去 update 設定的 configuration set．&lt;/p&gt;
+
+&lt;h3 id=&quot;scheduling-policy&quot;&gt;scheduling policy&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Dominant Resource Fairness (DRF) (default) :&lt;br /&gt;
+Fair Scheduler 的延伸，不只基於 memory 連 CPU 都會加入來公平分配．&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fair Scheduler (FAIR) :&lt;br /&gt;
+基於 memory 將資源平均分配給 job．&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;First-In, First-Out (FIFO) :&lt;br /&gt;
+先進來的 job 先執行，執行完後才可執行下一個．&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;demo-fifo-scheduling-policy&quot;&gt;DEMO FIFO scheduling policy&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;create resource pool&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_2.jpg&quot; alt=&quot;cdh_day1_2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;設定 configuration set&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_3.jpg&quot; alt=&quot;cdh_day1_3.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;選擇 scheduling policy ，這邊設定 FIFO&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_4.jpg&quot; alt=&quot;cdh_day1_4.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;resource pool 建立起來後再 refresh :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_5.jpg&quot; alt=&quot;cdh_day1_5.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;執行 exmple jar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;先到 /usr/lib/hadoop-mapreduce 底下找到 exmples 的 jar．然後執行下列指令，執行時指定 queue name (-Dmapred.job.queue.name=mypool)剛剛建立的 mypool ，同時送出 3 次命令 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hadoop jar hadoop-mapreduce-examples.jar pi -Dmapred.job.queue.name=mypool 10 100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;如果是使用 spark 則是加上參數(–conf “spark.yarn.queue=mypool”) :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark-submit --principal kduser --keytab /temp/kduser.keytab --jars postgresql.jar --class com.example.test.SparkQuery --master yarn --conf &quot;spark.yarn.queue=mypool&quot; hcrmSpark.jar AAA
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;由於 scheduling policy 是設定 FIFO，觀察 queue 的執行狀態會發現 job 是一個一個的執行跑完，一個在跑時另外兩個會 pending．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_6.jpg&quot; alt=&quot;cdh_day1_6.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;demo-fair-scheduling-policy&quot;&gt;DEMO FAIR scheduling policy&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;將剛剛的 mypool scheduling policy 改成 FAIR&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_7.jpg&quot; alt=&quot;cdh_day1_7.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;max running apps 及 max application master share 設定 :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;max running apps 參數是最多只能有幾個 application 數執行．&lt;br /&gt;
+max application master share 會根據 weight 權重的分配的 application master 執行中的最大數量．&lt;br /&gt;
+這兩個參數一般會有公式來算出大概的值，但我們這邊先故意都不設定看會發生什麼事．&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_8.jpg&quot; alt=&quot;cdh_day1_8.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;接著再一次同時執行三次 exmple jar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;這時候會發現三個 job 都會一直處於 pending 的狀態，因為 FAIR scheduling 資源不夠分配給這三個 job．所以就乾脆公平都不給資源所以會導致，job 都動不了了，這時需要手動下指令去移除這些 job．&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_9.jpg&quot; alt=&quot;cdh_day1_9.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
@@ -1297,191 +1494,4 @@ Tuple2 轉 json :&lt;/p&gt;
 
 &lt;h3 id=&quot;參考資料&quot;&gt;參考資料&lt;/h3&gt;
 &lt;hr /&gt;
-&lt;p&gt;lift-json : https://github.com/lift/lift/tree/master/framework/lift-base/lift-json&lt;/p&gt;</content><author><name></name></author><summary type="html">lift-json 使用 lift-json 的套件(lift-json_2.12-3.1.1.jar)，來對 json 格式資料做處理 :</summary></entry><entry><title type="html">Scala day 27 (Write Files)</title><link href="http://localhost:4000/scala/2017/12/27/scala_day27.html" rel="alternate" type="text/html" title="Scala day 27 (Write Files)" /><published>2017-12-27T10:44:17+08:00</published><updated>2017-12-27T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/27/scala_day27</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/27/scala_day27.html">&lt;h3 id=&quot;write-file&quot;&gt;Write file&lt;/h3&gt;
-&lt;p&gt;使用 java io 的 package，來建立檔案 : 
-用 PrintWriter&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import java.io._
-&lt;span class=&quot;go&quot;&gt;import java.io._
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val pw &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new PrintWriter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Volumes/Transcend/scala-test/b.txt&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;pw: java.io.PrintWriter = java.io.PrintWriter@1ee11117
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; pw.write&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;您好&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; pw.close
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;用 FileWriter&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;val file = new File(&quot;/Volumes/Transcend/scala-test/c.txt&quot;)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val file &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new File&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Volumes/Transcend/scala-test/c.txt&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;file: java.io.File = /Volumes/Transcend/scala-test/c.txt
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val bw &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; new BufferedWriter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;new FileWriter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;file&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;bw: java.io.BufferedWriter = java.io.BufferedWriter@577953cb
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; bw.write&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello 您好啊&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; bw.close&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;使用第三方元件-better-files-&quot;&gt;使用第三方元件 better-files :&lt;/h3&gt;
-&lt;p&gt;下載 better-files 的 jar (這邊用 better-files_2.12-3.4.0.jar)&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; :require better-files_2.12-3.4.0.jar
-&lt;span class=&quot;go&quot;&gt;Added '/Volumes/Transcend/scala-test/better-files_2.12-3.4.0.jar' to classpath.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;import better.files :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import better.files._
-&lt;span class=&quot;go&quot;&gt;import better.files._
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import java.io.&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;File &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; JFile&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;import java.io.{File=&amp;gt;&lt;/span&gt;JFile&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val file &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; file&lt;span class=&quot;s2&quot;&gt;&quot;/Volumes/Transcend/scala-test/d.txt&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;file: better.files.File = /Volumes/Transcend/scala-test/d.txt
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; file.overwrite&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hello&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res17: file.type = /Volumes/Transcend/scala-test/d.txt
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; file.appendLine&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.append&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;world&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res18: file.type = /Volumes/Transcend/scala-test/d.txt
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用 symbol 的寫法 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import better.files.Dsl.SymbolicOperations
-&lt;span class=&quot;go&quot;&gt;import better.files.Dsl.SymbolicOperations
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.language.existentials
-&lt;span class=&quot;go&quot;&gt;import scala.language.existentials
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&amp;lt; 用來覆寫檔案，&amp;lt;&amp;lt; 用來新增一行及內容 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; file &amp;lt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi&quot;&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;res26: qual$&lt;/span&gt;1.file.type forSome &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; val qual&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;: better.files.Dsl.SymbolicOperations &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /Volumes/Transcend/scala-test/d.txt
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; file &amp;lt;&amp;lt; &lt;span class=&quot;s2&quot;&gt;&quot; Daniel&quot;&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;res27: qual$&lt;/span&gt;1.file.type forSome &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; val qual&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;: better.files.Dsl.SymbolicOperations &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /Volumes/Transcend/scala-test/d.txt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;換個寫法也可以 : 
- &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;:&lt;/code&gt; 用來覆寫檔案，»: 用來新增一行及內容&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;cala&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Scala&quot;&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;:&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; file
-&lt;span class=&quot;gp&quot;&gt;res29: qual$&lt;/span&gt;1.file.type forSome &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; val qual&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;: better.files.Dsl.SymbolicOperations &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /Volumes/Transcend/scala-test/d.txt
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Test&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;: file
-&lt;span class=&quot;gp&quot;&gt;res31: qual$&lt;/span&gt;1.file.type forSome &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; val qual&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;: better.files.Dsl.SymbolicOperations &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /Volumes/Transcend/scala-test/d.txt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;better-files 還有許多功能，詳細寫法可以參考下面網址．&lt;/p&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala 的 io 目前好像比較偏向使用 java io 或著 better files 第三方元件，未來不知道本身會不會提供．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;參考資料&quot;&gt;參考資料&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;p&gt;better file : https://github.com/pathikrit/better-files&lt;/p&gt;</content><author><name></name></author><summary type="html">Write file 使用 java io 的 package，來建立檔案 : 用 PrintWriter</summary></entry><entry><title type="html">Scala day 26 (Read Files)</title><link href="http://localhost:4000/scala/2017/12/26/scala_day26.html" rel="alternate" type="text/html" title="Scala day 26 (Read Files)" /><published>2017-12-26T10:44:17+08:00</published><updated>2017-12-26T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/26/scala_day26</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/26/scala_day26.html">&lt;h3 id=&quot;read-file&quot;&gt;Read file&lt;/h3&gt;
-&lt;p&gt;建立一個 a.txt，內容為 :&lt;br /&gt;
-12345&lt;br /&gt;
-abcde&lt;br /&gt;
-~*_+=&lt;br /&gt;
-您好&lt;/p&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;使用 scala.io.Source 套件 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; import scala.io.Source
-&lt;span class=&quot;go&quot;&gt;import scala.io.Source
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val fileName &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/Volumes/Transcend/scala-test/a.txt&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;fileName: String = /Volumes/Transcend/scala-test/a.txt
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;透過 Source.fromFile 一行一行讀取 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;line &amp;lt;- Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;fileName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.getLines&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |  println(line)
-     | }
-12345
-abcde
-~*_+=
-您好
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;可以把每一行的內容裝到一個 collection 裡 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lines &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;fileName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.getLines.toList
-&lt;span class=&quot;go&quot;&gt;lines: List[String] = List(12345, abcde, ~*_+=, 您好)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;透過 mkString 將每行資料用其他符號做分隔(“,”) :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lines &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;fileName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.getLines.mkString&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;,&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;lines: String = 12345,abcde,~*_+=,您好
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;上述的寫法檔案並不會 close，使用 lsof 查看 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; lsof | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'a.txt'&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;java      88789 daniel   39r      REG                1,6         25  127247 /Volumes/Transcend/scala-test/a.txt
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;所以最後還是要加上 close 比較好 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val bufferedSource &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Volumes/Transcend/scala-test/a.txt&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;bufferedSource: scala.io.BufferedSource = non-empty iterator
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;line &amp;lt;- bufferedSource.getLines&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |     println(line.toUpperCase)
-     | }
-12345
-ABCDE
-~*_+=
-您好
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; bufferedSource.close
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用 Loan Pattern 實作自動 close file 的方式，類似 java 1.7 版本以後的 try-with-resource statement 的寫法 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; object Control &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |   def using[A &amp;lt;: { def close(): Unit }, B](resource: A)(f: A =&amp;gt;&lt;/span&gt; B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: B &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |     try {
-     |       f(resource)
-     |     } finally {
-     |       resource.close()
-     |     }
-     | }
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;&amp;lt;console&amp;gt;&lt;/span&gt;:16: warning: reflective access of structural &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;member method close should be enabled
-&lt;span class=&quot;go&quot;&gt;by making the implicit value scala.language.reflectiveCalls visible.
-This can be achieved by adding the import clause 'import scala.language.reflectiveCalls'
-or by setting the compiler option -language:reflectiveCalls.
-See the Scaladoc for value scala.language.reflectiveCalls for a discussion
-why the feature should be explicitly enabled.
-             resource.close()
-                      ^
-defined object Control
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;這邊也運用到了 Curry 的寫法，只不過第二個參數是用 {}，最後將結果 B 回傳 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; Control.using&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;io.Source.fromFile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Volumes/Transcend/scala-test/a.txt&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |  source =&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   for (line &amp;lt;- source.getLines) {
-     |     println(line)
-     |   }
-     |  }
-     | }
-12345
-abcde
-~*_+=
-您好
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala 的 io 也可以搭配 java 的 io 使用，例如 Java FileReader and BufferedReader classes 等．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Read file 建立一個 a.txt，內容為 : 12345 abcde ~*_+= 您好</summary></entry></feed>
+&lt;p&gt;lift-json : https://github.com/lift/lift/tree/master/framework/lift-base/lift-json&lt;/p&gt;</content><author><name></name></author><summary type="html">lift-json 使用 lift-json 的套件(lift-json_2.12-3.1.1.jar)，來對 json 格式資料做處理 :</summary></entry></feed>
