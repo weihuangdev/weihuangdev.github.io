@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-25T12:39:10+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hive jdbc dynamic partition</title><link href="http://localhost:4000/hive/2018/01/25/hive_day1.html" rel="alternate" type="text/html" title="hive jdbc dynamic partition" /><published>2018-01-25T10:44:17+08:00</published><updated>2018-01-25T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/25/hive_day1</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/25/hive_day1.html">&lt;h3 id=&quot;使用-hive-jdbc-dynamic-建立-partition-步驟&quot;&gt;使用 hive jdbc dynamic 建立 partition 步驟&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-25T12:47:59+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hive jdbc dynamic partition</title><link href="http://localhost:4000/hive/2018/01/25/hive_day1.html" rel="alternate" type="text/html" title="hive jdbc dynamic partition" /><published>2018-01-25T10:44:17+08:00</published><updated>2018-01-25T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/25/hive_day1</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/25/hive_day1.html">&lt;h3 id=&quot;使用-hive-jdbc-dynamic-建立-partition-步驟&quot;&gt;使用 hive jdbc dynamic 建立 partition 步驟&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;建立來源 table&lt;/li&gt;
   &lt;li&gt;建立 partition table&lt;/li&gt;
@@ -117,6 +117,11 @@ INSERT INTO TABLE test.students_partition partition ( job )  select  *  from tes
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;注意事項&quot;&gt;注意事項&lt;/h3&gt;
+
+&lt;ul&gt;
   &lt;li&gt;由於是透過沒有認證過的 user 對 hive 做操作，所以 hive 會用 anonymous 這 user 做操作 :&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -156,8 +161,43 @@ INSERT INTO TABLE test.students_partition partition ( job )  select  *  from tes
 &lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-  &lt;li&gt;在執行 hadoop 的 map reduce 時，會需要在 hdfs 的 /user 底下有該 user 的目錄，要確認否則跑 map reduce 的 job 時會失敗．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">使用 hive jdbc dynamic 建立 partition 步驟 建立來源 table 建立 partition table 設定 hive 兩個參數 set hive.exec.dynamic.partition=true set hive.exec.dynamic.partition.mode=nonstrict 執行 insert select</summary></entry><entry><title type="html">Functional Game</title><link href="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html" rel="alternate" type="text/html" title="Functional Game" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/functional-programming/2018/01/12/FP_day1</id><content type="html" xml:base="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html">&lt;h3 id=&quot;程式範例-&quot;&gt;程式範例 :&lt;/h3&gt;
+  &lt;li&gt;在執行 hadoop 的 map reduce 時，會需要在 hdfs 的 /user 底下有該 user 的目錄，要確認否則跑 map reduce 的 job 時會失敗．錯誤訊息如下 :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[18/01/25 12:47:09][ERROR][com.hadoopetl.hive.util.HiveMetaUtil-654] Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask
+java.sql.SQLException: Error while processing statement: FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.mr.MapRedTask
+  at org.apache.hive.jdbc.HiveStatement.execute(HiveStatement.java:279)
+  at org.apache.hive.jdbc.HiveStatement.executeUpdate(HiveStatement.java:389)
+  at org.apache.hive.jdbc.HivePreparedStatement.executeUpdate(HivePreparedStatement.java:119)
+  at com.hadoopetl.db.HiveDbDao.executeUpdate(HiveDbDao.java:73)
+  at com.hadoopetl.hive.util.HiveMetaUtil.insertSelectTable(HiveMetaUtil.java:652)
+  at com.hadoopetl.hive.util.HiveMetaUtil.insertIntoSelectTable(HiveMetaUtil.java:398)
+  at com.hadoopetl.hive.util.test.HiveMetaUtilTest.insertIntoSelectTableTest(HiveMetaUtilTest.java:146)
+  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+  at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+  at java.lang.reflect.Method.invoke(Method.java:606)
+  at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+  at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+  at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+  at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+  at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+  at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+  at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+  at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+  at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+  at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+  at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+  at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+  at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+  at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+  at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)
+  at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+  at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+  at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:678)
+  at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+  at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">使用 hive jdbc dynamic 建立 partition 步驟 建立來源 table 建立 partition table 設定 hive 兩個參數 set hive.exec.dynamic.partition=true set hive.exec.dynamic.partition.mode=nonstrict 執行 insert select</summary></entry><entry><title type="html">Functional Game</title><link href="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html" rel="alternate" type="text/html" title="Functional Game" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/functional-programming/2018/01/12/FP_day1</id><content type="html" xml:base="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html">&lt;h3 id=&quot;程式範例-&quot;&gt;程式範例 :&lt;/h3&gt;
 &lt;p&gt;小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;simple&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;job&lt;/span&gt;
