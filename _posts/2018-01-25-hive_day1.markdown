@@ -1,0 +1,166 @@
+---
+layout: post
+title:  "hive jdbc dynamic partition"
+date:   2018-01-25 10:44:17 +0800
+categories: hive
+---
+
+### 使用 hive jdbc dynamic 建立 partition 步驟  
+1. 建立來源 table
+2. 建立 partition table
+3. 設定 hive 兩個參數  
+set hive.exec.dynamic.partition=true  
+set hive.exec.dynamic.partition.mode=nonstrict  
+4. 執行 insert select
+
+### 實作
+
+* create 來源 table (test.students)
+Hive CLI 語法 : 
+```
+create  table if not exists test.students (  id string COMMENT 'students id' , name string COMMENT 'students name' , tel string COMMENT 'students tel' , job string COMMENT 'students job'  )   row format DELIMITED  fields terminated by ','  lines terminated by '\n'  stored as TEXTFILE 
+```
+java 程式 : 
+```java
+  @Test
+  public void createTableByRowFormatDelimitedStudentTest() {
+    HiveQLBean hqlBean = new HiveQLBean();
+    hqlBean.setTableType(HiveQLBean.TableType.TEMPORARY);
+    hqlBean.setTableName("test.students");
+    List<HiveColumnBean> columns = new ArrayList<HiveColumnBean>();
+    columns.add(new HiveColumnBean("id" , "string" , "students id"));
+    columns.add(new HiveColumnBean("name" , "string" , "students name"));
+    columns.add(new HiveColumnBean("tel" , "string" , "students tel"));
+    columns.add(new HiveColumnBean("job" , "string" , "students job"));
+    hqlBean.setColumns(columns);
+    hqlBean.setRowFormat(HiveQLBean.RowFormat.DELIMITED);
+    hqlBean.setFieldsSplit(",");
+    hqlBean.setLinesSplit("\\n");
+    hqlBean.setFileFormat(HiveQLBean.FileFormat.TEXTFILE);
+    util.createTableByRowFormatDelimited(hqlBean);
+  }
+```
+
+* 準備個測試資料檔案 /home/cloudera/daniel/students.txt 放在要執行 job 那台機器底下(這邊是vm cloudera quickstart) : 
+```
+1,Daniel,29612736,PG
+2,Sam,283747612,SD
+3,Andy,39827162,PM
+4,Lucy,73612536,SA
+5,Jacky,47829184,PG
+6,Ray,27361938,SD
+7,Hank,28881936,RD
+8,Rebbeca,238177758,PM
+9,Lin,288376581,PG
+10,Bella,33726485,PM
+11,Molin,57635163,RD
+12,YuAne,48572613,PG
+13,Samuel,67562849,SD
+14,Zdchen,58271647,SA
+```
+
+* 將資料匯入來源 table (test.students)  
+Hive CLI 語法 : 
+```
+load data local inpath '/home/cloudera/daniel/students.txt' into table test.students
+```
+java 程式 : 
+```java
+  @Test
+  public void loadLocalDataIntoTableStudentTest() {
+    String filepath = "/home/cloudera/daniel/students.txt";
+    String tableName = "test.students";
+    util.loadLocalDataIntoTable(filepath, tableName);
+  }
+```
+
+* create partition table 的語法 :  
+Hive CLI 語法 : 
+```
+create table if not exists test.students_partition (  id string COMMENT 'students id' , name string COMMENT 'students name' , tel string COMMENT 'students tel'  )   partitioned by ( job string )  row format DELIMITED  fields terminated by ','  lines terminated by '\n'  stored as TEXTFILE 
+```
+java 程式 : 
+```java
+  @Test
+  public void createTableByRowFormatDelimitedStudentPartitionedTest() {
+    HiveQLBean hqlBean = new HiveQLBean();
+    hqlBean.setTableType(HiveQLBean.TableType.TEMPORARY);
+    hqlBean.setTableName("test.students_partition");
+    List<HiveColumnBean> columns = new ArrayList<HiveColumnBean>();
+    columns.add(new HiveColumnBean("id" , "string" , "students id"));
+    columns.add(new HiveColumnBean("name" , "string" , "students name"));
+    columns.add(new HiveColumnBean("tel" , "string" , "students tel"));
+    hqlBean.setColumns(columns);
+    hqlBean.setRowFormat(HiveQLBean.RowFormat.DELIMITED);
+    hqlBean.setFieldsSplit(",");
+    hqlBean.setLinesSplit("\\n");
+    hqlBean.setFileFormat(HiveQLBean.FileFormat.TEXTFILE);
+    List<HiveColumnBean> pcolumns = new ArrayList<HiveColumnBean>();
+    pcolumns.add(new HiveColumnBean("job" , "string" , "students job"));
+    hqlBean.setPartitionedColumns(pcolumns);
+    util.createTableByRowFormatDelimited(hqlBean);
+  }
+```
+
+* 使用 dynamic 建立 partition 要加下列兩個參數  
+set hive.exec.dynamic.partition=true  
+set hive.exec.dynamic.partition.mode=nonstrict  
+
+* insert select 語法 :  
+Hive CLI 語法 : 
+```
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+INSERT INTO TABLE test.students_partition partition ( job )  select  *  from test.students;
+```
+java 程式 : 
+```java
+  @Test
+  public void insertIntoSelectTableTest() {
+    String insertTable = "test.students_partition";
+    List<HiveColumnBean> partitionedColumns = new ArrayList<HiveColumnBean>();
+    partitionedColumns.add(new HiveColumnBean("job" , "string" , "students job"));
+    List<HiveColumnBean> selectColumns = new ArrayList<HiveColumnBean>();
+    String selectTable = "test.students";
+    List<HiveColumnBean> whereConditionColumns = new ArrayList<HiveColumnBean>();
+    util.setHiveConfProperties("hive.exec.dynamic.partition", "true");
+    util.setHiveConfProperties("hive.exec.dynamic.partition.mode", "nonstrict");
+    util.insertIntoSelectTable(insertTable, partitionedColumns, selectColumns, selectTable, whereConditionColumns);
+  }
+```
+
+* 由於是透過沒有認證過的 user 對 hive 做操作，所以 hive 會用 anonymous 這 user 做操作 : 
+
+![hive_day1_1.jpg]({{ "/assets/hive/hive_day1_1.jpg" | absolute_url }})
+
+* 執行 insert select 會執行 hadoop 的 map reduce，在執行 map reduce 時，會需要在 hdfs 的 /user 底下有該 user 的目錄，所以要在這邊建立 anonymous 的目錄並修改權限 : 
+
+* 如果直接使用下列指令建立，會發生 Permission denied，因為 /user 是權限屬於 hdfs 該 user 的． 
+```
+hdfs dfs -mkdir /user/anonymous
+```
+* 這時候在指令前面再加上 HADOOP_USER_NAME=hdfs，指定 Hadoop 的 user 使用 hdfs 這 user 執行就可以了 : 
+```
+HADOOP_USER_NAME=hdfs hdfs dfs -mkdir /user/anonymous
+```
+
+![hive_day1_2.jpg]({{ "/assets/hive/hive_day1_2.jpg" | absolute_url }})
+
+![hive_day1_3.jpg]({{ "/assets/hive/hive_day1_3.jpg" | absolute_url }})
+* 建好之後再把 user hdfs 改成 anonymous，指令如下 : 
+```
+HADOOP_USER_NAME=hdfs hdfs dfs -chown anonymous:supergroup /user/anonymous
+```
+
+![hive_day1_4.jpg]({{ "/assets/hive/hive_day1_4.jpg" | absolute_url }})
+* dynamic 建立 partition 成功 : 
+
+![hive_day1_5.jpg]({{ "/assets/hive/hive_day1_5.jpg" | absolute_url }})
+
+
+
+### 總結
+- - -
+* 在執行 hadoop 的 map reduce 時，會需要在 hdfs 的 /user 底下有該 user 的目錄，要確認否則跑 map reduce 的 job 時會失敗．
+
+
