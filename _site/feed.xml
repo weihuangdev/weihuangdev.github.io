@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-25T12:47:59+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hive jdbc dynamic partition</title><link href="http://localhost:4000/hive/2018/01/25/hive_day1.html" rel="alternate" type="text/html" title="hive jdbc dynamic partition" /><published>2018-01-25T10:44:17+08:00</published><updated>2018-01-25T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/25/hive_day1</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/25/hive_day1.html">&lt;h3 id=&quot;使用-hive-jdbc-dynamic-建立-partition-步驟&quot;&gt;使用 hive jdbc dynamic 建立 partition 步驟&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-25T17:12:35+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hive jdbc dynamic partition</title><link href="http://localhost:4000/hive/2018/01/25/hive_day1.html" rel="alternate" type="text/html" title="hive jdbc dynamic partition" /><published>2018-01-25T10:44:17+08:00</published><updated>2018-01-25T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/25/hive_day1</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/25/hive_day1.html">&lt;h3 id=&quot;使用-hive-jdbc-dynamic-建立-partition-步驟&quot;&gt;使用 hive jdbc dynamic 建立 partition 步驟&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;建立來源 table&lt;/li&gt;
   &lt;li&gt;建立 partition table&lt;/li&gt;
@@ -294,7 +294,80 @@ java.sql.SQLException: Error while processing statement: FAILED: Execution Error
 &lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt;Flips: 3, &lt;span class=&quot;c&quot;&gt;#Correct: 2&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;
 Process finished with exit code 0
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">程式範例 : 小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．</summary></entry><entry><title type="html">yarn day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/yarn/2018/01/12/yarn_day1.html" rel="alternate" type="text/html" title="yarn day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/yarn/2018/01/12/yarn_day1</id><content type="html" xml:base="http://localhost:4000/yarn/2018/01/12/yarn_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;需求&quot;&gt;需求&lt;/h4&gt;
+&lt;p&gt;scala API or function could perform to print out detail result step by step as well as following request ?&lt;/p&gt;
+
+&lt;p&gt;List( 1, 2, 3, 4 ).reduce( (x,y) =&amp;gt; x + y )&lt;br /&gt;
+Step 1 : op( 1, 2 ) will be the first evaluation.
+  Start with 1, 2, that is 
+    x is 1  and  y is 2&lt;br /&gt;
+Step 2:  op( op( 1, 2 ), 3 ) - take the next element 3
+  Take the next element 3: 
+    x is op(1,2) = 3   and y = 3&lt;br /&gt;
+Step 3:  op( op( op( 1, 2 ), 3 ), 4) 
+  Take the next element 4: 
+    x is op(op(1,2), 3 ) = op( 3,3 ) = 6    and y is 4&lt;/p&gt;
+
+&lt;h4 id=&quot;fp-版本&quot;&gt;FP 版本&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import scala.annotation.tailrec
+
+def printOp(list: List[Int]): Int = {
+  @tailrec
+  def op(list: List[Int], currentSum: Int): Int = list match {
+    case x :: Nil =&amp;gt; currentSum
+    case head :: seconde :: tail =&amp;gt; {
+      val tempSum = head + seconde;
+      println(s&quot;op($head,$seconde)=$tempSum&quot;)
+      op(tempSum :: tail , currentSum + tempSum)
+    }
+  }
+  op(list,0)
+}
+
+val list = List.range(1,5)
+printOp(list)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;unit-版本&quot;&gt;Unit 版本&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import scala.annotation.tailrec
+
+def printOp(list: List[Int]): Unit = {
+  @tailrec
+  def op(list: List[Int], currentSum: Int): Unit = list match {
+    case x :: Nil =&amp;gt; ()
+    case head :: seconde :: tail =&amp;gt; {
+      val tempSum = head + seconde;
+      println(s&quot;op($head,$seconde)=$tempSum&quot;)
+      op(tempSum :: tail , currentSum + tempSum)
+    }
+  }
+  op(list,0)
+}
+
+val list = List.range(1,10)
+printOp(list)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scala&amp;gt; List( 1, 2, 3, 4 ).reduce( (x,y) =&amp;gt; { println(s&quot;op($x,$y)&quot;); x+y} )
+op(1,2)
+op(3,3)
+op(6,4)
+res3: Int = 10
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scala&amp;gt; List( 1, 2, 3, 4 ).reduce { (x,y) =&amp;gt;
+    val r = x + y
+    println(s&quot;op($x,$y)=$r&quot;)
+    r
+  }
+op(1,2)=3
+op(3,3)=6
+op(6,4)=10
+res0: Int = 10
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">程式範例 : 小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．</summary></entry><entry><title type="html">yarn day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/yarn/2018/01/12/yarn_day1.html" rel="alternate" type="text/html" title="yarn day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/yarn/2018/01/12/yarn_day1</id><content type="html" xml:base="http://localhost:4000/yarn/2018/01/12/yarn_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
 &lt;p&gt;用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配．
 它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools．
 一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．&lt;/p&gt;

@@ -179,6 +179,80 @@
 Process finished with exit code 0
 </span></code></pre></div></div>
 
+<h4 id="需求">需求</h4>
+<p>scala API or function could perform to print out detail result step by step as well as following request ?</p>
+
+<p>List( 1, 2, 3, 4 ).reduce( (x,y) =&gt; x + y )<br />
+Step 1 : op( 1, 2 ) will be the first evaluation.
+  Start with 1, 2, that is 
+    x is 1  and  y is 2<br />
+Step 2:  op( op( 1, 2 ), 3 ) - take the next element 3
+  Take the next element 3: 
+    x is op(1,2) = 3   and y = 3<br />
+Step 3:  op( op( op( 1, 2 ), 3 ), 4) 
+  Take the next element 4: 
+    x is op(op(1,2), 3 ) = op( 3,3 ) = 6    and y is 4</p>
+
+<h4 id="fp-版本">FP 版本</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import scala.annotation.tailrec
+
+def printOp(list: List[Int]): Int = {
+  @tailrec
+  def op(list: List[Int], currentSum: Int): Int = list match {
+    case x :: Nil =&gt; currentSum
+    case head :: seconde :: tail =&gt; {
+      val tempSum = head + seconde;
+      println(s"op($head,$seconde)=$tempSum")
+      op(tempSum :: tail , currentSum + tempSum)
+    }
+  }
+  op(list,0)
+}
+
+val list = List.range(1,5)
+printOp(list)
+</code></pre></div></div>
+<h4 id="unit-版本">Unit 版本</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import scala.annotation.tailrec
+
+def printOp(list: List[Int]): Unit = {
+  @tailrec
+  def op(list: List[Int], currentSum: Int): Unit = list match {
+    case x :: Nil =&gt; ()
+    case head :: seconde :: tail =&gt; {
+      val tempSum = head + seconde;
+      println(s"op($head,$seconde)=$tempSum")
+      op(tempSum :: tail , currentSum + tempSum)
+    }
+  }
+  op(list,0)
+}
+
+val list = List.range(1,10)
+printOp(list)
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scala&gt; List( 1, 2, 3, 4 ).reduce( (x,y) =&gt; { println(s"op($x,$y)"); x+y} )
+op(1,2)
+op(3,3)
+op(6,4)
+res3: Int = 10
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scala&gt; List( 1, 2, 3, 4 ).reduce { (x,y) =&gt;
+    val r = x + y
+    println(s"op($x,$y)=$r")
+    r
+  }
+op(1,2)=3
+op(3,3)=6
+op(6,4)=10
+res0: Int = 10
+</code></pre></div></div>
+
+
   </div>
 
   
