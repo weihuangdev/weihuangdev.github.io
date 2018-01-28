@@ -281,6 +281,15 @@ java.sql.SQLException: Error while processing statement: FAILED: Execution Error
   at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
 </code></pre></div></div>
 
+<ul>
+  <li>
+    <p>hive create table 時，如果有指令 location 時或著create external takbe，/user/hive/warehouse 底下就不會產生資料，drop table 如果是用 internal + loacation 時 /tmp/daniel/hivefile 的目錄整個會被刪掉．如果是 external table 就不會被刪掉．</p>
+  </li>
+  <li>
+    <p>檔案欄位比table多時資料好像不會擠到同一個欄位，是多的欄位就pareser不到了，不會顯示．但檔案欄位比table少的，會顯示 null</p>
+  </li>
+</ul>
+
 
   </div>
 

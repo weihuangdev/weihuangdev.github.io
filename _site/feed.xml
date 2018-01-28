@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-25T17:12:35+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hive jdbc dynamic partition</title><link href="http://localhost:4000/hive/2018/01/25/hive_day1.html" rel="alternate" type="text/html" title="hive jdbc dynamic partition" /><published>2018-01-25T10:44:17+08:00</published><updated>2018-01-25T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/25/hive_day1</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/25/hive_day1.html">&lt;h3 id=&quot;使用-hive-jdbc-dynamic-建立-partition-步驟&quot;&gt;使用 hive jdbc dynamic 建立 partition 步驟&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-28T14:56:25+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hive jdbc dynamic partition</title><link href="http://localhost:4000/hive/2018/01/25/hive_day1.html" rel="alternate" type="text/html" title="hive jdbc dynamic partition" /><published>2018-01-25T10:44:17+08:00</published><updated>2018-01-25T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/25/hive_day1</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/25/hive_day1.html">&lt;h3 id=&quot;使用-hive-jdbc-dynamic-建立-partition-步驟&quot;&gt;使用 hive jdbc dynamic 建立 partition 步驟&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;建立來源 table&lt;/li&gt;
   &lt;li&gt;建立 partition table&lt;/li&gt;
@@ -197,7 +197,16 @@ java.sql.SQLException: Error while processing statement: FAILED: Execution Error
   at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:678)
   at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
   at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">使用 hive jdbc dynamic 建立 partition 步驟 建立來源 table 建立 partition table 設定 hive 兩個參數 set hive.exec.dynamic.partition=true set hive.exec.dynamic.partition.mode=nonstrict 執行 insert select</summary></entry><entry><title type="html">Functional Game</title><link href="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html" rel="alternate" type="text/html" title="Functional Game" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/functional-programming/2018/01/12/FP_day1</id><content type="html" xml:base="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html">&lt;h3 id=&quot;程式範例-&quot;&gt;程式範例 :&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;hive create table 時，如果有指令 location 時或著create external takbe，/user/hive/warehouse 底下就不會產生資料，drop table 如果是用 internal + loacation 時 /tmp/daniel/hivefile 的目錄整個會被刪掉．如果是 external table 就不會被刪掉．&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;檔案欄位比table多時資料好像不會擠到同一個欄位，是多的欄位就pareser不到了，不會顯示．但檔案欄位比table少的，會顯示 null&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">使用 hive jdbc dynamic 建立 partition 步驟 建立來源 table 建立 partition table 設定 hive 兩個參數 set hive.exec.dynamic.partition=true set hive.exec.dynamic.partition.mode=nonstrict 執行 insert select</summary></entry><entry><title type="html">Functional Game</title><link href="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html" rel="alternate" type="text/html" title="Functional Game" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/functional-programming/2018/01/12/FP_day1</id><content type="html" xml:base="http://localhost:4000/functional-programming/2018/01/12/FP_day1.html">&lt;h3 id=&quot;程式範例-&quot;&gt;程式範例 :&lt;/h3&gt;
 &lt;p&gt;小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;simple&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;job&lt;/span&gt;
@@ -367,7 +376,13 @@ op(1,2)=3
 op(3,3)=6
 op(6,4)=10
 res0: Int = 10
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">程式範例 : 小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．</summary></entry><entry><title type="html">yarn day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/yarn/2018/01/12/yarn_day1.html" rel="alternate" type="text/html" title="yarn day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/yarn/2018/01/12/yarn_day1</id><content type="html" xml:base="http://localhost:4000/yarn/2018/01/12/yarn_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;在使用 for 與 recursion 時，也同時顯現了處理一般 data 與 stream-data 的差異，因為使用 for 會有個界線值比如說 list.size() 但 recursion 時會一直遞迴直到沒有資料了，而 stream-data 會一直傳輸很適合使用 recursion 來處理，java 的 iterable 也類似．&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">程式範例 : 小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．</summary></entry><entry><title type="html">yarn day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/yarn/2018/01/12/yarn_day1.html" rel="alternate" type="text/html" title="yarn day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/yarn/2018/01/12/yarn_day1</id><content type="html" xml:base="http://localhost:4000/yarn/2018/01/12/yarn_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
 &lt;p&gt;用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配．
 它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools．
 一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．&lt;/p&gt;
