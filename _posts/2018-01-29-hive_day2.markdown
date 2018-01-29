@@ -1,0 +1,55 @@
+---
+layout: post
+title:  "hive internal & external table"
+date:   2018-01-29 10:44:17 +0800
+categories: hive
+---
+
+### create hive internal table
+
+```
+create table test.students(id string,name string,tel string,job string) 
+row format delimited fields terminated by ',' lines terminated by '\n' 
+stored as textfile;
+```
+
+```
+create table test.students_internal(id string,name string,tel string,job string) 
+row format delimited fields terminated by ',' lines terminated by '\n' 
+stored as textfile location '/tmp/daniel/hivefile';
+```
+
+```
+create external table test.students_external(id string,name string,tel string,job string) 
+row format delimited fields terminated by ',' lines terminated by '\n' 
+stored as textfile location '/tmp/daniel/hivefile';
+```
+
+```
+create database danieldb location '/tmp/daniel/hivedb'
+```
+這時候建好的 database 路徑就不會在 /user/hive/warehouse/ 底下，而是會在指定的路徑 /tmp/daniel/hivedb．之後在 danieldb 建立的 internal talbe 都會在這邊產生．
+
+
+
+使用 hdfs put 指令丟檔案到 hdfs 目錄底下 : 
+```
+hdfs dfs -put students.txt /tmp/daniel/hivefile
+```
+如果 hivefile 目錄存在，則 students.txt 會被丟到 hivefile 底下．
+如果 hivefile 目錄不存在，則 students.txt 會變成 hivefile 這檔案．
+
+```
+load data inpath '/tmp/daniel/hivefile/students.txt' into danieldb.students_internal;
+```
+使用上面指令後 hdfs 上的 /tmp/daniel/hivefile/students.txt 會被 load 到 danieldb.students_internal 指定到的目錄底下，而原來的(/tmp/daniel/hivefile/students.txt)會被移除．
+
+
+
+
+### 總結
+- - -
+* hive create table 時，如果有指令 location 時或著create external takbe，/user/hive/warehouse 底下就不會產生資料，drop table 如果是用 internal + loacation 時 /tmp/daniel/hivefile 的目錄整個會被刪掉．如果是 external table 就不會被刪掉．
+
+* 檔案欄位比table多時資料好像不會擠到同一個欄位，是多的欄位就pareser不到了，不會顯示．但檔案欄位比table少的，會顯示 null
+

@@ -1,0 +1,47 @@
+---
+layout: post
+title:  "hive partition"
+date:   2018-01-29 12:44:17 +0800
+categories: hive
+---
+
+### create hive partition table
+先建立 Hive partition table : 
+```
+create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;
+```
+
+再建立 partition : 
+
+```
+alter table students_partition add partition(year=2017,month=12)
+```
+再把檔案 students.txt put 到剛建立的 partition 目錄: 
+
+```
+hdfs dfs -put students.txt /tmp/daniel/hivedb/students_partition/year=2018/month=01
+```
+
+查詢時就會看到 year 和 month 會是 2018 及 01．
+
+- - -
+
+建 partition 時也可直接指到某個目錄，代表裡面檔案都是屬於該 partition 的．
+
+```
+alter table students_partition add partition(year=2018,month=02) location '/tmp/daniel/hivedb/temp/partition'
+```
+再把檔案 put 到 /tmp/daniel/hivedb/temp/partition
+```
+hdfs dfs -put students.txt /tmp/daniel/hivedb/temp/partition
+```
+查詢時就會看到 year 和 month 會是 2018 及 02．
+
+### 總結
+- - -
+查看 table 的 partitions : 
+```
+show partitions students_partition;
+```
+
+

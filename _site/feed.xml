@@ -1,4 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-28T14:56:25+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hive jdbc dynamic partition</title><link href="http://localhost:4000/hive/2018/01/25/hive_day1.html" rel="alternate" type="text/html" title="hive jdbc dynamic partition" /><published>2018-01-25T10:44:17+08:00</published><updated>2018-01-25T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/25/hive_day1</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/25/hive_day1.html">&lt;h3 id=&quot;使用-hive-jdbc-dynamic-建立-partition-步驟&quot;&gt;使用 hive jdbc dynamic 建立 partition 步驟&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-29T18:02:37+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hive partition</title><link href="http://localhost:4000/hive/2018/01/29/hive_day3.html" rel="alternate" type="text/html" title="hive partition" /><published>2018-01-29T12:44:17+08:00</published><updated>2018-01-29T12:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/29/hive_day3</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/29/hive_day3.html">&lt;h3 id=&quot;create-hive-partition-table&quot;&gt;create hive partition table&lt;/h3&gt;
+&lt;p&gt;先建立 Hive partition table :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;再建立 partition :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table students_partition add partition(year=2017,month=12)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;再把檔案 students.txt put 到剛建立的 partition 目錄:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hdfs dfs -put students.txt /tmp/daniel/hivedb/students_partition/year=2018/month=01
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查詢時就會看到 year 和 month 會是 2018 及 01．&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;建 partition 時也可直接指到某個目錄，代表裡面檔案都是屬於該 partition 的．&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table students_partition add partition(year=2018,month=02) location '/tmp/daniel/hivedb/temp/partition'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;再把檔案 put 到 /tmp/daniel/hivedb/temp/partition&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hdfs dfs -put students.txt /tmp/daniel/hivedb/temp/partition
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;查詢時就會看到 year 和 month 會是 2018 及 02．&lt;/p&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;查看 table 的 partitions :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;show partitions students_partition;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">create hive partition table 先建立 Hive partition table : create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;</summary></entry><entry><title type="html">hive internal &amp;amp; external table</title><link href="http://localhost:4000/hive/2018/01/29/hive_day2.html" rel="alternate" type="text/html" title="hive internal &amp; external table" /><published>2018-01-29T10:44:17+08:00</published><updated>2018-01-29T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/29/hive_day2</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/29/hive_day2.html">&lt;h3 id=&quot;create-hive-internal-table&quot;&gt;create hive internal table&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create table test.students(id string,name string,tel string,job string) 
+row format delimited fields terminated by ',' lines terminated by '\n' 
+stored as textfile;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create table test.students_internal(id string,name string,tel string,job string) 
+row format delimited fields terminated by ',' lines terminated by '\n' 
+stored as textfile location '/tmp/daniel/hivefile';
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create external table test.students_external(id string,name string,tel string,job string) 
+row format delimited fields terminated by ',' lines terminated by '\n' 
+stored as textfile location '/tmp/daniel/hivefile';
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create database danieldb location '/tmp/daniel/hivedb'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;這時候建好的 database 路徑就不會在 /user/hive/warehouse/ 底下，而是會在指定的路徑 /tmp/daniel/hivedb．之後在 danieldb 建立的 internal talbe 都會在這邊產生．&lt;/p&gt;
+
+&lt;p&gt;使用 hdfs put 指令丟檔案到 hdfs 目錄底下 :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hdfs dfs -put students.txt /tmp/daniel/hivefile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;如果 hivefile 目錄存在，則 students.txt 會被丟到 hivefile 底下．
+如果 hivefile 目錄不存在，則 students.txt 會變成 hivefile 這檔案．&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;load data inpath '/tmp/daniel/hivefile/students.txt' into danieldb.students_internal;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用上面指令後 hdfs 上的 /tmp/daniel/hivefile/students.txt 會被 load 到 danieldb.students_internal 指定到的目錄底下，而原來的(/tmp/daniel/hivefile/students.txt)會被移除．&lt;/p&gt;
+
+&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;hive create table 時，如果有指令 location 時或著create external takbe，/user/hive/warehouse 底下就不會產生資料，drop table 如果是用 internal + loacation 時 /tmp/daniel/hivefile 的目錄整個會被刪掉．如果是 external table 就不會被刪掉．&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;檔案欄位比table多時資料好像不會擠到同一個欄位，是多的欄位就pareser不到了，不會顯示．但檔案欄位比table少的，會顯示 null&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">create hive internal table</summary></entry><entry><title type="html">hive jdbc dynamic partition</title><link href="http://localhost:4000/hive/2018/01/25/hive_day1.html" rel="alternate" type="text/html" title="hive jdbc dynamic partition" /><published>2018-01-25T10:44:17+08:00</published><updated>2018-01-25T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/25/hive_day1</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/25/hive_day1.html">&lt;h3 id=&quot;使用-hive-jdbc-dynamic-建立-partition-步驟&quot;&gt;使用 hive jdbc dynamic 建立 partition 步驟&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;建立來源 table&lt;/li&gt;
   &lt;li&gt;建立 partition table&lt;/li&gt;
@@ -1409,258 +1480,4 @@ netstat -ntpl | grep 5672&lt;/p&gt;
     &lt;p&gt;centos 6.8 設定防火牆或網路時使用
 setup&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">RabbitMQ 安裝 這邊使用的是 CentOS-6.8 安裝 rabbitmq． 安裝 rabbitmq 前要先安裝 erlang，安裝指令步驟 :</summary></entry><entry><title type="html">Scala day 30 (Functional Programming)</title><link href="http://localhost:4000/scala/2017/12/30/scala_day30.html" rel="alternate" type="text/html" title="Scala day 30 (Functional Programming)" /><published>2017-12-30T10:44:17+08:00</published><updated>2017-12-30T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/30/scala_day30</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/30/scala_day30.html">&lt;h3 id=&quot;functional-programming&quot;&gt;Functional Programming&lt;/h3&gt;
-&lt;p&gt;今天是鐵人賽的最後一天，就來聊聊第一天說到的 scala 可以 Functional Programming 吧．Functional Programming 其實之前就已存在了，但為什麼最近又開始紅了起來了呢？
-我覺得是因為大數據、machine learning、AI 等…技術越來越受到重視，而這些需要大量運算的環境下，無法只靠單執行緒處理運算． 所以才會使用多執行緒、分散式運算、平行處理等來增加處理資料的速度．但使用這些技術解決運算速度問題的同時，也衍生出其他的問題．．而 Functional Programming 是很適合用來解決這些問題，所以也越來越受到重視．
-接著先介紹兩個蠻重要的觀念是Concurrency(並行)以及Parallelism(平行)．&lt;/p&gt;
-
-&lt;h4 id=&quot;concurrency&quot;&gt;Concurrency&lt;/h4&gt;
-&lt;p&gt;多個任務在一個 CPU(core) 上面執行，在時間內交互執行，會以為是同時處理多個工作．(multitasking on a single-core machine)．&lt;/p&gt;
-
-&lt;h4 id=&quot;parallelism&quot;&gt;Parallelism&lt;/h4&gt;
-&lt;p&gt;多個任務在多個 CPU(cores) 上面同時執行，同時處理多個工作．(tasks run at the same time on a multicore processor)．&lt;/p&gt;
-
-&lt;p&gt;那面對 Concurrency 以及 Parallelism 的環境時．Imperative programming(C、C++、Java、Pythin) 在處理這些問題上就會顯得非常複雜．像 java 要寫 multi-thread 的程式時就要很小心，而且要避免一些問題，例如:deadlock．
-有很多共用變數或方法的地方又要加上 synchronize．所以光是處理這些問題就很令人頭痛，那會變成那麼複雜有一個很大的原因就是因為 Imperative programming 用到的變數幾乎都是 mutable 的．mutable 的變數代表它的值可以被改變、而且也可以被重新定義．那在 Concurrency 或 Parallelism 執行上，你無法確定 state 的狀況是什麼．這時候 immutable 及 pure function  的好處出來了，你不用擔心變數或function 在哪邊被重新定義了，因為 immutable 不可以被改變．所以 scala 的 collection 有 mutable 及 immutable．&lt;/p&gt;
-
-&lt;h4 id=&quot;functional-programming-要點&quot;&gt;Functional Programming 要點&lt;/h4&gt;
-&lt;p&gt;開發程式時，幾乎都使用 pure functions，程式裡只使用 immutable values (scala 的 val)．&lt;/p&gt;
-
-&lt;h4 id=&quot;pure-functions&quot;&gt;Pure functions&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;pure function 的結果，只依賴於輸入的參數及內部算法&lt;/li&gt;
-  &lt;li&gt;pure function 不會有 side effects(副作用)，它不會讀取外部的東西，及寫入外部東西&lt;/li&gt;
-  &lt;li&gt;根據上面兩個性質來看，pure function 傳入的參數(假設是 x)，不管呼叫幾次結果都會是一樣的(y)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;example&quot;&gt;Example&lt;/h4&gt;
-&lt;p&gt;Imperative 的寫法(use var &amp;amp; for) :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;def sum(nums: List[Int]): Int = {
-  var sum = 0
-  for (i &amp;lt;- nums) {
-    sum += i }
-  sum
-}
-
-val lst = List(1,2,3)
-sum(lst) // Int = 6
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Functional 的寫法(use match &amp;amp; recursion) :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;def sums(xs: List[Int]): Int = xs match {
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;  case Nil =&amp;gt;&lt;/span&gt; 0
-&lt;span class=&quot;gp&quot;&gt;  case x :: tail =&amp;gt;&lt;/span&gt; x + sums&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;tail&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;}
-sums(lst) // Int = 6
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Imperative 的寫法(use mutable collection &amp;amp; for) :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;def double(ints: List[Int]): List[Int] = {
-  val buffer = new scala.collection.mutable.ListBuffer[Int]()
-  for (i &amp;lt;- ints) {
-    buffer += i * 2
-  }
-  buffer.toList
-}
-val oldNumbers = List(1,2,3)
-val newNumbers = double(oldNumbers) // List(2, 4, 6)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Functional 的寫法(use Higher Order Function(map)) :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;val oldNumbers = List(1,2,3)
-val newNumbers = oldNumbers.map(_ * 2) // List(2, 4, 6)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;Functional Programming 也是另一門很深奧的學問，尤其 OOP 寫久了之後，可能一時會轉不過來，這邊只是稍微跟大家提一下
-而已，有興趣的話大家再研究一下吧．&lt;/li&gt;
-  &lt;li&gt;在這 30 天介紹了許多 scala 的特色，也在最後一天也跟大家稍微介紹了一下FP．但其實還有許許多多的學問需要研究．我覺得會java的人，很值得也學習一下 scala 這個語言，可以激發出更多不一樣的想法不管是 OOP 或是 FP．鐵人賽結束了，希望這些文章能讓大家有一點點收穫，繼續前進 scala 的世界吧～加油！&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Functional Programming 今天是鐵人賽的最後一天，就來聊聊第一天說到的 scala 可以 Functional Programming 吧．Functional Programming 其實之前就已存在了，但為什麼最近又開始紅了起來了呢？ 我覺得是因為大數據、machine learning、AI 等…技術越來越受到重視，而這些需要大量運算的環境下，無法只靠單執行緒處理運算． 所以才會使用多執行緒、分散式運算、平行處理等來增加處理資料的速度．但使用這些技術解決運算速度問題的同時，也衍生出其他的問題．．而 Functional Programming 是很適合用來解決這些問題，所以也越來越受到重視． 接著先介紹兩個蠻重要的觀念是Concurrency(並行)以及Parallelism(平行)．</summary></entry><entry><title type="html">Scala day 29 (some collection method)</title><link href="http://localhost:4000/scala/2017/12/28/scala_day29.html" rel="alternate" type="text/html" title="Scala day 29 (some collection method)" /><published>2017-12-28T10:44:17+08:00</published><updated>2017-12-28T10:44:17+08:00</updated><id>http://localhost:4000/scala/2017/12/28/scala_day29</id><content type="html" xml:base="http://localhost:4000/scala/2017/12/28/scala_day29.html">&lt;h3 id=&quot;map&quot;&gt;map&lt;/h3&gt;
-&lt;p&gt;對 collection 每個元素個別處理 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Apple&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Mac&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Taipei&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Hello world&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Banana&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;scala&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;lst: List[String] = List(Daniel, Apple, Mac, Taipei, Jack, Hello world, Banana, scala)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; name.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res16: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res15: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;reduce&quot;&gt;reduce&lt;/h3&gt;
-&lt;p&gt;將 collection 的元素收集處理，第一次先處理兩個元素，產生的解果再跟下個元素處理，最後回傳跟元素一樣型態的值 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.reduce&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;num1:Int,num2:Int&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; num1 + num2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res17: Int = 46
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; name.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res16: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;flatten&quot;&gt;flatten&lt;/h3&gt;
-&lt;p&gt;flatten 可以將 collection 裡的 collections 轉換成一個 collection :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3,4,List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5,6&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;lst: List[List[Any]] = List(List(1, 2), List(3, 4, List(5, 6)))
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.flatten
-&lt;span class=&quot;go&quot;&gt;res26: List[Any] = List(1, 2, 3, 4, List(5, 6))
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;flatmap&quot;&gt;flatMap&lt;/h3&gt;
-&lt;p&gt;flatMap 會先執行 map 之後再處理 flatten，相當於兩個的結合 :&lt;br /&gt;
-下面例子會先對 List 裡的 每個 List 做 distinct，再 flatten 成一個 collection :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2,1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5,3,4,1,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,4,6,7&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;lst: List[List[Int]] = List(List(1, 2, 1, 2), List(5, 3, 4, 1, 5), List(2, 4, 6, 7))
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.flatMap&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.distinct&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res33: List[Int] = List(1, 2, 5, 3, 4, 1, 2, 4, 6, 7)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.distinct&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.flatten
-&lt;span class=&quot;go&quot;&gt;res34: List[Int] = List(1, 2, 5, 3, 4, 1, 2, 4, 6, 7)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;distinct&quot;&gt;distinct&lt;/h3&gt;
-&lt;p&gt;distinct 可將重複的元素變成一個 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1,2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3,4,1,5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2,4,6,7&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;lst: List[List[Int]] = List(List(1, 2), List(3, 4, 1, 5), List(2, 4, 6, 7))
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.flatten.distinct
-&lt;span class=&quot;go&quot;&gt;res27: List[Int] = List(1, 2, 3, 4, 5, 6, 7)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;sortwith&quot;&gt;sortWith&lt;/h3&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.sortWith&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &amp;lt; _&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res20: List[String] = List(Apple, Banana, Daniel, Hello world, Jack, Mac, Taipei, scala)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.sortWith&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; _&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res21: List[String] = List(scala, Taipei, Mac, Jack, Hello world, Daniel, Banana, Apple)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;optionmapflatmapsum-&quot;&gt;Option、map、flatMap、sum :&lt;/h3&gt;
-&lt;p&gt;在介紹 List 的時候有先介紹過這範例，不過這邊再來複習一次，會比較有感覺．
-定義一個 function 將 String 轉成 Option[Int] 的 type :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; def toInt&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s: String&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Option[Int] &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   try {
-     |     Some(Integer.parseInt(s.trim))
-     |   } catch {
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;     |     case e: Exception =&amp;gt;&lt;/span&gt; None
-&lt;span class=&quot;go&quot;&gt;     |   }
-     | }
-toInt: (s: String)Option[Int]
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然後定義一組有數字及文字的 Seq[String] 的 collection，然後透過 map 對裡面每個元素做上面定義的 toInt 方法，
-可以轉成 Int 的會回傳 Some(Int) 不行的回傳 None&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val strings &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Seq&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;foo&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;3&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;bar&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;strings: Seq[String] = List(1, 2, foo, 3, bar)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; strings.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;toInt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res35: Seq[Option[Int]] = List(Some(1), Some(2), None, Some(3), None)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;這時候透過 flatMap 展開後，None 物件會被過濾掉，而 Some(Int) 會轉成 Int :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; strings.flatMap&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;toInt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;res36: Seq[Int] = List(1, 2, 3)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;最後透過 sum 將元素的值做加總 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; strings.flatMap&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;toInt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.sum
-&lt;span class=&quot;go&quot;&gt;res37: Int = 6
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;fold&quot;&gt;fold&lt;/h3&gt;
-&lt;p&gt;fold 有兩個參數，第一個是代初始值，第二的是 lambda expressions 就是元素要處理的事 :&lt;br /&gt;
-下面例子初始值是 0，然後執行順序參考下面 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numbers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5, 4, 8, 6, 2, 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;numbers: List[Int] = List(5, 4, 8, 6, 2, 3)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numbers.fold&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;z, i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   println(z + &quot; , &quot; + i)
-     |   z + i
-     | }
-0 , 5 //初始值 0 跟 第一個元素 5 相加
-5 , 4 //(0 + 5) 上一個的結果跟下個元素 4 做相加
-9 , 8 //上一個的結果(9)跟下個元素 4 做相加，以此類推...
-17 , 6
-23 , 2
-25 , 3
-res38: Int = 28
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;fold 之外還有另外兩個 foldLeft、foldRight，foldLeft 是從左邊開始，foldLeft 是從右邊開始，fold 順序不一定 :&lt;br /&gt;
-foldLeft 範例，初始參數改成 1，從左邊開始加&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val numbers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5, 4, 8, 6, 2, 3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;numbers: List[Int] = List(5, 4, 8, 6, 2, 3)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numbers.foldLeft&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;z, i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   println(z + &quot; , &quot; + i)
-     |   z + i
-     | }
-1 , 5 //初始值 1 跟左邊第一個元素 5 相加
-6 , 4 //(1 + 5) 上一個的結果 6 跟左邊第二個元素 4 作相加...
-10 , 8
-18 , 6
-24 , 2
-26 , 3
-res45: Int = 29
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;foldRight 範例，初始參數改成 2，從右邊開始加 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; numbers.foldRight&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;z, i&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     |   println(z + &quot; , &quot; + i)
-     |   z + i
-     | }
-3 , 2 //初始值 2 跟右邊第一個元素 3 相加
-2 , 5 //(2 + 3) 上一個的結果 5 跟右邊第二個元素 2 作相加...
-6 , 7
-8 , 13
-4 , 21
-5 , 25
-res46: Int = 30
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;最後試著了解這段 code 吧 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; val lst &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Apple&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Mac&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Taipei&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Hello world&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Banana&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;scala&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;lst: List[String] = List(Daniel, Apple, Mac, Taipei, Jack, Hello world, Banana, scala)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.filter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foldLeft&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List.empty[Int]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |   (s,ele) =&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s.contains&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ele&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ele&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s :+ ele&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     | }.reduce(_ + _)
-res47: Int = 11
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;scala collection 提供非常多的 api，這邊只是先列幾個範例，可以再多找些資訊學習．&lt;/li&gt;
-  &lt;li&gt;上述 Code 解析 :&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; lst.map&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_.length&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; // 將每個元素轉成該元素的長度，然後產生一組新的 List[Int]
-&lt;span class=&quot;go&quot;&gt;res48: List[Int] = List(6, 5, 3, 6, 4, 11, 6, 5)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6, 5, 3, 6, 4, 11, 6, 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.filter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;res49: List[Int] = List(6, 5, 6, 11, 6, 5) // 透過 filter 只取得 &amp;gt;&lt;/span&gt; 4 的元素，再產生一組新的 List[Int]
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6, 5, 6, 11, 6, 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.foldLeft&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;List.empty[Int]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;     |   (s,ele) =&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s.contains&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ele&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ele&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s :+ ele&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;     | } // 透過 foldLeft 初始值參數是一個空的 List 也就是(s)，然後判斷左邊第一個元素 6，是否包含在 s 裡，不在就加入回傳新的 List，否則就不加入回傳原來的 List．可去除重複的元素，也可用 distinct．
-res50: List[Int] = List(6, 5)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6, 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.reduce&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_ + _&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; //接著透過 reduce 將每個元素做相加回傳跟元素一樣的type Int
-&lt;span class=&quot;go&quot;&gt;res51: Int = 11
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;scala&amp;gt;&lt;/span&gt; List&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6, 5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.sum //使用 sum 將元素做加總
-&lt;span class=&quot;go&quot;&gt;res52: Int = 11
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">map 對 collection 每個元素個別處理 :</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">RabbitMQ 安裝 這邊使用的是 CentOS-6.8 安裝 rabbitmq． 安裝 rabbitmq 前要先安裝 erlang，安裝指令步驟 :</summary></entry></feed>
