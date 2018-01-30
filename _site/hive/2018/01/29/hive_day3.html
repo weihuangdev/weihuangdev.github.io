@@ -107,6 +107,33 @@
 </code></pre></div></div>
 <p>查詢時就會看到 year 和 month 會是 2018 及 02．</p>
 
+<h3 id="hivemapredmode-參數">hive.mapred.mode 參數</h3>
+<p>如果設為 strict 時，partition table 在 select 時沒有指定 partition 則會出錯 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">hive&gt;</span> <span class="nb">set </span>hive.mapred.mode<span class="o">=</span>strict<span class="p">;</span>
+<span class="gp">hive&gt;</span> <span class="k">select</span> <span class="k">*</span> from students_partition<span class="p">;</span>
+<span class="go">FAILED: SemanticException [Error 10041]: No partition predicate found for Alias "students_partition" Table "students_partition"
+</span></code></pre></div></div>
+<p>有給 partition 時才可以查詢 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">hive&gt;</span> <span class="k">select</span> <span class="k">*</span> from students_partition where <span class="nv">year</span><span class="o">=</span>2018<span class="p">;</span>
+<span class="go">OK
+1	Daniel	29612736	PG	2018	01
+2	Sam	283747612	SD	2018	01
+3	Andy	39827162	PM	2018	01
+</span><span class="c">...
+</span></code></pre></div></div>
+<p>如果設為 nonstrict 則 select 時不給 partition 也可以 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">hive&gt;</span> <span class="nb">set </span>hive.mapred.mode<span class="o">=</span>nonstrict<span class="p">;</span>
+<span class="gp">hive&gt;</span> <span class="k">select</span> <span class="k">*</span> from students_partition<span class="p">;</span>
+<span class="go">OK
+1	Daniel	29612736	PG	2017	12
+2	Sam	283747612	SD	2017	12
+3	Andy	39827162	PM	2017	12
+</span><span class="c">...
+</span></code></pre></div></div>
+
 <h3 id="總結">總結</h3>
 <hr />
 <p>查看 table 的 partitions :</p>
