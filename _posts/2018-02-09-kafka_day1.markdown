@@ -1,0 +1,60 @@
+---
+layout: post
+title:  "kafka day 1 "
+date:   2018-02-09 08:44:17 +0800
+categories: kafka
+---
+
+### 下載 kafka
+
+#### 執行 kafka server :  
+./kafka-server-start.sh ../config/server.properties
+
+### 使用 Single Node-Single Broker Configuration 測試
+
+#### create topic Hello-kafka : 
+
+```console
+[cloudera@quickstart kafka_2.11-1.0.0]$ ./bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic Hello-kafka
+Created topic "Hello-kafka".
+```
+created a topic named "Hello-kafka" with a single partition and one replica factor.
+
+#### list topics
+
+```console
+[cloudera@quickstart kafka_2.11-1.0.0]$ ./bin/kafka-topics.sh --list --zookeeper localhost:2181
+Hello-kafka
+```
+
+#### Start Producer to Send Messages
+
+Config/server.properties
+
+```console
+[cloudera@quickstart kafka_2.11-1.0.0]$ ./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic Hello-kafka
+>Hello
+>My first Message
+>My second Message
+>
+
+```
+
+#### Start Consumer to Receive Messages
+
+```console
+[cloudera@quickstart kafka_2.11-1.0.0]$ ./bin/kafka-console-consumer.sh --zookeeper localhost:2181 -topic Hello-kafka --from-beginning
+Using the ConsoleConsumer with old consumer is deprecated and will be removed in a future major release. Consider using the new consumer by passing [bootstrap-server] instead of [zookeeper].
+Hello
+My first Message
+My second Message
+```
+#### delete a topic
+
+```console
+[cloudera@quickstart kafka_2.11-1.0.0]$ bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic Hello-kafka
+Topic Hello-kafka is marked for deletion.
+Note: This will have no impact if delete.topic.enable is not set to true.
+```
+
+

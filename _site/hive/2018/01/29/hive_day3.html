@@ -139,6 +139,36 @@
 <p>查看 table 的 partitions :</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>show partitions students_partition;
 </code></pre></div></div>
+<p>查看某個 partition 底下的 partition :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">hive&gt;</span> show partitions students_partition partition<span class="o">(</span><span class="nv">year</span><span class="o">=</span>2018<span class="o">)</span><span class="p">;</span>
+<span class="go">OK
+year=2018/month=01
+year=2018/month=02
+Time taken: 0.253 seconds, Fetched: 2 row(s)
+</span></code></pre></div></div>
+
+<p>執行下列指令可以看到 year=2018,month=02 這 partition 的目錄放在 location:hdfs://quickstart.cloudera:8020/tmp/daniel/hivedb/temp/partition 裡 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">hive&gt;</span> describe extended students_partition partition<span class="o">(</span><span class="nv">year</span><span class="o">=</span>2018,month<span class="o">=</span>02<span class="o">)</span><span class="p">;</span>
+<span class="go">OK
+id                  	string
+name                	string
+tel                 	string
+job                 	string
+year                	string
+month               	string
+
+</span><span class="gp">#</span> Partition Information
+<span class="gp">#</span> col_name            	data_type           	comment
+<span class="go">
+year                	string
+month               	string
+
+Detailed Partition Information	Partition(values:[2018, 02], dbName:danieldb, tableName:students_partition, createTime:1517219747, lastAccessTime:0, sd:StorageDescriptor(cols:[FieldSchema(name:id, type:string, comment:null), FieldSchema(name:name, type:string, comment:null), FieldSchema(name:tel, type:string, comment:null), FieldSchema(name:job, type:string, comment:null), FieldSchema(name:year, type:string, comment:null), FieldSchema(name:month, type:string, comment:null)], location:hdfs://quickstart.cloudera:8020/tmp/daniel/hivedb/temp/partition, inputFormat:org.apache.hadoop.mapred.TextInputFormat, outputFormat:org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat, compressed:false, numBuckets:-1, serdeInfo:SerDeInfo(name:null, serializationLib:org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, parameters:{line.delim=
+, field.delim=,, serialization.format=,}), bucketCols:[], sortCols:[], parameters:{}, skewedInfo:SkewedInfo(skewedColNames:[], skewedColValues:[], skewedColValueLocationMaps:{}), storedAsSubDirectories:false), parameters:{totalSize=283, numRows=-1, rawDataSize=-1, COLUMN_STATS_ACCURATE=false, numFiles=1, transient_lastDdlTime=1517219747})
+Time taken: 0.157 seconds, Fetched: 15 row(s)
+</span></code></pre></div></div>
 
 
   </div>

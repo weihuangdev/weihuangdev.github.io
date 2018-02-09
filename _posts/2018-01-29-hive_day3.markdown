@@ -73,5 +73,37 @@ OK
 ```
 show partitions students_partition;
 ```
+查看某個 partition 底下的 partition :  
+
+```console
+hive> show partitions students_partition partition(year=2018);
+OK
+year=2018/month=01
+year=2018/month=02
+Time taken: 0.253 seconds, Fetched: 2 row(s)
+```
+
+執行下列指令可以看到 year=2018,month=02 這 partition 的目錄放在 location:hdfs://quickstart.cloudera:8020/tmp/daniel/hivedb/temp/partition 裡 :  
+
+```console
+hive> describe extended students_partition partition(year=2018,month=02);
+OK
+id                  	string
+name                	string
+tel                 	string
+job                 	string
+year                	string
+month               	string
+
+# Partition Information
+# col_name            	data_type           	comment
+
+year                	string
+month               	string
+
+Detailed Partition Information	Partition(values:[2018, 02], dbName:danieldb, tableName:students_partition, createTime:1517219747, lastAccessTime:0, sd:StorageDescriptor(cols:[FieldSchema(name:id, type:string, comment:null), FieldSchema(name:name, type:string, comment:null), FieldSchema(name:tel, type:string, comment:null), FieldSchema(name:job, type:string, comment:null), FieldSchema(name:year, type:string, comment:null), FieldSchema(name:month, type:string, comment:null)], location:hdfs://quickstart.cloudera:8020/tmp/daniel/hivedb/temp/partition, inputFormat:org.apache.hadoop.mapred.TextInputFormat, outputFormat:org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat, compressed:false, numBuckets:-1, serdeInfo:SerDeInfo(name:null, serializationLib:org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, parameters:{line.delim=
+, field.delim=,, serialization.format=,}), bucketCols:[], sortCols:[], parameters:{}, skewedInfo:SkewedInfo(skewedColNames:[], skewedColValues:[], skewedColValueLocationMaps:{}), storedAsSubDirectories:false), parameters:{totalSize=283, numRows=-1, rawDataSize=-1, COLUMN_STATS_ACCURATE=false, numFiles=1, transient_lastDdlTime=1517219747})
+Time taken: 0.157 seconds, Fetched: 15 row(s)
+```
 
 
