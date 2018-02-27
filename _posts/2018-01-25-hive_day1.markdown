@@ -159,7 +159,13 @@ HADOOP_USER_NAME=hdfs hdfs dfs -chown anonymous:supergroup /user/anonymous
 
 ![hive_day1_5.jpg]({{ "/assets/hive/hive_day1_5.jpg" | absolute_url }})
 
-
+* anonymous user 如果要換另外一個 user ，可用下列寫法，不用密碼給 user 就好了: 
+```
+String url = "jdbc:hive2://quickstart.cloudera:10000/";
+String userName = "abc";
+String userPasswrd = "";
+con = DriverManager.getConnection(url, userName, userPasswrd);
+```
 
 ### 總結
 - - -

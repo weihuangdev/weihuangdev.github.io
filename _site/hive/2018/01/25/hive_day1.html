@@ -240,6 +240,16 @@ INSERT INTO TABLE test.students_partition partition ( job )  select  *  from tes
 
 <p><img src="http://localhost:4000/assets/hive/hive_day1_5.jpg" alt="hive_day1_5.jpg" /></p>
 
+<ul>
+  <li>anonymous user 如果要換另外一個 user ，可用下列寫法，不用密碼給 user 就好了:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>String url = "jdbc:hive2://quickstart.cloudera:10000/";
+String userName = "abc";
+String userPasswrd = "";
+con = DriverManager.getConnection(url, userName, userPasswrd);
+</code></pre></div>    </div>
+  </li>
+</ul>
+
 <h3 id="總結">總結</h3>
 <hr />
 <ul>
