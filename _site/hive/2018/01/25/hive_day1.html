@@ -199,6 +199,9 @@ INSERT INTO TABLE test.students_partition partition ( job )  select  *  from tes
 <span class="o">}</span>
 </code></pre></div>    </div>
   </li>
+  <li>如果 partition 數太多的話要再加上下列兩個參數，insert select 時跑 Map Reduce 時才不會出錯 : 
+util.setHiveConfProperties(“hive.exec.max.dynamic.partitions”, “3000”);
+util.setHiveConfProperties(“hive.exec.max.dynamic.partitions.pernode”, “3000”);</li>
 </ul>
 
 <h3 id="注意事項">注意事項</h3>

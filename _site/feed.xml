@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-02-27T18:15:27+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">kafka day 1</title><link href="http://localhost:4000/kafka/2018/02/09/kafka_day1.html" rel="alternate" type="text/html" title="kafka day 1 " /><published>2018-02-09T08:44:17+08:00</published><updated>2018-02-09T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/02/09/kafka_day1</id><content type="html" xml:base="http://localhost:4000/kafka/2018/02/09/kafka_day1.html">&lt;h3 id=&quot;下載-kafka&quot;&gt;下載 kafka&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-03-05T11:50:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">kafka day 1</title><link href="http://localhost:4000/kafka/2018/02/09/kafka_day1.html" rel="alternate" type="text/html" title="kafka day 1 " /><published>2018-02-09T08:44:17+08:00</published><updated>2018-02-09T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/02/09/kafka_day1</id><content type="html" xml:base="http://localhost:4000/kafka/2018/02/09/kafka_day1.html">&lt;h3 id=&quot;下載-kafka&quot;&gt;下載 kafka&lt;/h3&gt;
 
 &lt;h4 id=&quot;執行-kafka-server-&quot;&gt;執行 kafka server :&lt;/h4&gt;
 &lt;p&gt;./kafka-server-start.sh ../config/server.properties&lt;/p&gt;
@@ -290,6 +290,9 @@ INSERT INTO TABLE test.students_partition partition ( job )  select  *  from tes
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
+  &lt;li&gt;如果 partition 數太多的話要再加上下列兩個參數，insert select 時跑 Map Reduce 時才不會出錯 : 
+util.setHiveConfProperties(“hive.exec.max.dynamic.partitions”, “3000”);
+util.setHiveConfProperties(“hive.exec.max.dynamic.partitions.pernode”, “3000”);&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;注意事項&quot;&gt;注意事項&lt;/h3&gt;
