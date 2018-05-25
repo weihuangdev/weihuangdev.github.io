@@ -1,0 +1,23 @@
+---
+layout: post
+title:  "run hive script"
+date:   2018-03-19 11:44:17 +0800
+categories: hive
+---
+
+### run hive script
+可將 hive 語法用成 sql 檔 : 
+```
+create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;
+```
+
+再透過 hive -f create.sql 執行即可．
+
+
+
+### run hive sql command
+可將 hive -e 直接執行 hive 的 sql : 
+```
+hive -e "show tables in filedb"
+```
+

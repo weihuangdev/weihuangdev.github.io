@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-03-05T11:50:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">kafka day 1</title><link href="http://localhost:4000/kafka/2018/02/09/kafka_day1.html" rel="alternate" type="text/html" title="kafka day 1 " /><published>2018-02-09T08:44:17+08:00</published><updated>2018-02-09T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/02/09/kafka_day1</id><content type="html" xml:base="http://localhost:4000/kafka/2018/02/09/kafka_day1.html">&lt;h3 id=&quot;下載-kafka&quot;&gt;下載 kafka&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-25T14:15:43+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">run hive script</title><link href="http://localhost:4000/hive/2018/03/19/hive_day4.html" rel="alternate" type="text/html" title="run hive script" /><published>2018-03-19T11:44:17+08:00</published><updated>2018-03-19T11:44:17+08:00</updated><id>http://localhost:4000/hive/2018/03/19/hive_day4</id><content type="html" xml:base="http://localhost:4000/hive/2018/03/19/hive_day4.html">&lt;h3 id=&quot;run-hive-script&quot;&gt;run hive script&lt;/h3&gt;
+&lt;p&gt;可將 hive 語法用成 sql 檔 :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;再透過 hive -f create.sql 執行即可．&lt;/p&gt;
+
+&lt;h3 id=&quot;run-hive-sql-command&quot;&gt;run hive sql command&lt;/h3&gt;
+&lt;p&gt;可將 hive -e 直接執行 hive 的 sql :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hive -e &quot;show tables in filedb&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">run hive script 可將 hive 語法用成 sql 檔 : create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;</summary></entry><entry><title type="html">kafka day 1</title><link href="http://localhost:4000/kafka/2018/02/09/kafka_day1.html" rel="alternate" type="text/html" title="kafka day 1 " /><published>2018-02-09T08:44:17+08:00</published><updated>2018-02-09T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/02/09/kafka_day1</id><content type="html" xml:base="http://localhost:4000/kafka/2018/02/09/kafka_day1.html">&lt;h3 id=&quot;下載-kafka&quot;&gt;下載 kafka&lt;/h3&gt;
 
 &lt;h4 id=&quot;執行-kafka-server-&quot;&gt;執行 kafka server :&lt;/h4&gt;
 &lt;p&gt;./kafka-server-start.sh ../config/server.properties&lt;/p&gt;
@@ -30,7 +40,7 @@
 &lt;span class=&quot;go&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h4 id=&quot;start-consumer-to-receive-messages&quot;&gt;Start Consumer to Receive Messages&lt;/h4&gt;
+&lt;h4 id=&quot;start-consumer-to-receive-messagesoffset-存在-zookeeper&quot;&gt;Start Consumer to Receive Messages(offset 存在 zookeeper)&lt;/h4&gt;
 
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[cloudera@quickstart kafka_2.11-1.0.0]$&lt;/span&gt; ./bin/kafka-console-consumer.sh &lt;span class=&quot;nt&quot;&gt;--zookeeper&lt;/span&gt; localhost:2181 &lt;span class=&quot;nt&quot;&gt;-topic&lt;/span&gt; Hello-kafka &lt;span class=&quot;nt&quot;&gt;--from-beginning&lt;/span&gt;
 &lt;span class=&quot;go&quot;&gt;Using the ConsoleConsumer with old consumer is deprecated and will be removed in a future major release. Consider using the new consumer by passing [bootstrap-server] instead of [zookeeper].
@@ -1308,64 +1318,4 @@ Sample Code :&lt;/p&gt;
 };  
 channel.basicConsume(QUEUE_NAME, true, consumer);  
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;當 channel 關閉則該 consumer 則無法繼續接收訊息．&lt;/p&gt;</content><author><name></name></author><summary type="html">Establishing a solid connection to RabbitMQ 建立 Connection 程式 :</summary></entry><entry><title type="html">RabbitMQ day 2 (Message System)</title><link href="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html" rel="alternate" type="text/html" title="RabbitMQ day 2 (Message System)" /><published>2018-01-05T10:44:17+08:00</published><updated>2018-01-05T10:44:17+08:00</updated><id>http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2</id><content type="html" xml:base="http://localhost:4000/rabbitmq/2018/01/05/rabbitmq_day2.html">&lt;h3 id=&quot;message&quot;&gt;Message&lt;/h3&gt;
-&lt;p&gt;系統之間彼此交換訊息(message)，根據可靠行及同步可分為四個區塊，這邊列出四個代表 :&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;SMTP(Simple Mail Transfer Protocol)&lt;/li&gt;
-  &lt;li&gt;AMQP(Advanced Message Queuing Protocol)&lt;/li&gt;
-  &lt;li&gt;HTTP(HyperText Transfer Protocol)&lt;/li&gt;
-  &lt;li&gt;IIOP(Internet Inter-ORB Protocol)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_0.jpg&quot; alt=&quot;rabbitmq_day2_0.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;根據系統不一樣的需求，就會有不同交換訊息的設計．&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;request-response 型態 : 系統傳 request 給另一個系統等待回傳 response，一種 point-to-point 的方式&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_1.jpg&quot; alt=&quot;rabbitmq_day2_1.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;使用 Message Queue 非同步的設計，會有一個 publishers (producers) 發送 message 給 broker，broker 在將 message 傳給需要的 consumer．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_2.jpg&quot; alt=&quot;rabbitmq_day2_2.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;loosely coupled 的架構，publisher 跟 consumer 彼此之間不用知道對方在哪 :&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_3.jpg&quot; alt=&quot;rabbitmq_day2_3.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;這樣的設計有幾項優點 :&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;publisher 跟 consumer 的系統如果有損壞的，彼此間不影響．&lt;/li&gt;
-  &lt;li&gt;系統之間的效能不會彼此影響．&lt;/li&gt;
-  &lt;li&gt;publisher 跟 consumer 彼此不知道對方的位址及技術．&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;simple-mail-transfer-protocol-smtp&quot;&gt;Simple Mail Transfer Protocol (SMTP).&lt;/h3&gt;
-&lt;p&gt;e-mails 會發送(published)到一個 SMTP server，然後該 server 會再傳到另一個 SMTP server，直到傳到接收者的 email server．則 message 會被 queue 等待 consumer(POP3“Post Office Protocol 3”或IMAP) 來將 message 取走．在 SMTP publisher 不會知道 e-mail 最後送去哪，只會知道已成功送給 broker(SMTP server) 並且已初始化送出．&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_4.jpg&quot; alt=&quot;rabbitmq_day2_4.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;amqp&quot;&gt;AMQP&lt;/h3&gt;
-&lt;p&gt;RabbitMQ 是用 Erlang 這語言來實作 AMQP．AMQP (Advanced Message Queuing Protocol)，是一種協定，它保証可以傳達(reliable)且可非同步(async)．AMQP 有一些核心的概念 :&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Broker : 是一個中介的應用程式，接收 publisher 的 message 將它傳給 consumer 或下一個 broker&lt;/li&gt;
-  &lt;li&gt;Virtual host : 是在 broker 裡的一個虛擬區塊，用來隔離 publisher、consumer 及 AMQP 的結構，不同 Virtual host 不可共享彼此的資源(Exchange、queue)，為了安全的議題，預設是(/)．&lt;/li&gt;
-  &lt;li&gt;Connection : 指的是 TCP connection，連接於 publisher、consumer 和 broker．client disconnection 或網路、broker 掛掉時 connection 才會關閉．&lt;/li&gt;
-  &lt;li&gt;Channel : channel 會隔離特定的 client 和 broker，以至於它們不會互相影響．多個 Channel 可以成為一個 connection．&lt;/li&gt;
-  &lt;li&gt;Exchange : 會將 publisher 傳送的 message 做初始化找到對應的 routing rules 將 message 送到目的地．routing rules 包括 : direct (point-to-point), topic (publish-subscribe) 和 fanout (multicast)&lt;/li&gt;
-  &lt;li&gt;Queue : 這是 message 準備送到 consumer 的最後階段，單一訊息可被複製到多個 queue 裡，但由 Exchange 決定．&lt;/li&gt;
-  &lt;li&gt;Binding : 是一個介於 Exchange 及 Queue 的虛擬連線， routing key 怎麼做 binding 會根據 Exchange routing rules 決定．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/rabbitmq/rabbitmq_day2_5.jpg&quot; alt=&quot;rabbitmq_day2_5.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;p&gt;今天稍微了解了一下 Message System 的設計以及 AMQP 協定，這樣的架構感覺很彈性．&lt;/p&gt;</content><author><name></name></author><summary type="html">Message 系統之間彼此交換訊息(message)，根據可靠行及同步可分為四個區塊，這邊列出四個代表 : SMTP(Simple Mail Transfer Protocol) AMQP(Advanced Message Queuing Protocol) HTTP(HyperText Transfer Protocol) IIOP(Internet Inter-ORB Protocol)</summary></entry></feed>
+&lt;p&gt;當 channel 關閉則該 consumer 則無法繼續接收訊息．&lt;/p&gt;</content><author><name></name></author><summary type="html">Establishing a solid connection to RabbitMQ 建立 Connection 程式 :</summary></entry></feed>

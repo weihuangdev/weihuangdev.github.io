@@ -40,7 +40,7 @@ Config/server.properties
 
 ```
 
-#### Start Consumer to Receive Messages
+#### Start Consumer to Receive Messages(offset 存在 zookeeper)
 
 ```console
 [cloudera@quickstart kafka_2.11-1.0.0]$ ./bin/kafka-console-consumer.sh --zookeeper localhost:2181 -topic Hello-kafka --from-beginning

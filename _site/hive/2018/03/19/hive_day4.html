@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>kafka day 1 </title>
-  <meta name="description" content="下載 kafka">
+  <title>run hive script</title>
+  <meta name="description" content="run hive script 可將 hive 語法用成 sql 檔 : create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month ...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/kafka/2018/02/09/kafka_day1.html">
+  <link rel="canonical" href="http://localhost:4000/hive/2018/03/19/hive_day4.html">
   <link rel="alternate" type="application/rss+xml" title="Daniel&#39;s Blog" href="/feed.xml">
   
   
@@ -70,69 +70,34 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">kafka day 1 </h1>
+    <h1 class="post-title p-name" itemprop="name headline">run hive script</h1>
     <p class="post-meta">
-      <time class="dt-published" datetime="2018-02-09T08:44:17+08:00" itemprop="datePublished">
+      <time class="dt-published" datetime="2018-03-19T11:44:17+08:00" itemprop="datePublished">
         
-        Feb 9, 2018
+        Mar 19, 2018
       </time>
       </p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h3 id="下載-kafka">下載 kafka</h3>
+    <h3 id="run-hive-script">run hive script</h3>
+<p>可將 hive 語法用成 sql 檔 :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;
+</code></pre></div></div>
 
-<h4 id="執行-kafka-server-">執行 kafka server :</h4>
-<p>./kafka-server-start.sh ../config/server.properties</p>
+<p>再透過 hive -f create.sql 執行即可．</p>
 
-<h3 id="使用-single-node-single-broker-configuration-測試">使用 Single Node-Single Broker Configuration 測試</h3>
-
-<h4 id="create-topic-hello-kafka-">create topic Hello-kafka :</h4>
-
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[cloudera@quickstart kafka_2.11-1.0.0]$</span> ./bin/kafka-topics.sh <span class="nt">--create</span> <span class="nt">--zookeeper</span> localhost:2181 <span class="nt">--replication-factor</span> 1 <span class="nt">--partitions</span> 1 <span class="nt">--topic</span> Hello-kafka
-<span class="go">Created topic "Hello-kafka".
-</span></code></pre></div></div>
-<p>created a topic named “Hello-kafka” with a single partition and one replica factor.</p>
-
-<h4 id="list-topics">list topics</h4>
-
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[cloudera@quickstart kafka_2.11-1.0.0]$</span> ./bin/kafka-topics.sh <span class="nt">--list</span> <span class="nt">--zookeeper</span> localhost:2181
-<span class="go">Hello-kafka
-</span></code></pre></div></div>
-
-<h4 id="start-producer-to-send-messages">Start Producer to Send Messages</h4>
-
-<p>Config/server.properties</p>
-
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[cloudera@quickstart kafka_2.11-1.0.0]$</span> ./bin/kafka-console-producer.sh <span class="nt">--broker-list</span> localhost:9092 <span class="nt">--topic</span> Hello-kafka
-<span class="gp">&gt;</span>Hello
-<span class="gp">&gt;</span>My first Message
-<span class="gp">&gt;</span>My second Message
-<span class="gp">&gt;</span>
-<span class="go">
-</span></code></pre></div></div>
-
-<h4 id="start-consumer-to-receive-messagesoffset-存在-zookeeper">Start Consumer to Receive Messages(offset 存在 zookeeper)</h4>
-
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[cloudera@quickstart kafka_2.11-1.0.0]$</span> ./bin/kafka-console-consumer.sh <span class="nt">--zookeeper</span> localhost:2181 <span class="nt">-topic</span> Hello-kafka <span class="nt">--from-beginning</span>
-<span class="go">Using the ConsoleConsumer with old consumer is deprecated and will be removed in a future major release. Consider using the new consumer by passing [bootstrap-server] instead of [zookeeper].
-Hello
-My first Message
-My second Message
-</span></code></pre></div></div>
-<h4 id="delete-a-topic">delete a topic</h4>
-
-<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[cloudera@quickstart kafka_2.11-1.0.0]$</span> bin/kafka-topics.sh <span class="nt">--zookeeper</span> localhost:2181 <span class="nt">--delete</span> <span class="nt">--topic</span> Hello-kafka
-<span class="go">Topic Hello-kafka is marked for deletion.
-Note: This will have no impact if delete.topic.enable is not set to true.
-</span></code></pre></div></div>
+<h3 id="run-hive-sql-command">run hive sql command</h3>
+<p>可將 hive -e 直接執行 hive 的 sql :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hive -e "show tables in filedb"
+</code></pre></div></div>
 
 
   </div>
 
   
 
-  <a class="u-url" href="/kafka/2018/02/09/kafka_day1.html" hidden></a>
+  <a class="u-url" href="/hive/2018/03/19/hive_day4.html" hidden></a>
 </article>
 
       </div>
