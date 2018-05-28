@@ -165,6 +165,41 @@ Note: This will have no impact if delete.topic.enable is not set to true.
 -rwxr-xr-x 1 root root 671 Oct  6  2017 kafka-sentry
 -rwxr-xr-x 1 root root 671 Oct  6  2017 kafka-topics
 </span></code></pre></div></div>
+<p>這裡也有，kafka-connect 的 sh 也在這 :</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[root@daniel-3-test-master1 ~]#</span> ll /opt/cloudera/parcels/KAFKA-3.0.0-1.3.0.0.p0.40/lib/kafka/bin
+<span class="go">total 124
+-rwxr-xr-x 1 root root 1335 Oct  6  2017 connect-distributed.sh
+-rwxr-xr-x 1 root root 1332 Oct  6  2017 connect-standalone.sh
+-rwxr-xr-x 1 root root  861 Oct  6  2017 kafka-acls.sh
+-rwxr-xr-x 1 root root  873 Oct  6  2017 kafka-broker-api-versions.sh
+-rwxr-xr-x 1 root root  864 Oct  6  2017 kafka-configs.sh
+-rwxr-xr-x 1 root root  945 Oct  6  2017 kafka-console-consumer.sh
+-rwxr-xr-x 1 root root  944 Oct  6  2017 kafka-console-producer.sh
+-rwxr-xr-x 1 root root  871 Oct  6  2017 kafka-consumer-groups.sh
+-rwxr-xr-x 1 root root  872 Oct  6  2017 kafka-consumer-offset-checker.sh
+-rwxr-xr-x 1 root root  948 Oct  6  2017 kafka-consumer-perf-test.sh
+-rwxr-xr-x 1 root root  869 Oct  6  2017 kafka-delete-records.sh
+-rwxr-xr-x 1 root root  862 Oct  6  2017 kafka-mirror-maker.sh
+-rwxr-xr-x 1 root root  886 Oct  6  2017 kafka-preferred-replica-election.sh
+-rwxr-xr-x 1 root root  959 Oct  6  2017 kafka-producer-perf-test.sh
+-rwxr-xr-x 1 root root  874 Oct  6  2017 kafka-reassign-partitions.sh
+-rwxr-xr-x 1 root root  868 Oct  6  2017 kafka-replay-log-producer.sh
+-rwxr-xr-x 1 root root  874 Oct  6  2017 kafka-replica-verification.sh
+-rwxr-xr-x 1 root root 7027 Oct  6  2017 kafka-run-class.sh
+-rwxr-xr-x 1 root root 1961 Oct  6  2017 kafka-sentry.sh
+-rwxr-xr-x 1 root root 1394 Oct  6  2017 kafka-server-start.sh
+-rwxr-xr-x 1 root root  975 Oct  6  2017 kafka-server-stop.sh
+-rwxr-xr-x 1 root root  870 Oct  6  2017 kafka-simple-consumer-shell.sh
+-rwxr-xr-x 1 root root  945 Oct  6  2017 kafka-streams-application-reset.sh
+-rwxr-xr-x 1 root root  863 Oct  6  2017 kafka-topics.sh
+-rwxr-xr-x 1 root root  958 Oct  6  2017 kafka-verifiable-consumer.sh
+-rwxr-xr-x 1 root root  958 Oct  6  2017 kafka-verifiable-producer.sh
+-rwxr-xr-x 1 root root  867 Oct  6  2017 zookeeper-security-migration.sh
+-rwxr-xr-x 1 root root 1393 Oct  6  2017 zookeeper-server-start.sh
+-rwxr-xr-x 1 root root  978 Oct  6  2017 zookeeper-server-stop.sh
+-rwxr-xr-x 1 root root  968 Oct  6  2017 zookeeper-shell.sh
+</span></code></pre></div></div>
 
 <p>測試指令 :</p>
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">kafka-topics --zookeeper 192.168.61.105:2181 --list
@@ -301,9 +336,19 @@ kafka-console-consumer --bootstrap-server 192.168.61.105:9092 --topic daniel-top
 <p>Keep in mind that the number of partitions for a topic can only be increased, never decreased. This means that if a topic needs to have fewer partitions than num.partitions, care will need to be taken to manually create the topic.</p>
 
 <ul>
-  <li>log.retention.ms
-<img src="http://localhost:4000/assets/kafka/day1/kafka_day1_5.jpg" alt="kafka_day1_5.jpg" /></li>
+  <li>
+    <p>log.retention.ms
+kafka 保留 message 多久
+<img src="http://localhost:4000/assets/kafka/day1/kafka_day1_5.jpg" alt="kafka_day1_5.jpg" /></p>
+  </li>
+  <li>
+    <p>log.retention.bytes
+kafka 保留 message 可以到多大，假設設定 1 G 則等於 1 G * partition 個數(假設8)則等於可以保留 8G．-1等於沒限制．
+<img src="http://localhost:4000/assets/kafka/day1/kafka_day1_6.jpg" alt="kafka_day1_6.jpg" /></p>
+  </li>
 </ul>
+
+<p>如果有設定 log.retention.ms 及 og.retention.bytes 只要符合其中一個項目 message 就會被 delete．</p>
 
 
   </div>

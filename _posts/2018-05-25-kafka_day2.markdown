@@ -1,0 +1,9 @@
+---
+layout: post
+title:  "kafka day 2 "
+date:   2018-05-25 08:44:17 +0800
+categories: kafka
+---
+
+### producer & consumer
+![kafka_day2_1.jpg]({{ "/assets/kafka/day2/kafka_day2_1.jpg" | absolute_url }})
