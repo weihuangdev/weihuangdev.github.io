@@ -1,4 +1,397 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T19:35:32+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">kafka day 3</title><link href="http://localhost:4000/kafka/2018/05/28/kafka_day3.html" rel="alternate" type="text/html" title="kafka day 3 " /><published>2018-05-28T08:44:17+08:00</published><updated>2018-05-28T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/05/28/kafka_day3</id><content type="html" xml:base="http://localhost:4000/kafka/2018/05/28/kafka_day3.html">&lt;h3 id=&quot;write-a-custom-serializer&quot;&gt;Write A Custom Serializer&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-29T20:02:27+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">kafka day 5</title><link href="http://localhost:4000/kafka/2018/05/29/kafka_day5.html" rel="alternate" type="text/html" title="kafka day 5 " /><published>2018-05-29T09:44:17+08:00</published><updated>2018-05-29T09:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/05/29/kafka_day5</id><content type="html" xml:base="http://localhost:4000/kafka/2018/05/29/kafka_day5.html">&lt;h3 id=&quot;kafka-serializing-using-apache-avro&quot;&gt;kafka serializing Using Apache Avro&lt;/h3&gt;
+&lt;p&gt;架構圖 : 
+&lt;img src=&quot;http://localhost:4000/assets/kafka/day5/kafka_day5_1.jpg&quot; alt=&quot;kafka_day5_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;準備一台-schema-registry到-confluent-platform-下載使用-confluent-411&quot;&gt;準備一台 Schema Registry，到 Confluent Platform 下載，使用 confluent-4.1.1&lt;/h4&gt;
+&lt;p&gt;目錄結構 : 
+&lt;img src=&quot;http://localhost:4000/assets/kafka/day5/kafka_day5_2.jpg&quot; alt=&quot;kafka_day5_2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考網址：&lt;br /&gt;
+&lt;a href=&quot;https://www.confluent.io/download/&quot;&gt;Confluent Platform&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;修改confluent-411裡的設定檔&quot;&gt;修改confluent-4.1.1裡的設定檔&lt;/h3&gt;
+&lt;h4 id=&quot;confluent-411etcschema-registryschema-registryproperties&quot;&gt;confluent-4.1.1/etc/schema-registry/schema-registry.properties&lt;/h4&gt;
+&lt;p&gt;這邊修改 zookeeper 的 url :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kafkastore.connection.url=192.168.61.105:2181
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;改好後執行啟動指令要給設定檔不然會run不起來&quot;&gt;改好後執行啟動指令(要給設定檔不然會run不起來)&lt;/h3&gt;
+&lt;h4 id=&quot;schema-registry-start-etcschema-registryschema-registryproperties&quot;&gt;./schema-registry-start ../etc/schema-registry/schema-registry.properties&lt;/h4&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt; daniel@Danielde-MBP &amp;gt;&lt;/span&gt; /Volumes/Transcend/kafka-test/confluent-4.1.1/bin &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ./schema-registry-start ../etc/schema-registry/schema-registry.properties
+&lt;span class=&quot;go&quot;&gt;[2018-05-29 19:24:19,150] INFO SchemaRegistryConfig values:
+	metric.reporters = []
+	kafkastore.sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	response.mediatype.default = application/vnd.schemaregistry.v1+json
+	kafkastore.ssl.trustmanager.algorithm = PKIX
+	authentication.realm =
+	ssl.keystore.type = JKS
+	kafkastore.topic = _schemas
+	metrics.jmx.prefix = kafka.schema.registry
+	kafkastore.ssl.enabled.protocols = TLSv1.2,TLSv1.1,TLSv1
+	kafkastore.topic.replication.factor = 3
+	ssl.truststore.password = [hidden]
+	kafkastore.timeout.ms = 500
+	host.name = danielde-mbp.is-land.taipei
+	kafkastore.bootstrap.servers = []
+	schema.registry.zk.namespace = schema_registry
+	kafkastore.sasl.kerberos.ticket.renew.window.factor = 0.8
+	kafkastore.sasl.kerberos.service.name =
+	schema.registry.resource.extension.class = []
+	ssl.endpoint.identification.algorithm =
+	compression.enable = false
+	kafkastore.ssl.truststore.type = JKS
+	avro.compatibility.level = backward
+	kafkastore.ssl.protocol = TLS
+	kafkastore.ssl.provider =
+	kafkastore.ssl.truststore.location =
+	response.mediatype.preferred = [application/vnd.schemaregistry.v1+json, application/vnd.schemaregistry+json, application/json]
+	kafkastore.ssl.keystore.type = JKS
+	authentication.skip.paths = []
+	ssl.truststore.type = JKS
+	kafkastore.ssl.truststore.password = [hidden]
+	access.control.allow.origin =
+	ssl.truststore.location =
+	ssl.keystore.password = [hidden]
+	port = 8081
+	kafkastore.ssl.keystore.location =
+	metrics.tag.map = {}
+	master.eligibility = true
+	ssl.client.auth = false
+	kafkastore.ssl.keystore.password = [hidden]
+	kafkastore.security.protocol = PLAINTEXT
+	ssl.trustmanager.algorithm =
+	authentication.method = NONE
+	request.logger.name = io.confluent.rest-utils.requests
+	ssl.key.password = [hidden]
+	kafkastore.zk.session.timeout.ms = 30000
+	kafkastore.sasl.mechanism = GSSAPI
+	kafkastore.sasl.kerberos.ticket.renew.jitter = 0.05
+	kafkastore.ssl.key.password = [hidden]
+	zookeeper.set.acl = false
+	schema.registry.inter.instance.protocol = http
+	authentication.roles = [*]
+	metrics.num.samples = 2
+	ssl.protocol = TLS
+	schema.registry.group.id = schema-registry
+	kafkastore.ssl.keymanager.algorithm = SunX509
+	kafkastore.connection.url = 192.168.61.105:2181
+	debug = false
+	listeners = [http://0.0.0.0:8081]
+	kafkastore.group.id =
+	ssl.provider =
+	ssl.enabled.protocols = []
+	shutdown.graceful.ms = 1000
+	ssl.keystore.location =
+	ssl.cipher.suites = []
+	kafkastore.ssl.endpoint.identification.algorithm =
+	kafkastore.ssl.cipher.suites =
+	access.control.allow.methods =
+	kafkastore.sasl.kerberos.min.time.before.relogin = 60000
+	ssl.keymanager.algorithm =
+	metrics.sample.window.ms = 30000
+	kafkastore.init.timeout.ms = 60000
+ (io.confluent.kafka.schemaregistry.rest.SchemaRegistryConfig:179)
+[2018-05-29 19:24:19,192] INFO Logging initialized @705ms (org.eclipse.jetty.util.log:186)
+[2018-05-29 19:24:19,792] INFO Initializing KafkaStore with broker endpoints: PLAINTEXT://daniel-3-test-master1.is-land.taipei:9092 (io.confluent.kafka.schemaregistry.storage.KafkaStore:103)
+[2018-05-29 19:24:20,197] INFO Validating schemas topic _schemas (io.confluent.kafka.schemaregistry.storage.KafkaStore:228)
+[2018-05-29 19:24:20,203] WARN The replication factor of the schema topic _schemas is less than the desired one of 3. If this is a production environment, it's crucial to add more brokers and increase the replication factor of the topic. (io.confluent.kafka.schemaregistry.storage.KafkaStore:242)
+[2018-05-29 19:24:20,302] INFO Initialized last consumed offset to -1 (io.confluent.kafka.schemaregistry.storage.KafkaStoreReaderThread:138)
+[2018-05-29 19:24:20,303] INFO [kafka-store-reader-thread-_schemas]: Starting (io.confluent.kafka.schemaregistry.storage.KafkaStoreReaderThread:66)
+[2018-05-29 19:24:20,385] INFO Wait to catch up until the offset of the last message at 5 (io.confluent.kafka.schemaregistry.storage.KafkaStore:277)
+[2018-05-29 19:24:20,396] INFO Joining schema registry with Zookeeper-based coordination (io.confluent.kafka.schemaregistry.storage.KafkaSchemaRegistry:212)
+[2018-05-29 19:24:20,410] INFO Created schema registry namespace 192.168.61.105:2181/schema_registry (io.confluent.kafka.schemaregistry.masterelector.zookeeper.ZookeeperMasterElector:161)
+[2018-05-29 19:24:20,454] INFO Successfully elected the new master: {&quot;host&quot;:&quot;danielde-mbp.is-land.taipei&quot;,&quot;port&quot;:8081,&quot;master_eligibility&quot;:true,&quot;scheme&quot;:&quot;http&quot;,&quot;version&quot;:1} (io.confluent.kafka.schemaregistry.masterelector.zookeeper.ZookeeperMasterElector:102)
+[2018-05-29 19:24:20,471] INFO Wait to catch up until the offset of the last message at 6 (io.confluent.kafka.schemaregistry.storage.KafkaStore:277)
+[2018-05-29 19:24:20,471] INFO Successfully elected the new master: {&quot;host&quot;:&quot;danielde-mbp.is-land.taipei&quot;,&quot;port&quot;:8081,&quot;master_eligibility&quot;:true,&quot;scheme&quot;:&quot;http&quot;,&quot;version&quot;:1} (io.confluent.kafka.schemaregistry.masterelector.zookeeper.ZookeeperMasterElector:102)
+[2018-05-29 19:24:20,553] INFO Adding listener: http://0.0.0.0:8081 (io.confluent.rest.Application:190)
+[2018-05-29 19:24:20,600] INFO jetty-9.2.24.v20180105 (org.eclipse.jetty.server.Server:327)
+[2018-05-29 19:24:21,081] INFO HV000001: Hibernate Validator 5.1.3.Final (org.hibernate.validator.internal.util.Version:27)
+[2018-05-29 19:24:21,209] INFO Started o.e.j.s.ServletContextHandler@67304a40{/,null,AVAILABLE} (org.eclipse.jetty.server.handler.ContextHandler:744)
+[2018-05-29 19:24:21,219] INFO Started NetworkTrafficServerConnector@71812481{HTTP/1.1}{0.0.0.0:8081} (org.eclipse.jetty.server.NetworkTrafficServerConnector:266)
+[2018-05-29 19:24:21,220] INFO Started @2740ms (org.eclipse.jetty.server.Server:379)
+[2018-05-29 19:24:21,220] INFO Server started, listening for requests... (io.confluent.kafka.schemaregistry.rest.SchemaRegistryMain:45)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;開瀏覽器查看&quot;&gt;開瀏覽器查看&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/kafka/day5/kafka_day5_3.jpg&quot; alt=&quot;kafka_day5_3.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;接著準備-producer-及-consumer&quot;&gt;接著準備 producer 及 consumer&lt;/h3&gt;
+
+&lt;h4 id=&quot;下載-jar&quot;&gt;下載 jar&lt;/h4&gt;
+&lt;p&gt;由於會用到 io.confluent.kafka.serializers.KafkaAvroDeserializer 但 confluent 的 repository 抓不到，
+後來發現在 avro-kcql-0.5.jar 裡面也有．&lt;/p&gt;
+
+&lt;h4 id=&quot;myavroproducerjava&quot;&gt;MyAvroProducer.java&lt;/h4&gt;
+&lt;p&gt;要給 schema.registry.url 的位置，及設定 KafkaAvroSerializer&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Properties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.concurrent.ExecutionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.producer.KafkaProducer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.producer.Producer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.producer.ProducerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.producer.RecordMetadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.mykafka.bean.LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.mykafka.util.EventGenerator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyAvroProducer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+	&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;Properties&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;props&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Properties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;bootstrap.servers&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;192.168.61.105:9092&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;acks&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;all&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;retries&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;key.serializer&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;org.apache.kafka.common.serialization.StringSerializer&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;value.serializer&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;io.confluent.kafka.serializers.KafkaAvroSerializer&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;schema.registry.url&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;http://localhost:8081/&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;topic&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;my-avro-topic-1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+		&lt;span class=&quot;n&quot;&gt;Producer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;producer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;KafkaProducer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventGenerator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getNext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;ProducerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProducerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;topic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getIp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+			&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;send ip : &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getIp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; , url : &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;RecordMetadata&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;producer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+				&lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;producer set offset : &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InterruptedException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ExecutionException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;producer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;flush&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;producer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;myavroconsumerjava&quot;&gt;MyAvroConsumer.java&lt;/h4&gt;
+&lt;p&gt;要給 schema.registry.url 的位置，及設定 KafkaAvroDeserializer&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Properties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.avro.generic.GenericRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.consumer.Consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.consumer.ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.consumer.ConsumerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.consumer.ConsumerRecords&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.consumer.KafkaConsumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyAvroConsumer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+	&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;Properties&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;props&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Properties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;BOOTSTRAP_SERVERS_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;192.168.61.105:9092&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;GROUP_ID_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;group1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;KEY_DESERIALIZER_CLASS_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.apache.kafka.common.serialization.StringDeserializer&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;VALUE_DESERIALIZER_CLASS_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;io.confluent.kafka.serializers.KafkaAvroDeserializer&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;schema.registry.url&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;http://localhost:8081&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;AUTO_OFFSET_RESET_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;earliest&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+		&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;topic&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;my-avro-topic-1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;KafkaConsumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;subscribe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;asList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;topic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+
+		&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;ConsumerRecords&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;records&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;poll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+				&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;records&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+					&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;offset = %d, key = %s, value = %s \n&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+				&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;測試畫面
+&lt;img src=&quot;http://localhost:4000/assets/kafka/day5/kafka_day5_4.jpg&quot; alt=&quot;kafka_day5_4.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;可利用-restful-api-對-schema-registry-操作&quot;&gt;可利用 restful api 對 Schema Registry 操作&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;查看 subjects(http://localhost:8081/subjects/) : 
+&lt;img src=&quot;http://localhost:4000/assets/kafka/day5/kafka_day5_5.jpg&quot; alt=&quot;kafka_day5_5.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;查看 subjects version(http://localhost:8081/subjects/my-avro-topic-1-value/versions) : 
+&lt;img src=&quot;http://localhost:4000/assets/kafka/day5/kafka_day5_6.jpg&quot; alt=&quot;kafka_day5_6.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;查看 subjects version 的內容(http://localhost:8081/subjects/my-avro-topic-1-value/versions/1) : 
+&lt;img src=&quot;http://localhost:4000/assets/kafka/day5/kafka_day5_7.jpg&quot; alt=&quot;kafka_day5_7.jpg&quot; /&gt;
+整理一下結構如下 :
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;{&quot;subject&quot;:&quot;my-avro-topic-1-value&quot;,
+ &quot;version&quot;:1,
+ &quot;id&quot;:21,
+ &quot;schema&quot;:&quot;{
+\&quot;type\&quot;:\&quot;record\&quot;,
+\&quot;name\&quot;:\&quot;LogLine\&quot;,
+\&quot;namespace\&quot;:\&quot;com.mykafka.bean\&quot;,
+\&quot;fields\&quot;:[
+  {\&quot;name\&quot;:\&quot;ip\&quot;,\&quot;type\&quot;:\&quot;string\&quot;},
+  {\&quot;name\&quot;:\&quot;timestamp\&quot;,\&quot;type\&quot;:\&quot;long\&quot;},
+  {\&quot;name\&quot;:\&quot;url\&quot;,\&quot;type\&quot;:\&quot;string\&quot;},
+  {\&quot;name\&quot;:\&quot;referrer\&quot;,\&quot;type\&quot;:\&quot;string\&quot;},
+  {\&quot;name\&quot;:\&quot;useragent\&quot;,\&quot;type\&quot;:\&quot;string\&quot;},
+  {\&quot;name\&quot;:\&quot;sessionid\&quot;,\&quot;type\&quot;:[\&quot;null\&quot;,\&quot;int\&quot;],\&quot;default\&quot;:null}
+]}&quot;
+}
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;查看 subjects version 的 schema 結構(http://localhost:8081/subjects/my-avro-topic-1-value/versions/1/schema) : 
+&lt;img src=&quot;http://localhost:4000/assets/kafka/day5/kafka_day5_7.jpg&quot; alt=&quot;kafka_day5_7.jpg&quot; /&gt;
+schema 結構就跟前一篇自己定義avro檔案(LogLine.avro)一樣，producer 及 consumer 就是透過這 schema 來解析 json 格式 :
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;{&quot;type&quot;:&quot;record&quot;,
+ &quot;name&quot;:&quot;LogLine&quot;,
+ &quot;namespace&quot;:&quot;com.mykafka.bean&quot;,
+ &quot;fields&quot;:[
+{&quot;name&quot;:&quot;ip&quot;,&quot;type&quot;:&quot;string&quot;},
+{&quot;name&quot;:&quot;timestamp&quot;,&quot;type&quot;:&quot;long&quot;},
+{&quot;name&quot;:&quot;url&quot;,&quot;type&quot;:&quot;string&quot;},
+{&quot;name&quot;:&quot;referrer&quot;,&quot;type&quot;:&quot;string&quot;},
+{&quot;name&quot;:&quot;useragent&quot;,&quot;type&quot;:&quot;string&quot;},
+{&quot;name&quot;:&quot;sessionid&quot;,&quot;type&quot;:[&quot;null&quot;,&quot;int&quot;],&quot;default&quot;:null}
+]
+}
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;後續還有 update 或 delete 的功能可以試試．&lt;/p&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;參考網址：&lt;br /&gt;
+https://docs.confluent.io/current/schema-registry/docs/api.html#post–subjects-(string-&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">kafka serializing Using Apache Avro 架構圖 :</summary></entry><entry><title type="html">kafka day 4</title><link href="http://localhost:4000/kafka/2018/05/29/kafka_day4.html" rel="alternate" type="text/html" title="kafka day 4 " /><published>2018-05-29T08:44:17+08:00</published><updated>2018-05-29T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/05/29/kafka_day4</id><content type="html" xml:base="http://localhost:4000/kafka/2018/05/29/kafka_day4.html">&lt;h3 id=&quot;apache-avro-介紹&quot;&gt;apache avro 介紹&lt;/h3&gt;
+&lt;h4 id=&quot;pomxml&quot;&gt;pom.xml&lt;/h4&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.avro&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;avro&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.8.1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;準備一個-loglineavro-定義-json-的-schema-格式&quot;&gt;準備一個 LogLine.avro 定義 json 的 schema 格式&lt;/h4&gt;
+&lt;p&gt;namespace 會對應到 java 的 package 名稱，name 就是 java 的 class 名稱，fields 就是欄位資訊&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{&quot;namespace&quot;: &quot;com.mykafka.bean&quot;,
+  &quot;type&quot;: &quot;record&quot;,
+  &quot;name&quot;: &quot;LogLine&quot;,
+  &quot;fields&quot;: [
+    {&quot;name&quot;: &quot;ip&quot;, &quot;type&quot;: &quot;string&quot;},
+    {&quot;name&quot;: &quot;timestamp&quot;,  &quot;type&quot;: &quot;long&quot;},
+    {&quot;name&quot;: &quot;url&quot;,  &quot;type&quot;: &quot;string&quot;},
+    {&quot;name&quot;: &quot;referrer&quot;,  &quot;type&quot;: &quot;string&quot;},
+    {&quot;name&quot;: &quot;useragent&quot;,  &quot;type&quot;: &quot;string&quot;},
+    {&quot;name&quot;: &quot;sessionid&quot;,  &quot;type&quot;: [&quot;null&quot;,&quot;int&quot;], &quot;default&quot;: null}
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;在使用-avro-tools-181jar-build-出該-entity-&quot;&gt;在使用 avro-tools-1.8.1.jar build 出該 entity :&lt;/h4&gt;
+&lt;p&gt;java -jar avro-tools-1.8.1.jar compile schema {avsc檔位置} {entity要產生的目錄}&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MBP &amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /Volumes/Transcend/workspace/mykafkademo
+&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MBP &amp;gt;&lt;/span&gt; /Volumes/Transcend/workspace/mykafkademo &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;lib
+&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MBP &amp;gt;&lt;/span&gt; /Volumes/Transcend/workspace/mykafkademo/lib &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ll
+&lt;span class=&quot;go&quot;&gt;total 90880
+-rwxrwxrwx  1 daniel  staff    11M  5 29 17:46 avro-kcql-0.5.jar
+-rwxrwxrwx  1 daniel  staff    33M  5 29 15:39 avro-tools-1.8.1.jar
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt; daniel@Danielde-MBP &amp;gt;&lt;/span&gt; /Volumes/Transcend/workspace/mykafkademo/lib &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; java &lt;span class=&quot;nt&quot;&gt;-jar&lt;/span&gt; avro-tools-1.8.1.jar compile schema ../src/main/resources/LogLine.avsc &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Input files to compile:
+  ../src/main/resources/LogLine.avsc
+log4j:WARN No appenders could be found for logger (AvroVelocityLogChute).
+log4j:WARN Please initialize the log4j system properly.
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#&lt;/span&gt;noconfig &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;more info.
+&lt;span class=&quot;gp&quot;&gt; daniel@Danielde-MBP &amp;gt;&lt;/span&gt; /Volumes/Transcend/workspace/mykafkademo/lib &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ll
+&lt;span class=&quot;go&quot;&gt;total 91136
+-rwxrwxrwx  1 daniel  staff    11M  5 29 17:46 avro-kcql-0.5.jar
+-rwxrwxrwx  1 daniel  staff    33M  5 29 15:39 avro-tools-1.8.1.jar
+drwxrwxrwx  1 daniel  staff   128K  5 29 18:45 com
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/kafka/day4/kafka_day4_1.jpg&quot; alt=&quot;kafka_day4_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;myarvogenaraterjava&quot;&gt;MyArvoGenarater.java&lt;/h4&gt;
+&lt;p&gt;將實體 serialize avro 檔案存放&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.IOException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.avro.file.DataFileWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.avro.io.DatumWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.avro.specific.SpecificDatumWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.mykafka.bean.LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyArvoGenarater&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+	&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;logLine1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;logLine1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setIp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;111&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;logLine1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setTimestamp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getSysTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;logLine1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;url1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;logLine1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setReferrer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ref1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;logLine1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setUseragent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;agent1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;logLine1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setSessionid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;logLine2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;222&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getSysTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;url2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ref2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;agent2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;logLine3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setIp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;333&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setReferrer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ref3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setSessionid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setTimestamp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getSysTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;url3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setUseragent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;agent3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;DatumWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userDatumWriter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SpecificDatumWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;DataFileWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataFileWriter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DataFileWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userDatumWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;dataFileWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logLine1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSchema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/Volumes/Transcend/workspace/mykafkademo/avrofiles/logLine.avro&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;dataFileWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logLine1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;dataFileWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logLine2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;dataFileWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logLine3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;dataFileWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IOException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+	
+	&lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;long&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getSysTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行後產生的檔案 : 
+&lt;img src=&quot;http://localhost:4000/assets/kafka/day4/kafka_day4_2.jpg&quot; alt=&quot;kafka_day4_2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;myarvoreaderjava&quot;&gt;MyArvoReader.java&lt;/h4&gt;
+&lt;p&gt;將 avro 檔案 deserialize 成 java 的 entity :&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;mykafka&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;arvo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.IOException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.avro.file.DataFileReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.avro.io.DatumReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.avro.specific.SpecificDatumReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.mykafka.bean.LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyArvoReader&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+	&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;avroFile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/Volumes/Transcend/workspace/mykafkademo/avrofiles/logLine.avro&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;DatumReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLineDatumReader&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SpecificDatumReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;DataFileReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataFileReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;dataFileReader&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DataFileReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;avroFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLineDatumReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+			&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dataFileReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hasNext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataFileReader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+				&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LogLine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IOException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;e1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;測試畫面
+&lt;img src=&quot;http://localhost:4000/assets/kafka/day4/kafka_day4_3.jpg&quot; alt=&quot;kafka_day4_3.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">apache avro 介紹 pom.xml</summary></entry><entry><title type="html">kafka day 3</title><link href="http://localhost:4000/kafka/2018/05/28/kafka_day3.html" rel="alternate" type="text/html" title="kafka day 3 " /><published>2018-05-28T08:44:17+08:00</published><updated>2018-05-28T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/05/28/kafka_day3</id><content type="html" xml:base="http://localhost:4000/kafka/2018/05/28/kafka_day3.html">&lt;h3 id=&quot;write-a-custom-serializer&quot;&gt;Write A Custom Serializer&lt;/h3&gt;
 &lt;h4 id=&quot;pomxml&quot;&gt;pom.xml&lt;/h4&gt;
 
 &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
@@ -1052,202 +1445,4 @@ res0: Int = 10
 &lt;hr /&gt;
 &lt;ul&gt;
   &lt;li&gt;在使用 for 與 recursion 時，也同時顯現了處理一般 data 與 stream-data 的差異，因為使用 for 會有個界線值比如說 list.size() 但 recursion 時會一直遞迴直到沒有資料了，而 stream-data 會一直傳輸很適合使用 recursion 來處理，java 的 iterable 也類似．&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">程式範例 : 小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．</summary></entry><entry><title type="html">yarn day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/yarn/2018/01/12/yarn_day1.html" rel="alternate" type="text/html" title="yarn day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/yarn/2018/01/12/yarn_day1</id><content type="html" xml:base="http://localhost:4000/yarn/2018/01/12/yarn_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
-&lt;p&gt;用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配．
-它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools．
-一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．&lt;/p&gt;
-
-&lt;h3 id=&quot;configuration-set&quot;&gt;configuration set&lt;/h3&gt;
-&lt;p&gt;用來設定分配資源，不同 pool 可定義不同的 configuration set&lt;/p&gt;
-
-&lt;h3 id=&quot;scheduling-rule&quot;&gt;scheduling rule&lt;/h3&gt;
-&lt;p&gt;當 configuration set 被 active 這設定會每小時 update 一次&lt;/p&gt;
-
-&lt;h3 id=&quot;scheduling-policy&quot;&gt;scheduling policy&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Dominant Resource Fairness (DRF) (default) :&lt;br /&gt;
-Fair Scheduler 的延伸，不只基於 memory 連 CPU 都會加入來公平分配．&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fair Scheduler (FAIR) :&lt;br /&gt;
-基於 memory 將資源平均分配給 job．&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;First-In, First-Out (FIFO) :&lt;br /&gt;
-先進來的 job 先執行，執行完後才可執行下一個．&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;demo-fifo-scheduling-policy&quot;&gt;DEMO FIFO scheduling policy&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;create resource pool&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_1.jpg&quot; alt=&quot;yarn_day1_1.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;設定 configuration set&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_2.jpg&quot; alt=&quot;yarn_day1_2.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;選擇 scheduling policy ，這邊設定 FIFO&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_3.jpg&quot; alt=&quot;yarn_day1_3.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;resource pool 建立起來後再 refresh :&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_4.jpg&quot; alt=&quot;yarn_day1_4.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;執行 exmple jar&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;先到 /usr/lib/hadoop-mapreduce 底下找到 exmples 的 jar．然後執行下列指令，執行時指定 queue name (-Dmapred.job.queue.name=mypool)剛剛建立的 mypool ，同時送出 3 次命令 :&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hadoop jar hadoop-mapreduce-examples.jar pi -Dmapred.job.queue.name=mypool 10 100
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果是使用 spark 則是加上參數(–conf “spark.yarn.queue=mypool”) :&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark-submit --principal kduser --keytab /temp/kduser.keytab --jars postgresql.jar --class com.example.test.SparkQuery --master yarn --conf &quot;spark.yarn.queue=mypool&quot; hcrmSpark.jar AAA
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;由於 scheduling policy 是設定 FIFO，觀察 queue 的執行狀態會發現 job 是一個一個的執行跑完，一個在跑時另外兩個會 pending．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_5.jpg&quot; alt=&quot;yarn_day1_5.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;demo-fair-scheduling-policy&quot;&gt;DEMO FAIR scheduling policy&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;將剛剛的 mypool scheduling policy 改成 FAIR&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_6.jpg&quot; alt=&quot;yarn_day1_6.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;max running apps 及 max application master share 設定 :&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;max running apps 參數是最多只能有幾個 application 數執行．&lt;br /&gt;
-max application master share 會根據 weight 權重的分配的 application master 執行中的最大數量．&lt;br /&gt;
-這兩個參數一般會有公式來算出大概的值，但我們這邊先故意都不設定看會發生什麼事．&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_7.jpg&quot; alt=&quot;yarn_day1_7.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;接著再一次同時執行三次 exmple jar&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;這時候會發現三個 job 都會一直處於 pending 的狀態，因為 FAIR scheduling 資源不夠分配給這三個 job．所以就乾脆公平都不給資源所以會導致，job 都動不了了，這時需要手動下指令去移除這些 job．&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/yarn/yarn_day1_8.jpg&quot; alt=&quot;yarn_day1_8.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;p&gt;使用 FAIR 及 DRF 要注意計算好可用的資源例如 max running apps 及 max application master share 這兩個參數的設定值．否則同時太多 job 同時進來會造成所有的 job 都 pending 住取不到資源，到時候就需要手動下指令 yarn application -kill {app_id}，kill 掉 pending 住的 job．FIFO 就不會有這樣的問題．&lt;/p&gt;</content><author><name></name></author><summary type="html">Dynamic Resource Pools : 用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配． 它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools． 一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．</summary></entry><entry><title type="html">CDH day 1 (Dynamic Resource Pools)</title><link href="http://localhost:4000/cdh/2018/01/12/cdh_day1.html" rel="alternate" type="text/html" title="CDH day 1 (Dynamic Resource Pools)" /><published>2018-01-12T10:44:17+08:00</published><updated>2018-01-12T10:44:17+08:00</updated><id>http://localhost:4000/cdh/2018/01/12/cdh_day1</id><content type="html" xml:base="http://localhost:4000/cdh/2018/01/12/cdh_day1.html">&lt;h3 id=&quot;dynamic-resource-pools-&quot;&gt;Dynamic Resource Pools :&lt;/h3&gt;
-&lt;p&gt;用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配．
-它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools．
-一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_1.jpg&quot; alt=&quot;cdh_day1_1.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;configuration-set&quot;&gt;configuration set&lt;/h3&gt;
-&lt;p&gt;用來設定分配資源，不同 pool 可定義不同的 configuration set．&lt;/p&gt;
-
-&lt;h3 id=&quot;scheduling-rule&quot;&gt;scheduling rule&lt;/h3&gt;
-&lt;p&gt;當 configuration set 被 active 後，會根據設定的時間去 update 設定的 configuration set．&lt;/p&gt;
-
-&lt;h3 id=&quot;scheduling-policy&quot;&gt;scheduling policy&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Dominant Resource Fairness (DRF) (default) :&lt;br /&gt;
-Fair Scheduler 的延伸，不只基於 memory 連 CPU 都會加入來公平分配．&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Fair Scheduler (FAIR) :&lt;br /&gt;
-基於 memory 將資源平均分配給 job．&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;First-In, First-Out (FIFO) :&lt;br /&gt;
-先進來的 job 先執行，執行完後才可執行下一個．&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;demo-fifo-scheduling-policy&quot;&gt;DEMO FIFO scheduling policy&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;create resource pool&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_2.jpg&quot; alt=&quot;cdh_day1_2.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;設定 configuration set&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_3.jpg&quot; alt=&quot;cdh_day1_3.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;選擇 scheduling policy ，這邊設定 FIFO&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_4.jpg&quot; alt=&quot;cdh_day1_4.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;resource pool 建立起來後再 refresh :&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_5.jpg&quot; alt=&quot;cdh_day1_5.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;執行 exmple jar&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;先到 /usr/lib/hadoop-mapreduce 底下找到 exmples 的 jar．然後執行下列指令，執行時指定 queue name (-Dmapred.job.queue.name=mypool)剛剛建立的 mypool ，同時送出 3 次命令 :&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hadoop jar hadoop-mapreduce-examples.jar pi -Dmapred.job.queue.name=mypool 10 100
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果是使用 spark 則是加上參數(–conf “spark.yarn.queue=mypool”) :&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark-submit --principal kduser --keytab /temp/kduser.keytab --jars postgresql.jar --class com.example.test.SparkQuery --master yarn --conf &quot;spark.yarn.queue=mypool&quot; hcrmSpark.jar AAA
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;由於 scheduling policy 是設定 FIFO，觀察 queue 的執行狀態會發現 job 是一個一個的執行跑完，一個在跑時另外兩個會 pending．&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_6.jpg&quot; alt=&quot;cdh_day1_6.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;demo-fair-scheduling-policy&quot;&gt;DEMO FAIR scheduling policy&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;將剛剛的 mypool scheduling policy 改成 FAIR&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_7.jpg&quot; alt=&quot;cdh_day1_7.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;max running apps 及 max application master share 設定 :&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;max running apps 參數是最多只能有幾個 application 數執行．&lt;br /&gt;
-max application master share 會根據 weight 權重的分配的 application master 執行中的最大數量．&lt;br /&gt;
-這兩個參數一般會有公式來算出大概的值，但我們這邊先故意都不設定看會發生什麼事．&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_8.jpg&quot; alt=&quot;cdh_day1_8.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;接著再一次同時執行三次 exmple jar&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;這時候會發現三個 job 都會一直處於 pending 的狀態，因為 FAIR scheduling 資源不夠分配給這三個 job．所以就乾脆公平都不給資源所以會導致，job 都動不了了，這時需要手動下指令去移除這些 job．&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/cdh/cdh_day1_9.jpg&quot; alt=&quot;cdh_day1_9.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;p&gt;使用 FAIR 及 DRF 要注意計算好可用的資源例如 max running apps 及 max application master share 這兩個參數的設定值．否則同時太多 job 同時進來會造成所有的 job 都 pending 住取不到資源，到時候就需要手動下指令 yarn application -kill {app_id}，kill 掉 pending 住的 job．FIFO 就不會有這樣的問題．&lt;/p&gt;</content><author><name></name></author><summary type="html">Dynamic Resource Pools : 用來設定 scheduling 對 YARN applications 和 Impala queries 在執行時的資源分配． 它允許排程和配置資源給 YARN applications 和 Impala queries，讓 user 可存取哪個 pools． 一個 pool 可用的資源可按照 pool 的權重(weight)去分配．並且可用 ACL 來控制哪個 user 可以 submit job．</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">程式範例 : 小遊戲:猜硬幣正反面，並記錄”猜的次數”及”猜對次數”．”猜的次數”及”猜對次數”這兩個值會隨著玩的次數變動．所以這兩個值是 mutable 的，所以這邊的範例是使用 FP 的寫法來實作這小遊戲，並處理兩個 mutable 的值．</summary></entry></feed>

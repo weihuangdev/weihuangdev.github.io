@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>kafka day 5 </title>
+  <meta name="description" content="kafka serializing Using Apache Avro 架構圖 :">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/kafka/2018/05/29/kafka_day5.html">
+  <link rel="alternate" type="application/rss+xml" title="Daniel&#39;s Blog" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">Daniel&#39;s Blog</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">kafka day 5 </h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-05-29T09:44:17+08:00" itemprop="datePublished">
+        
+        May 29, 2018
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h3 id="kafka-serializing-using-apache-avro">kafka serializing Using Apache Avro</h3>
+<p>架構圖 : 
+<img src="http://localhost:4000/assets/kafka/day5/kafka_day5_1.jpg" alt="kafka_day5_1.jpg" /></p>
+
+<h4 id="準備一台-schema-registry到-confluent-platform-下載使用-confluent-411">準備一台 Schema Registry，到 Confluent Platform 下載，使用 confluent-4.1.1</h4>
+<p>目錄結構 : 
+<img src="http://localhost:4000/assets/kafka/day5/kafka_day5_2.jpg" alt="kafka_day5_2.jpg" /></p>
+
+<blockquote>
+  <p>參考網址：<br />
+<a href="https://www.confluent.io/download/">Confluent Platform</a></p>
+</blockquote>
+
+<h3 id="修改confluent-411裡的設定檔">修改confluent-4.1.1裡的設定檔</h3>
+<h4 id="confluent-411etcschema-registryschema-registryproperties">confluent-4.1.1/etc/schema-registry/schema-registry.properties</h4>
+<p>這邊修改 zookeeper 的 url :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kafkastore.connection.url=192.168.61.105:2181
+</code></pre></div></div>
+
+<h3 id="改好後執行啟動指令要給設定檔不然會run不起來">改好後執行啟動指令(要給設定檔不然會run不起來)</h3>
+<h4 id="schema-registry-start-etcschema-registryschema-registryproperties">./schema-registry-start ../etc/schema-registry/schema-registry.properties</h4>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp"> daniel@Danielde-MBP &gt;</span> /Volumes/Transcend/kafka-test/confluent-4.1.1/bin <span class="o">&gt;</span> ./schema-registry-start ../etc/schema-registry/schema-registry.properties
+<span class="go">[2018-05-29 19:24:19,150] INFO SchemaRegistryConfig values:
+	metric.reporters = []
+	kafkastore.sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	response.mediatype.default = application/vnd.schemaregistry.v1+json
+	kafkastore.ssl.trustmanager.algorithm = PKIX
+	authentication.realm =
+	ssl.keystore.type = JKS
+	kafkastore.topic = _schemas
+	metrics.jmx.prefix = kafka.schema.registry
+	kafkastore.ssl.enabled.protocols = TLSv1.2,TLSv1.1,TLSv1
+	kafkastore.topic.replication.factor = 3
+	ssl.truststore.password = [hidden]
+	kafkastore.timeout.ms = 500
+	host.name = danielde-mbp.is-land.taipei
+	kafkastore.bootstrap.servers = []
+	schema.registry.zk.namespace = schema_registry
+	kafkastore.sasl.kerberos.ticket.renew.window.factor = 0.8
+	kafkastore.sasl.kerberos.service.name =
+	schema.registry.resource.extension.class = []
+	ssl.endpoint.identification.algorithm =
+	compression.enable = false
+	kafkastore.ssl.truststore.type = JKS
+	avro.compatibility.level = backward
+	kafkastore.ssl.protocol = TLS
+	kafkastore.ssl.provider =
+	kafkastore.ssl.truststore.location =
+	response.mediatype.preferred = [application/vnd.schemaregistry.v1+json, application/vnd.schemaregistry+json, application/json]
+	kafkastore.ssl.keystore.type = JKS
+	authentication.skip.paths = []
+	ssl.truststore.type = JKS
+	kafkastore.ssl.truststore.password = [hidden]
+	access.control.allow.origin =
+	ssl.truststore.location =
+	ssl.keystore.password = [hidden]
+	port = 8081
+	kafkastore.ssl.keystore.location =
+	metrics.tag.map = {}
+	master.eligibility = true
+	ssl.client.auth = false
+	kafkastore.ssl.keystore.password = [hidden]
+	kafkastore.security.protocol = PLAINTEXT
+	ssl.trustmanager.algorithm =
+	authentication.method = NONE
+	request.logger.name = io.confluent.rest-utils.requests
+	ssl.key.password = [hidden]
+	kafkastore.zk.session.timeout.ms = 30000
+	kafkastore.sasl.mechanism = GSSAPI
+	kafkastore.sasl.kerberos.ticket.renew.jitter = 0.05
+	kafkastore.ssl.key.password = [hidden]
+	zookeeper.set.acl = false
+	schema.registry.inter.instance.protocol = http
+	authentication.roles = [*]
+	metrics.num.samples = 2
+	ssl.protocol = TLS
+	schema.registry.group.id = schema-registry
+	kafkastore.ssl.keymanager.algorithm = SunX509
+	kafkastore.connection.url = 192.168.61.105:2181
+	debug = false
+	listeners = [http://0.0.0.0:8081]
+	kafkastore.group.id =
+	ssl.provider =
+	ssl.enabled.protocols = []
+	shutdown.graceful.ms = 1000
+	ssl.keystore.location =
+	ssl.cipher.suites = []
+	kafkastore.ssl.endpoint.identification.algorithm =
+	kafkastore.ssl.cipher.suites =
+	access.control.allow.methods =
+	kafkastore.sasl.kerberos.min.time.before.relogin = 60000
+	ssl.keymanager.algorithm =
+	metrics.sample.window.ms = 30000
+	kafkastore.init.timeout.ms = 60000
+ (io.confluent.kafka.schemaregistry.rest.SchemaRegistryConfig:179)
+[2018-05-29 19:24:19,192] INFO Logging initialized @705ms (org.eclipse.jetty.util.log:186)
+[2018-05-29 19:24:19,792] INFO Initializing KafkaStore with broker endpoints: PLAINTEXT://daniel-3-test-master1.is-land.taipei:9092 (io.confluent.kafka.schemaregistry.storage.KafkaStore:103)
+[2018-05-29 19:24:20,197] INFO Validating schemas topic _schemas (io.confluent.kafka.schemaregistry.storage.KafkaStore:228)
+[2018-05-29 19:24:20,203] WARN The replication factor of the schema topic _schemas is less than the desired one of 3. If this is a production environment, it's crucial to add more brokers and increase the replication factor of the topic. (io.confluent.kafka.schemaregistry.storage.KafkaStore:242)
+[2018-05-29 19:24:20,302] INFO Initialized last consumed offset to -1 (io.confluent.kafka.schemaregistry.storage.KafkaStoreReaderThread:138)
+[2018-05-29 19:24:20,303] INFO [kafka-store-reader-thread-_schemas]: Starting (io.confluent.kafka.schemaregistry.storage.KafkaStoreReaderThread:66)
+[2018-05-29 19:24:20,385] INFO Wait to catch up until the offset of the last message at 5 (io.confluent.kafka.schemaregistry.storage.KafkaStore:277)
+[2018-05-29 19:24:20,396] INFO Joining schema registry with Zookeeper-based coordination (io.confluent.kafka.schemaregistry.storage.KafkaSchemaRegistry:212)
+[2018-05-29 19:24:20,410] INFO Created schema registry namespace 192.168.61.105:2181/schema_registry (io.confluent.kafka.schemaregistry.masterelector.zookeeper.ZookeeperMasterElector:161)
+[2018-05-29 19:24:20,454] INFO Successfully elected the new master: {"host":"danielde-mbp.is-land.taipei","port":8081,"master_eligibility":true,"scheme":"http","version":1} (io.confluent.kafka.schemaregistry.masterelector.zookeeper.ZookeeperMasterElector:102)
+[2018-05-29 19:24:20,471] INFO Wait to catch up until the offset of the last message at 6 (io.confluent.kafka.schemaregistry.storage.KafkaStore:277)
+[2018-05-29 19:24:20,471] INFO Successfully elected the new master: {"host":"danielde-mbp.is-land.taipei","port":8081,"master_eligibility":true,"scheme":"http","version":1} (io.confluent.kafka.schemaregistry.masterelector.zookeeper.ZookeeperMasterElector:102)
+[2018-05-29 19:24:20,553] INFO Adding listener: http://0.0.0.0:8081 (io.confluent.rest.Application:190)
+[2018-05-29 19:24:20,600] INFO jetty-9.2.24.v20180105 (org.eclipse.jetty.server.Server:327)
+[2018-05-29 19:24:21,081] INFO HV000001: Hibernate Validator 5.1.3.Final (org.hibernate.validator.internal.util.Version:27)
+[2018-05-29 19:24:21,209] INFO Started o.e.j.s.ServletContextHandler@67304a40{/,null,AVAILABLE} (org.eclipse.jetty.server.handler.ContextHandler:744)
+[2018-05-29 19:24:21,219] INFO Started NetworkTrafficServerConnector@71812481{HTTP/1.1}{0.0.0.0:8081} (org.eclipse.jetty.server.NetworkTrafficServerConnector:266)
+[2018-05-29 19:24:21,220] INFO Started @2740ms (org.eclipse.jetty.server.Server:379)
+[2018-05-29 19:24:21,220] INFO Server started, listening for requests... (io.confluent.kafka.schemaregistry.rest.SchemaRegistryMain:45)
+</span></code></pre></div></div>
+<h4 id="開瀏覽器查看">開瀏覽器查看</h4>
+<p><img src="http://localhost:4000/assets/kafka/day5/kafka_day5_3.jpg" alt="kafka_day5_3.jpg" /></p>
+
+<h3 id="接著準備-producer-及-consumer">接著準備 producer 及 consumer</h3>
+
+<h4 id="下載-jar">下載 jar</h4>
+<p>由於會用到 io.confluent.kafka.serializers.KafkaAvroDeserializer 但 confluent 的 repository 抓不到，
+後來發現在 avro-kcql-0.5.jar 裡面也有．</p>
+
+<h4 id="myavroproducerjava">MyAvroProducer.java</h4>
+<p>要給 schema.registry.url 的位置，及設定 KafkaAvroSerializer</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">import</span> <span class="nn">java.util.Properties</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ExecutionException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.kafka.clients.producer.KafkaProducer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.kafka.clients.producer.Producer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.kafka.clients.producer.ProducerRecord</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.kafka.clients.producer.RecordMetadata</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.mykafka.bean.LogLine</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.mykafka.util.EventGenerator</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyAvroProducer</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">Properties</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"bootstrap.servers"</span><span class="o">,</span> <span class="s">"192.168.61.105:9092"</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"acks"</span><span class="o">,</span> <span class="s">"all"</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"retries"</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"key.serializer"</span><span class="o">,</span> <span class="s">"org.apache.kafka.common.serialization.StringSerializer"</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"value.serializer"</span><span class="o">,</span> <span class="s">"io.confluent.kafka.serializers.KafkaAvroSerializer"</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"schema.registry.url"</span><span class="o">,</span> <span class="s">"http://localhost:8081/"</span><span class="o">);</span>
+		<span class="n">String</span> <span class="n">topic</span> <span class="o">=</span> <span class="s">"my-avro-topic-1"</span><span class="o">;</span>
+
+		<span class="n">Producer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">LogLine</span><span class="o">&gt;</span> <span class="n">producer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KafkaProducer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">LogLine</span><span class="o">&gt;(</span><span class="n">props</span><span class="o">);</span>
+		<span class="k">for</span><span class="o">(</span><span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">LogLine</span> <span class="n">event</span> <span class="o">=</span> <span class="n">EventGenerator</span><span class="o">.</span><span class="na">getNext</span><span class="o">();</span>
+			<span class="n">ProducerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">LogLine</span><span class="o">&gt;</span> <span class="n">record</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ProducerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">LogLine</span><span class="o">&gt;(</span><span class="n">topic</span><span class="o">,</span> <span class="n">event</span><span class="o">.</span><span class="na">getIp</span><span class="o">().</span><span class="na">toString</span><span class="o">(),</span> <span class="n">event</span><span class="o">);</span>
+			<span class="k">try</span> <span class="o">{</span>
+				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"send ip : "</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="na">getIp</span><span class="o">()</span> <span class="o">+</span> <span class="s">" , url : "</span> <span class="o">+</span> <span class="n">event</span><span class="o">.</span><span class="na">getUrl</span><span class="o">());</span>
+				<span class="n">RecordMetadata</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">producer</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="n">record</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+				<span class="kt">long</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="na">offset</span><span class="o">();</span>
+				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"producer set offset : "</span> <span class="o">+</span> <span class="n">offset</span><span class="o">);</span>
+			<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+			<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ExecutionException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+		<span class="n">producer</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+		<span class="n">producer</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h4 id="myavroconsumerjava">MyAvroConsumer.java</h4>
+<p>要給 schema.registry.url 的位置，及設定 KafkaAvroDeserializer</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Properties</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.avro.generic.GenericRecord</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.kafka.clients.consumer.Consumer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.kafka.clients.consumer.ConsumerConfig</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.kafka.clients.consumer.ConsumerRecord</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.kafka.clients.consumer.ConsumerRecords</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.kafka.clients.consumer.KafkaConsumer</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyAvroConsumer</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">Properties</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">ConsumerConfig</span><span class="o">.</span><span class="na">BOOTSTRAP_SERVERS_CONFIG</span><span class="o">,</span> <span class="s">"192.168.61.105:9092"</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">ConsumerConfig</span><span class="o">.</span><span class="na">GROUP_ID_CONFIG</span><span class="o">,</span> <span class="s">"group1"</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">ConsumerConfig</span><span class="o">.</span><span class="na">KEY_DESERIALIZER_CLASS_CONFIG</span><span class="o">,</span><span class="s">"org.apache.kafka.common.serialization.StringDeserializer"</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">ConsumerConfig</span><span class="o">.</span><span class="na">VALUE_DESERIALIZER_CLASS_CONFIG</span><span class="o">,</span><span class="s">"io.confluent.kafka.serializers.KafkaAvroDeserializer"</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"schema.registry.url"</span><span class="o">,</span> <span class="s">"http://localhost:8081"</span><span class="o">);</span>
+		<span class="n">props</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">ConsumerConfig</span><span class="o">.</span><span class="na">AUTO_OFFSET_RESET_CONFIG</span><span class="o">,</span> <span class="s">"earliest"</span><span class="o">);</span>
+
+		<span class="n">String</span> <span class="n">topic</span> <span class="o">=</span> <span class="s">"my-avro-topic-1"</span><span class="o">;</span>
+		<span class="kd">final</span> <span class="n">Consumer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">consumer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KafkaConsumer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;(</span><span class="n">props</span><span class="o">);</span>
+		<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">topic</span><span class="o">));</span>
+
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">ConsumerRecords</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">records</span> <span class="o">=</span> <span class="n">consumer</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
+				<span class="k">for</span> <span class="o">(</span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">record</span> <span class="o">:</span> <span class="n">records</span><span class="o">)</span> <span class="o">{</span>
+					<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"offset = %d, key = %s, value = %s \n"</span><span class="o">,</span> <span class="n">record</span><span class="o">.</span><span class="na">offset</span><span class="o">(),</span> <span class="n">record</span><span class="o">.</span><span class="na">key</span><span class="o">(),</span><span class="n">record</span><span class="o">.</span><span class="na">value</span><span class="o">());</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+		<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+			<span class="n">consumer</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<p>測試畫面
+<img src="http://localhost:4000/assets/kafka/day5/kafka_day5_4.jpg" alt="kafka_day5_4.jpg" /></p>
+
+<h4 id="可利用-restful-api-對-schema-registry-操作">可利用 restful api 對 Schema Registry 操作</h4>
+<ul>
+  <li>查看 subjects(http://localhost:8081/subjects/) : 
+<img src="http://localhost:4000/assets/kafka/day5/kafka_day5_5.jpg" alt="kafka_day5_5.jpg" /></li>
+  <li>查看 subjects version(http://localhost:8081/subjects/my-avro-topic-1-value/versions) : 
+<img src="http://localhost:4000/assets/kafka/day5/kafka_day5_6.jpg" alt="kafka_day5_6.jpg" /></li>
+  <li>查看 subjects version 的內容(http://localhost:8081/subjects/my-avro-topic-1-value/versions/1) : 
+<img src="http://localhost:4000/assets/kafka/day5/kafka_day5_7.jpg" alt="kafka_day5_7.jpg" />
+整理一下結構如下 :
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">{"subject":"my-avro-topic-1-value",
+ "version":1,
+ "id":21,
+ "schema":"{
+\"type\":\"record\",
+\"name\":\"LogLine\",
+\"namespace\":\"com.mykafka.bean\",
+\"fields\":[
+  {\"name\":\"ip\",\"type\":\"string\"},
+  {\"name\":\"timestamp\",\"type\":\"long\"},
+  {\"name\":\"url\",\"type\":\"string\"},
+  {\"name\":\"referrer\",\"type\":\"string\"},
+  {\"name\":\"useragent\",\"type\":\"string\"},
+  {\"name\":\"sessionid\",\"type\":[\"null\",\"int\"],\"default\":null}
+]}"
+}
+</span></code></pre></div>    </div>
+  </li>
+  <li>查看 subjects version 的 schema 結構(http://localhost:8081/subjects/my-avro-topic-1-value/versions/1/schema) : 
+<img src="http://localhost:4000/assets/kafka/day5/kafka_day5_7.jpg" alt="kafka_day5_7.jpg" />
+schema 結構就跟前一篇自己定義avro檔案(LogLine.avro)一樣，producer 及 consumer 就是透過這 schema 來解析 json 格式 :
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">{"type":"record",
+ "name":"LogLine",
+ "namespace":"com.mykafka.bean",
+ "fields":[
+{"name":"ip","type":"string"},
+{"name":"timestamp","type":"long"},
+{"name":"url","type":"string"},
+{"name":"referrer","type":"string"},
+{"name":"useragent","type":"string"},
+{"name":"sessionid","type":["null","int"],"default":null}
+]
+}
+</span></code></pre></div>    </div>
+    <p>後續還有 update 或 delete 的功能可以試試．</p>
+    <blockquote>
+      <p>參考網址：<br />
+https://docs.confluent.io/current/schema-registry/docs/api.html#post–subjects-(string-</p>
+    </blockquote>
+  </li>
+</ul>
+
+
+  </div>
+
+  
+
+  <a class="u-url" href="/kafka/2018/05/29/kafka_day5.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Daniel&#39;s Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Daniel&#39;s Blog
+            
+            </li>
+            
+            <li><a href="mailto:your-email@example.com">your-email@example.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
