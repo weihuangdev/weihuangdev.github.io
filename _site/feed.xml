@@ -1,4 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-31T17:32:11+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hortonworks day 1 (use Hortonworks DataFlow (HDF) send box)</title><link href="http://localhost:4000/hortonworks/2018/05/31/hortonworks_day1.html" rel="alternate" type="text/html" title="hortonworks day 1 (use Hortonworks DataFlow (HDF) send box)" /><published>2018-05-31T08:44:17+08:00</published><updated>2018-05-31T08:44:17+08:00</updated><id>http://localhost:4000/hortonworks/2018/05/31/hortonworks_day1</id><content type="html" xml:base="http://localhost:4000/hortonworks/2018/05/31/hortonworks_day1.html">&lt;h3 id=&quot;下載-hortonworks-hdf-send-box&quot;&gt;下載 hortonworks HDF send box&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-01T15:16:22+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hortonworks day 2 (Apache NiFi)</title><link href="http://localhost:4000/hortonworks/2018/06/01/hortonworks_day2.html" rel="alternate" type="text/html" title="hortonworks day 2 (Apache NiFi)" /><published>2018-06-01T08:44:17+08:00</published><updated>2018-06-01T08:44:17+08:00</updated><id>http://localhost:4000/hortonworks/2018/06/01/hortonworks_day2</id><content type="html" xml:base="http://localhost:4000/hortonworks/2018/06/01/hortonworks_day2.html">&lt;h3 id=&quot;apache-nifi&quot;&gt;Apache NiFi&lt;/h3&gt;
+
+&lt;h4 id=&quot;準備兩個行程processor--generateflowfileinput和-putfileoutput&quot;&gt;準備兩個行程(Processor) : GenerateFlowFile(input)和 PutFile(output)&lt;/h4&gt;
+&lt;p&gt;GenerateFlowFlies will generate random texts as flowfiles.&lt;br /&gt;
+PutiFile will write the content from GenerateFlowFiles into the disk as many individual files.&lt;/p&gt;
+
+&lt;h4 id=&quot;新增一個-processor-generateflowfile&quot;&gt;新增一個 Processor GenerateFlowFile&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_1.jpg&quot; alt=&quot;kafka_day2_1.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;將-processor-拖拉一個圖示到下面空白處後會有選擇畫面-&quot;&gt;將 Processor 拖拉一個圖示到下面空白處後會有選擇畫面 :&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_2.jpg&quot; alt=&quot;kafka_day2_2.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;接著在-filter-裡找-generateflowflies&quot;&gt;接著在 filter 裡找 GenerateFlowFlies&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_3.jpg&quot; alt=&quot;kafka_day2_3.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;add-後會出現&quot;&gt;ADD 後會出現&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_4.jpg&quot; alt=&quot;kafka_day2_4.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;按右鍵可以-config&quot;&gt;按右鍵可以 config&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_5.jpg&quot; alt=&quot;kafka_day2_5.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;新增一個-processor-putfile&quot;&gt;新增一個 Processor PutFile&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_6.jpg&quot; alt=&quot;kafka_day2_6.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;add-後會出現-1&quot;&gt;ADD 後會出現&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_7.jpg&quot; alt=&quot;kafka_day2_7.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;修改-config-裡的值&quot;&gt;修改 config 裡的值&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_8.jpg&quot; alt=&quot;kafka_day2_8.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;給產出目錄位置-tmpnifi&quot;&gt;給產出目錄位置 /tmp/nifi&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_9.jpg&quot; alt=&quot;kafka_day2_9.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;建立processor的連結&quot;&gt;建立processor的連結&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_10.jpg&quot; alt=&quot;kafka_day2_10.jpg&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_11.jpg&quot; alt=&quot;kafka_day2_11.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;建立成功&quot;&gt;建立成功&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_12.jpg&quot; alt=&quot;kafka_day2_12.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;讓-processor-都開始跑&quot;&gt;讓 processor 都開始跑&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_13.jpg&quot; alt=&quot;kafka_day2_13.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;在tmpnifi-底下產生跑的檔案&quot;&gt;在/tmp/nifi 底下產生跑的檔案&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day2/htwks_day2_14.jpg&quot; alt=&quot;kafka_day2_14.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;測試完後要關閉不然會產生很多檔案&quot;&gt;測試完後要關閉不然會產生很多檔案&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考網址
+&lt;a href=&quot;https://medium.com/@suci/hello-world-nifi-dcafcba0fdb0&quot;&gt;hello-world-nifi&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">Apache NiFi</summary></entry><entry><title type="html">hortonworks day 1 (use Hortonworks DataFlow (HDF) send box)</title><link href="http://localhost:4000/hortonworks/2018/05/31/hortonworks_day1.html" rel="alternate" type="text/html" title="hortonworks day 1 (use Hortonworks DataFlow (HDF) send box)" /><published>2018-05-31T08:44:17+08:00</published><updated>2018-05-31T08:44:17+08:00</updated><id>http://localhost:4000/hortonworks/2018/05/31/hortonworks_day1</id><content type="html" xml:base="http://localhost:4000/hortonworks/2018/05/31/hortonworks_day1.html">&lt;h3 id=&quot;下載-hortonworks-hdf-send-box&quot;&gt;下載 hortonworks HDF send box&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;參考網址
 &lt;a href=&quot;https://hortonworks.com/downloads/#sandbox&quot;&gt;hortonworks send box&lt;/a&gt;&lt;/p&gt;
@@ -1201,44 +1239,4 @@ month               	string
 Detailed Partition Information	Partition(values:[2018, 02], dbName:danieldb, tableName:students_partition, createTime:1517219747, lastAccessTime:0, sd:StorageDescriptor(cols:[FieldSchema(name:id, type:string, comment:null), FieldSchema(name:name, type:string, comment:null), FieldSchema(name:tel, type:string, comment:null), FieldSchema(name:job, type:string, comment:null), FieldSchema(name:year, type:string, comment:null), FieldSchema(name:month, type:string, comment:null)], location:hdfs://quickstart.cloudera:8020/tmp/daniel/hivedb/temp/partition, inputFormat:org.apache.hadoop.mapred.TextInputFormat, outputFormat:org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat, compressed:false, numBuckets:-1, serdeInfo:SerDeInfo(name:null, serializationLib:org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, parameters:{line.delim=
 , field.delim=,, serialization.format=,}), bucketCols:[], sortCols:[], parameters:{}, skewedInfo:SkewedInfo(skewedColNames:[], skewedColValues:[], skewedColValueLocationMaps:{}), storedAsSubDirectories:false), parameters:{totalSize=283, numRows=-1, rawDataSize=-1, COLUMN_STATS_ACCURATE=false, numFiles=1, transient_lastDdlTime=1517219747})
 Time taken: 0.157 seconds, Fetched: 15 row(s)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">create hive partition table 先建立 Hive partition table : create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;</summary></entry><entry><title type="html">hive internal &amp;amp; external table</title><link href="http://localhost:4000/hive/2018/01/29/hive_day2.html" rel="alternate" type="text/html" title="hive internal &amp; external table" /><published>2018-01-29T10:44:17+08:00</published><updated>2018-01-29T10:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/29/hive_day2</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/29/hive_day2.html">&lt;h3 id=&quot;create-hive-internal-table&quot;&gt;create hive internal table&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create table test.students(id string,name string,tel string,job string) 
-row format delimited fields terminated by ',' lines terminated by '\n' 
-stored as textfile;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create table test.students_internal(id string,name string,tel string,job string) 
-row format delimited fields terminated by ',' lines terminated by '\n' 
-stored as textfile location '/tmp/daniel/hivefile';
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create external table test.students_external(id string,name string,tel string,job string) 
-row format delimited fields terminated by ',' lines terminated by '\n' 
-stored as textfile location '/tmp/daniel/hivefile';
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create database danieldb location '/tmp/daniel/hivedb'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;這時候建好的 database 路徑就不會在 /user/hive/warehouse/ 底下，而是會在指定的路徑 /tmp/daniel/hivedb．之後在 danieldb 建立的 internal talbe 都會在這邊產生．&lt;/p&gt;
-
-&lt;p&gt;使用 hdfs put 指令丟檔案到 hdfs 目錄底下 :&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hdfs dfs -put students.txt /tmp/daniel/hivefile
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果 hivefile 目錄存在，則 students.txt 會被丟到 hivefile 底下．
-如果 hivefile 目錄不存在，則 students.txt 會變成 hivefile 這檔案．&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;load data inpath '/tmp/daniel/hivefile/students.txt' into danieldb.students_internal;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;使用上面指令後 hdfs 上的 /tmp/daniel/hivefile/students.txt 會被 load 到 danieldb.students_internal 指定到的目錄底下，而原來的(/tmp/daniel/hivefile/students.txt)會被移除．&lt;/p&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;hive create table 時，如果有指令 location 時或著create external takbe，/user/hive/warehouse 底下就不會產生資料，drop table 如果是用 internal + loacation 時 /tmp/daniel/hivefile 的目錄整個會被刪掉．如果是 external table 就不會被刪掉．&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;檔案欄位比table多時資料好像不會擠到同一個欄位，是多的欄位就pareser不到了，不會顯示．但檔案欄位比table少的，會顯示 null&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">create hive internal table</summary></entry></feed>
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">create hive partition table 先建立 Hive partition table : create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;</summary></entry></feed>
