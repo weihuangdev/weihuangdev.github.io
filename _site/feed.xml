@@ -1,4 +1,166 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-01T15:16:22+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hortonworks day 2 (Apache NiFi)</title><link href="http://localhost:4000/hortonworks/2018/06/01/hortonworks_day2.html" rel="alternate" type="text/html" title="hortonworks day 2 (Apache NiFi)" /><published>2018-06-01T08:44:17+08:00</published><updated>2018-06-01T08:44:17+08:00</updated><id>http://localhost:4000/hortonworks/2018/06/01/hortonworks_day2</id><content type="html" xml:base="http://localhost:4000/hortonworks/2018/06/01/hortonworks_day2.html">&lt;h3 id=&quot;apache-nifi&quot;&gt;Apache NiFi&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-04T19:06:02+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hortonworks day 3 (Apache NiFi custom processor)</title><link href="http://localhost:4000/hortonworks/2018/06/01/hortonworks_day3.html" rel="alternate" type="text/html" title="hortonworks day 3 (Apache NiFi custom processor)" /><published>2018-06-01T08:44:17+08:00</published><updated>2018-06-01T08:44:17+08:00</updated><id>http://localhost:4000/hortonworks/2018/06/01/hortonworks_day3</id><content type="html" xml:base="http://localhost:4000/hortonworks/2018/06/01/hortonworks_day3.html">&lt;h3 id=&quot;custom-processor&quot;&gt;custom processor&lt;/h3&gt;
+
+&lt;h4 id=&quot;建立一個目錄&quot;&gt;建立一個目錄&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;建立 ChakraProcessor&lt;br /&gt;
+/Volumes/Transcend/1-eclipse-workspace/test-workspace/ChakraProcessor&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;進入目錄內下-maven-指令&quot;&gt;進入目錄內，下 maven 指令&lt;/h4&gt;
+&lt;p&gt;mvn archetype:generate&lt;/p&gt;
+
+&lt;h4 id=&quot;會問說要找那個-archetype輸入-nifi&quot;&gt;會問說要找那個 archetype，輸入 nifi&lt;/h4&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): 1198: nifi
+Choose archetype:
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;1: remote -&amp;gt;&lt;/span&gt; org.apache.nifi:nifi-processor-bundle-archetype &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;2: remote -&amp;gt;&lt;/span&gt; org.apache.nifi:nifi-service-bundle-archetype &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_1.jpg&quot; alt=&quot;kafka_day3_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;選-1-後然後選版本-140輸入-25-15-及-16-mvn-install-會失敗需再研究&quot;&gt;選 1 後，然後選版本 1.4.0，輸入 25 (1.5 及 1.6 mvn install 會失敗需再研究)&lt;/h4&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): : 1
+Choose org.apache.nifi:nifi-processor-bundle-archetype version:
+1: 0.0.2-incubating
+2: 0.1.0-incubating
+3: 0.2.0-incubating
+4: 0.2.1
+5: 0.3.0
+6: 0.4.0
+7: 0.4.1
+8: 0.5.0
+9: 0.5.1
+10: 0.6.0
+11: 0.6.1
+12: 0.7.0
+13: 0.7.1
+14: 0.7.2
+15: 0.7.3
+16: 0.7.4
+17: 1.0.0-BETA
+18: 1.0.0
+19: 1.0.1
+20: 1.1.0
+21: 1.1.1
+22: 1.1.2
+23: 1.2.0
+24: 1.3.0
+25: 1.4.0
+26: 1.5.0
+27: 1.6.0
+
+
+Choose a number: 27: 25
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_2.jpg&quot; alt=&quot;kafka_day3_2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;輸入-groupid-及-artifactid-等資訊&quot;&gt;輸入 groupId 及 artifactId 等資訊&lt;/h4&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;Define value for property 'groupId': mynifi
+Define value for property 'artifactId': myprocessors
+Define value for property 'version' 1.0-SNAPSHOT: : 1.0
+Define value for property 'artifactBaseName': demo
+Define value for property 'package' mynifi.processors.demo: : 
+[INFO] Using property: nifiVersion = 1.6.0
+Confirm properties configuration:
+groupId: mynifi
+artifactId: myprocessors
+version: 1.0
+artifactBaseName: demo
+package: nifiVersion = 1.6.0
+nifiVersion: 1.6.0
+ Y
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_3.jpg&quot; alt=&quot;kafka_day3_3.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;執行結果&quot;&gt;執行結果&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_4.jpg&quot; alt=&quot;kafka_day3_4.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;抓下來的目錄結構&quot;&gt;抓下來的目錄結構&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_5.jpg&quot; alt=&quot;kafka_day3_5.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;修改-myprocessorjava-加上一些-log&quot;&gt;修改 MyProcessor.java 加上一些 Log&lt;/h4&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onTrigger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProcessContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProcessSession&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProcessException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;FlowFile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flowFile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flowFile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// TODO implement&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;****** MyProcessor_Received a flow file ......&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;getLogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;####### INFO MyProcessor_Received a flow file ......&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;getLogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;debug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;####### DEBUG MyProcessor_Received a flow file ......&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;getLogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;####### ERROR MyProcessor_Received a flow file ......&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;transfer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flowFile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MY_RELATIONSHIP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;mvn-install&quot;&gt;mvn install&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;到 /Volumes/Transcend/1-eclipse-workspace/test-workspace/ChakraProcessor/myprocess 這層下 install
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;mvn install
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_6.jpg&quot; alt=&quot;kafka_day3_6.jpg&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;執行成功的目錄結構&quot;&gt;執行成功的目錄結構&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_7.jpg&quot; alt=&quot;kafka_day3_7.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;將-compiler-成功的-nar-檔丟到-nifi-的-lib-底下&quot;&gt;將 compiler 成功的 nar 檔丟到 nifi 的 lib 底下&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;compiler 的 nar :&lt;br /&gt;
+/Volumes/Transcend/1-eclipse-workspace/test-workspace/cust-demo/myprocess/nifi-demo-nar/target/nifi-demo-nar-1.0.nar&lt;/li&gt;
+  &lt;li&gt;sandbox nifi 的 lib 路徑 :&lt;br /&gt;
+/usr/hdf/3.1.0.0-564/nifi/lib&lt;/li&gt;
+  &lt;li&gt;連進 sandbox 指令 :&lt;br /&gt;
+ssh root@localhost -p 2222&lt;/li&gt;
+  &lt;li&gt;copy file 到 sandbox 指令
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MBP &amp;gt;&lt;/span&gt; /Volumes/Transcend/1-eclipse-workspace/test-workspace/cust-demo/myprocess/nifi-demo-nar/target &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; scp &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; 2222 nifi-demo-nar-1.0.nar root@localhost:/usr/hdf/3.1.0.0-564/nifi/lib
+&lt;span class=&quot;go&quot;&gt;root@localhost's password:
+nifi-demo-nar-1.0.nar                             100%  143KB   3.0MB/s   00:00
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;重啟-nifi&quot;&gt;重啟 nifi&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_8.jpg&quot; alt=&quot;kafka_day3_8.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;新增-myprocessor&quot;&gt;新增 MyProcessor&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_9.jpg&quot; alt=&quot;kafka_day3_9.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;設定-myprocessor-的-propety&quot;&gt;設定 MyProcessor 的 propety&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;程式有給定 propety 並設定 require 為 true，所以要給值
+&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_10.jpg&quot; alt=&quot;kafka_day3_10.jpg&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;新增-logattribute-processor並串連起來&quot;&gt;新增 LogAttribute Processor，並串連起來&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_11.jpg&quot; alt=&quot;kafka_day3_11.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;執行全部的-processor-後可以去看-nifi-的-log&quot;&gt;執行全部的 Processor 後可以去看 nifi 的 log&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;log 位置
+&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_12.jpg&quot; alt=&quot;kafka_day3_12.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;MyProcessor 的 log 看來只有 INFO 和 ERROR 會印出來
+&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_13.jpg&quot; alt=&quot;kafka_day3_13.jpg&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;logattribute-processor-的-log-資訊&quot;&gt;LogAttribute Processor 的 log 資訊&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;LogAttribute Processor 會將 FlowFile 的 Attribute 列印出來
+&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_14.jpg&quot; alt=&quot;kafka_day3_14.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;random 產生的 filename 也會在 FlowFile 的 Attribute 裡
+&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_15.jpg&quot; alt=&quot;kafka_day3_15.jpg&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考網址&lt;br /&gt;
+&lt;a href=&quot;https://community.hortonworks.com/articles/4318/build-custom-nifi-processor.html&quot;&gt;官網教學&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://www.youtube.com/watch?v=3ldmNFlelhw&quot;&gt;custom processor 教學-1&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://www.youtube.com/watch?v=QRzVr82V_Is&quot;&gt;custom processor 教學-2&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://kisstechdocs.wordpress.com/2015/01/20/nifi-flowfile-attributes-an-analogy/&quot;&gt;nifi flowfile attributes&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">custom processor</summary></entry><entry><title type="html">hortonworks day 2 (Apache NiFi)</title><link href="http://localhost:4000/hortonworks/2018/06/01/hortonworks_day2.html" rel="alternate" type="text/html" title="hortonworks day 2 (Apache NiFi)" /><published>2018-06-01T08:44:17+08:00</published><updated>2018-06-01T08:44:17+08:00</updated><id>http://localhost:4000/hortonworks/2018/06/01/hortonworks_day2</id><content type="html" xml:base="http://localhost:4000/hortonworks/2018/06/01/hortonworks_day2.html">&lt;h3 id=&quot;apache-nifi&quot;&gt;Apache NiFi&lt;/h3&gt;
 
 &lt;h4 id=&quot;準備兩個行程processor--generateflowfileinput和-putfileoutput&quot;&gt;準備兩個行程(Processor) : GenerateFlowFile(input)和 PutFile(output)&lt;/h4&gt;
 &lt;p&gt;GenerateFlowFlies will generate random texts as flowfiles.&lt;br /&gt;
@@ -1151,92 +1313,4 @@ kafka 保留 message 可以到多大，假設設定 1 G 則等於 1 G * partitio
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;如果有設定 log.retention.ms 及 og.retention.bytes 只要符合其中一個項目 message 就會被 delete．&lt;/p&gt;</content><author><name></name></author><summary type="html">下載 kafka</summary></entry><entry><title type="html">hive partition</title><link href="http://localhost:4000/hive/2018/01/29/hive_day3.html" rel="alternate" type="text/html" title="hive partition" /><published>2018-01-29T12:44:17+08:00</published><updated>2018-01-29T12:44:17+08:00</updated><id>http://localhost:4000/hive/2018/01/29/hive_day3</id><content type="html" xml:base="http://localhost:4000/hive/2018/01/29/hive_day3.html">&lt;h3 id=&quot;create-hive-partition-table&quot;&gt;create hive partition table&lt;/h3&gt;
-&lt;p&gt;先建立 Hive partition table :&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;再建立 partition :&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table students_partition add partition(year=2017,month=12)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;再把檔案 students.txt put 到剛建立的 partition 目錄:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hdfs dfs -put students.txt /tmp/daniel/hivedb/students_partition/year=2018/month=01
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查詢時就會看到 year 和 month 會是 2018 及 01．&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;建 partition 時也可直接指到某個目錄，代表裡面檔案都是屬於該 partition 的．&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alter table students_partition add partition(year=2018,month=02) location '/tmp/daniel/hivedb/temp/partition'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;再把檔案 put 到 /tmp/daniel/hivedb/temp/partition&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hdfs dfs -put students.txt /tmp/daniel/hivedb/temp/partition
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;查詢時就會看到 year 和 month 會是 2018 及 02．&lt;/p&gt;
-
-&lt;h3 id=&quot;hivemapredmode-參數&quot;&gt;hive.mapred.mode 參數&lt;/h3&gt;
-&lt;p&gt;如果設為 strict 時，partition table 在 select 時沒有指定 partition 則會出錯 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;hive&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;hive.mapred.mode&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;strict&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;hive&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; from students_partition&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;FAILED: SemanticException [Error 10041]: No partition predicate found for Alias &quot;students_partition&quot; Table &quot;students_partition&quot;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;有給 partition 時才可以查詢 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;hive&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; from students_partition where &lt;span class=&quot;nv&quot;&gt;year&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2018&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;OK
-1	Daniel	29612736	PG	2018	01
-2	Sam	283747612	SD	2018	01
-3	Andy	39827162	PM	2018	01
-&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;...
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果設為 nonstrict 則 select 時不給 partition 也可以 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;hive&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;hive.mapred.mode&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nonstrict&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;hive&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; from students_partition&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;OK
-1	Daniel	29612736	PG	2017	12
-2	Sam	283747612	SD	2017	12
-3	Andy	39827162	PM	2017	12
-&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;...
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;總結&quot;&gt;總結&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;p&gt;查看 table 的 partitions :&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;show partitions students_partition;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;查看某個 partition 底下的 partition :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;hive&amp;gt;&lt;/span&gt; show partitions students_partition partition&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;year&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2018&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;OK
-year=2018/month=01
-year=2018/month=02
-Time taken: 0.253 seconds, Fetched: 2 row(s)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;執行下列指令可以看到 year=2018,month=02 這 partition 的目錄放在 location:hdfs://quickstart.cloudera:8020/tmp/daniel/hivedb/temp/partition 裡 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;hive&amp;gt;&lt;/span&gt; describe extended students_partition partition&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;year&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2018,month&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;02&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;OK
-id                  	string
-name                	string
-tel                 	string
-job                 	string
-year                	string
-month               	string
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt; Partition Information
-&lt;span class=&quot;gp&quot;&gt;#&lt;/span&gt; col_name            	data_type           	comment
-&lt;span class=&quot;go&quot;&gt;
-year                	string
-month               	string
-
-Detailed Partition Information	Partition(values:[2018, 02], dbName:danieldb, tableName:students_partition, createTime:1517219747, lastAccessTime:0, sd:StorageDescriptor(cols:[FieldSchema(name:id, type:string, comment:null), FieldSchema(name:name, type:string, comment:null), FieldSchema(name:tel, type:string, comment:null), FieldSchema(name:job, type:string, comment:null), FieldSchema(name:year, type:string, comment:null), FieldSchema(name:month, type:string, comment:null)], location:hdfs://quickstart.cloudera:8020/tmp/daniel/hivedb/temp/partition, inputFormat:org.apache.hadoop.mapred.TextInputFormat, outputFormat:org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat, compressed:false, numBuckets:-1, serdeInfo:SerDeInfo(name:null, serializationLib:org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe, parameters:{line.delim=
-, field.delim=,, serialization.format=,}), bucketCols:[], sortCols:[], parameters:{}, skewedInfo:SkewedInfo(skewedColNames:[], skewedColValues:[], skewedColValueLocationMaps:{}), storedAsSubDirectories:false), parameters:{totalSize=283, numRows=-1, rawDataSize=-1, COLUMN_STATS_ACCURATE=false, numFiles=1, transient_lastDdlTime=1517219747})
-Time taken: 0.157 seconds, Fetched: 15 row(s)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">create hive partition table 先建立 Hive partition table : create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;</summary></entry></feed>
+&lt;p&gt;如果有設定 log.retention.ms 及 og.retention.bytes 只要符合其中一個項目 message 就會被 delete．&lt;/p&gt;</content><author><name></name></author><summary type="html">下載 kafka</summary></entry></feed>
