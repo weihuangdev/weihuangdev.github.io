@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "hortonworks day 2 (Apache NiFi)"
+title:  "hortonworks-HDF day 2 (Apache NiFi)"
 date:   2018-06-01 08:44:17 +0800
-categories: hortonworks
+categories: hortonworks-HDF
 ---
 
 ### Apache NiFi

@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "hortonworks day 3 (Apache NiFi custom processor)"
+title:  "hortonworks-HDF day 3 (Apache NiFi custom processor)"
 date:   2018-06-01 08:44:17 +0800
-categories: hortonworks
+categories: hortonworks-HDF
 ---
 
 ### custom processor

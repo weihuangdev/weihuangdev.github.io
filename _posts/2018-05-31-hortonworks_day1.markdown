@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "hortonworks day 1 (use Hortonworks DataFlow (HDF) send box)"
+title:  "hortonworks-HDF day 1 (use Hortonworks sand box)"
 date:   2018-05-31 08:44:17 +0800
-categories: hortonworks
+categories: hortonworks-HDF
 ---
 
 ### 下載 hortonworks HDF send box
