@@ -1,4 +1,77 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-04T19:14:56+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hortonworks-HDF day 3 (Apache NiFi custom processor)</title><link href="http://localhost:4000/hortonworks-hdf/2018/06/01/hortonworks_day3.html" rel="alternate" type="text/html" title="hortonworks-HDF day 3 (Apache NiFi custom processor)" /><published>2018-06-01T08:44:17+08:00</published><updated>2018-06-01T08:44:17+08:00</updated><id>http://localhost:4000/hortonworks-hdf/2018/06/01/hortonworks_day3</id><content type="html" xml:base="http://localhost:4000/hortonworks-hdf/2018/06/01/hortonworks_day3.html">&lt;h3 id=&quot;custom-processor&quot;&gt;custom processor&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-06T17:29:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Spark-Streaming day 1 (Hello World)</title><link href="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1.html" rel="alternate" type="text/html" title="Spark-Streaming day 1 (Hello World)" /><published>2018-06-06T08:44:17+08:00</published><updated>2018-06-06T08:44:17+08:00</updated><id>http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1</id><content type="html" xml:base="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1.html">&lt;h4 id=&quot;目標&quot;&gt;目標&lt;/h4&gt;
+&lt;p&gt;寫一個 hello world spark-streaming 程式，然後使用 netcat 工具做測試．&lt;/p&gt;
+
+&lt;h4 id=&quot;netcat-工具&quot;&gt;netcat 工具&lt;/h4&gt;
+&lt;p&gt;netcat 的功能非常多這邊只先介紹如何測試的方法 :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;安裝 netcat
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 ~]#&lt;/span&gt; yum install nc
+&lt;span class=&quot;go&quot;&gt;Loaded plugins: fastestmirror
+base                                                           | 3.6 kB  00:00:00
+cloudera-manager                                               |  951 B  00:00:00
+extras                                                         | 3.4 kB  00:00:00
+local-cloudera                                                 | 2.9 kB  00:00:00
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;...
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;開一個 console 輸入 nc -lk 9999
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; nc &lt;span class=&quot;nt&quot;&gt;-lk&lt;/span&gt; 9999
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;再開另一個 console 輸入 telnet localhost 9999
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; telnet localhost 9999
+&lt;span class=&quot;go&quot;&gt;Trying ::1...
+telnet: connect to address ::1: Connection refused
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_1.jpg&quot; alt=&quot;spark-streaming_day1_1.jpg&quot; /&gt;
+不管在哪個 cosole 輸入文字都會同步
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_2.jpg&quot; alt=&quot;spark-streaming_day1_2.jpg&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;將 netcat 的內容導到檔案裡 nc -lk 9999 &amp;gt; testNetCat.txt
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_3.jpg&quot; alt=&quot;spark-streaming_day1_3.jpg&quot; /&gt;
+telnet
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_4.jpg&quot; alt=&quot;spark-streaming_day1_4.jpg&quot; /&gt;
+看檔案內容的變化，只有從 telnet 的 console 輸入的內容才會導到檔案裡
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_5.jpg&quot; alt=&quot;spark-streaming_day1_5.jpg&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;環境&quot;&gt;環境&lt;/h4&gt;
+&lt;p&gt;CDH Spark2.2.0&lt;/p&gt;
+
+&lt;h4 id=&quot;啟動-spark-shell&quot;&gt;啟動 spark-shell&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_6.jpg&quot; alt=&quot;spark-streaming_day1_6.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;在-spark-shell-裡面輸入下面程式&quot;&gt;在 spark-shell 裡面輸入下面程式&lt;/h4&gt;
+&lt;p&gt;ssc.socketTextStream(“daniel-3-test-master1”, 9988)&lt;br /&gt;
+這邊要輸入 domain name ，試過輸入 IP 或 localhost 會 Connection refused 原因可能再研究．&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark._&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark.streaming._&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StreamingContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Seconds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;socketTextStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;daniel-3-test-master1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9988&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;words&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;flatMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;words&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;word&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;word&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wordCounts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;reduceByKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;wordCounts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;然後執行 ssc.start()
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_7.jpg&quot; alt=&quot;spark-streaming_day1_7.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在使用 netcat 輸入一些訊息
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_8.jpg&quot; alt=&quot;spark-streaming_day1_8.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;印出的結果如下，系統會每 1 秒執行一次 job
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_9.jpg&quot; alt=&quot;spark-streaming_day1_9.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考網址&lt;br /&gt;
+&lt;a href=&quot;https://blog.csdn.net/u011564172/article/details/70172060&quot;&gt;Spark DAG&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://github.com/lw-lin/CoolplaySpark/blob/master/Spark%20Streaming%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97/0.1%20Spark%20Streaming%20%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E5%9D%97%E6%A6%82%E8%BF%B0.md&quot;&gt;Spark Streaming 架構&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">目標 寫一個 hello world spark-streaming 程式，然後使用 netcat 工具做測試．</summary></entry><entry><title type="html">hortonworks-HDF day 3 (Apache NiFi custom processor)</title><link href="http://localhost:4000/hortonworks-hdf/2018/06/01/hortonworks_day3.html" rel="alternate" type="text/html" title="hortonworks-HDF day 3 (Apache NiFi custom processor)" /><published>2018-06-01T08:44:17+08:00</published><updated>2018-06-01T08:44:17+08:00</updated><id>http://localhost:4000/hortonworks-hdf/2018/06/01/hortonworks_day3</id><content type="html" xml:base="http://localhost:4000/hortonworks-hdf/2018/06/01/hortonworks_day3.html">&lt;h3 id=&quot;custom-processor&quot;&gt;custom processor&lt;/h3&gt;
 
 &lt;h4 id=&quot;建立一個目錄&quot;&gt;建立一個目錄&lt;/h4&gt;
 &lt;ul&gt;
@@ -1045,272 +1118,4 @@ drwxrwxrwx  1 daniel  staff   128K  5 29 18:45 com
 &lt;h3 id=&quot;run-hive-sql-command&quot;&gt;run hive sql command&lt;/h3&gt;
 &lt;p&gt;可將 hive -e 直接執行 hive 的 sql :&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hive -e &quot;show tables in filedb&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">run hive script 可將 hive 語法用成 sql 檔 : create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;</summary></entry><entry><title type="html">kafka day 1</title><link href="http://localhost:4000/kafka/2018/02/09/kafka_day1.html" rel="alternate" type="text/html" title="kafka day 1 " /><published>2018-02-09T08:44:17+08:00</published><updated>2018-02-09T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/02/09/kafka_day1</id><content type="html" xml:base="http://localhost:4000/kafka/2018/02/09/kafka_day1.html">&lt;h3 id=&quot;下載-kafka&quot;&gt;下載 kafka&lt;/h3&gt;
-
-&lt;h4 id=&quot;執行-kafka-server-&quot;&gt;執行 kafka server :&lt;/h4&gt;
-&lt;p&gt;./kafka-server-start.sh ../config/server.properties&lt;/p&gt;
-
-&lt;h3 id=&quot;使用-single-node-single-broker-configuration-測試&quot;&gt;使用 Single Node-Single Broker Configuration 測試&lt;/h3&gt;
-
-&lt;h4 id=&quot;create-topic-hello-kafka-&quot;&gt;create topic Hello-kafka :&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[cloudera@quickstart kafka_2.11-1.0.0]$&lt;/span&gt; ./bin/kafka-topics.sh &lt;span class=&quot;nt&quot;&gt;--create&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--zookeeper&lt;/span&gt; localhost:2181 &lt;span class=&quot;nt&quot;&gt;--replication-factor&lt;/span&gt; 1 &lt;span class=&quot;nt&quot;&gt;--partitions&lt;/span&gt; 1 &lt;span class=&quot;nt&quot;&gt;--topic&lt;/span&gt; Hello-kafka
-&lt;span class=&quot;go&quot;&gt;Created topic &quot;Hello-kafka&quot;.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;created a topic named “Hello-kafka” with a single partition and one replica factor.&lt;/p&gt;
-
-&lt;h4 id=&quot;list-topics&quot;&gt;list topics&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[cloudera@quickstart kafka_2.11-1.0.0]$&lt;/span&gt; ./bin/kafka-topics.sh &lt;span class=&quot;nt&quot;&gt;--list&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--zookeeper&lt;/span&gt; localhost:2181
-&lt;span class=&quot;go&quot;&gt;Hello-kafka
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;start-producer-to-send-messages&quot;&gt;Start Producer to Send Messages&lt;/h4&gt;
-
-&lt;p&gt;Config/server.properties&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[cloudera@quickstart kafka_2.11-1.0.0]$&lt;/span&gt; ./bin/kafka-console-producer.sh &lt;span class=&quot;nt&quot;&gt;--broker-list&lt;/span&gt; localhost:9092 &lt;span class=&quot;nt&quot;&gt;--topic&lt;/span&gt; Hello-kafka
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&lt;/span&gt;Hello
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&lt;/span&gt;My first Message
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&lt;/span&gt;My second Message
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;start-consumer-to-receive-messagesoffset-存在-zookeeper&quot;&gt;Start Consumer to Receive Messages(offset 存在 zookeeper)&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[cloudera@quickstart kafka_2.11-1.0.0]$&lt;/span&gt; ./bin/kafka-console-consumer.sh &lt;span class=&quot;nt&quot;&gt;--zookeeper&lt;/span&gt; localhost:2181 &lt;span class=&quot;nt&quot;&gt;-topic&lt;/span&gt; Hello-kafka &lt;span class=&quot;nt&quot;&gt;--from-beginning&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Using the ConsoleConsumer with old consumer is deprecated and will be removed in a future major release. Consider using the new consumer by passing [bootstrap-server] instead of [zookeeper].
-Hello
-My first Message
-My second Message
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;delete-a-topic&quot;&gt;delete a topic&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[cloudera@quickstart kafka_2.11-1.0.0]$&lt;/span&gt; bin/kafka-topics.sh &lt;span class=&quot;nt&quot;&gt;--zookeeper&lt;/span&gt; localhost:2181 &lt;span class=&quot;nt&quot;&gt;--delete&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--topic&lt;/span&gt; Hello-kafka
-&lt;span class=&quot;go&quot;&gt;Topic Hello-kafka is marked for deletion.
-Note: This will have no impact if delete.topic.enable is not set to true.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/kafka/day1/kafka_day1_1.jpg&quot; alt=&quot;kafka_day1_1.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;cloudera manager zookeeper 設定檔位置 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;/etc/zookeeper/conf/zoo.cfg
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;cloudera manager 安裝好 kafka 後，指令的位置 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-slave1 local]#&lt;/span&gt; ll /usr/bin | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;kafka
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        43 May 23 13:33 kafka-broker-api-versions -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-broker-api-versions
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        30 May 23 13:33 kafka-config -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-config
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        40 May 23 13:33 kafka-console-consumer -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-console-consumer
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        40 May 23 13:33 kafka-console-producer -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-console-producer
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        39 May 23 13:33 kafka-consumer-groups -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-consumer-groups
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        47 May 23 13:33 kafka-consumer-offset-checker -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-consumer-offset-checker
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        42 May 23 13:33 kafka-consumer-perf-test -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-consumer-perf-test
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        50 May 23 13:33 kafka-preferred-replica-election -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-preferred-replica-election
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        42 May 23 13:33 kafka-producer-perf-test -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-producer-perf-test
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        43 May 23 13:33 kafka-reassign-partitions -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-reassign-partitions
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        33 May 23 13:33 kafka-run-class -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-run-class
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        30 May 23 13:33 kafka-sentry -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-sentry
-&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root        30 May 23 13:33 kafka-topics -&amp;gt;&lt;/span&gt; /etc/alternatives/kafka-topics
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-slave1 local]#&lt;/span&gt; ll /opt/cloudera/parcels/KAFKA-3.0.0-1.3.0.0.p0.40/bin/
-&lt;span class=&quot;go&quot;&gt;total 52
--rwxr-xr-x 1 root root 684 Oct  6  2017 kafka-broker-api-versions
--rwxr-xr-x 1 root root 671 Oct  6  2017 kafka-config
--rwxr-xr-x 1 root root 681 Oct  6  2017 kafka-console-consumer
--rwxr-xr-x 1 root root 681 Oct  6  2017 kafka-console-producer
--rwxr-xr-x 1 root root 680 Oct  6  2017 kafka-consumer-groups
--rwxr-xr-x 1 root root 688 Oct  6  2017 kafka-consumer-offset-checker
--rwxr-xr-x 1 root root 683 Oct  6  2017 kafka-consumer-perf-test
--rwxr-xr-x 1 root root 691 Oct  6  2017 kafka-preferred-replica-election
--rwxr-xr-x 1 root root 683 Oct  6  2017 kafka-producer-perf-test
--rwxr-xr-x 1 root root 684 Oct  6  2017 kafka-reassign-partitions
--rwxr-xr-x 1 root root 674 Oct  6  2017 kafka-run-class
--rwxr-xr-x 1 root root 671 Oct  6  2017 kafka-sentry
--rwxr-xr-x 1 root root 671 Oct  6  2017 kafka-topics
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;這裡也有，kafka-connect 的 sh 也在這 :&lt;/p&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 ~]#&lt;/span&gt; ll /opt/cloudera/parcels/KAFKA-3.0.0-1.3.0.0.p0.40/lib/kafka/bin
-&lt;span class=&quot;go&quot;&gt;total 124
--rwxr-xr-x 1 root root 1335 Oct  6  2017 connect-distributed.sh
--rwxr-xr-x 1 root root 1332 Oct  6  2017 connect-standalone.sh
--rwxr-xr-x 1 root root  861 Oct  6  2017 kafka-acls.sh
--rwxr-xr-x 1 root root  873 Oct  6  2017 kafka-broker-api-versions.sh
--rwxr-xr-x 1 root root  864 Oct  6  2017 kafka-configs.sh
--rwxr-xr-x 1 root root  945 Oct  6  2017 kafka-console-consumer.sh
--rwxr-xr-x 1 root root  944 Oct  6  2017 kafka-console-producer.sh
--rwxr-xr-x 1 root root  871 Oct  6  2017 kafka-consumer-groups.sh
--rwxr-xr-x 1 root root  872 Oct  6  2017 kafka-consumer-offset-checker.sh
--rwxr-xr-x 1 root root  948 Oct  6  2017 kafka-consumer-perf-test.sh
--rwxr-xr-x 1 root root  869 Oct  6  2017 kafka-delete-records.sh
--rwxr-xr-x 1 root root  862 Oct  6  2017 kafka-mirror-maker.sh
--rwxr-xr-x 1 root root  886 Oct  6  2017 kafka-preferred-replica-election.sh
--rwxr-xr-x 1 root root  959 Oct  6  2017 kafka-producer-perf-test.sh
--rwxr-xr-x 1 root root  874 Oct  6  2017 kafka-reassign-partitions.sh
--rwxr-xr-x 1 root root  868 Oct  6  2017 kafka-replay-log-producer.sh
--rwxr-xr-x 1 root root  874 Oct  6  2017 kafka-replica-verification.sh
--rwxr-xr-x 1 root root 7027 Oct  6  2017 kafka-run-class.sh
--rwxr-xr-x 1 root root 1961 Oct  6  2017 kafka-sentry.sh
--rwxr-xr-x 1 root root 1394 Oct  6  2017 kafka-server-start.sh
--rwxr-xr-x 1 root root  975 Oct  6  2017 kafka-server-stop.sh
--rwxr-xr-x 1 root root  870 Oct  6  2017 kafka-simple-consumer-shell.sh
--rwxr-xr-x 1 root root  945 Oct  6  2017 kafka-streams-application-reset.sh
--rwxr-xr-x 1 root root  863 Oct  6  2017 kafka-topics.sh
--rwxr-xr-x 1 root root  958 Oct  6  2017 kafka-verifiable-consumer.sh
--rwxr-xr-x 1 root root  958 Oct  6  2017 kafka-verifiable-producer.sh
--rwxr-xr-x 1 root root  867 Oct  6  2017 zookeeper-security-migration.sh
--rwxr-xr-x 1 root root 1393 Oct  6  2017 zookeeper-server-start.sh
--rwxr-xr-x 1 root root  978 Oct  6  2017 zookeeper-server-stop.sh
--rwxr-xr-x 1 root root  968 Oct  6  2017 zookeeper-shell.sh
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;測試指令 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;kafka-topics --zookeeper 192.168.61.105:2181 --list
-kafka-topics --create --zookeeper 192.168.61.105:2181 --replication-factor 1 --partitions 1 --topic daniel-topic-1
-kafka-topics --describe --zookeeper 192.168.61.105:2181 --topic daniel-topic-1
-kafka-console-producer --broker-list 192.168.61.105:9092 --topic daniel-topic-1
-kafka-console-consumer --bootstrap-server 192.168.61.105:9092 --topic daniel-topic-1 --from-beginning
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;java-程式&quot;&gt;java 程式&lt;/h3&gt;
-&lt;p&gt;Producer :&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;mykafka&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Properties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.concurrent.TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.producer.KafkaProducer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.producer.Producer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.producer.ProducerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.producer.ProducerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.common.PartitionInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.common.serialization.LongSerializer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.common.serialization.StringSerializer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyMessageProducer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-	&lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOPIC&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;daniel-topic-1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-	&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;Properties&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;props&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Properties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ProducerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;BOOTSTRAP_SERVERS_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;192.168.61.105:9092&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ProducerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CLIENT_ID_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;34&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ProducerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;KEY_SERIALIZER_CLASS_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LongSerializer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ProducerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;VALUE_SERIALIZER_CLASS_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StringSerializer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;Producer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;procuder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;KafkaProducer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;value3_&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;ProducerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProducerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TOPIC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;send message : &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;procuder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PartitionInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;partitions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PartitionInfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;();&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;partitions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;procuder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;partitionsFor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TOPIC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PartitionInfo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;partitions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;send message over.&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;procuder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TimeUnit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MILLISECONDS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Consumer :&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;mykafka&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Collections&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Properties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.consumer.ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.consumer.ConsumerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.consumer.ConsumerRecords&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.clients.consumer.KafkaConsumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.kafka.common.serialization.StringDeserializer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MyMessageConsumer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-	&lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TOPIC&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;daniel-topic-1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-	&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;Properties&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;props&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Properties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;BOOTSTRAP_SERVERS_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;192.168.61.105:9092&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;GROUP_ID_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;daniel-consumer-group&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;KEY_DESERIALIZER_CLASS_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StringDeserializer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;VALUE_DESERIALIZER_CLASS_CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StringDeserializer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;KafkaConsumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;KafkaConsumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;subscribe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Arrays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;asList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TOPIC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// At this point, there is no heartbeat from consumer so seekToBeinning() wont work&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// So call poll()&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;poll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;//從最前面開始讀取&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;seekToBeginning&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assignment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;n&quot;&gt;ConsumerRecords&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;records&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;consumer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;poll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-			&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ConsumerRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;records&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-				&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;offset = %d, key = %s, value = %s \n&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;offset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-				&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-					&lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-				&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InterruptedException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-					&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-				&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Broker 參數設定 :&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;broker.id
-每個 broker 都會有一個 id&lt;/li&gt;
-  &lt;li&gt;auto.create.topics.enable&lt;br /&gt;
-如果設定 true，有三種情況下會自動建立 topic :
-    &lt;ol&gt;
-      &lt;li&gt;When a producer starts writing messages to the topic&lt;/li&gt;
-      &lt;li&gt;When a consumer starts reading messages from the topic&lt;/li&gt;
-      &lt;li&gt;When any client requests metadata for the topic&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Topic 參數設定 :&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;num.partitions
-決定當建立 topic 時 partition 要給多少個．
-&lt;img src=&quot;http://localhost:4000/assets/kafka/day1/kafka_day1_2.jpg&quot; alt=&quot;kafka_day1_2.jpg&quot; /&gt;
-原本設1時，自動建立topic時只會有1個partition :&lt;br /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/kafka/day1/kafka_day1_3.jpg&quot; alt=&quot;kafka_day1_3.jpg&quot; /&gt;
-改為3時，自動建立topic時只會有3個partition :&lt;br /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/kafka/day1/kafka_day1_4.jpg&quot; alt=&quot;kafka_day1_4.jpg&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;下指令建立時指定 parition 為 5 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-slave1 local]#&lt;/span&gt; kafka-topics &lt;span class=&quot;nt&quot;&gt;--create&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--zookeeper&lt;/span&gt; 192.168.61.105:2181 &lt;span class=&quot;nt&quot;&gt;--replication-factor&lt;/span&gt; 1 &lt;span class=&quot;nt&quot;&gt;--partitions&lt;/span&gt; 5 &lt;span class=&quot;nt&quot;&gt;--topic&lt;/span&gt; daniel-topic-4
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Log會看到還是會建立 5 個 partitions 所以 num.partitions 是當系統 auto create 時會被影響 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;18/05/25 08:28:35 INFO zkclient.ZkClient: zookeeper state changed (SyncConnected)
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;18/05/25 08:28:35 INFO admin.AdminUtils$&lt;/span&gt;: Topic creation &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;version&quot;&lt;/span&gt;:1,&lt;span class=&quot;s2&quot;&gt;&quot;partitions&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;4&quot;&lt;/span&gt;:[34],&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;:[34],&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt;:[34],&lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;:[34],&lt;span class=&quot;s2&quot;&gt;&quot;3&quot;&lt;/span&gt;:[34]&lt;span class=&quot;o&quot;&gt;}}&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Created topic &quot;daniel-topic-4&quot;.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Keep in mind that the number of partitions for a topic can only be increased, never decreased. This means that if a topic needs to have fewer partitions than num.partitions, care will need to be taken to manually create the topic.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;log.retention.ms
-kafka 保留 message 多久
-&lt;img src=&quot;http://localhost:4000/assets/kafka/day1/kafka_day1_5.jpg&quot; alt=&quot;kafka_day1_5.jpg&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;log.retention.bytes
-kafka 保留 message 可以到多大，假設設定 1 G 則等於 1 G * partition 個數(假設8)則等於可以保留 8G．-1等於沒限制．
-&lt;img src=&quot;http://localhost:4000/assets/kafka/day1/kafka_day1_6.jpg&quot; alt=&quot;kafka_day1_6.jpg&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如果有設定 log.retention.ms 及 og.retention.bytes 只要符合其中一個項目 message 就會被 delete．&lt;/p&gt;</content><author><name></name></author><summary type="html">下載 kafka</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">run hive script 可將 hive 語法用成 sql 檔 : create table danieldb.students_partition(id string,name string,tel string,job string) partitioned by (year string,month string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile;</summary></entry></feed>
