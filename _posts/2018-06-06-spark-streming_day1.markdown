@@ -77,6 +77,7 @@ ssc.start()
 > 參考網址  
 > [Spark DAG](https://blog.csdn.net/u011564172/article/details/70172060)  
 > [Spark Streaming 架構](https://github.com/lw-lin/CoolplaySpark/blob/master/Spark%20Streaming%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97/0.1%20Spark%20Streaming%20%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E5%9D%97%E6%A6%82%E8%BF%B0.md)  
+> [Spark Streaming read file](http://dblab.xmu.edu.cn/blog/1082-2/)
 
 
 
