@@ -1,4 +1,91 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-08T15:07:59+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Spark-Streaming day 2 (intelliJ Hello World)</title><link href="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2.html" rel="alternate" type="text/html" title="Spark-Streaming day 2 (intelliJ Hello World)" /><published>2018-06-06T08:44:17+08:00</published><updated>2018-06-06T08:44:17+08:00</updated><id>http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2</id><content type="html" xml:base="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2.html">&lt;h4 id=&quot;目標&quot;&gt;目標&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-08T19:29:01+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Spark-Streaming day 3 (spark read ftp file)</title><link href="http://localhost:4000/spark-streaming/2018/06/08/spark-streming_day3.html" rel="alternate" type="text/html" title="Spark-Streaming day 3 (spark read ftp file)" /><published>2018-06-08T08:44:17+08:00</published><updated>2018-06-08T08:44:17+08:00</updated><id>http://localhost:4000/spark-streaming/2018/06/08/spark-streming_day3</id><content type="html" xml:base="http://localhost:4000/spark-streaming/2018/06/08/spark-streming_day3.html">&lt;h4 id=&quot;目標&quot;&gt;目標&lt;/h4&gt;
+&lt;p&gt;用 vsftpd 建立 ftp server ，並使用 spark-sftp_2.11 套件讀取 ftp file&lt;/p&gt;
+
+&lt;h4 id=&quot;安裝-vsftpdlinux-可用來當作-ftp-server&quot;&gt;安裝 vsftpd(linux 可用來當作 ftp server)&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install vsftpd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;安裝好設定檔位置 :
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/vsftpd/vsftpd.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;啟動 vsftpd :
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;service vsftpd start
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;預設匿名者(anonymous)登入的根目錄 :
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/var/ftp/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;設定下列參數值(vsftpd.conf) :
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;write_enable=YES
+anon_mkdir_write_enable=YES
+anon_upload_enable=YES
+chroot_local_user=YES
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;h4 id=&quot;測試-anonymous-登入&quot;&gt;測試 anonymous 登入&lt;/h4&gt;
+    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day3/spark-streaming_day3_1.jpg&quot; alt=&quot;spark-streaming_day3_1.jpg&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;建立新的帳號登入&quot;&gt;建立新的帳號登入&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day3/spark-streaming_day3_2.jpg&quot; alt=&quot;spark-streaming_day3_2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;設定下列參數值vsftpdconf-&quot;&gt;設定下列參數值(vsftpd.conf) :&lt;/h4&gt;
+&lt;p&gt;chroot_local_user=YES
+chroot_list_enable=YES
+chroot_list_file=/etc/vsftpd/chroot_list&lt;/p&gt;
+
+&lt;h4 id=&quot;新增-chroot_list-檔案&quot;&gt;新增 chroot_list 檔案&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;touch /etc/vsftpd/chroot_list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;在-chroot_list-加上-user-name&quot;&gt;在 chroot_list 加上 user name&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day3/spark-streaming_day3_3.jpg&quot; alt=&quot;spark-streaming_day3_3.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;測試用建立的帳號-allen-登入並上傳測試檔案&quot;&gt;測試用建立的帳號 allen 登入，並上傳測試檔案&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day3/spark-streaming_day3_4.jpg&quot; alt=&quot;spark-streaming_day3_4.jpg&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day3/spark-streaming_day3_5.jpg&quot; alt=&quot;spark-streaming_day3_5.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;修改-buildsbt&quot;&gt;修改 build.sbt&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;name := &quot;streaming-test&quot;
+version := &quot;0.1&quot;
+scalaVersion := &quot;2.11.0&quot;
+
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-streaming&quot; % &quot;2.2.0&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-sql&quot; % &quot;2.2.0&quot;
+libraryDependencies += &quot;com.springml&quot; % &quot;spark-sftp_2.11&quot; % &quot;1.1.1&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;寫測試程式-&quot;&gt;寫測試程式 :&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;streaming&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;org&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;apache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SparkSession&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FtpStreamingTest&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sparkSession&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SparkSession&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;local&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;appName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;spark session example&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getOrCreate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sparkSession&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;com.springml.spark.sftp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;username&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;allen&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;123456&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;host&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;192.168.61.106&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fileType&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;json&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;
+      &lt;span class=&quot;nf&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/allen/testfile/file_1.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foreach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;測試結果&quot;&gt;測試結果&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day3/spark-streaming_day3_6.jpg&quot; alt=&quot;spark-streaming_day3_6.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考網址&lt;br /&gt;
+&lt;a href=&quot;https://github.com/springml/spark-sftp&quot;&gt;spark-sftp&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://linux.vbird.org/linux_server/0410vsftpd/0410vsftpd.php&quot;&gt;vsftpd-1&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://www.wkb.idv.tw/study/centos/c07.htm&quot;&gt;vsftpd-2&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">目標 用 vsftpd 建立 ftp server ，並使用 spark-sftp_2.11 套件讀取 ftp file</summary></entry><entry><title type="html">Spark-Streaming day 2 (intelliJ Hello World)</title><link href="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2.html" rel="alternate" type="text/html" title="Spark-Streaming day 2 (intelliJ Hello World)" /><published>2018-06-06T08:44:17+08:00</published><updated>2018-06-06T08:44:17+08:00</updated><id>http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2</id><content type="html" xml:base="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2.html">&lt;h4 id=&quot;目標&quot;&gt;目標&lt;/h4&gt;
 &lt;p&gt;使用 intelliJ 開發一個 Hello World 程式&lt;/p&gt;
 
 &lt;h4 id=&quot;install-scala-plugin&quot;&gt;install scala plugin&lt;/h4&gt;
@@ -1193,5 +1280,4 @@ drwxrwxrwx  1 daniel  staff   128K  5 29 18:45 com
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;h4 id=&quot;測試畫面&quot;&gt;測試畫面&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/kafka/day3/kafka_day3_1.jpg&quot; alt=&quot;kafka_day3_1.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Write A Custom Serializer pom.xml</summary></entry><entry><title type="html">kafka day 2</title><link href="http://localhost:4000/kafka/2018/05/25/kafka_day2.html" rel="alternate" type="text/html" title="kafka day 2 " /><published>2018-05-25T08:44:17+08:00</published><updated>2018-05-25T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/05/25/kafka_day2</id><content type="html" xml:base="http://localhost:4000/kafka/2018/05/25/kafka_day2.html">&lt;h3 id=&quot;producer--consumer&quot;&gt;producer &amp;amp; consumer&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/kafka/day2/kafka_day2_1.jpg&quot; alt=&quot;kafka_day2_1.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">producer &amp;amp; consumer</summary></entry></feed>
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/kafka/day3/kafka_day3_1.jpg&quot; alt=&quot;kafka_day3_1.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Write A Custom Serializer pom.xml</summary></entry></feed>
