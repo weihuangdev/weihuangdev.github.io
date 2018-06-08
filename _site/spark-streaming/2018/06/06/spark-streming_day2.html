@@ -83,24 +83,89 @@
     <h4 id="目標">目標</h4>
 <p>使用 intelliJ 開發一個 Hello World 程式</p>
 
+<h4 id="install-scala-plugin">install scala plugin</h4>
 <p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_1.jpg" alt="spark-streaming_day2_1.jpg" />
 <img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_2.jpg" alt="spark-streaming_day2_2.jpg" />
 <img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_3.jpg" alt="spark-streaming_day2_3.jpg" />
-<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_4.jpg" alt="spark-streaming_day2_4.jpg" />
-<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_5.jpg" alt="spark-streaming_day2_5.jpg" />
+<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_4.jpg" alt="spark-streaming_day2_4.jpg" /></p>
+<h4 id="建立一個新的-project">建立一個新的 project</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_5.jpg" alt="spark-streaming_day2_5.jpg" />
 <img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_6.jpg" alt="spark-streaming_day2_6.jpg" />
-<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_7.jpg" alt="spark-streaming_day2_7.jpg" />
-<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_8.jpg" alt="spark-streaming_day2_8.jpg" />
-<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_9.jpg" alt="spark-streaming_day2_9.jpg" /></p>
-
-<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_10.jpg" alt="spark-streaming_day2_10.jpg" />
-<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_11.jpg" alt="spark-streaming_day2_11.jpg" />
+<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_7.jpg" alt="spark-streaming_day2_7.jpg" /></p>
+<h4 id="寫一個測試程式-streamingtest">寫一個測試程式 StreamingTest</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_8.jpg" alt="spark-streaming_day2_8.jpg" />
+<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_9.jpg" alt="spark-streaming_day2_9.jpg" />
+<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_10.jpg" alt="spark-streaming_day2_10.jpg" /></p>
+<h4 id="使用-intellij-build-jar">使用 intelliJ build jar</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_11.jpg" alt="spark-streaming_day2_11.jpg" />
 <img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_12.jpg" alt="spark-streaming_day2_12.jpg" />
 <img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_13.jpg" alt="spark-streaming_day2_13.jpg" />
 <img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_14.jpg" alt="spark-streaming_day2_14.jpg" />
 <img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_15.jpg" alt="spark-streaming_day2_15.jpg" />
 <img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_16.jpg" alt="spark-streaming_day2_16.jpg" />
 <img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_17.jpg" alt="spark-streaming_day2_17.jpg" /></p>
+<h4 id="啟動一個-netcat">啟動一個 netcat</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_18.jpg" alt="spark-streaming_day2_18.jpg" /></p>
+<h4 id="先直接-run-main-function-測試看看">先直接 run main function 測試看看</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_19.jpg" alt="spark-streaming_day2_19.jpg" /></p>
+<h4 id="出現下列錯誤訊息">出現下列錯誤訊息</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_20.jpg" alt="spark-streaming_day2_20.jpg" /></p>
+<h4 id="修改-sbt-檔從-210-版變成-211">修改 sbt 檔，從 2.10 版變成 2.11</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_21.jpg" alt="spark-streaming_day2_21.jpg" /></p>
+<h4 id="測試執行成功">測試執行成功</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_22.jpg" alt="spark-streaming_day2_22.jpg" /></p>
+
+<h4 id="接著-demo-讓-spark-streaming-從某個目錄抓取檔案內容處理">接著 demo 讓 spark-streaming 從某個目錄抓取檔案內容處理</h4>
+<p>在本機建立一個目錄路徑為 /Users/daniel/test/streamFile</p>
+
+<h4 id="修改程式">修改程式</h4>
+<p>將原來的 ssc.socketTextStream 改成 ssc.textFileStream</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.apache.spark._</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.streaming._</span>
+
+<span class="k">object</span> <span class="nc">StreamingTest</span> <span class="o">{</span>
+
+  <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">conf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkConf</span><span class="o">().</span><span class="n">setMaster</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">).</span><span class="n">setAppName</span><span class="o">(</span><span class="s">"NetworkWordCount"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">ssc</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StreamingContext</span><span class="o">(</span><span class="n">conf</span><span class="o">,</span> <span class="nc">Seconds</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
+    <span class="c1">//val lines = ssc.socketTextStream("localhost", 9988)
+</span>    <span class="k">val</span> <span class="n">lines</span> <span class="k">=</span> <span class="n">ssc</span><span class="o">.</span><span class="n">textFileStream</span><span class="o">(</span><span class="s">"file:///Users/daniel/test/streamFile"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">words</span> <span class="k">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">flatMap</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">" "</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">pairs</span> <span class="k">=</span> <span class="n">words</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">word</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">wordCounts</span> <span class="k">=</span> <span class="n">pairs</span><span class="o">.</span><span class="n">reduceByKey</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span>
+    <span class="n">wordCounts</span><span class="o">.</span><span class="n">print</span><span class="o">()</span>
+    <span class="n">ssc</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">ssc</span><span class="o">.</span><span class="n">awaitTermination</span><span class="o">()</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h4 id="測試執行成功-1">測試執行成功</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_23.jpg" alt="spark-streaming_day2_23.jpg" /></p>
+
+<h4 id="使用-spark2-submit-測試">使用 spark2-submit 測試</h4>
+<ul>
+  <li>流程圖
+<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_24.jpg" alt="spark-streaming_day2_24.jpg" /></li>
+</ul>
+
+<h4 id="1先把-compiler-好的-jar-丟到-master1-上面">1.先把 compiler 好的 jar 丟到 master1 上面</h4>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">scp streaming-test.jar root@192.168.61.105:/tmp/streaming-test
+</span></code></pre></div></div>
+<h4 id="2在使用-spark2-submit-把-spark-job-送到-yarn-上執行">2.在使用 spark2-submit 把 spark job 送到 yarn 上執行</h4>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">spark2-submit --class com.streaming.test.StreamingTest --master yarn /tmp/streaming-test/streaming-test.jar
+</span></code></pre></div></div>
+<ul>
+  <li>成功後會再 yarn 上看到執行的 job
+<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_25.jpg" alt="spark-streaming_day2_25.jpg" />
+    <h4 id="3再把檔案testfiletxt丟到該目錄底下tmpstreaming-testtestfiles">3.再把檔案(testFile.txt)丟到該目錄底下(/tmp/streaming-test/testfiles)</h4>
+  </li>
+  <li>但 master1 及 slave 1 都要有該檔案及目錄，因為是分散式處理的關係
+<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_26.jpg" alt="spark-streaming_day2_26.jpg" />
+<img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_27.jpg" alt="spark-streaming_day2_27.jpg" />
+    <h4 id="會在-master1-上看到執行結果">會在 master1 上看到執行結果</h4>
+    <p><img src="http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_28.jpg" alt="spark-streaming_day2_28.jpg" /></p>
+  </li>
+</ul>
 
 
   </div>

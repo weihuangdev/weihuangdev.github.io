@@ -1,24 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-07T13:29:21+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Spark-Streaming day 2 (intelliJ Hello World)</title><link href="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2.html" rel="alternate" type="text/html" title="Spark-Streaming day 2 (intelliJ Hello World)" /><published>2018-06-06T08:44:17+08:00</published><updated>2018-06-06T08:44:17+08:00</updated><id>http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2</id><content type="html" xml:base="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2.html">&lt;h4 id=&quot;目標&quot;&gt;目標&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-08T15:07:59+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Spark-Streaming day 2 (intelliJ Hello World)</title><link href="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2.html" rel="alternate" type="text/html" title="Spark-Streaming day 2 (intelliJ Hello World)" /><published>2018-06-06T08:44:17+08:00</published><updated>2018-06-06T08:44:17+08:00</updated><id>http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2</id><content type="html" xml:base="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day2.html">&lt;h4 id=&quot;目標&quot;&gt;目標&lt;/h4&gt;
 &lt;p&gt;使用 intelliJ 開發一個 Hello World 程式&lt;/p&gt;
 
+&lt;h4 id=&quot;install-scala-plugin&quot;&gt;install scala plugin&lt;/h4&gt;
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_1.jpg&quot; alt=&quot;spark-streaming_day2_1.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_2.jpg&quot; alt=&quot;spark-streaming_day2_2.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_3.jpg&quot; alt=&quot;spark-streaming_day2_3.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_4.jpg&quot; alt=&quot;spark-streaming_day2_4.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_5.jpg&quot; alt=&quot;spark-streaming_day2_5.jpg&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_4.jpg&quot; alt=&quot;spark-streaming_day2_4.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;建立一個新的-project&quot;&gt;建立一個新的 project&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_5.jpg&quot; alt=&quot;spark-streaming_day2_5.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_6.jpg&quot; alt=&quot;spark-streaming_day2_6.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_7.jpg&quot; alt=&quot;spark-streaming_day2_7.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_8.jpg&quot; alt=&quot;spark-streaming_day2_8.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_9.jpg&quot; alt=&quot;spark-streaming_day2_9.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_10.jpg&quot; alt=&quot;spark-streaming_day2_10.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_11.jpg&quot; alt=&quot;spark-streaming_day2_11.jpg&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_7.jpg&quot; alt=&quot;spark-streaming_day2_7.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;寫一個測試程式-streamingtest&quot;&gt;寫一個測試程式 StreamingTest&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_8.jpg&quot; alt=&quot;spark-streaming_day2_8.jpg&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_9.jpg&quot; alt=&quot;spark-streaming_day2_9.jpg&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_10.jpg&quot; alt=&quot;spark-streaming_day2_10.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;使用-intellij-build-jar&quot;&gt;使用 intelliJ build jar&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_11.jpg&quot; alt=&quot;spark-streaming_day2_11.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_12.jpg&quot; alt=&quot;spark-streaming_day2_12.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_13.jpg&quot; alt=&quot;spark-streaming_day2_13.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_14.jpg&quot; alt=&quot;spark-streaming_day2_14.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_15.jpg&quot; alt=&quot;spark-streaming_day2_15.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_16.jpg&quot; alt=&quot;spark-streaming_day2_16.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_17.jpg&quot; alt=&quot;spark-streaming_day2_17.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">目標 使用 intelliJ 開發一個 Hello World 程式</summary></entry><entry><title type="html">Spark-Streaming day 1 (Hello World)</title><link href="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1.html" rel="alternate" type="text/html" title="Spark-Streaming day 1 (Hello World)" /><published>2018-06-06T08:44:17+08:00</published><updated>2018-06-06T08:44:17+08:00</updated><id>http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1</id><content type="html" xml:base="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1.html">&lt;h4 id=&quot;目標&quot;&gt;目標&lt;/h4&gt;
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_17.jpg&quot; alt=&quot;spark-streaming_day2_17.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;啟動一個-netcat&quot;&gt;啟動一個 netcat&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_18.jpg&quot; alt=&quot;spark-streaming_day2_18.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;先直接-run-main-function-測試看看&quot;&gt;先直接 run main function 測試看看&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_19.jpg&quot; alt=&quot;spark-streaming_day2_19.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;出現下列錯誤訊息&quot;&gt;出現下列錯誤訊息&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_20.jpg&quot; alt=&quot;spark-streaming_day2_20.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;修改-sbt-檔從-210-版變成-211&quot;&gt;修改 sbt 檔，從 2.10 版變成 2.11&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_21.jpg&quot; alt=&quot;spark-streaming_day2_21.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;測試執行成功&quot;&gt;測試執行成功&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_22.jpg&quot; alt=&quot;spark-streaming_day2_22.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;接著-demo-讓-spark-streaming-從某個目錄抓取檔案內容處理&quot;&gt;接著 demo 讓 spark-streaming 從某個目錄抓取檔案內容處理&lt;/h4&gt;
+&lt;p&gt;在本機建立一個目錄路徑為 /Users/daniel/test/streamFile&lt;/p&gt;
+
+&lt;h4 id=&quot;修改程式&quot;&gt;修改程式&lt;/h4&gt;
+&lt;p&gt;將原來的 ssc.socketTextStream 改成 ssc.textFileStream&lt;/p&gt;
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark._&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark.streaming._&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StreamingTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;conf&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkConf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setMaster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;local[2]&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setAppName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;NetworkWordCount&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StreamingContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Seconds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//val lines = ssc.socketTextStream(&quot;localhost&quot;, 9988)
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;textFileStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file:///Users/daniel/test/streamFile&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;words&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;words&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;word&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;word&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wordCounts&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reduceByKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;wordCounts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;awaitTermination&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;測試執行成功-1&quot;&gt;測試執行成功&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_23.jpg&quot; alt=&quot;spark-streaming_day2_23.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;使用-spark2-submit-測試&quot;&gt;使用 spark2-submit 測試&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;流程圖
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_24.jpg&quot; alt=&quot;spark-streaming_day2_24.jpg&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;1先把-compiler-好的-jar-丟到-master1-上面&quot;&gt;1.先把 compiler 好的 jar 丟到 master1 上面&lt;/h4&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;scp streaming-test.jar root@192.168.61.105:/tmp/streaming-test
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;2在使用-spark2-submit-把-spark-job-送到-yarn-上執行&quot;&gt;2.在使用 spark2-submit 把 spark job 送到 yarn 上執行&lt;/h4&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;spark2-submit --class com.streaming.test.StreamingTest --master yarn /tmp/streaming-test/streaming-test.jar
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;成功後會再 yarn 上看到執行的 job
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_25.jpg&quot; alt=&quot;spark-streaming_day2_25.jpg&quot; /&gt;
+    &lt;h4 id=&quot;3再把檔案testfiletxt丟到該目錄底下tmpstreaming-testtestfiles&quot;&gt;3.再把檔案(testFile.txt)丟到該目錄底下(/tmp/streaming-test/testfiles)&lt;/h4&gt;
+  &lt;/li&gt;
+  &lt;li&gt;但 master1 及 slave 1 都要有該檔案及目錄，因為是分散式處理的關係
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_26.jpg&quot; alt=&quot;spark-streaming_day2_26.jpg&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_27.jpg&quot; alt=&quot;spark-streaming_day2_27.jpg&quot; /&gt;
+    &lt;h4 id=&quot;會在-master1-上看到執行結果&quot;&gt;會在 master1 上看到執行結果&lt;/h4&gt;
+    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_28.jpg&quot; alt=&quot;spark-streaming_day2_28.jpg&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">目標 使用 intelliJ 開發一個 Hello World 程式</summary></entry><entry><title type="html">Spark-Streaming day 1 (Hello World)</title><link href="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1.html" rel="alternate" type="text/html" title="Spark-Streaming day 1 (Hello World)" /><published>2018-06-06T08:44:17+08:00</published><updated>2018-06-06T08:44:17+08:00</updated><id>http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1</id><content type="html" xml:base="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1.html">&lt;h4 id=&quot;目標&quot;&gt;目標&lt;/h4&gt;
 &lt;p&gt;寫一個 hello world spark-streaming 程式，然後使用 netcat 工具做測試．&lt;/p&gt;
 
 &lt;h4 id=&quot;netcat-工具&quot;&gt;netcat 工具&lt;/h4&gt;
