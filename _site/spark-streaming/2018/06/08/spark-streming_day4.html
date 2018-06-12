@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Spark-Streaming day 4 (spark streaming Custom Receiver)</title>
-  <meta name="description" content="目標 客制 spark-streaming 的 Receiver 到 FTP 讀檔案">
+  <meta name="description" content="目標 客制 spark-streaming 的 Receiver 到 FTP 讀檔案．">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/spark-streaming/2018/06/08/spark-streming_day4.html">
@@ -81,9 +81,18 @@
 
   <div class="post-content e-content" itemprop="articleBody">
     <h4 id="目標">目標</h4>
-<p>客制 spark-streaming 的 Receiver 到 FTP 讀檔案</p>
+<p>客制 spark-streaming 的 Receiver 到 FTP 讀檔案．</p>
 
-<h4 id="customreceiverscala">CustomReceiver.scala</h4>
+<h4 id="流程圖">流程圖</h4>
+<p><img src="http://localhost:4000/assets/spark-streaming/day4/spark-streaming_day4_1.jpg" alt="spark-streaming_day4_1.jpg" /></p>
+<ol>
+  <li>從 FTP copy files 到 local 目錄</li>
+  <li>讀取目錄的檔案轉成 RDD 並對資料做一些處理(在字串加上_encrypt)</li>
+  <li>把檔案 copy 回 FTP</li>
+  <li>刪除原來 FTP 的檔案及 local 的檔案</li>
+</ol>
+
+<h4 id="客製一個-receivercustomreceiverscala">客製一個 Receiver(CustomReceiver.scala)</h4>
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">com.streaming.receiver</span>
 
 <span class="k">import</span> <span class="nn">java.io.</span><span class="o">{</span><span class="nc">BufferedReader</span><span class="o">,</span> <span class="nc">File</span><span class="o">,</span> <span class="nc">FileInputStream</span><span class="o">,</span> <span class="nc">InputStreamReader</span><span class="o">}</span>
@@ -140,6 +149,11 @@
 
 </code></pre></div></div>
 <h4 id="customreceivertestscala">CustomReceiverTest.scala</h4>
+<ul>
+  <li>使用 StreamingContext 的 receiverStream 將客製的 CustomReceiver 放進去</li>
+  <li>ssc.receiverStream(new CustomReceiver(identity,username,password,host,sourcePath,targetPath))</li>
+</ul>
+
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">com.streaming.test</span>
 
 <span class="k">import</span> <span class="nn">java.io.</span><span class="o">{</span><span class="nc">BufferedWriter</span><span class="o">,</span> <span class="nc">File</span><span class="o">,</span> <span class="nc">FileWriter</span><span class="o">}</span>
@@ -159,7 +173,7 @@
     <span class="k">val</span> <span class="n">sourcePath</span> <span class="k">=</span> <span class="s">"/tmp/streaming-test/sourcefile"</span>
     <span class="k">val</span> <span class="n">targetPath</span> <span class="k">=</span> <span class="s">"/Users/daniel/test/streamFile"</span>
     
-    <span class="k">val</span> <span class="n">conf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkConf</span><span class="o">().</span><span class="n">setMaster</span><span class="o">(</span><span class="s">"local[1]"</span><span class="o">).</span><span class="n">setAppName</span><span class="o">(</span><span class="s">"FileWordCount"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">conf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkConf</span><span class="o">().</span><span class="n">setMaster</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">).</span><span class="n">setAppName</span><span class="o">(</span><span class="s">"FileWordCount"</span><span class="o">)</span>
     <span class="k">val</span> <span class="n">ssc</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StreamingContext</span><span class="o">(</span><span class="n">conf</span><span class="o">,</span> <span class="nc">Seconds</span><span class="o">(</span><span class="mi">1</span><span class="o">))</span>
     <span class="k">val</span> <span class="n">lines</span> <span class="k">=</span> <span class="n">ssc</span><span class="o">.</span><span class="n">receiverStream</span><span class="o">(</span><span class="k">new</span> <span class="nc">CustomReceiver</span><span class="o">(</span><span class="n">identity</span><span class="o">,</span><span class="n">username</span><span class="o">,</span><span class="n">password</span><span class="o">,</span><span class="n">host</span><span class="o">,</span><span class="n">sourcePath</span><span class="o">,</span><span class="n">targetPath</span><span class="o">))</span>
 
@@ -177,6 +191,167 @@
 <span class="o">}</span>
 
 </code></pre></div></div>
+<h4 id="ftpdirtestscala">FTPDirTest.scala</h4>
+<p>由於 spark-sftp_2.11 沒有辦法針對整個目錄做 copy，而底層其實是用 java 的 jsch．有嘗試過改用 scala 實作但會遇到一個問題是 scala 要去引用 java 的內部類別 ChannelSftp.LsEntry 這個物件時，引用不到，所以只好還是用 java 寫好 api 給 scala 的方法呼叫 :</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">com.streamingjava.test</span><span class="o">;</span>
+
+<span class="k">import</span> <span class="nn">com.jcraft.jsch.</span><span class="o">*;</span>
+<span class="k">import</span> <span class="nn">com.springml.sftp.client.ProgressMonitor</span><span class="o">;</span>
+<span class="k">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="k">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="k">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="k">import</span> <span class="nn">java.util.Vector</span><span class="o">;</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">FTPDirTest</span> <span class="o">{</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">username</span> <span class="k">=</span> <span class="s">"daniel"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">password</span> <span class="k">=</span> <span class="s">"123456"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">pemFileLocation</span> <span class="k">=</span> <span class="s">"/Users/daniel/test/testFolder/"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">pemPassphrase</span> <span class="k">=</span> <span class="s">""</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">host</span> <span class="k">=</span> <span class="s">"192.168.61.106"</span><span class="o">;</span>
+        <span class="n">int</span> <span class="n">sftpPort</span> <span class="k">=</span> <span class="mi">22</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">identity</span> <span class="k">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">target</span> <span class="k">=</span> <span class="s">"/tmp/streaming-test"</span><span class="o">;</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">files</span> <span class="k">=</span> <span class="n">getDirFileList</span><span class="o">(</span><span class="n">username</span><span class="o">,</span><span class="n">password</span><span class="o">,</span><span class="n">host</span><span class="o">,</span><span class="n">target</span><span class="o">);</span>
+        <span class="k">for</span><span class="o">(</span><span class="nc">String</span> <span class="n">file</span> <span class="k">:</span> <span class="kt">files</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+
+    <span class="n">public</span> <span class="n">static</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">getDirFileList</span><span class="o">(</span><span class="nc">String</span> <span class="n">username</span><span class="o">,</span> <span class="nc">String</span> <span class="n">password</span><span class="o">,</span> <span class="nc">String</span> <span class="n">host</span><span class="o">,</span> <span class="nc">String</span> <span class="n">targetDir</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">fileList</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;();</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">ChannelSftp</span> <span class="n">sftpChannel</span> <span class="k">=</span> <span class="n">createSFTPChannel</span><span class="o">(</span><span class="s">""</span> <span class="o">,</span> <span class="n">username</span> <span class="o">,</span> <span class="n">password</span> <span class="o">,</span> <span class="n">host</span><span class="o">);</span>
+            <span class="n">sftpChannel</span><span class="o">.</span><span class="n">cd</span><span class="o">(</span><span class="n">targetDir</span><span class="o">);</span>
+
+            <span class="nc">Vector</span><span class="o">&lt;</span><span class="nc">ChannelSftp</span><span class="o">.</span><span class="nc">LsEntry</span><span class="o">&gt;</span> <span class="n">childFiles</span> <span class="k">=</span> <span class="n">sftpChannel</span><span class="o">.</span><span class="n">ls</span><span class="o">(</span><span class="s">"*.txt"</span><span class="o">);</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">ChannelSftp</span><span class="o">.</span><span class="nc">LsEntry</span> <span class="n">lsEntry</span> <span class="k">:</span> <span class="kt">childFiles</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">String</span> <span class="n">entryName</span> <span class="k">=</span> <span class="n">lsEntry</span><span class="o">.</span><span class="n">getFilename</span><span class="o">();</span>
+                <span class="n">fileList</span><span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="n">entryName</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">fileList</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">deleteFile</span><span class="o">(</span><span class="nc">String</span> <span class="n">username</span><span class="o">,</span> <span class="nc">String</span> <span class="n">password</span><span class="o">,</span> <span class="nc">String</span> <span class="n">host</span><span class="o">,</span> <span class="nc">String</span> <span class="n">deleteFile</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">ChannelSftp</span> <span class="n">sftpChannel</span> <span class="k">=</span> <span class="n">createSFTPChannel</span><span class="o">(</span><span class="s">""</span> <span class="o">,</span> <span class="n">username</span> <span class="o">,</span> <span class="n">password</span> <span class="o">,</span> <span class="n">host</span><span class="o">);</span>
+            <span class="n">sftpChannel</span><span class="o">.</span><span class="n">rm</span><span class="o">(</span><span class="n">deleteFile</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="k">private</span> <span class="n">static</span> <span class="n">void</span> <span class="n">copyDir</span><span class="o">(</span><span class="nc">ChannelSftp</span> <span class="n">sftpChannel</span><span class="o">,</span> <span class="nc">String</span> <span class="n">source</span><span class="o">,</span> <span class="nc">String</span> <span class="n">target</span><span class="o">)</span> <span class="n">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="s">"Copying files from "</span> <span class="o">+</span> <span class="n">source</span> <span class="o">+</span> <span class="s">" to "</span> <span class="o">+</span> <span class="n">target</span><span class="o">);</span>
+        <span class="n">sftpChannel</span><span class="o">.</span><span class="n">cd</span><span class="o">(</span><span class="n">source</span><span class="o">);</span>
+        <span class="n">sftpChannel</span><span class="o">.</span><span class="n">lcd</span><span class="o">(</span><span class="n">target</span><span class="o">);</span>
+
+        <span class="nc">Vector</span><span class="o">&lt;</span><span class="nc">ChannelSftp</span><span class="o">.</span><span class="nc">LsEntry</span><span class="o">&gt;</span> <span class="n">childFiles</span> <span class="k">=</span> <span class="n">sftpChannel</span><span class="o">.</span><span class="n">ls</span><span class="o">(</span><span class="s">"."</span><span class="o">);</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">ChannelSftp</span><span class="o">.</span><span class="nc">LsEntry</span> <span class="n">lsEntry</span> <span class="k">:</span> <span class="kt">childFiles</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">String</span> <span class="n">entryName</span> <span class="k">=</span> <span class="n">lsEntry</span><span class="o">.</span><span class="n">getFilename</span><span class="o">();</span>
+            <span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="s">"File Entry "</span> <span class="o">+</span> <span class="n">entryName</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="k">private</span> <span class="n">static</span> <span class="nc">ChannelSftp</span> <span class="n">createSFTPChannel</span><span class="o">(</span><span class="nc">String</span> <span class="n">identity</span><span class="o">,</span><span class="nc">String</span> <span class="n">username</span><span class="o">,</span><span class="nc">String</span> <span class="n">password</span><span class="o">,</span><span class="nc">String</span> <span class="n">host</span><span class="o">)</span> <span class="n">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">JSch</span> <span class="n">jsch</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JSch</span><span class="o">();</span>
+        <span class="n">boolean</span> <span class="n">useIdentity</span> <span class="k">=</span> <span class="n">identity</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">identity</span><span class="o">.</span><span class="n">isEmpty</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">useIdentity</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">jsch</span><span class="o">.</span><span class="n">addIdentity</span><span class="o">(</span><span class="n">identity</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nc">Session</span> <span class="n">session</span> <span class="k">=</span> <span class="n">jsch</span><span class="o">.</span><span class="n">getSession</span><span class="o">(</span><span class="n">username</span><span class="o">,</span> <span class="n">host</span><span class="o">,</span> <span class="mi">22</span><span class="o">);</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">setConfig</span><span class="o">(</span><span class="s">"StrictHostKeyChecking"</span><span class="o">,</span> <span class="s">"no"</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">useIdentity</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">setPassword</span><span class="o">(</span><span class="n">password</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">connect</span><span class="o">();</span>
+        <span class="nc">Channel</span> <span class="n">channel</span> <span class="k">=</span> <span class="n">session</span><span class="o">.</span><span class="n">openChannel</span><span class="o">(</span><span class="s">"sftp"</span><span class="o">);</span>
+        <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="o">();</span>
+
+        <span class="k">return</span> <span class="o">(</span><span class="nc">ChannelSftp</span><span class="o">)</span> <span class="n">channel</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<h4 id="ftpfiletestscala">FtpFileTest.scala</h4>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">com.streaming.test</span>
+<span class="k">import</span> <span class="nn">com.springml.sftp.client.SFTPClient</span>
+<span class="k">import</span> <span class="nn">com.streamingjava.test.FTPDirTest</span>
+<span class="k">import</span> <span class="nn">scala.collection.JavaConverters._</span>
+
+<span class="k">object</span> <span class="nc">FtpFileTest</span> <span class="o">{</span>
+
+  <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">username</span> <span class="k">=</span> <span class="s">"daniel"</span>
+    <span class="k">val</span> <span class="n">password</span> <span class="k">=</span> <span class="s">"123456"</span>
+    <span class="k">val</span> <span class="n">host</span> <span class="k">=</span> <span class="s">"192.168.61.106"</span>
+    <span class="k">val</span> <span class="n">sftpPort</span> <span class="k">=</span> <span class="mi">22</span>
+    <span class="k">val</span> <span class="n">identity</span> <span class="k">=</span> <span class="kc">null</span>
+
+    <span class="c1">//val sourcePath = "/tmp/streaming-test/testFile.txt"
+</span>    <span class="c1">//val targetPath = "/Users/daniel/test/testFolder/"
+</span>    <span class="c1">//copyFile(identity , username, password, host)
+</span>
+    <span class="k">val</span> <span class="n">sourcePath</span> <span class="k">=</span> <span class="s">"/tmp/streaming-test"</span>
+    <span class="k">val</span> <span class="n">targetPath</span> <span class="k">=</span> <span class="s">"/Users/daniel/test/testFolder"</span>
+    <span class="n">copyDir</span><span class="o">(</span><span class="n">identity</span> <span class="o">,</span> <span class="n">username</span><span class="o">,</span> <span class="n">password</span><span class="o">,</span> <span class="n">host</span> <span class="o">,</span> <span class="n">sourcePath</span> <span class="o">,</span> <span class="n">targetPath</span><span class="o">)</span>
+
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">copyFile</span><span class="o">(</span><span class="n">identity</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">username</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">password</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">host</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">sourcePath</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">targetPath</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">sftpClient</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SFTPClient</span><span class="o">(</span><span class="n">identity</span> <span class="o">,</span> <span class="n">username</span><span class="o">,</span> <span class="n">password</span><span class="o">,</span> <span class="n">host</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">target</span> <span class="k">=</span> <span class="n">sftpClient</span><span class="o">.</span><span class="n">copy</span><span class="o">(</span><span class="n">sourcePath</span><span class="o">,</span><span class="n">targetPath</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">copytoFTP</span><span class="o">(</span><span class="n">identity</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">username</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">password</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">host</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">sourcePath</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">targetPath</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">sftpClient</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SFTPClient</span><span class="o">(</span><span class="n">identity</span> <span class="o">,</span> <span class="n">username</span><span class="o">,</span> <span class="n">password</span><span class="o">,</span> <span class="n">host</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">target</span> <span class="k">=</span> <span class="n">sftpClient</span><span class="o">.</span><span class="n">copyToFTP</span><span class="o">(</span><span class="n">sourcePath</span> <span class="o">,</span> <span class="n">targetPath</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">copyDir</span><span class="o">(</span><span class="n">identity</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">username</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">password</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">host</span><span class="k">:</span><span class="kt">String</span> <span class="o">,</span> <span class="n">source</span><span class="k">:</span><span class="kt">String</span><span class="o">,</span> <span class="n">target</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">jfiles</span><span class="k">:</span><span class="kt">java.util.List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">FTPDirTest</span><span class="o">.</span><span class="n">getDirFileList</span><span class="o">(</span><span class="n">username</span> <span class="o">,</span> <span class="n">password</span> <span class="o">,</span> <span class="n">host</span> <span class="o">,</span> <span class="n">source</span><span class="o">)</span>
+    <span class="c1">//import scala.collection.JavaConverters
+</span>    <span class="c1">//val sfiles = JavaConverters.asScalaIteratorConverte(jfiles.iterator()).asScala.seq
+</span>    <span class="c1">//import scala.collection.JavaConverters._
+</span>    <span class="k">val</span> <span class="n">sfiles</span> <span class="k">=</span> <span class="n">jfiles</span><span class="o">.</span><span class="n">iterator</span><span class="o">.</span><span class="n">asScala</span>
+    <span class="k">for</span><span class="o">(</span><span class="n">sfileName</span> <span class="k">&lt;-</span> <span class="n">sfiles</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">sourceFile</span> <span class="k">=</span> <span class="n">source</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="n">sfileName</span>
+      <span class="n">copyFile</span><span class="o">(</span><span class="n">identity</span> <span class="o">,</span> <span class="n">username</span> <span class="o">,</span> <span class="n">password</span> <span class="o">,</span> <span class="n">host</span> <span class="o">,</span> <span class="n">sourceFile</span> <span class="o">,</span> <span class="n">target</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">moveFile</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+<ul>
+  <li>java 的 list 轉到 scala 的 list :<br />
+使用 java 的 class 取得檔案清單
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">jfiles</span><span class="k">:</span><span class="kt">java.util.List</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">FTPDirTest</span><span class="o">.</span><span class="n">getDirFileList</span><span class="o">(</span><span class="n">username</span> <span class="o">,</span> <span class="n">password</span> <span class="o">,</span> <span class="n">host</span> <span class="o">,</span> <span class="n">source</span><span class="o">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>透過 JavaConverters 轉成 scala 的 seq
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.collection.JavaConverters</span>
+<span class="k">val</span> <span class="n">sfiles</span> <span class="k">=</span> <span class="nc">JavaConverters</span><span class="o">.</span><span class="n">asScalaIteratorConverte</span><span class="o">(</span><span class="n">jfiles</span><span class="o">.</span><span class="n">iterator</span><span class="o">()).</span><span class="n">asScala</span><span class="o">.</span><span class="n">seq</span>
+</code></pre></div>    </div>
+  </li>
+  <li>簡化版
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.collection.JavaConverters._</span>
+<span class="k">val</span> <span class="n">sfiles</span> <span class="k">=</span> <span class="n">jfiles</span><span class="o">.</span><span class="n">iterator</span><span class="o">.</span><span class="n">asScala</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p><a href="https://mapr.com/blog/how-integrate-custom-data-sources-apache-spark/">sample-1</a></p>
 
 
   </div>
