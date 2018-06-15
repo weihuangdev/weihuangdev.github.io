@@ -273,7 +273,10 @@ import scala.collection.JavaConverters._
 val sfiles = jfiles.iterator.asScala
 ```
 
-[sample-1](https://mapr.com/blog/how-integrate-custom-data-sources-apache-spark/)
+
+hdfs dfs -setrep -R 1 /
+> 參考資料  
+> [sample-1](https://mapr.com/blog/how-integrate-custom-data-sources-apache-spark/)
 
 
 
