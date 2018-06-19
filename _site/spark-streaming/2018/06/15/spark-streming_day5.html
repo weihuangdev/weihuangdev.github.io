@@ -118,6 +118,56 @@
 
 </code></pre></div></div>
 
+<h4 id="spark-streaming-checkpoint">spark streaming checkpoint</h4>
+<p>使用 StreamingContext.getOrCreate 這方法，如果沒有 checkpoint file 則重新 new 一個 StreamingContext，
+有的話直接讀取 checkpoint file 產生 StreamingContext．</p>
+
+<h4 id="streamingwindowtestscala-改寫">StreamingWindowTest.scala 改寫</h4>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">com.streaming.test</span>
+
+<span class="k">import</span> <span class="nn">org.apache.spark.streaming.</span><span class="o">{</span><span class="nc">Seconds</span><span class="o">,</span> <span class="nc">StreamingContext</span><span class="o">}</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.SparkConf</span>
+
+<span class="k">object</span> <span class="nc">StreamingWindowTest</span> <span class="o">{</span>
+
+  <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">ssc</span> <span class="k">=</span> <span class="nc">StreamingContext</span><span class="o">.</span><span class="n">getOrCreate</span><span class="o">(</span><span class="s">"/Users/daniel/test/checkpointfile"</span> <span class="o">,</span> <span class="n">functionToCreateContext</span><span class="o">)</span>
+    <span class="n">ssc</span><span class="o">.</span><span class="n">start</span><span class="o">()</span>
+    <span class="n">ssc</span><span class="o">.</span><span class="n">awaitTermination</span><span class="o">()</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">functionToCreateContext</span><span class="o">()</span><span class="k">:</span> <span class="kt">StreamingContext</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">conf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkConf</span><span class="o">().</span><span class="n">setMaster</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">).</span><span class="n">setAppName</span><span class="o">(</span><span class="s">"NetworkWordCount"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">ssc</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StreamingContext</span><span class="o">(</span><span class="n">conf</span><span class="o">,</span> <span class="nc">Seconds</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
+    <span class="n">ssc</span><span class="o">.</span><span class="n">checkpoint</span><span class="o">(</span><span class="s">"/Users/daniel/test/checkpointfile"</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">lines</span> <span class="k">=</span> <span class="n">ssc</span><span class="o">.</span><span class="n">socketTextStream</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">9988</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">wordspair</span> <span class="k">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">row</span> <span class="k">=&gt;</span> <span class="o">{</span>
+      <span class="k">if</span><span class="o">(</span><span class="n">row</span> <span class="o">!=</span><span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">row</span> <span class="o">!=</span> <span class="s">""</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="n">num</span> <span class="k">=</span> <span class="n">row</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">" "</span><span class="o">)(</span><span class="mi">1</span><span class="o">);</span>
+        <span class="n">num</span><span class="o">.</span><span class="n">toInt</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="mi">0</span>
+      <span class="o">}</span>
+    <span class="o">})</span>
+    <span class="k">val</span> <span class="n">windowsRdds</span> <span class="k">=</span> <span class="n">wordspair</span><span class="o">.</span><span class="n">reduceByWindow</span><span class="o">((</span><span class="n">x</span><span class="k">:</span><span class="kt">Int</span> <span class="o">,</span> <span class="n">y</span><span class="k">:</span><span class="kt">Int</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
+      <span class="n">println</span><span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="s">" + "</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="s">" = "</span> <span class="o">+</span> <span class="o">(</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">));</span>
+      <span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">)</span>
+    <span class="o">},</span> <span class="nc">Seconds</span><span class="o">(</span><span class="mi">10</span><span class="o">),</span> <span class="nc">Seconds</span><span class="o">(</span><span class="mi">5</span><span class="o">)).</span><span class="n">print</span><span class="o">()</span>
+    <span class="n">ssc</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>先 run 起來一次產生幾筆資料後，然後關掉從 run 可以看到下列訊息 :</p>
+
+<p><img src="http://localhost:4000/assets/spark-streaming/day5/spark-streaming_day5_1.jpg" alt="spark-streaming_day5_1.jpg" /></p>
+
+<blockquote>
+  <p>參考資料<br />
+<a href="https://blog.csdn.net/qq_36330643/article/details/74451402">check point</a></p>
+</blockquote>
+
+
   </div>
 
   
