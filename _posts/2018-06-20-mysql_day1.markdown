@@ -1,0 +1,205 @@
+---
+layout: post
+title:  "mysql day 1 (install mysql)"
+date:   2018-06-20 08:44:17 +0800
+categories: mysql
+---
+
+#### 事前準備
+* 檢查 hostname
+```
+hostname
+hostname -f
+```
+* update yum
+```
+sudo yum update
+```
+* 安裝 wget
+```
+yum install wget
+```
+
+#### 安裝 mysql
+* 下載 rpm [mysql community repository](https://dev.mysql.com/downloads/repo/yum/) 
+```
+wget http://repo.mysql.com/mysql80-community-release-el7-1.noarch.rpm
+```
+* 安裝 rpm
+```console
+sudo rpm -ivh mysql80-community-release-el7-1.noarch.rpm
+```
+![mysql_day1_1.jpg]({{ "/assets/mysql/day1/mysql_day1_1.jpg" | absolute_url }})
+
+* update
+```console
+yum update
+```
+![mysql_day1_2.jpg]({{ "/assets/mysql/day1/mysql_day1_2.jpg" | absolute_url }})
+
+* 安裝 mysql community
+```console
+sudo yum install mysql-community-server
+```
+* 啟動 mysql server
+```console
+sudo systemctl start mysqld.service
+```
+![mysql_day1_3.jpg]({{ "/assets/mysql/day1/mysql_day1_3.jpg" | absolute_url }})
+
+
+#### 使用 mysql
+* 一開始會有一個 super user (root'@'localhost)，而密碼會產生在 log 裡，可以用下列指令找出 :  
+```console
+sudo grep 'temporary password' /var/log/mysqld.log
+```
+pwd : DE7vfBpIsd&z
+
+![mysql_day1_4.jpg]({{ "/assets/mysql/day1/mysql_day1_4.jpg" | absolute_url }})
+
+* 如果要改密碼的話，可用下列指令(需符合一些密碼規則) :  
+```
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass1!';
+```
+
+#### 一些 DB 的操作
+```console
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.00 sec)
+```
+
+```console
+mysql> show tables in mysql;
++---------------------------+
+| Tables_in_mysql           |
++---------------------------+
+| columns_priv              |
+| component                 |
+| db                        |
+| ...                       |
+| slow_log                  |
+| tables_priv               |
+| time_zone                 |
+| time_zone_leap_second     |
+| time_zone_name            |
+| time_zone_transition      |
+| time_zone_transition_type |
+| user                      |
++---------------------------+
+33 rows in set (0.00 sec)
+```
+
+```console
+mysql> show tables from mysql like '%time%';
++---------------------------+
+| Tables_in_mysql (%time%)  |
++---------------------------+
+| time_zone                 |
+| time_zone_leap_second     |
+| time_zone_name            |
+| time_zone_transition      |
+| time_zone_transition_type |
++---------------------------+
+5 rows in set (0.00 sec)
+```
+
+```console
+mysql> create database testdb;
+Query OK, 1 row affected (0.04 sec)
+```
+
+```console
+mysql> create user 'daniel'@'localhost' identified by 'MyNewPass1!';
+Query OK, 0 rows affected (0.13 sec)
+```
+
+```console
+mysql> grant all on testdb.* to 'daniel'@'localhost' ;
+Query OK, 0 rows affected (0.01 sec)
+```
+* 查看目前有的 user
+```console
+mysql> SELECT Host, User FROM mysql.user;
++-----------+------------------+
+| Host      | User             |
++-----------+------------------+
+| localhost | daniel           |
+| localhost | mysql.infoschema |
+| localhost | mysql.session    |
+| localhost | mysql.sys        |
+| localhost | root             |
++-----------+------------------+
+5 rows in set (0.00 sec)
+```
+* 離開 mysql
+```console
+mysql> exit
+Bye
+```
+* 改用剛剛建立的 daniel 登入
+```console
+mysql -u daniel -p
+```
+* 可以看到的 db 就沒有 root 那麼多了
+```console
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| testdb             |
++--------------------+
+2 rows in set (0.00 sec)
+```
+* 使用 testdb
+```console
+mysql> use testdb;
+Database changed
+```
+* 建立 table
+```console
+mysql> create table customers (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name TEXT, tel TEXT);
+Query OK, 0 rows affected (0.18 sec)
+```
+* 新增資料
+```console
+mysql> insert into customers(name,tel) values('daniel','123456');
+Query OK, 1 row affected (0.16 sec)
+```
+* 查詢資料
+```console
+mysql> select * from customers ;
++----+--------+--------+
+| id | name   | tel    |
++----+--------+--------+
+|  1 | daniel | 123456 |
++----+--------+--------+
+1 row in set (0.00 sec)
+```
+* 更新資料
+```console
+mysql> update customers set tel='888' where id='1';
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+```
+* 刪除資料
+```console
+mysql> delete from customers where id='1';
+Query OK, 1 row affected (0.04 sec)
+```
+
+> 參考網址  
+> [mysql-quick-guide](https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/)
+
+
+
+
+
