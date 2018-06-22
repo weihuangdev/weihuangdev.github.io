@@ -1,0 +1,160 @@
+---
+layout: post
+title:  "Scala day 32 (spark with HDFS)"
+date:   2018-06-22 10:44:17 +0800
+categories: scala
+---
+
+### spark 對 HDFS 操作
+
+```scala
+import java.io.{BufferedWriter, OutputStreamWriter}
+import java.net.URI
+
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.FileSystem
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.{SaveMode, SparkSession}
+import org.apache.spark.sql.types.StructType
+import org.scalatest.FunSuite
+
+class DataBeanTest extends FunSuite {
+
+  test("read Data") {
+    val userSchema = new StructType()
+      .add("TagName", "string")
+      .add("TimeStamp", "string")
+      .add("Min", "integer")
+      .add("Max", "integer")
+      .add("Avg", "double")
+
+    val spark = SparkSession
+      .builder
+      .appName("Spark-csv")
+      .master("local[2]")
+      .getOrCreate()
+
+    val csvDir = "/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
+    /*
+    val csvDF = spark.read
+      .option("header","true")
+      .schema(userSchema)
+      .csv("/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile")
+    */
+      //df.coalesce(1).write.format("com.databricks.spark.cvs").save("...path...")
+    spark.read.option("header","true").format("com.databricks.spark.cvs").csv(csvDir).foreach(println(_))
+  }
+
+  test("use wholeTextFiles") {
+    val spark = SparkSession
+      .builder
+      .appName("Spark-csv")
+      .master("local[2]")
+      .getOrCreate()
+    val csvDir = "/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
+    //(filePath , fileData)
+    spark.sparkContext.wholeTextFiles(csvDir).foreach(pairdata => println(pairdata._1 + " **** " + pairdata._2))
+  }
+
+  test("read wholeTextFiles get fileName") {
+    val spark = SparkSession
+      .builder
+      .appName("Spark-csv")
+      .master("local[2]")
+      .getOrCreate()
+    val csvDir = "/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
+
+    spark.sparkContext.wholeTextFiles(csvDir).map(x => x._1.substring(x._1.lastIndexOf("/") + 1).split("_")(0)).foreach(println(_))
+  }
+
+  test("read wholeTextFiles filter fileName") {
+    val spark = SparkSession
+      .builder
+      .appName("Spark-csv")
+      .master("local[2]")
+      .getOrCreate()
+    val csvDir = "/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
+
+    spark.sparkContext.wholeTextFiles(csvDir).filter(x => x._1.substring(x._1.lastIndexOf("/") + 1).split("_")(0) == "C").foreach(println(_))
+  }
+
+  test("remove csv string header") {
+    val data = "TagName,TimeStamp,Min,Max,Avg\nL41-F200A-HH,2018-05-09 10:18:25,0,0,0\nL41-F200A-HK,2018-05-10 11:18:25,0,0,0"
+    val line = data.split("\n").drop(1).fold("") {
+      (dataLine , tempElement) => dataLine + tempElement + "\n"
+    }
+    println(line)
+  }
+
+  test("onlyGetCaculateData") {
+    val spark = SparkSession
+      .builder
+      .appName("Spark-csv")
+      .master("local[2]")
+      .getOrCreate()
+    val csvDir = "/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
+
+    val cdata = spark.sparkContext.wholeTextFiles(csvDir)
+      .filter(x => x._1.substring(x._1.lastIndexOf("/") + 1).split("_")(0) == "C")
+      .map(x => (x._1.substring(x._1.lastIndexOf("/") + 1).split("[.]")(0) , x._2.split("\n").drop(1).fold("") {
+        (dataLine , tempElement) => dataLine + tempElement + "\n"
+      }))
+    cdata.foreach(println(_))
+  }
+
+  test("getCdataToHdfs_1") {
+    val spark = SparkSession
+      .builder
+      .appName("Spark-csv")
+      .master("local[4]")
+      .getOrCreate()
+    val csvDir = "/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
+    val sc = spark.sparkContext
+
+    val cdata:RDD[Tuple2[String,String]] = sc.wholeTextFiles(csvDir)
+      .filter(x => x._1.substring(x._1.lastIndexOf("/") + 1).split("_")(0) == "C")
+      .map(x => (x._1.substring(x._1.lastIndexOf("/") + 1).split("[.]")(0) , x._2.split("\n").drop(1).fold("") {
+        (dataLine , tempElement) => dataLine + tempElement + "\n"
+      }))
+
+    import spark.implicits._
+    cdata.collect().foreach(csvFile => {
+      val csvDataDF = sc.parallelize(csvFile._2.stripLineEnd.split("\n").toSeq).toDF()
+      csvDataDF.write.mode(SaveMode.Append).csv("hdfs://192.168.61.105/tmp/csvfiles/" + csvFile._1)
+    })
+  }
+
+
+  test("getCdataToHdfs_2") {
+    val spark = SparkSession
+      .builder
+      .appName("Spark-csv")
+      .master("local[4]")
+      .getOrCreate()
+    val csvDir = "/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
+    val sc = spark.sparkContext
+    val cdata:RDD[Tuple2[String,String]] = sc.wholeTextFiles(csvDir)
+      .filter(x => x._1.substring(x._1.lastIndexOf("/") + 1).split("_")(0) == "C")
+      .map(x => (x._1.substring(x._1.lastIndexOf("/") + 1).split("[.]")(0) , x._2.split("\n").drop(1).fold("") {
+        (dataLine , tempElement) => dataLine + tempElement + "\n"
+      }))
+
+    cdata.collect().foreach(csvFile => {
+      val mergeHDFSFilePath = "hdfs://192.168.61.105/tmp/csvfiles/" + csvFile._1
+      val conf = new Configuration()
+      //conf.setBoolean("dfs.support.append" , true)
+      //conf.setStrings("dfs.replication", "1")
+      //conf.addResource(new Path("/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/config/hdfs-site.xml"))
+      val fs = FileSystem.get(URI.create(mergeHDFSFilePath) , conf)
+      val hdfsPath = new org.apache.hadoop.fs.Path(mergeHDFSFilePath)
+      val out = fs.exists(hdfsPath) match {
+        case true => new BufferedWriter(new OutputStreamWriter(fs.append(hdfsPath)))
+        case false => new BufferedWriter(new OutputStreamWriter(fs.create(hdfsPath)))
+      }
+      out.write(csvFile._2)
+      out.flush()
+    })
+  }
+}
+
+```
