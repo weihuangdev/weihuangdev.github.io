@@ -143,6 +143,22 @@
 
 </code></pre></div></div>
 
+<h4 id="使用-comdatabrickssparkcvs-格式讀取">使用 com.databricks.spark.cvs 格式讀取</h4>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">userSchema</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">StructType</span><span class="o">()</span>
+      <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">"TagName"</span><span class="o">,</span> <span class="s">"string"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">"TimeStamp"</span><span class="o">,</span> <span class="s">"string"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">"Min"</span><span class="o">,</span> <span class="s">"integer"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">"Max"</span><span class="o">,</span> <span class="s">"integer"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">add</span><span class="o">(</span><span class="s">"Avg"</span><span class="o">,</span> <span class="s">"double"</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">spark</span> <span class="k">=</span> <span class="nc">SparkSession</span>
+  <span class="o">.</span><span class="n">builder</span>
+  <span class="o">.</span><span class="n">appName</span><span class="o">(</span><span class="s">"Spark-csv"</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">master</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">getOrCreate</span><span class="o">()</span>
+<span class="k">val</span> <span class="n">csvDir</span> <span class="k">=</span> <span class="s">"/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"header"</span><span class="o">,</span><span class="s">"true"</span><span class="o">).</span><span class="n">format</span><span class="o">(</span><span class="s">"com.databricks.spark.cvs"</span><span class="o">).</span><span class="n">csv</span><span class="o">(</span><span class="n">csvDir</span><span class="o">).</span><span class="n">foreach</span><span class="o">(</span><span class="n">println</span><span class="o">(</span><span class="k">_</span><span class="o">))</span>
+</code></pre></div></div>
+
 
   </div>
 

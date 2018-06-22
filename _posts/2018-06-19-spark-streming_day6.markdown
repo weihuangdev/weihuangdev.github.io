@@ -71,4 +71,25 @@ object ReadCsvFile {
 ```
 
 
+#### 使用 com.databricks.spark.cvs 格式讀取  
+```scala
+val userSchema = new StructType()
+      .add("TagName", "string")
+      .add("TimeStamp", "string")
+      .add("Min", "integer")
+      .add("Max", "integer")
+      .add("Avg", "double")
+val spark = SparkSession
+  .builder
+  .appName("Spark-csv")
+  .master("local[2]")
+  .getOrCreate()
+val csvDir = "/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
+spark.read.option("header","true").format("com.databricks.spark.cvs").csv(csvDir).foreach(println(_))
+```
+
+
+
+
+
 
