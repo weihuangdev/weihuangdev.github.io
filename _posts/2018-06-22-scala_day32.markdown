@@ -5,8 +5,36 @@ date:   2018-06-22 10:44:17 +0800
 categories: scala
 ---
 
-### spark 對 HDFS 操作
+#### 使用 SparkSession 的 read 
+* 可讀取目錄底下所有的 csv 資料，加上 option("header","true") 可濾掉 header，但缺點是無法知道哪些知道是在哪個 file 裡
+```scala
+spark.read.option("header","true").format("com.databricks.spark.cvs").csv(csvDir).foreach(println(_))
+```
 
+#### 使用 Sparkcontext 的 wholeTextFiles
+* 可取得 RDD[(String, String)] 的型態，第一個 String 放檔案絕對路徑，第二個 String 放檔案的資料
+```scala
+spark.sparkContext.wholeTextFiles(csvDir).foreach(pairdata => println(pairdata._1 + " **** " + pairdata._2))
+```
+
+#### 使用 filter、map、drop 及 fold 等操作
+* filter 選擇檔案開頭為 C 的，透過 map 將第一個值轉成檔名，第二個值由於是 csv 資料先透過 split("\n")轉成 array，第一行是標題，所以 drop 掉，再透過 fold 將 (dataLine + tempElement + "\n") 一直壘加到 dataLine(初始值為"")．
+```scala
+val cdata = spark.sparkContext.wholeTextFiles(csvDir)
+  .filter(x => x._1.substring(x._1.lastIndexOf("/") + 1).split("_")(0) == "C")
+  .map(x => (x._1.substring(x._1.lastIndexOf("/") + 1).split("[.]")(0) , x._2.split("\n").drop(1).fold("") {
+    (dataLine , tempElement) => dataLine + tempElement + "\n"
+  }))
+```
+
+
+
+
+
+
+
+
+#### DataBeanTest.scala
 ```scala
 import java.io.{BufferedWriter, OutputStreamWriter}
 import java.net.URI
@@ -124,7 +152,6 @@ class DataBeanTest extends FunSuite {
     })
   }
 
-
   test("getCdataToHdfs_2") {
     val spark = SparkSession
       .builder
@@ -142,8 +169,8 @@ class DataBeanTest extends FunSuite {
     cdata.collect().foreach(csvFile => {
       val mergeHDFSFilePath = "hdfs://192.168.61.105/tmp/csvfiles/" + csvFile._1
       val conf = new Configuration()
-      //conf.setBoolean("dfs.support.append" , true)
-      //conf.setStrings("dfs.replication", "1")
+      conf.setBoolean("dfs.support.append" , true)
+      conf.setInt("dfs.replication", 1) //會根據環境的副本數決定
       //conf.addResource(new Path("/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/config/hdfs-site.xml"))
       val fs = FileSystem.get(URI.create(mergeHDFSFilePath) , conf)
       val hdfsPath = new org.apache.hadoop.fs.Path(mergeHDFSFilePath)

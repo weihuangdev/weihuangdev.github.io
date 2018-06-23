@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 32 (spark with HDFS)</title>
-  <meta name="description" content="spark 對 HDFS 操作">
+  <meta name="description" content="使用 SparkSession 的 read 可讀取目錄底下所有的 csv 資料，加上 option(“header”,”true”) 可濾掉 header，但缺點是無法知道哪些知道是在哪個 file 裡 spark.read.option(&quot;header&quot;,&quot;true&quot;).format(&quot;com.databri...">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2018/06/22/scala_day32.html">
@@ -80,8 +80,35 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h3 id="spark-對-hdfs-操作">spark 對 HDFS 操作</h3>
+    <h4 id="使用-sparksession-的-read">使用 SparkSession 的 read</h4>
+<ul>
+  <li>可讀取目錄底下所有的 csv 資料，加上 option(“header”,”true”) 可濾掉 header，但缺點是無法知道哪些知道是在哪個 file 裡
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"header"</span><span class="o">,</span><span class="s">"true"</span><span class="o">).</span><span class="n">format</span><span class="o">(</span><span class="s">"com.databricks.spark.cvs"</span><span class="o">).</span><span class="n">csv</span><span class="o">(</span><span class="n">csvDir</span><span class="o">).</span><span class="n">foreach</span><span class="o">(</span><span class="n">println</span><span class="o">(</span><span class="k">_</span><span class="o">))</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
 
+<h4 id="使用-sparkcontext-的-wholetextfiles">使用 Sparkcontext 的 wholeTextFiles</h4>
+<ul>
+  <li>可取得 RDD[(String, String)] 的型態，第一個 String 放檔案絕對路徑，第二個 String 放檔案的資料
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">wholeTextFiles</span><span class="o">(</span><span class="n">csvDir</span><span class="o">).</span><span class="n">foreach</span><span class="o">(</span><span class="n">pairdata</span> <span class="k">=&gt;</span> <span class="n">println</span><span class="o">(</span><span class="n">pairdata</span><span class="o">.</span><span class="n">_1</span> <span class="o">+</span> <span class="s">" **** "</span> <span class="o">+</span> <span class="n">pairdata</span><span class="o">.</span><span class="n">_2</span><span class="o">))</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h4 id="使用-filtermapdrop-及-fold-等操作">使用 filter、map、drop 及 fold 等操作</h4>
+<ul>
+  <li>filter 選擇檔案開頭為 C 的，透過 map 將第一個值轉成檔名，第二個值由於是 csv 資料先透過 split(“\n”)轉成 array，第一行是標題，所以 drop 掉，再透過 fold 將 (dataLine + tempElement + “\n”) 一直壘加到 dataLine(初始值為””)．
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">cdata</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">wholeTextFiles</span><span class="o">(</span><span class="n">csvDir</span><span class="o">)</span>
+<span class="o">.</span><span class="n">filter</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">substring</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">lastIndexOf</span><span class="o">(</span><span class="s">"/"</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">).</span><span class="n">split</span><span class="o">(</span><span class="s">"_"</span><span class="o">)(</span><span class="mi">0</span><span class="o">)</span> <span class="o">==</span> <span class="s">"C"</span><span class="o">)</span>
+<span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">substring</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">lastIndexOf</span><span class="o">(</span><span class="s">"/"</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">).</span><span class="n">split</span><span class="o">(</span><span class="s">"[.]"</span><span class="o">)(</span><span class="mi">0</span><span class="o">)</span> <span class="o">,</span> <span class="n">x</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">"\n"</span><span class="o">).</span><span class="n">drop</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="n">fold</span><span class="o">(</span><span class="s">""</span><span class="o">)</span> <span class="o">{</span>
+  <span class="o">(</span><span class="n">dataLine</span> <span class="o">,</span> <span class="n">tempElement</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">dataLine</span> <span class="o">+</span> <span class="n">tempElement</span> <span class="o">+</span> <span class="s">"\n"</span>
+<span class="o">}))</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h4 id="databeantestscala">DataBeanTest.scala</h4>
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.io.</span><span class="o">{</span><span class="nc">BufferedWriter</span><span class="o">,</span> <span class="nc">OutputStreamWriter</span><span class="o">}</span>
 <span class="k">import</span> <span class="nn">java.net.URI</span>
 
@@ -198,7 +225,6 @@
     <span class="o">})</span>
   <span class="o">}</span>
 
-
   <span class="n">test</span><span class="o">(</span><span class="s">"getCdataToHdfs_2"</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">val</span> <span class="n">spark</span> <span class="k">=</span> <span class="nc">SparkSession</span>
       <span class="o">.</span><span class="n">builder</span>
@@ -216,8 +242,8 @@
     <span class="n">cdata</span><span class="o">.</span><span class="n">collect</span><span class="o">().</span><span class="n">foreach</span><span class="o">(</span><span class="n">csvFile</span> <span class="k">=&gt;</span> <span class="o">{</span>
       <span class="k">val</span> <span class="n">mergeHDFSFilePath</span> <span class="k">=</span> <span class="s">"hdfs://192.168.61.105/tmp/csvfiles/"</span> <span class="o">+</span> <span class="n">csvFile</span><span class="o">.</span><span class="n">_1</span>
       <span class="k">val</span> <span class="n">conf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Configuration</span><span class="o">()</span>
-      <span class="c1">//conf.setBoolean("dfs.support.append" , true)
-</span>      <span class="c1">//conf.setStrings("dfs.replication", "1")
+      <span class="n">conf</span><span class="o">.</span><span class="n">setBoolean</span><span class="o">(</span><span class="s">"dfs.support.append"</span> <span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+      <span class="n">conf</span><span class="o">.</span><span class="n">setInt</span><span class="o">(</span><span class="s">"dfs.replication"</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span> <span class="c1">//會根據環境的副本數決定
 </span>      <span class="c1">//conf.addResource(new Path("/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/config/hdfs-site.xml"))
 </span>      <span class="k">val</span> <span class="n">fs</span> <span class="k">=</span> <span class="nc">FileSystem</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">URI</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">mergeHDFSFilePath</span><span class="o">)</span> <span class="o">,</span> <span class="n">conf</span><span class="o">)</span>
       <span class="k">val</span> <span class="n">hdfsPath</span> <span class="k">=</span> <span class="k">new</span> <span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">hadoop</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="nc">Path</span><span class="o">(</span><span class="n">mergeHDFSFilePath</span><span class="o">)</span>
