@@ -27,10 +27,37 @@ val cdata = spark.sparkContext.wholeTextFiles(csvDir)
   }))
 ```
 
+#### 透過 DataFrame 的 write 將資料寫入 HDFS
+* 由於 cdata 已經是屬於 RDD，如果沒有先 collect()，在透過 sc.parallelize 轉 DataFrame 會出錯．
+這種方式寫檔會再以檔名為目錄下，產生很多小檔．而且資料大時先 collect 會有風險．
+```scala
+import spark.implicits._
+cdata.collect().foreach(csvFile => {
+  val csvDataDF = sc.parallelize(csvFile._2.stripLineEnd.split("\n").toSeq).toDF()
+  csvDataDF.write.mode(SaveMode.Append).csv("hdfs://192.168.61.105/tmp/csvfiles/" + csvFile._1)
+})
+```
 
+#### 使用 HDFS 的 api 將資料寫入 HDFS
+* 對資料一直 append 寫檔，會根據檔名為一個檔案，對各檔案一直 append 資料．這邊要注意副本數的設定，我測試的環境複本數為 1，所以這邊不設定的話會出現 Under-Replicated Blocks 的問題．
 
-
-
+```scala
+cdata.collect().foreach(csvFile => {
+  val mergeHDFSFilePath = "hdfs://192.168.61.105/tmp/csvfiles/" + csvFile._1
+  val conf = new Configuration()
+  conf.setBoolean("dfs.support.append" , true)
+  conf.setInt("dfs.replication", 1) //會根據環境的副本數決定
+  //conf.addResource(new Path("/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/config/hdfs-site.xml"))
+  val fs = FileSystem.get(URI.create(mergeHDFSFilePath) , conf)
+  val hdfsPath = new org.apache.hadoop.fs.Path(mergeHDFSFilePath)
+  val out = fs.exists(hdfsPath) match {
+    case true => new BufferedWriter(new OutputStreamWriter(fs.append(hdfsPath)))
+    case false => new BufferedWriter(new OutputStreamWriter(fs.create(hdfsPath)))
+  }
+  out.write(csvFile._2)
+  out.flush()
+})
+```
 
 
 

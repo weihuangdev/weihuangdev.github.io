@@ -108,6 +108,41 @@
   </li>
 </ul>
 
+<h4 id="透過-dataframe-的-write-將資料寫入-hdfs">透過 DataFrame 的 write 將資料寫入 HDFS</h4>
+<ul>
+  <li>由於 cdata 已經是屬於 RDD，如果沒有先 collect()，在透過 sc.parallelize 轉 DataFrame 會出錯．
+這種方式寫檔會再以檔名為目錄下，產生很多小檔．而且資料大時先 collect 會有風險．
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">spark.implicits._</span>
+<span class="n">cdata</span><span class="o">.</span><span class="n">collect</span><span class="o">().</span><span class="n">foreach</span><span class="o">(</span><span class="n">csvFile</span> <span class="k">=&gt;</span> <span class="o">{</span>
+<span class="k">val</span> <span class="n">csvDataDF</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="o">(</span><span class="n">csvFile</span><span class="o">.</span><span class="n">_2</span><span class="o">.</span><span class="n">stripLineEnd</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">"\n"</span><span class="o">).</span><span class="n">toSeq</span><span class="o">).</span><span class="n">toDF</span><span class="o">()</span>
+<span class="n">csvDataDF</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="o">(</span><span class="nc">SaveMode</span><span class="o">.</span><span class="nc">Append</span><span class="o">).</span><span class="n">csv</span><span class="o">(</span><span class="s">"hdfs://192.168.61.105/tmp/csvfiles/"</span> <span class="o">+</span> <span class="n">csvFile</span><span class="o">.</span><span class="n">_1</span><span class="o">)</span>
+<span class="o">})</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h4 id="使用-hdfs-的-api-將資料寫入-hdfs">使用 HDFS 的 api 將資料寫入 HDFS</h4>
+<ul>
+  <li>對資料一直 append 寫檔，會根據檔名為一個檔案，對各檔案一直 append 資料．這邊要注意副本數的設定，我測試的環境複本數為 1，所以這邊不設定的話會出現 Under-Replicated Blocks 的問題．</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cdata</span><span class="o">.</span><span class="n">collect</span><span class="o">().</span><span class="n">foreach</span><span class="o">(</span><span class="n">csvFile</span> <span class="k">=&gt;</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">mergeHDFSFilePath</span> <span class="k">=</span> <span class="s">"hdfs://192.168.61.105/tmp/csvfiles/"</span> <span class="o">+</span> <span class="n">csvFile</span><span class="o">.</span><span class="n">_1</span>
+  <span class="k">val</span> <span class="n">conf</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Configuration</span><span class="o">()</span>
+  <span class="n">conf</span><span class="o">.</span><span class="n">setBoolean</span><span class="o">(</span><span class="s">"dfs.support.append"</span> <span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+  <span class="n">conf</span><span class="o">.</span><span class="n">setInt</span><span class="o">(</span><span class="s">"dfs.replication"</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span> <span class="c1">//會根據環境的副本數決定
+</span>  <span class="c1">//conf.addResource(new Path("/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/config/hdfs-site.xml"))
+</span>  <span class="k">val</span> <span class="n">fs</span> <span class="k">=</span> <span class="nc">FileSystem</span><span class="o">.</span><span class="n">get</span><span class="o">(</span><span class="nc">URI</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">mergeHDFSFilePath</span><span class="o">)</span> <span class="o">,</span> <span class="n">conf</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">hdfsPath</span> <span class="k">=</span> <span class="k">new</span> <span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">hadoop</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="nc">Path</span><span class="o">(</span><span class="n">mergeHDFSFilePath</span><span class="o">)</span>
+  <span class="k">val</span> <span class="n">out</span> <span class="k">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">exists</span><span class="o">(</span><span class="n">hdfsPath</span><span class="o">)</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="kc">true</span> <span class="k">=&gt;</span> <span class="k">new</span> <span class="nc">BufferedWriter</span><span class="o">(</span><span class="k">new</span> <span class="nc">OutputStreamWriter</span><span class="o">(</span><span class="n">fs</span><span class="o">.</span><span class="n">append</span><span class="o">(</span><span class="n">hdfsPath</span><span class="o">)))</span>
+    <span class="k">case</span> <span class="kc">false</span> <span class="k">=&gt;</span> <span class="k">new</span> <span class="nc">BufferedWriter</span><span class="o">(</span><span class="k">new</span> <span class="nc">OutputStreamWriter</span><span class="o">(</span><span class="n">fs</span><span class="o">.</span><span class="n">create</span><span class="o">(</span><span class="n">hdfsPath</span><span class="o">)))</span>
+  <span class="o">}</span>
+  <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="o">(</span><span class="n">csvFile</span><span class="o">.</span><span class="n">_2</span><span class="o">)</span>
+  <span class="n">out</span><span class="o">.</span><span class="n">flush</span><span class="o">()</span>
+<span class="o">})</span>
+</code></pre></div></div>
+
 <h4 id="databeantestscala">DataBeanTest.scala</h4>
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.io.</span><span class="o">{</span><span class="nc">BufferedWriter</span><span class="o">,</span> <span class="nc">OutputStreamWriter</span><span class="o">}</span>
 <span class="k">import</span> <span class="nn">java.net.URI</span>
