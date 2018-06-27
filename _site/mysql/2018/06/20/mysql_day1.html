@@ -272,6 +272,20 @@ Rows matched: 1  Changed: 1  Warnings: 0
   </li>
 </ul>
 
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">mysql&gt;</span> update mysql.user <span class="nb">set </span><span class="nv">host</span><span class="o">=</span><span class="s1">'%'</span> where <span class="nv">user</span><span class="o">=</span><span class="s1">'daniel'</span><span class="p">;</span>
+<span class="go">Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+</span><span class="gp">mysql&gt;</span> flush privileges<span class="p">;</span>
+<span class="go">Query OK, 0 rows affected (0.00 sec)
+
+</span><span class="gp">mysql&gt;</span> grant all on testdb.<span class="k">*</span> to <span class="s1">'daniel'</span>@<span class="s1">'%'</span><span class="p">;</span>
+<span class="go">Query OK, 0 rows affected (0.06 sec)
+
+</span><span class="gp">mysql&gt;</span> flush privileges<span class="p">;</span>
+<span class="go">Query OK, 0 rows affected (0.01 sec)
+</span></code></pre></div></div>
+
 <blockquote>
   <p>參考網址<br />
 <a href="https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/">mysql-quick-guide</a></p>

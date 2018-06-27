@@ -1,4 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-23T16:10:12+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 32 (spark with HDFS)</title><link href="http://localhost:4000/scala/2018/06/22/scala_day32.html" rel="alternate" type="text/html" title="Scala day 32 (spark with HDFS)" /><published>2018-06-22T10:44:17+08:00</published><updated>2018-06-22T10:44:17+08:00</updated><id>http://localhost:4000/scala/2018/06/22/scala_day32</id><content type="html" xml:base="http://localhost:4000/scala/2018/06/22/scala_day32.html">&lt;h4 id=&quot;使用-sparksession-的-read&quot;&gt;使用 SparkSession 的 read&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-27T14:03:39+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 33 (sbt-assembly)</title><link href="http://localhost:4000/scala/2018/06/26/scala_day33.html" rel="alternate" type="text/html" title="Scala day 33 (sbt-assembly)" /><published>2018-06-26T10:44:17+08:00</published><updated>2018-06-26T10:44:17+08:00</updated><id>http://localhost:4000/scala/2018/06/26/scala_day33</id><content type="html" xml:base="http://localhost:4000/scala/2018/06/26/scala_day33.html">&lt;h4 id=&quot;如何使用-sbt-assembly-build-出包含-dependency-的-fat-jar&quot;&gt;如何使用 sbt-assembly build 出包含 dependency 的 fat jar&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;在 project 底下建立 assembly.sbt，還有專案的根目錄建立一個 assembly.sbt&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_1.jpg&quot; alt=&quot;scala_day33_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在 project 底下的 assembly.sbt 加上 :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;addSbtPlugin(&quot;com.eed3si9n&quot; % &quot;sbt-assembly&quot; % &quot;0.14.7&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;先下 sbt :&lt;br /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_2.jpg&quot; alt=&quot;scala_day33_2.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;再下 assembly 打包 :
+&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_3.jpg&quot; alt=&quot;scala_day33_3.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;會看到相依的 jar 的 class 也都有打包進去 : 
+&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_4.jpg&quot; alt=&quot;scala_day33_4.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;build.sbt 裡如果有加上 provided 代表不用打包到 jar 裡
+&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_5.jpg&quot; alt=&quot;scala_day33_5.jpg&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;使用版本 :&lt;br /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_6.jpg&quot; alt=&quot;scala_day33_6.jpg&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考資料 :&lt;br /&gt;
+&lt;a href=&quot;https://github.com/sbt/sbt-assembly&quot;&gt;sbt-assembly&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">如何使用 sbt-assembly build 出包含 dependency 的 fat jar 在 project 底下建立 assembly.sbt，還有專案的根目錄建立一個 assembly.sbt</summary></entry><entry><title type="html">Scala day 32 (spark with HDFS)</title><link href="http://localhost:4000/scala/2018/06/22/scala_day32.html" rel="alternate" type="text/html" title="Scala day 32 (spark with HDFS)" /><published>2018-06-22T10:44:17+08:00</published><updated>2018-06-22T10:44:17+08:00</updated><id>http://localhost:4000/scala/2018/06/22/scala_day32</id><content type="html" xml:base="http://localhost:4000/scala/2018/06/22/scala_day32.html">&lt;h4 id=&quot;使用-sparksession-的-read&quot;&gt;使用 SparkSession 的 read&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;可讀取目錄底下所有的 csv 資料，加上 option(“header”,”true”) 可濾掉 header，但缺點是無法知道哪些知道是在哪個 file 裡
     &lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;header&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;com.databricks.spark.cvs&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csvDir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foreach&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
@@ -530,6 +562,20 @@ Rows matched: 1  Changed: 1  Warnings: 0
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; update mysql.user &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt; where &lt;span class=&quot;nv&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'daniel'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; flush privileges&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.00 sec)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; to &lt;span class=&quot;s1&quot;&gt;'daniel'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.06 sec)
+
+&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; flush privileges&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.01 sec)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;參考網址&lt;br /&gt;
@@ -1350,166 +1396,4 @@ telnet
 &lt;a href=&quot;https://blog.csdn.net/u011564172/article/details/70172060&quot;&gt;Spark DAG&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://github.com/lw-lin/CoolplaySpark/blob/master/Spark%20Streaming%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97/0.1%20Spark%20Streaming%20%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E5%9D%97%E6%A6%82%E8%BF%B0.md&quot;&gt;Spark Streaming 架構&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;http://dblab.xmu.edu.cn/blog/1082-2/&quot;&gt;Spark Streaming read file&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">目標 寫一個 hello world spark-streaming 程式，然後使用 netcat 工具做測試．</summary></entry><entry><title type="html">hortonworks-HDF day 3 (Apache NiFi custom processor)</title><link href="http://localhost:4000/hortonworks-hdf/2018/06/01/hortonworks_day3.html" rel="alternate" type="text/html" title="hortonworks-HDF day 3 (Apache NiFi custom processor)" /><published>2018-06-01T08:44:17+08:00</published><updated>2018-06-01T08:44:17+08:00</updated><id>http://localhost:4000/hortonworks-hdf/2018/06/01/hortonworks_day3</id><content type="html" xml:base="http://localhost:4000/hortonworks-hdf/2018/06/01/hortonworks_day3.html">&lt;h3 id=&quot;custom-processor&quot;&gt;custom processor&lt;/h3&gt;
-
-&lt;h4 id=&quot;建立一個目錄&quot;&gt;建立一個目錄&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;建立 ChakraProcessor&lt;br /&gt;
-/Volumes/Transcend/1-eclipse-workspace/test-workspace/ChakraProcessor&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;進入目錄內下-maven-指令&quot;&gt;進入目錄內，下 maven 指令&lt;/h4&gt;
-&lt;p&gt;mvn archetype:generate&lt;/p&gt;
-
-&lt;h4 id=&quot;會問說要找那個-archetype輸入-nifi&quot;&gt;會問說要找那個 archetype，輸入 nifi&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): 1198: nifi
-Choose archetype:
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;1: remote -&amp;gt;&lt;/span&gt; org.apache.nifi:nifi-processor-bundle-archetype &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;2: remote -&amp;gt;&lt;/span&gt; org.apache.nifi:nifi-service-bundle-archetype &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;-&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_1.jpg&quot; alt=&quot;kafka_day3_1.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;選-1-後然後選版本-140輸入-25-15-及-16-mvn-install-會失敗需再研究&quot;&gt;選 1 後，然後選版本 1.4.0，輸入 25 (1.5 及 1.6 mvn install 會失敗需再研究)&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): : 1
-Choose org.apache.nifi:nifi-processor-bundle-archetype version:
-1: 0.0.2-incubating
-2: 0.1.0-incubating
-3: 0.2.0-incubating
-4: 0.2.1
-5: 0.3.0
-6: 0.4.0
-7: 0.4.1
-8: 0.5.0
-9: 0.5.1
-10: 0.6.0
-11: 0.6.1
-12: 0.7.0
-13: 0.7.1
-14: 0.7.2
-15: 0.7.3
-16: 0.7.4
-17: 1.0.0-BETA
-18: 1.0.0
-19: 1.0.1
-20: 1.1.0
-21: 1.1.1
-22: 1.1.2
-23: 1.2.0
-24: 1.3.0
-25: 1.4.0
-26: 1.5.0
-27: 1.6.0
-
-
-Choose a number: 27: 25
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_2.jpg&quot; alt=&quot;kafka_day3_2.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;輸入-groupid-及-artifactid-等資訊&quot;&gt;輸入 groupId 及 artifactId 等資訊&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;Define value for property 'groupId': mynifi
-Define value for property 'artifactId': myprocessors
-Define value for property 'version' 1.0-SNAPSHOT: : 1.0
-Define value for property 'artifactBaseName': demo
-Define value for property 'package' mynifi.processors.demo: : 
-[INFO] Using property: nifiVersion = 1.6.0
-Confirm properties configuration:
-groupId: mynifi
-artifactId: myprocessors
-version: 1.0
-artifactBaseName: demo
-package: nifiVersion = 1.6.0
-nifiVersion: 1.6.0
- Y
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_3.jpg&quot; alt=&quot;kafka_day3_3.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;執行結果&quot;&gt;執行結果&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_4.jpg&quot; alt=&quot;kafka_day3_4.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;抓下來的目錄結構&quot;&gt;抓下來的目錄結構&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_5.jpg&quot; alt=&quot;kafka_day3_5.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;修改-myprocessorjava-加上一些-log&quot;&gt;修改 MyProcessor.java 加上一些 Log&lt;/h4&gt;
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;onTrigger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProcessContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProcessSession&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProcessException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;FlowFile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flowFile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flowFile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// TODO implement&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;****** MyProcessor_Received a flow file ......&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;getLogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;####### INFO MyProcessor_Received a flow file ......&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;getLogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;debug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;####### DEBUG MyProcessor_Received a flow file ......&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;getLogger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;####### ERROR MyProcessor_Received a flow file ......&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;transfer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flowFile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MY_RELATIONSHIP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;mvn-install&quot;&gt;mvn install&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;到 /Volumes/Transcend/1-eclipse-workspace/test-workspace/ChakraProcessor/myprocess 這層下 install
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;mvn install
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_6.jpg&quot; alt=&quot;kafka_day3_6.jpg&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;執行成功的目錄結構&quot;&gt;執行成功的目錄結構&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_7.jpg&quot; alt=&quot;kafka_day3_7.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;將-compiler-成功的-nar-檔丟到-nifi-的-lib-底下&quot;&gt;將 compiler 成功的 nar 檔丟到 nifi 的 lib 底下&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;compiler 的 nar :&lt;br /&gt;
-/Volumes/Transcend/1-eclipse-workspace/test-workspace/cust-demo/myprocess/nifi-demo-nar/target/nifi-demo-nar-1.0.nar&lt;/li&gt;
-  &lt;li&gt;sandbox nifi 的 lib 路徑 :&lt;br /&gt;
-/usr/hdf/3.1.0.0-564/nifi/lib&lt;/li&gt;
-  &lt;li&gt;連進 sandbox 指令 :&lt;br /&gt;
-ssh root@localhost -p 2222&lt;/li&gt;
-  &lt;li&gt;copy file 到 sandbox 指令
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MBP &amp;gt;&lt;/span&gt; /Volumes/Transcend/1-eclipse-workspace/test-workspace/cust-demo/myprocess/nifi-demo-nar/target &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; scp &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; 2222 nifi-demo-nar-1.0.nar root@localhost:/usr/hdf/3.1.0.0-564/nifi/lib
-&lt;span class=&quot;go&quot;&gt;root@localhost's password:
-nifi-demo-nar-1.0.nar                             100%  143KB   3.0MB/s   00:00
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;重啟-nifi&quot;&gt;重啟 nifi&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_8.jpg&quot; alt=&quot;kafka_day3_8.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;新增-myprocessor&quot;&gt;新增 MyProcessor&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_9.jpg&quot; alt=&quot;kafka_day3_9.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;設定-myprocessor-的-propety&quot;&gt;設定 MyProcessor 的 propety&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;程式有給定 propety 並設定 require 為 true，所以要給值
-&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_10.jpg&quot; alt=&quot;kafka_day3_10.jpg&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;新增-logattribute-processor並串連起來&quot;&gt;新增 LogAttribute Processor，並串連起來&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_11.jpg&quot; alt=&quot;kafka_day3_11.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;執行全部的-processor-後可以去看-nifi-的-log&quot;&gt;執行全部的 Processor 後可以去看 nifi 的 log&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;log 位置
-&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_12.jpg&quot; alt=&quot;kafka_day3_12.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;MyProcessor 的 log 看來只有 INFO 和 ERROR 會印出來
-&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_13.jpg&quot; alt=&quot;kafka_day3_13.jpg&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;logattribute-processor-的-log-資訊&quot;&gt;LogAttribute Processor 的 log 資訊&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;LogAttribute Processor 會將 FlowFile 的 Attribute 列印出來
-&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_14.jpg&quot; alt=&quot;kafka_day3_14.jpg&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;random 產生的 filename 也會在 FlowFile 的 Attribute 裡
-&lt;img src=&quot;http://localhost:4000/assets/hortonworks/day3/htwks_day3_15.jpg&quot; alt=&quot;kafka_day3_15.jpg&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考網址&lt;br /&gt;
-&lt;a href=&quot;https://community.hortonworks.com/articles/4318/build-custom-nifi-processor.html&quot;&gt;官網教學&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://www.youtube.com/watch?v=3ldmNFlelhw&quot;&gt;custom processor 教學-1&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://www.youtube.com/watch?v=QRzVr82V_Is&quot;&gt;custom processor 教學-2&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://kisstechdocs.wordpress.com/2015/01/20/nifi-flowfile-attributes-an-analogy/&quot;&gt;nifi flowfile attributes&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">custom processor</summary></entry></feed>
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">目標 寫一個 hello world spark-streaming 程式，然後使用 netcat 工具做測試．</summary></entry></feed>
