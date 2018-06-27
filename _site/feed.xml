@@ -1,4 +1,124 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-27T14:03:39+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 33 (sbt-assembly)</title><link href="http://localhost:4000/scala/2018/06/26/scala_day33.html" rel="alternate" type="text/html" title="Scala day 33 (sbt-assembly)" /><published>2018-06-26T10:44:17+08:00</published><updated>2018-06-26T10:44:17+08:00</updated><id>http://localhost:4000/scala/2018/06/26/scala_day33</id><content type="html" xml:base="http://localhost:4000/scala/2018/06/26/scala_day33.html">&lt;h4 id=&quot;如何使用-sbt-assembly-build-出包含-dependency-的-fat-jar&quot;&gt;如何使用 sbt-assembly build 出包含 dependency 的 fat jar&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-27T19:01:31+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 34 (spark-excel)</title><link href="http://localhost:4000/scala/2018/06/27/scala_day34.html" rel="alternate" type="text/html" title="Scala day 34 (spark-excel)" /><published>2018-06-27T10:44:17+08:00</published><updated>2018-06-27T10:44:17+08:00</updated><id>http://localhost:4000/scala/2018/06/27/scala_day34</id><content type="html" xml:base="http://localhost:4000/scala/2018/06/27/scala_day34.html">&lt;h4 id=&quot;使用-spark-excel-讀取-xlsx&quot;&gt;使用 spark-excel 讀取 xlsx&lt;/h4&gt;
+&lt;h4 id=&quot;buildsbt&quot;&gt;build.sbt&lt;/h4&gt;
+&lt;p&gt;由於 spark-excel 有出現 jackson 版本不相容的問題，所以這邊用 dependencyOverrides 把新版覆蓋掉&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;name := &quot;streaming-test&quot;
+version := &quot;0.1&quot;
+scalaVersion := &quot;2.11.0&quot;
+
+dependencyOverrides += &quot;com.fasterxml.jackson.core&quot; % &quot;jackson-core&quot; % &quot;2.8.7&quot;
+dependencyOverrides += &quot;com.fasterxml.jackson.core&quot; % &quot;jackson-databind&quot; % &quot;2.8.7&quot;
+dependencyOverrides += &quot;com.fasterxml.jackson.module&quot; % &quot;jackson-module-scala_2.11&quot; % &quot;2.8.7&quot;
+
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-streaming&quot; % &quot;2.2.0&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.2.0&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-sql&quot; % &quot;2.2.0&quot;
+libraryDependencies += &quot;com.springml&quot; % &quot;spark-sftp_2.11&quot; % &quot;1.1.1&quot;
+libraryDependencies += &quot;org.scalatest&quot; %% &quot;scalatest&quot; % &quot;3.0.5&quot; % &quot;test&quot;
+libraryDependencies += &quot;mysql&quot; % &quot;mysql-connector-java&quot; % &quot;5.1.16&quot;
+libraryDependencies += &quot;com.crealytics&quot; %% &quot;spark-excel&quot; % &quot;0.9.8&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;readxlsxtestscala&quot;&gt;ReadXlsxTest.scala&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;StructField(“common”, StringType, true) 第三個參數如果設 false，沒值的時候會出 nullpointerexception 錯誤．&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark.sql.types.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StructType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark.sql.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;SQLContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkSession&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.scalatest.FunSuite&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ReadXlsxTest&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FunSuite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;read xlsx&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkSession&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;appName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Spark-csv&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;local[2]&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getOrCreate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xlsxPath&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/properties/mechinconfig_V2R1.xlsx&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xlsxSchema&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StructType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+      &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;isBigSystem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;lineId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;spinningId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;spindleId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;tagName&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;common&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqlContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;com.crealytics.spark.excel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;useHeader&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;sheetName&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;BB&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;path&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xlsxPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;treatEmptyValuesAsNulls&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;inferSchema&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;addColorColumns&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;schema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xlsxSchema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getAs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;lineId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getAs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;spinningId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foreach&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lineId&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getAs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;lineId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spinningId&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getAs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;](&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;spinningId&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lineId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;_&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spinningId&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;執行結果
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;18/06/27 19:00:27 INFO TaskSetManager: Starting task 1.0 in stage 0.0 (TID 1, localhost, executor driver, partition 1, PROCESS_LOCAL, 143776 bytes)
+18/06/27 19:00:27 INFO Executor: Running task 1.0 in stage 0.0 (TID 1)
+18/06/27 19:00:27 INFO Executor: Running task 0.0 in stage 0.0 (TID 0)
+18/06/27 19:00:27 INFO CodeGenerator: Code generated in 25.279182 ms
+18/06/27 19:00:27 INFO CodeGenerator: Code generated in 12.674182 ms
+L33_1
+L37_8
+L33_2
+L37_8
+L33_3
+L37_9
+L33_4
+L37_9
+L33_5
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;...
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考資料 :&lt;br /&gt;
+&lt;a href=&quot;https://github.com/crealytics/spark-excel&quot;&gt;spark-excel&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">使用 spark-excel 讀取 xlsx build.sbt 由於 spark-excel 有出現 jackson 版本不相容的問題，所以這邊用 dependencyOverrides 把新版覆蓋掉 ``` name := “streaming-test” version := “0.1” scalaVersion := “2.11.0”</summary></entry><entry><title type="html">Scala day 33 (sbt-assembly)</title><link href="http://localhost:4000/scala/2018/06/26/scala_day33.html" rel="alternate" type="text/html" title="Scala day 33 (sbt-assembly)" /><published>2018-06-26T10:44:17+08:00</published><updated>2018-06-26T10:44:17+08:00</updated><id>http://localhost:4000/scala/2018/06/26/scala_day33</id><content type="html" xml:base="http://localhost:4000/scala/2018/06/26/scala_day33.html">&lt;h4 id=&quot;如何使用-sbt-assembly-build-出包含-dependency-的-fat-jar&quot;&gt;如何使用 sbt-assembly build 出包含 dependency 的 fat jar&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;準備一個 project，並寫一隻 wordcount :&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.example.job&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark._&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;WordCount&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Unit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// create Spark context with Spark configuration
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkConf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setMaster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;local[2]&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setAppName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Spark Count&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// read in text file and split each document into words
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokenized&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;textFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;flatMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// count the occurrence of each word
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wordCounts&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tokenized&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reduceByKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;nc&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wordCounts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mkString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;, &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;ul&gt;
   &lt;li&gt;在 project 底下建立 assembly.sbt，還有專案的根目錄建立一個 assembly.sbt&lt;/li&gt;
 &lt;/ul&gt;
@@ -23,14 +143,33 @@
     &lt;p&gt;build.sbt 裡如果有加上 provided 代表不用打包到 jar 裡
 &lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_5.jpg&quot; alt=&quot;scala_day33_5.jpg&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
-  &lt;li&gt;使用版本 :&lt;br /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_6.jpg&quot; alt=&quot;scala_day33_6.jpg&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用版本 :&lt;br /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_6.jpg&quot; alt=&quot;scala_day33_6.jpg&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;build 好之後，可以 scp 把 jar 丟到某台叢集上，然後下 spark2-submit．這邊給路徑是 HDFS 的路徑
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;spark2-submit --class com.example.job.WordCount --master yarn wordcount.jar /tmp/wordcount-test/news.txt
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;這邊給的路徑是 local 的路徑
+    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;spark2-submit --class com.example.job.WordCount --master yarn wordcount.jar file:///tmp/wordcount-test/news.txt
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;將 job 送到 spark 自己的環境執行
+&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_7.jpg&quot; alt=&quot;scala_day33_7.jpg&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;將 job 送到 yarn 上面執行，需先將程式裡的 .setMaster(“local[2]”) 拿掉．不然下 spark2-submit 指定 –master yarn 也是沒有用，還是會送到 spark 自己的環境執行
+    &lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkConf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setMaster&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;local[2]&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;setAppName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Spark Count&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/scala/day33/scala_day33_8.jpg&quot; alt=&quot;scala_day33_8.jpg&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;參考資料 :&lt;br /&gt;
 &lt;a href=&quot;https://github.com/sbt/sbt-assembly&quot;&gt;sbt-assembly&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">如何使用 sbt-assembly build 出包含 dependency 的 fat jar 在 project 底下建立 assembly.sbt，還有專案的根目錄建立一個 assembly.sbt</summary></entry><entry><title type="html">Scala day 32 (spark with HDFS)</title><link href="http://localhost:4000/scala/2018/06/22/scala_day32.html" rel="alternate" type="text/html" title="Scala day 32 (spark with HDFS)" /><published>2018-06-22T10:44:17+08:00</published><updated>2018-06-22T10:44:17+08:00</updated><id>http://localhost:4000/scala/2018/06/22/scala_day32</id><content type="html" xml:base="http://localhost:4000/scala/2018/06/22/scala_day32.html">&lt;h4 id=&quot;使用-sparksession-的-read&quot;&gt;使用 SparkSession 的 read&lt;/h4&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">如何使用 sbt-assembly build 出包含 dependency 的 fat jar 準備一個 project，並寫一隻 wordcount :</summary></entry><entry><title type="html">Scala day 32 (spark with HDFS)</title><link href="http://localhost:4000/scala/2018/06/22/scala_day32.html" rel="alternate" type="text/html" title="Scala day 32 (spark with HDFS)" /><published>2018-06-22T10:44:17+08:00</published><updated>2018-06-22T10:44:17+08:00</updated><id>http://localhost:4000/scala/2018/06/22/scala_day32</id><content type="html" xml:base="http://localhost:4000/scala/2018/06/22/scala_day32.html">&lt;h4 id=&quot;使用-sparksession-的-read&quot;&gt;使用 SparkSession 的 read&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;可讀取目錄底下所有的 csv 資料，加上 option(“header”,”true”) 可濾掉 header，但缺點是無法知道哪些知道是在哪個 file 裡
     &lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;header&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;com.databricks.spark.cvs&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csvDir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foreach&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
@@ -1322,78 +1461,4 @@ no_anon_password=YES
     &lt;h4 id=&quot;會在-master1-上看到執行結果&quot;&gt;會在 master1 上看到執行結果&lt;/h4&gt;
     &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day2/spark-streaming_day2_28.jpg&quot; alt=&quot;spark-streaming_day2_28.jpg&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">目標 使用 intelliJ 開發一個 Hello World 程式</summary></entry><entry><title type="html">Spark-Streaming day 1 (Hello World)</title><link href="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1.html" rel="alternate" type="text/html" title="Spark-Streaming day 1 (Hello World)" /><published>2018-06-06T08:44:17+08:00</published><updated>2018-06-06T08:44:17+08:00</updated><id>http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1</id><content type="html" xml:base="http://localhost:4000/spark-streaming/2018/06/06/spark-streming_day1.html">&lt;h4 id=&quot;目標&quot;&gt;目標&lt;/h4&gt;
-&lt;p&gt;寫一個 hello world spark-streaming 程式，然後使用 netcat 工具做測試．&lt;/p&gt;
-
-&lt;h4 id=&quot;netcat-工具&quot;&gt;netcat 工具&lt;/h4&gt;
-&lt;p&gt;netcat 的功能非常多這邊只先介紹如何測試的方法 :&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;安裝 netcat
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 ~]#&lt;/span&gt; yum install nc
-&lt;span class=&quot;go&quot;&gt;Loaded plugins: fastestmirror
-base                                                           | 3.6 kB  00:00:00
-cloudera-manager                                               |  951 B  00:00:00
-extras                                                         | 3.4 kB  00:00:00
-local-cloudera                                                 | 2.9 kB  00:00:00
-&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;...
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;開一個 console 輸入 nc -lk 9999
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; nc &lt;span class=&quot;nt&quot;&gt;-lk&lt;/span&gt; 9999
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;再開另一個 console 輸入 telnet localhost 9999
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; telnet localhost 9999
-&lt;span class=&quot;go&quot;&gt;Trying ::1...
-telnet: connect to address ::1: Connection refused
-Trying 127.0.0.1...
-Connected to localhost.
-Escape character is '^]'.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_1.jpg&quot; alt=&quot;spark-streaming_day1_1.jpg&quot; /&gt;
-不管在哪個 cosole 輸入文字都會同步
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_2.jpg&quot; alt=&quot;spark-streaming_day1_2.jpg&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;將 netcat 的內容導到檔案裡 nc -lk 9999 &amp;gt; testNetCat.txt
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_3.jpg&quot; alt=&quot;spark-streaming_day1_3.jpg&quot; /&gt;
-telnet
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_4.jpg&quot; alt=&quot;spark-streaming_day1_4.jpg&quot; /&gt;
-看檔案內容的變化，只有從 telnet 的 console 輸入的內容才會導到檔案裡
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_5.jpg&quot; alt=&quot;spark-streaming_day1_5.jpg&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;環境&quot;&gt;環境&lt;/h4&gt;
-&lt;p&gt;CDH Spark2.2.0&lt;/p&gt;
-
-&lt;h4 id=&quot;啟動-spark-shell&quot;&gt;啟動 spark-shell&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_6.jpg&quot; alt=&quot;spark-streaming_day1_6.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;在-spark-shell-裡面輸入下面程式&quot;&gt;在 spark-shell 裡面輸入下面程式&lt;/h4&gt;
-&lt;p&gt;ssc.socketTextStream(“daniel-3-test-master1”, 9988)&lt;br /&gt;
-這邊要輸入 domain name ，試過輸入 IP 或 localhost 會 Connection refused 原因可能再研究．&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark._&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark.streaming._&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StreamingContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Seconds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;socketTextStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;daniel-3-test-master1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9988&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;words&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lines&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;flatMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;words&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;word&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;word&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;wordCounts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pairs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;reduceByKey&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;wordCounts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ssc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然後執行 ssc.start()
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_7.jpg&quot; alt=&quot;spark-streaming_day1_7.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在使用 netcat 輸入一些訊息
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_8.jpg&quot; alt=&quot;spark-streaming_day1_8.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;印出的結果如下，系統會每 1 秒執行一次 job
-&lt;img src=&quot;http://localhost:4000/assets/spark-streaming/day1/spark-streaming_day1_9.jpg&quot; alt=&quot;spark-streaming_day1_9.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考網址&lt;br /&gt;
-&lt;a href=&quot;https://blog.csdn.net/u011564172/article/details/70172060&quot;&gt;Spark DAG&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://github.com/lw-lin/CoolplaySpark/blob/master/Spark%20Streaming%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97/0.1%20Spark%20Streaming%20%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E5%9D%97%E6%A6%82%E8%BF%B0.md&quot;&gt;Spark Streaming 架構&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;http://dblab.xmu.edu.cn/blog/1082-2/&quot;&gt;Spark Streaming read file&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">目標 寫一個 hello world spark-streaming 程式，然後使用 netcat 工具做測試．</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">目標 使用 intelliJ 開發一個 Hello World 程式</summary></entry></feed>

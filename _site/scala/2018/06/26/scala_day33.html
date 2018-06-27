@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scala day 33 (sbt-assembly)</title>
-  <meta name="description" content="如何使用 sbt-assembly build 出包含 dependency 的 fat jar 在 project 底下建立 assembly.sbt，還有專案的根目錄建立一個 assembly.sbt">
+  <meta name="description" content="如何使用 sbt-assembly build 出包含 dependency 的 fat jar 準備一個 project，並寫一隻 wordcount :">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2018/06/26/scala_day33.html">
@@ -82,6 +82,31 @@
   <div class="post-content e-content" itemprop="articleBody">
     <h4 id="如何使用-sbt-assembly-build-出包含-dependency-的-fat-jar">如何使用 sbt-assembly build 出包含 dependency 的 fat jar</h4>
 <ul>
+  <li>準備一個 project，並寫一隻 wordcount :</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="nn">com.example.job</span>
+
+<span class="k">import</span> <span class="nn">org.apache.spark._</span>
+
+<span class="k">object</span> <span class="nc">WordCount</span> <span class="o">{</span>
+
+  <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// create Spark context with Spark configuration
+</span>    <span class="k">val</span> <span class="n">sc</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkContext</span><span class="o">(</span><span class="k">new</span> <span class="nc">SparkConf</span><span class="o">().</span><span class="n">setMaster</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">).</span><span class="n">setAppName</span><span class="o">(</span><span class="s">"Spark Count"</span><span class="o">))</span>
+
+    <span class="c1">// read in text file and split each document into words
+</span>    <span class="k">val</span> <span class="n">tokenized</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="n">args</span><span class="o">(</span><span class="mi">0</span><span class="o">)).</span><span class="n">flatMap</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">" "</span><span class="o">))</span>
+
+    <span class="c1">// count the occurrence of each word
+</span>    <span class="k">val</span> <span class="n">wordCounts</span> <span class="k">=</span> <span class="n">tokenized</span><span class="o">.</span><span class="n">map</span><span class="o">((</span><span class="k">_</span><span class="o">,</span> <span class="mi">1</span><span class="o">)).</span><span class="n">reduceByKey</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="k">_</span><span class="o">)</span>
+
+    <span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="n">wordCounts</span><span class="o">.</span><span class="n">collect</span><span class="o">().</span><span class="n">mkString</span><span class="o">(</span><span class="s">", "</span><span class="o">))</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
   <li>在 project 底下建立 assembly.sbt，還有專案的根目錄建立一個 assembly.sbt</li>
 </ul>
 
@@ -105,8 +130,27 @@
     <p>build.sbt 裡如果有加上 provided 代表不用打包到 jar 裡
 <img src="http://localhost:4000/assets/scala/day33/scala_day33_5.jpg" alt="scala_day33_5.jpg" /></p>
   </li>
-  <li>使用版本 :<br />
-<img src="http://localhost:4000/assets/scala/day33/scala_day33_6.jpg" alt="scala_day33_6.jpg" /></li>
+  <li>
+    <p>使用版本 :<br />
+<img src="http://localhost:4000/assets/scala/day33/scala_day33_6.jpg" alt="scala_day33_6.jpg" /></p>
+  </li>
+  <li>build 好之後，可以 scp 把 jar 丟到某台叢集上，然後下 spark2-submit．這邊給路徑是 HDFS 的路徑
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">spark2-submit --class com.example.job.WordCount --master yarn wordcount.jar /tmp/wordcount-test/news.txt
+</span></code></pre></div>    </div>
+  </li>
+  <li>這邊給的路徑是 local 的路徑
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">spark2-submit --class com.example.job.WordCount --master yarn wordcount.jar file:///tmp/wordcount-test/news.txt
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>將 job 送到 spark 自己的環境執行
+<img src="http://localhost:4000/assets/scala/day33/scala_day33_7.jpg" alt="scala_day33_7.jpg" /></p>
+  </li>
+  <li>將 job 送到 yarn 上面執行，需先將程式裡的 .setMaster(“local[2]”) 拿掉．不然下 spark2-submit 指定 –master yarn 也是沒有用，還是會送到 spark 自己的環境執行
+    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">sc</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkContext</span><span class="o">(</span><span class="k">new</span> <span class="nc">SparkConf</span><span class="o">().</span><span class="n">setMaster</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">).</span><span class="n">setAppName</span><span class="o">(</span><span class="s">"Spark Count"</span><span class="o">))</span>
+</code></pre></div>    </div>
+    <p><img src="http://localhost:4000/assets/scala/day33/scala_day33_8.jpg" alt="scala_day33_8.jpg" /></p>
+  </li>
 </ul>
 
 <blockquote>
