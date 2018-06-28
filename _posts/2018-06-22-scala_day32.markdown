@@ -212,3 +212,171 @@ class DataBeanTest extends FunSuite {
 }
 
 ```
+
+* 原本使用 hdfs api 操作如果 receiveRdd 不下 collect，會出現 task not serialize．
+換個方式 receiveRdd 使用 foreachPartition 之後就可以了．  
+
+
+```scala
+package com.fareast.scala.streaming.job
+
+import java.io.{BufferedWriter, OutputStreamWriter}
+import java.net.URI
+import java.util.Properties
+
+import com.fareast.scala.bean.UserBean
+import com.fareast.scala.receivers.FtpFileReadReceiver
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.FileSystem
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.{Seconds, StreamingContext}
+
+object FTPReadStreamingJob {
+
+  def main(args: Array[String]): Unit = {
+    val reader = scala.io.Source.fromURL(getClass.getResource("/config.properties")).bufferedReader()
+    val prop = new Properties()
+    prop.load(reader)
+    val ftpUsername = prop.getProperty("ftp.username")
+    val ftpPassword = prop.getProperty("ftp.password")
+    val ftpHost = prop.getProperty("ftp.host")
+    val ftpInpath = prop.getProperty("ftp.inPath")
+    val ftpOutpath = prop.getProperty("ftp.outPath")
+    val hdfsOutpath = prop.getProperty("hdfs.outPath")
+    val xlsxConfigPath = prop.getProperty("xlsx.configPath")
+
+
+    val conf = new SparkConf().setMaster("local[2]").setAppName("FileWordCount")
+    val ssc = new StreamingContext(conf, Seconds(5))
+    val ftpUser = UserBean(ftpUsername,ftpPassword)
+    val receiveRdds = ssc.receiverStream(new FtpFileReadReceiver(ftpUser,ftpHost,ftpInpath,ftpOutpath))
+
+    receiveRdds.foreachRDD(receiveRdd => receiveRdd.groupByKey().foreachPartition(receiveFileInfo => {
+      receiveFileInfo.foreach(receiveFile => {
+        val hdfsConf = new Configuration()
+        hdfsConf.setBoolean("dfs.support.append" , true)
+        hdfsConf.setInt("dfs.replication", 1)
+        val fileName = receiveFile._1
+        if(fileName.split("_")(0) == "C") {
+          val mergeHDFSFilePath = "hdfs://" + hdfsOutpath + "/caculatedata/" + fileName
+          val out = getOutput(mergeHDFSFilePath)
+
+          var isHead = true
+          val fileDatas = receiveFile._2
+          fileDatas.foreach(
+            fileData => {
+              if(!isHead) {
+                out.write(fileData)
+                out.newLine()
+                out.flush()
+              }
+              isHead = false
+            }
+          )
+          out.close()
+          //fs.close()
+        } else if(fileName.split("_")(0) == "R") {
+          val mergeHDFSFilePath = "hdfs://" + hdfsOutpath + "/rowdata/" + fileName
+          val out = getOutput(mergeHDFSFilePath)
+          val fileDatas = receiveFile._2
+          var isHead = true
+          fileDatas.foreach(
+            fileData => {
+              if(!isHead) {
+                out.write(fileData)
+                out.newLine()
+                out.flush()
+              }
+              isHead = false
+            }
+          )
+          out.close()
+          //fs.close()
+        }
+        println("========== fileName : " + fileName + " END ==========")
+      })
+    }))
+
+/*
+    receiveRdds.foreachRDD(receiveRdd => receiveRdd.groupByKey.collect.foreach(receiveFile => {
+      val hdfsConf = new Configuration()
+      hdfsConf.setBoolean("dfs.support.append" , true)
+      hdfsConf.setInt("dfs.replication", 1)
+
+      val fileName = receiveFile._1
+      if(fileName.split("_")(0) == "C") {
+        val mergeHDFSFilePath = "hdfs://" + hdfsOutpath + "/caculatedata/" + fileName
+        val out = getOutput(mergeHDFSFilePath)
+
+        var isHead = true
+        val fileDatas = receiveFile._2
+        fileDatas.foreach(
+          fileData => {
+            if(!isHead) {
+              out.write(fileData)
+              out.newLine()
+              out.flush()
+            }
+            isHead = false
+          }
+        )
+        out.close()
+        //fs.close()
+      } else if(fileName.split("_")(0) == "R") {
+        val mergeHDFSFilePath = "hdfs://" + hdfsOutpath + "/rowdata/" + fileName
+        val out = getOutput(mergeHDFSFilePath)
+        val fileDatas = receiveFile._2
+        var isHead = true
+        fileDatas.foreach(
+          fileData => {
+            if(!isHead) {
+              out.write(fileData)
+              out.newLine()
+              out.flush()
+            }
+            isHead = false
+          }
+        )
+        out.close()
+        //fs.close()
+      }
+      println("========== fileName : " + fileName + " END ==========")
+    }))
+*/
+
+    /*
+    receiveRdds.foreachRDD(receiveRdd => {
+      if(receiveRdd != null) {
+        if(!receiveRdd.isEmpty()) {
+          val fileName = receiveRdd.first()._1
+          val fileData = receiveRdd.map(data => data._2)
+          //println("#### fileName ---> " + fileName)
+          //println("#### fileData ---> " + fileData)
+
+          if(fileName.split("_")(0) == "C") {
+            fileData.saveAsTextFile("hdfs://" + hdfsPath + "/caculatedata/" + fileName)
+          } else if(fileName.split("_")(0) == "R") {
+            fileData.saveAsTextFile("hdfs://" + hdfsPath + "/rowdata/" + fileName)
+          }
+        }
+      }
+    })
+    */
+    ssc.start()
+    ssc.awaitTermination()
+  }
+
+  def getOutput(mergeHDFSFilePath:String): BufferedWriter = {
+    val hdfsConf = new Configuration()
+    hdfsConf.setBoolean("dfs.support.append" , true)
+    hdfsConf.setInt("dfs.replication", 1)
+    val fs = FileSystem.get(URI.create(mergeHDFSFilePath) , hdfsConf)
+    val mergehdfsPath = new org.apache.hadoop.fs.Path(mergeHDFSFilePath)
+    val out = fs.exists(mergehdfsPath) match {
+      case true => new BufferedWriter(new OutputStreamWriter(fs.append(mergehdfsPath)))
+      case false => new BufferedWriter(new OutputStreamWriter(fs.create(mergehdfsPath)))
+    }
+    out
+  }
+}
+```
