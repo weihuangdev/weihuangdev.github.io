@@ -1,0 +1,59 @@
+---
+layout: post
+title:  "Docker 1 (install)"
+date:   2018-07-03 10:44:17 +0800
+categories: docker
+---
+
+#### brew update
+```
+brew update
+```
+#### 安裝 brew-cask-completion  
+brew install brew-cask-completion
+```console
+daniel@Danielde-MBP > ~/test > brew install brew-cask-completion
+==> Downloading https://github.com/xyb/homebrew-cask-completion/archive/v2.1.tar.gz
+==> Downloading from https://codeload.github.com/xyb/homebrew-cask-completion/tar.gz/v2.1
+######################################################################## 100.0%
+/usr/local/Cellar/brew-cask-completion/2.1_1: 5 files, 11KB, built in 3 seconds
+```
+
+#### brew cask install docker
+```console
+daniel@Danielde-MBP > ~/test > brew cask install docker
+==> Tapping homebrew/cask
+Cloning into '/usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask'...
+remote: Counting objects: 4086, done.
+remote: Compressing objects: 100% (4068/4068), done.
+remote: Total 4086 (delta 24), reused 693 (delta 14), pack-reused 0
+Receiving objects: 100% (4086/4086), 1.28 MiB | 858.00 KiB/s, done.
+Resolving deltas: 100% (24/24), done.
+Tapped 0 formulae (4,095 files, 4MB)
+==> Satisfying dependencies
+==> Downloading https://download.docker.com/mac/stable/24312/Docker.dmg
+######################################################################## 100.0%
+==> Verifying checksum for Cask docker
+==> Installing Cask docker
+==> Creating Caskroom at /usr/local/Caskroom
+==> We'll set permissions properly so we won't need sudo in the future.
+Password:
+==> Moving App 'Docker.app' to '/Applications/Docker.app'.
+docker was successfully installed!
+```
+#### 下載 [docke mac](https://www.docker.com/get-docker)
+![docker_day1_1.jpg]({{ "/assets/docker/day1/docker_day1_1.jpg" | absolute_url }})
+#### 選擇 Docker Community Edition for Mac
+![docker_day1_2.jpg]({{ "/assets/docker/day1/docker_day1_2.jpg" | absolute_url }})
+#### 登入帳號
+![docker_day1_3.jpg]({{ "/assets/docker/day1/docker_day1_3.jpg" | absolute_url }})
+#### Get Docker
+![docker_day1_5.jpg]({{ "/assets/docker/day1/docker_day1_5.jpg" | absolute_url }})
+#### 安裝
+![docker_day1_6.jpg]({{ "/assets/docker/day1/docker_day1_6.jpg" | absolute_url }})
+
+
+
+> 參考資料 :  
+> [docker](http://oomusou.io/docker/docker-for-mac/)
+

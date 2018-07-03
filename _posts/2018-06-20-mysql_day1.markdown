@@ -196,8 +196,6 @@ mysql> delete from customers where id='1';
 Query OK, 1 row affected (0.04 sec)
 ```
 
-
-
 ```console
 mysql> update mysql.user set host='%' where user='daniel';
 Query OK, 1 row affected (0.09 sec)
@@ -213,6 +211,29 @@ mysql> flush privileges;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
+#### 遇到外部連不進去 VM 的問題
+* 關閉防火牆
+```console
+systemctl stop firewalld
+```
+* 修改 /etc/my.cnf
+![mysql_day1_6.jpg]({{ "/assets/mysql/day1/mysql_day1_6.jpg" | absolute_url }})
+
+* 用 root 登入 alter user
+```console
+mysql> ALTER USER 'daniel'@'%' IDENTIFIED WITH mysql_native_password BY 'MyNewPass1!';
+Query OK, 0 rows affected (0.05 sec)
+```
+
+* 重啟 mysql
+```console
+sudo systemctl restart mysqld.service
+```
+
+* 這邊使用的版本是 mysql-connector-java 8.0.11
+```
+libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.11"
+```
 
 > 參考網址  
 > [mysql-quick-guide](https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/)

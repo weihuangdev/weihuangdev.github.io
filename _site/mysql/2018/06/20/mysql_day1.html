@@ -286,6 +286,31 @@ Rows matched: 1  Changed: 1  Warnings: 0
 <span class="go">Query OK, 0 rows affected (0.01 sec)
 </span></code></pre></div></div>
 
+<h4 id="遇到外部連不進去-vm-的問題">遇到外部連不進去 VM 的問題</h4>
+<ul>
+  <li>關閉防火牆
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">systemctl stop firewalld
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>修改 /etc/my.cnf
+<img src="http://localhost:4000/assets/mysql/day1/mysql_day1_6.jpg" alt="mysql_day1_6.jpg" /></p>
+  </li>
+  <li>用 root 登入 alter user
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">mysql&gt;</span> ALTER USER <span class="s1">'daniel'</span>@<span class="s1">'%'</span> IDENTIFIED WITH mysql_native_password BY <span class="s1">'MyNewPass1!'</span><span class="p">;</span>
+<span class="go">Query OK, 0 rows affected (0.05 sec)
+</span></code></pre></div>    </div>
+  </li>
+  <li>重啟 mysql
+    <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">sudo systemctl restart mysqld.service
+</span></code></pre></div>    </div>
+  </li>
+  <li>這邊使用的版本是 mysql-connector-java 8.0.11
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.11"
+</code></pre></div>    </div>
+  </li>
+</ul>
+
 <blockquote>
   <p>參考網址<br />
 <a href="https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/">mysql-quick-guide</a></p>
