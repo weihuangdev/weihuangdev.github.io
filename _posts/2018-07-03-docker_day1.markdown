@@ -51,7 +51,12 @@ docker was successfully installed!
 ![docker_day1_5.jpg]({{ "/assets/docker/day1/docker_day1_5.jpg" | absolute_url }})
 #### 安裝
 ![docker_day1_6.jpg]({{ "/assets/docker/day1/docker_day1_6.jpg" | absolute_url }})
-
+#### 到 Mac Application 點 Docker 圖示
+![docker_day1_7.jpg]({{ "/assets/docker/day1/docker_day1_7.jpg" | absolute_url }})
+#### 驗證帳號
+![docker_day1_8.jpg]({{ "/assets/docker/day1/docker_day1_8.jpg" | absolute_url }})
+#### 再用註冊的 docker id 登入後就會啟動了
+![docker_day1_9.jpg]({{ "/assets/docker/day1/docker_day1_9.jpg" | absolute_url }})
 
 
 > 參考資料 :  

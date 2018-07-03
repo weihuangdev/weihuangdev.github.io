@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-03T18:58:02+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Docker 1 (install)</title><link href="http://localhost:4000/docker/2018/07/03/docker_day1.html" rel="alternate" type="text/html" title="Docker 1 (install)" /><published>2018-07-03T10:44:17+08:00</published><updated>2018-07-03T10:44:17+08:00</updated><id>http://localhost:4000/docker/2018/07/03/docker_day1</id><content type="html" xml:base="http://localhost:4000/docker/2018/07/03/docker_day1.html">&lt;h4 id=&quot;brew-update&quot;&gt;brew update&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-03T19:12:02+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Docker 1 (install)</title><link href="http://localhost:4000/docker/2018/07/03/docker_day1.html" rel="alternate" type="text/html" title="Docker 1 (install)" /><published>2018-07-03T10:44:17+08:00</published><updated>2018-07-03T10:44:17+08:00</updated><id>http://localhost:4000/docker/2018/07/03/docker_day1</id><content type="html" xml:base="http://localhost:4000/docker/2018/07/03/docker_day1.html">&lt;h4 id=&quot;brew-update&quot;&gt;brew update&lt;/h4&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew update
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;h4 id=&quot;安裝-brew-cask-completion&quot;&gt;安裝 brew-cask-completion&lt;/h4&gt;
@@ -41,6 +41,12 @@ Tapped 0 formulae (4,095 files, 4MB)
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/docker/day1/docker_day1_5.jpg&quot; alt=&quot;docker_day1_5.jpg&quot; /&gt;&lt;/p&gt;
 &lt;h4 id=&quot;安裝&quot;&gt;安裝&lt;/h4&gt;
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/docker/day1/docker_day1_6.jpg&quot; alt=&quot;docker_day1_6.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;到-mac-application-點-docker-圖示&quot;&gt;到 Mac Application 點 Docker 圖示&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/docker/day1/docker_day1_7.jpg&quot; alt=&quot;docker_day1_7.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;驗證帳號&quot;&gt;驗證帳號&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/docker/day1/docker_day1_8.jpg&quot; alt=&quot;docker_day1_8.jpg&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;再用註冊的-docker-id-登入後就會啟動了&quot;&gt;再用註冊的 docker id 登入後就會啟動了&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/docker/day1/docker_day1_9.jpg&quot; alt=&quot;docker_day1_9.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;參考資料 :&lt;br /&gt;
