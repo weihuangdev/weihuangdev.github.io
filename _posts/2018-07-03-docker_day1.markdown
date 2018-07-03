@@ -58,6 +58,30 @@ docker was successfully installed!
 #### 再用註冊的 docker id 登入後就會啟動了
 ![docker_day1_9.jpg]({{ "/assets/docker/day1/docker_day1_9.jpg" | absolute_url }})
 
+#### 確認 docker version
+```console
+daniel@Danielde-MBP > ~/test > docker version
+Client:
+ Version:      18.03.1-ce
+ API version:  1.37
+ Go version:   go1.9.5
+ Git commit:   9ee9f40
+ Built:        Thu Apr 26 07:13:02 2018
+ OS/Arch:      darwin/amd64
+ Experimental: false
+ Orchestrator: swarm
+
+Server:
+ Engine:
+  Version:      18.03.1-ce
+  API version:  1.37 (minimum version 1.12)
+  Go version:   go1.9.5
+  Git commit:   9ee9f40
+  Built:        Thu Apr 26 07:22:38 2018
+  OS/Arch:      linux/amd64
+  Experimental: true
+```
+
 
 > 參考資料 :  
 > [docker](http://oomusou.io/docker/docker-for-mac/)
