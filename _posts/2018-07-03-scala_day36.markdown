@@ -31,8 +31,10 @@ libraryDependencies += "com.crealytics" %% "spark-excel" % "0.9.8"
 ```scala
 import org.scalatest.FunSuite
 import java.sql.{Connection, DriverManager}
+import java.util.Properties
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
 class MySqlConnectTest extends FunSuite {
 
@@ -59,7 +61,7 @@ class MySqlConnectTest extends FunSuite {
     connection.close
   }
 
-  test("spark-shell-sample") {
+  test("spark-shell-query") {
     val csvPath ="/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
     val spark = SparkSession
       .builder
@@ -67,16 +69,63 @@ class MySqlConnectTest extends FunSuite {
       .master("local[2]")
       .getOrCreate()
 
-    val jdbcDF = spark.sqlContext.read.format("jdbc").options(
-      Map(
-        "url" -> "jdbc:mysql://192.168.61.107:3306/testdb",
-        "driver" -> "com.mysql.jdbc.Driver",
-        "dbtable" -> "customers",
-        "user" -> "daniel",
-        "password" -> "MyNewPass1!")
-    ).load()
+    val jdbcDF = spark.read
+      .format("jdbc")
+      .option("url", "jdbc:mysql://192.168.61.107:3306/testdb")
+      .option("dbtable", "customers")
+      .option("user", "daniel")
+      .option("password", "MyNewPass1!")
+      .load()
 
     jdbcDF.show
+  }
+
+  test("spark-shell-insert") {
+    val csvPath ="/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"
+    val spark = SparkSession
+      .builder
+      .appName("Spark-shell-jdbc")
+      .master("local[2]")
+      .getOrCreate()
+
+    val personRDD = spark.sparkContext.parallelize(Array("1 tom 111", "3 jerry 222", "4 kitty 333")).map(_.split(" "))
+    val schema = StructType(
+      List(
+        StructField("id", StringType, true),
+        StructField("name", StringType, true),
+        StructField("tel", StringType, true)
+      )
+    )
+    
+    val rowRDD = personRDD.map(p => Row(p(0).trim, p(1).trim, p(2).trim))
+    val personDataFrame = spark.sqlContext.createDataFrame(rowRDD, schema)
+    val prop = new Properties()
+    prop.put("user", "daniel")
+    prop.put("password", "MyNewPass1!")
+    personDataFrame.write.mode("append").jdbc("jdbc:mysql://192.168.61.107:3306/testdb", "customers", prop)
+  }
+
+  test("test-udf") {
+    val spark = SparkSession
+      .builder
+      .appName("Spark-shell-jdbc")
+      .master("local[2]")
+      .getOrCreate()
+
+    spark.sqlContext.udf.register("strLen", (s: String) => s.length())
+
+    val jdbcDF = spark.read
+      .format("jdbc")
+      .option("url", "jdbc:mysql://192.168.61.107:3306/testdb")
+      .option("dbtable", "customers")
+      .option("user", "daniel")
+      .option("password", "MyNewPass1!")
+      .load()
+
+    jdbcDF.createOrReplaceTempView("people")
+
+    val sqlDF = spark.sql("SELECT id , strLen(name) nameLen FROM people where id='3'")
+    sqlDF.show()
   }
 }
 

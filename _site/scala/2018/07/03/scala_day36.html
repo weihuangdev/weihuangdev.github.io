@@ -104,8 +104,10 @@ libraryDependencies += "com.crealytics" %% "spark-excel" % "0.9.8"
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalatest.FunSuite</span>
 <span class="k">import</span> <span class="nn">java.sql.</span><span class="o">{</span><span class="nc">Connection</span><span class="o">,</span> <span class="nc">DriverManager</span><span class="o">}</span>
+<span class="k">import</span> <span class="nn">java.util.Properties</span>
 
-<span class="k">import</span> <span class="nn">org.apache.spark.sql.SparkSession</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.sql.</span><span class="o">{</span><span class="nc">Row</span><span class="o">,</span> <span class="nc">SparkSession</span><span class="o">}</span>
+<span class="k">import</span> <span class="nn">org.apache.spark.sql.types.</span><span class="o">{</span><span class="nc">StringType</span><span class="o">,</span> <span class="nc">StructField</span><span class="o">,</span> <span class="nc">StructType</span><span class="o">}</span>
 
 <span class="k">class</span> <span class="nc">MySqlConnectTest</span> <span class="k">extends</span> <span class="nc">FunSuite</span> <span class="o">{</span>
 
@@ -132,7 +134,7 @@ libraryDependencies += "com.crealytics" %% "spark-excel" % "0.9.8"
     <span class="n">connection</span><span class="o">.</span><span class="n">close</span>
   <span class="o">}</span>
 
-  <span class="n">test</span><span class="o">(</span><span class="s">"spark-shell-sample"</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">test</span><span class="o">(</span><span class="s">"spark-shell-query"</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">val</span> <span class="n">csvPath</span> <span class="o">=</span><span class="s">"/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"</span>
     <span class="k">val</span> <span class="n">spark</span> <span class="k">=</span> <span class="nc">SparkSession</span>
       <span class="o">.</span><span class="n">builder</span>
@@ -140,16 +142,63 @@ libraryDependencies += "com.crealytics" %% "spark-excel" % "0.9.8"
       <span class="o">.</span><span class="n">master</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">)</span>
       <span class="o">.</span><span class="n">getOrCreate</span><span class="o">()</span>
 
-    <span class="k">val</span> <span class="n">jdbcDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sqlContext</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">"jdbc"</span><span class="o">).</span><span class="n">options</span><span class="o">(</span>
-      <span class="nc">Map</span><span class="o">(</span>
-        <span class="s">"url"</span> <span class="o">-&gt;</span> <span class="s">"jdbc:mysql://192.168.61.107:3306/testdb"</span><span class="o">,</span>
-        <span class="s">"driver"</span> <span class="o">-&gt;</span> <span class="s">"com.mysql.jdbc.Driver"</span><span class="o">,</span>
-        <span class="s">"dbtable"</span> <span class="o">-&gt;</span> <span class="s">"customers"</span><span class="o">,</span>
-        <span class="s">"user"</span> <span class="o">-&gt;</span> <span class="s">"daniel"</span><span class="o">,</span>
-        <span class="s">"password"</span> <span class="o">-&gt;</span> <span class="s">"MyNewPass1!"</span><span class="o">)</span>
-    <span class="o">).</span><span class="n">load</span><span class="o">()</span>
+    <span class="k">val</span> <span class="n">jdbcDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span>
+      <span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">"jdbc"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"url"</span><span class="o">,</span> <span class="s">"jdbc:mysql://192.168.61.107:3306/testdb"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"dbtable"</span><span class="o">,</span> <span class="s">"customers"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span> <span class="s">"daniel"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"password"</span><span class="o">,</span> <span class="s">"MyNewPass1!"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">load</span><span class="o">()</span>
 
     <span class="n">jdbcDF</span><span class="o">.</span><span class="n">show</span>
+  <span class="o">}</span>
+
+  <span class="n">test</span><span class="o">(</span><span class="s">"spark-shell-insert"</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">csvPath</span> <span class="o">=</span><span class="s">"/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile"</span>
+    <span class="k">val</span> <span class="n">spark</span> <span class="k">=</span> <span class="nc">SparkSession</span>
+      <span class="o">.</span><span class="n">builder</span>
+      <span class="o">.</span><span class="n">appName</span><span class="o">(</span><span class="s">"Spark-shell-jdbc"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">master</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">getOrCreate</span><span class="o">()</span>
+
+    <span class="k">val</span> <span class="n">personRDD</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">parallelize</span><span class="o">(</span><span class="nc">Array</span><span class="o">(</span><span class="s">"1 tom 111"</span><span class="o">,</span> <span class="s">"3 jerry 222"</span><span class="o">,</span> <span class="s">"4 kitty 333"</span><span class="o">)).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">" "</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">schema</span> <span class="k">=</span> <span class="nc">StructType</span><span class="o">(</span>
+      <span class="nc">List</span><span class="o">(</span>
+        <span class="nc">StructField</span><span class="o">(</span><span class="s">"id"</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">true</span><span class="o">),</span>
+        <span class="nc">StructField</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">true</span><span class="o">),</span>
+        <span class="nc">StructField</span><span class="o">(</span><span class="s">"tel"</span><span class="o">,</span> <span class="nc">StringType</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
+      <span class="o">)</span>
+    <span class="o">)</span>
+    
+    <span class="k">val</span> <span class="n">rowRDD</span> <span class="k">=</span> <span class="n">personRDD</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">p</span> <span class="k">=&gt;</span> <span class="nc">Row</span><span class="o">(</span><span class="n">p</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">trim</span><span class="o">,</span> <span class="n">p</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="n">trim</span><span class="o">,</span> <span class="n">p</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">trim</span><span class="o">))</span>
+    <span class="k">val</span> <span class="n">personDataFrame</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sqlContext</span><span class="o">.</span><span class="n">createDataFrame</span><span class="o">(</span><span class="n">rowRDD</span><span class="o">,</span> <span class="n">schema</span><span class="o">)</span>
+    <span class="k">val</span> <span class="n">prop</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Properties</span><span class="o">()</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span> <span class="s">"daniel"</span><span class="o">)</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="s">"password"</span><span class="o">,</span> <span class="s">"MyNewPass1!"</span><span class="o">)</span>
+    <span class="n">personDataFrame</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="o">(</span><span class="s">"append"</span><span class="o">).</span><span class="n">jdbc</span><span class="o">(</span><span class="s">"jdbc:mysql://192.168.61.107:3306/testdb"</span><span class="o">,</span> <span class="s">"customers"</span><span class="o">,</span> <span class="n">prop</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="n">test</span><span class="o">(</span><span class="s">"test-udf"</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">spark</span> <span class="k">=</span> <span class="nc">SparkSession</span>
+      <span class="o">.</span><span class="n">builder</span>
+      <span class="o">.</span><span class="n">appName</span><span class="o">(</span><span class="s">"Spark-shell-jdbc"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">master</span><span class="o">(</span><span class="s">"local[2]"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">getOrCreate</span><span class="o">()</span>
+
+    <span class="n">spark</span><span class="o">.</span><span class="n">sqlContext</span><span class="o">.</span><span class="n">udf</span><span class="o">.</span><span class="n">register</span><span class="o">(</span><span class="s">"strLen"</span><span class="o">,</span> <span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">length</span><span class="o">())</span>
+
+    <span class="k">val</span> <span class="n">jdbcDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span>
+      <span class="o">.</span><span class="n">format</span><span class="o">(</span><span class="s">"jdbc"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"url"</span><span class="o">,</span> <span class="s">"jdbc:mysql://192.168.61.107:3306/testdb"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"dbtable"</span><span class="o">,</span> <span class="s">"customers"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span> <span class="s">"daniel"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">option</span><span class="o">(</span><span class="s">"password"</span><span class="o">,</span> <span class="s">"MyNewPass1!"</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">load</span><span class="o">()</span>
+
+    <span class="n">jdbcDF</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="o">(</span><span class="s">"people"</span><span class="o">)</span>
+
+    <span class="k">val</span> <span class="n">sqlDF</span> <span class="k">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="o">(</span><span class="s">"SELECT id , strLen(name) nameLen FROM people where id='3'"</span><span class="o">)</span>
+    <span class="n">sqlDF</span><span class="o">.</span><span class="n">show</span><span class="o">()</span>
   <span class="o">}</span>
 <span class="o">}</span>
 
