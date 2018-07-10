@@ -1,9 +1,62 @@
 ---
 layout: post
-title:  "kafka day 2 "
+title:  "kafka day 2 (introduce)"
 date:   2018-05-25 08:44:17 +0800
 categories: kafka
 ---
+
+#### kafka is a distributed streaming platform : 
+1.可以 publish 和 subscribe streams data 
+2.儲存 streams data 且有高容錯率
+3.可以處理 streams data
+
+kafka 一般可以用在兩種情況 : 
+1.在系統與應用之前可即時性及可靠的互相取得資料
+2.處理轉換 stream data 的 application
+
+kafka 的一些概念
+1.kafka 是 run 在 cluster 可以跨越多個 datacenters
+2.kafka cluster 將 stream data 分類存在 topics 裡
+3.每筆 stream data record 都包含一格 key,value 及 timestamp
+4.kafka clinets 和 servers 之間彼此溝通適用 TCP Protocol.
+
+kafka 有 4 個核心 api :
+1.Producer API
+  publish a stream of records to one or more Kafka topics.
+2.Consumer API
+  subscribe to one or more topics and process the stream of records produced to them.
+3.Streams API
+  to act as a stream processor, consuming an input stream from one or more topics and producing an output stream to one or more output topics, effectively transforming the input streams to output streams.
+4.Connector API
+  building and running reusable producers or consumers that connect Kafka topics to existing applications or data systems. For example, a connector to a relational database might capture every change to a table.
+
+
+Topic
+1.Topic 可以由 0 ~ 多個 consumer subscribe
+2.每個 topic kafka cluster 會 maintains a partitioned log
+3.每個 partition 有順序性及 immutable sequence 紀錄每筆 record，a structured commit log
+4.每筆 record 在 partitions 裡會被 assign 一個 sequential id number 叫 offset．
+5.kafka cluster 會保存所有 published 的 records，不管有沒有被 consumed．可設定保留多久．
+6.offset 由 consumer 自己控制，可以重新讀取舊得 offset．
+7.每個 partition 有會有一個 leader 和 0 ~ 多個 followers．leader 控制該 partition 所有讀寫的 request，
+  如果 leader fails，其中一個 follower 會自動變成一個新的 leader．
+
+
+Producers
+1.Producers 可以決定要 publish data 到哪一個 topics 的 partition，可以隨機寫入或指定 key 寫入．
+2.producer send message 後在寫入硬碟成功時即副本數都建完，kafka 才會告訴 producer 成功發送．
+
+Consumers
+1.Consumers 會有一個 consumer group name，一筆 published 的 record 可傳遞給每一個 subscribing 的 consumer group．
+2.如果全部的 consumer 都是不同的 consumer group，則每筆 record 都會被 broadcast 給所有的 consumer．
+3.kafka 只對一個 partition 有順序性，一般可以等 combined 每個 partition 後再用 key 排序．如果想要有完整的順序性的話，
+  可以只建一個 topic 一個 partition 每個 consumer group 裡只能有一個 partition．
+
+kafka Guarantees
+1.producer 送 messages 到一個特定的 topic partition 會有順序性，先到的 offset 會再後到的前面．
+2.consumer 可以看到 records 有順序的存在 log 裡．
+3.topic 的副本數 N 可以容忍在 N - 1 台 server failures，預防遺失任何 records．
+
 
 ### producer & consumer
 ![kafka_day2_1.jpg]({{ "/assets/kafka/day2/kafka_day2_1.jpg" | absolute_url }})
