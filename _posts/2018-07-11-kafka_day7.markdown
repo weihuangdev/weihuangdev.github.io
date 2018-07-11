@@ -1,0 +1,259 @@
+---
+layout: post
+title:  "kafka day 7 (kafka connector demo)"
+date:   2018-07-11 08:44:17 +0800
+categories: kafka
+---
+
+### Connectors and Tasks
+Connectors 有分兩個層面 SourceConnectors 與 SinkConnectors : 
+* SourceConnectors :
+which import data from another system
+
+* SinkConnectors :
+which export data to another system
+
+* 例如: 
+DB -> JDBCSourceConnector -> kafkaf -> HDFSSinkConnector -> HDFS
+
+Connectors 主要是負責將一個 job 分成多個 Task 分散在 Kafka Connect workers
+
+Tasks 也分兩種 SourceTask 與 SinkTask．  
+
+* 實作 Connector 時 : 
+1.can monitor the data changes of external systems
+2.request task reconfiguration
+
+
+當有一份資料時，Task 需要從 kafka copy．connector copy 該 data 時必須成為一個 partitioned stream．
+而每個 partition stream 都會有一個 offset 來代表．
+
+有時候這種對應很清楚，例如資料來源如果是很多 log file，每個 log file 可以被切為一個 patition．
+而 file 裡的每一行資料可以當成一筆 record 行數就是 offsets．
+
+另一個例子 JDBC connector 可以把一個 table 當作一個 partition．
+但這時候要定義 offset 就比較難，可以用一個 timestamp 的欄位當作 offset 判斷是否產生新的資料．
+
+
+### Partitions and Records
+partition 是一個有順序的 sequence 存放 key-value 的 records．
+而 key 和 value 可以是複雜的結構(by org.apache.kafka.connect.data)．
+許多 primitive types 或 arrays, structs, nested data structures 都有 supported．
+
+為了能夠解析每筆 records，Schemas 也許會包含了每筆 record．(SchemaBuilder class)
+
+runtime 時的 data format 不需要特別的 serialization format．
+會有一個 Converter 介於 org.apache.kafka.connect.data runtime format 和 serialized data 成 byte[]．
+
+除了 key 和 value 之外，record 還會有 partition IDs 和 offsets. 
+partition IDs 和 offsets 會由 framework 定期的 commit offsets 當資料已經被處理．
+所以當有錯誤發生時可以回復到最後 commit 的 offset 避免資料重複被處理．
+
+### connector standalone demo
+這邊是用 CDH 的 KAFKA 做 demo : 
+```console
+cd /opt/cloudera/parcels/KAFKA/lib/kafka
+```
+會看到下列目錄結構
+```console
+[root@daniel-3-test-master1 kafka]# ll
+total 64
+-rwxr-xr-x 1 root root 28824 Oct  6  2017 LICENSE
+-rwxr-xr-x 1 root root   336 Oct  6  2017 NOTICE
+drwxr-xr-x 2 root root  4096 Jul 11 15:54 bin
+drwxr-xr-x 2 root root  4096 Oct  6  2017 cloudera
+lrwxrwxrwx 1 root root    15 Oct  6  2017 config -> /etc/kafka/conf
+drwxr-xr-x 2 root root 12288 Oct  6  2017 libs
+drwxr-xr-x 2 root root  4096 Jul 11 15:21 logs
+drwxr-xr-x 2 root root  4096 Oct  6  2017 site-docs
+```
+connect 啟動的 shell 在 bin 資料夾底下
+```console
+[root@daniel-3-test-master1 kafka]# ll bin | grep connect
+-rwxr-xr-x 1 root root 1335 Oct  6  2017 connect-distributed.sh
+-rwxr-xr-x 1 root root 1332 Oct  6  2017 connect-standalone.sh
+```
+接著在 config 底下增加下列 4 個檔案
+```console
+[root@daniel-3-test-master1 kafka]# ll config/ | grep connect
+-rw-r--r-- 1 root root 300 Jul 11 15:34 connect-log4j.properties
+-rw-r--r-- 1 root root 132 Jul 11 16:54 connect-sink.properties
+-rw-r--r-- 1 root root 130 Jul 11 16:41 connect-source.properties
+-rw-r--r-- 1 root root 540 Jul 11 15:59 connect-standalone.properties
+```
+connect-log4j.properties :  
+```console
+root.logger=INFO,console
+log4j.appender.console=org.apache.log4j.ConsoleAppender
+log4j.appender.console.target=System.err
+log4j.appender.console.layout=org.apache.log4j.PatternLayout
+log4j.appender.console.layout.ConversionPattern=%d{yy/MM/dd HH:mm:ss} %p %c{2}: %m%n
+```
+connect-standalone.properties :  
+```console
+bootstrap.servers=daniel-3-test-master1:9092
+key.converter=org.apache.kafka.connect.json.JsonConverter
+value.converter=org.apache.kafka.connect.json.JsonConverter
+key.converter.schemas.enable=true
+value.converter.schemas.enable=true
+internal.key.converter=org.apache.kafka.connect.json.JsonConverter
+internal.value.converter=org.apache.kafka.connect.json.JsonConverter
+internal.key.converter.schemas.enable=false
+internal.value.converter.schemas.enable=false
+offset.storage.file.filename=/tmp/connect.offsets
+offset.flush.interval.ms=10000
+```
+connect-source.properties :  
+```console
+name=local-file-source
+connector.class=FileStreamSourceConnector
+tasks.max=1
+file=/tmp/connectorfile/test.txt
+topic=connect-test
+```
+connect-sink.properties
+```console
+name=local-file-sink
+connector.class=FileStreamSinkConnector
+tasks.max=1
+file=/tmp/connectorfile/test.sink.txt
+topics=connect-test
+```
+接著啟動 connect-standalone.sh  
+```console
+./bin/connect-standalone.sh config/connect-standalone.properties config/connect-source.properties config/connect-sink.properties
+```
+啟動後可以用下列指令看 connect-test topic 是否被建立起來
+```console
+./bin/kafka-topics.sh --list --zookeeper localhost:2181
+```
+然後在啟動一個 kafka-console-consumer.sh 來取得 connect-test 的每筆 record  
+```console
+./bin/kafka-console-consumer.sh --zookeeper localhost:2181 -topic connect-test --from-beginning
+```
+再到 /tmp/connectorfile 底下
+```console
+cd /tmp/connectorfile
+```
+新增資料到 test.txt
+```console
+echo "aaa" >> test.txt
+echo "bbb" >> test.txt
+echo "ccc" >> test.txt
+```
+kafka-console-consumer.sh 會看到下列訊息  
+```console
+18/07/11 17:22:39 INFO consumer.ConsumerFetcherThread: [ConsumerFetcherThread-console-consumer-9532_daniel-3-test-master1-1531300958401-ae423226-0-34]: Starting
+18/07/11 17:22:39 INFO consumer.ConsumerFetcherManager: [ConsumerFetcherManager-1531300958446] Added fetcher for partitions ArrayBuffer([connect-test-2, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-1, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-0, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] )
+
+
+{"schema":{"type":"string","optional":false},"payload":"aaa"}
+{"schema":{"type":"string","optional":false},"payload":"bbb"}
+{"schema":{"type":"string","optional":false},"payload":"ccc"}
+```
+而 test.sink.txt 會新增下列資料
+```console
+[root@daniel-3-test-master1 connectorfile]# cat test.sink.txt
+aaa
+bbb
+ccc
+```
+如果將 ccc 改成 ccc_update
+```console
+[root@daniel-3-test-master1 connectorfile]# cat test.txt
+aaa
+bbb
+ccc_update
+```
+topic 會在新加一筆資料 update
+```console
+{"schema":{"type":"string","optional":false},"payload":"aaa"}
+{"schema":{"type":"string","optional":false},"payload":"bbb"}
+{"schema":{"type":"string","optional":false},"payload":"ccc"}
+{"schema":{"type":"string","optional":false},"payload":"update"}
+```
+而 test.sink.txt 的內容就會是
+```console
+[root@daniel-3-test-master1 connectorfile]# cat test.sink.txt
+aaa
+bbb
+ccc
+update
+```
+接著把 test.txt 裡的 ccc_update 刪掉
+```console
+[root@daniel-3-test-master1 connectorfile]# cat test.txt
+aaa
+bbb
+```
+connector 並不會有動作
+```console
+[root@daniel-3-test-master1 connectorfile]# cat test.sink.txt
+aaa
+bbb
+ccc
+update
+```
+接著再繼續新增資料
+```console
+echo "ddd" >> test.txt
+echo "eee" >> test.txt
+echo "fff" >> test.txt
+echo "ggg" >> test.txt
+```
+這時候資料順序就會亂掉了
+```console
+[root@daniel-3-test-master1 connectorfile]# cat test.sink.txt
+aaa
+bbb
+ccc
+update
+
+ggg
+```
+而 topic 的內容會是 : 
+```console
+{"schema":{"type":"string","optional":false},"payload":"aaa"}
+{"schema":{"type":"string","optional":false},"payload":"bbb"}
+{"schema":{"type":"string","optional":false},"payload":"ccc"}
+{"schema":{"type":"string","optional":false},"payload":"update"}{"schema":{"type":"string","optional":false},"payload":""}
+{"schema":{"type":"string","optional":false},"payload":"ggg"}
+```
+之前的動作是新增 a,b,c,c_update,d,e,f,g，接著把 topic 清掉 檔案也都清空，但不刪 /tmp/connect.offsets 這檔案．
+然後這次新增 h,i,j,k,l,m,n,o,p．
+```console
+[root@daniel-3-test-master1 connectorfile]# echo "hhh" >> test.txt
+[root@daniel-3-test-master1 connectorfile]# echo "iii" >> test.txt
+[root@daniel-3-test-master1 connectorfile]# echo "jjj" >> test.txt
+[root@daniel-3-test-master1 connectorfile]# echo "kkk" >> test.txt
+[root@daniel-3-test-master1 connectorfile]# echo "lll" >> test.txt
+[root@daniel-3-test-master1 connectorfile]# echo "mmm" >> test.txt
+[root@daniel-3-test-master1 connectorfile]# echo "nnn" >> test.txt
+[root@daniel-3-test-master1 connectorfile]# echo "ooo" >> test.txt
+```
+然後發現新增到 n 開始就會開始寫入．所以可以加設之前的 offset 是記錄到 a,b,c,d,e,f,g 第 7 個．
+```console
+[root@daniel-3-test-master1 connectorfile]# cat test.sink.txt
+nnn
+ooo
+```
+而 topic 的內容會是 : 
+```console
+{"schema":{"type":"string","optional":false},"payload":"nnn"}
+{"schema":{"type":"string","optional":false},"payload":"ooo"}
+```
+
+* 所以結論是 connector 的 offsets 會存在根據 connect-standalone.properties 裡的 offset.storage.file.filename 存放，所以想整個重新測試時，該檔案記得要刪掉．
+否則 topic 還是會記得之前的 offset．這時候檔案重新新增一行由於之前的 offset 已經存在所以不會有動作，除非有增加到超過舊的 offset 比如說之前新增過 3 筆，
+這時候重新測試新增前3筆都不會有動作，要到第 4 筆才會．但這些只是目前實驗的結果，實際還是要深入看 source code 才會知道．
+```console
+rm -f /tmp/connect.offsets
+```
+
+
+
+
+
+
+
+
