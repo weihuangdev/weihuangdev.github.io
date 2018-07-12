@@ -151,12 +151,28 @@ drwxr-xr-x 2 root root  4096 Oct  6  2017 site-docs
 <span class="go">-rwxr-xr-x 1 root root 1335 Oct  6  2017 connect-distributed.sh
 -rwxr-xr-x 1 root root 1332 Oct  6  2017 connect-standalone.sh
 </span></code></pre></div></div>
+
 <p>接著在 config 底下增加下列 4 個檔案</p>
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[root@daniel-3-test-master1 kafka]#</span> ll config/ | <span class="nb">grep </span>connect
 <span class="go">-rw-r--r-- 1 root root 300 Jul 11 15:34 connect-log4j.properties
 -rw-r--r-- 1 root root 132 Jul 11 16:54 connect-sink.properties
 -rw-r--r-- 1 root root 130 Jul 11 16:41 connect-source.properties
 -rw-r--r-- 1 root root 540 Jul 11 15:59 connect-standalone.properties
+</span></code></pre></div></div>
+<p>可參考 kafka 提供的 config sample :</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[root@daniel-3-test-master1 /]#</span> <span class="nb">cd</span> /opt/cloudera/parcels/KAFKA-3.0.0-1.3.0.0.p0.40/etc/kafka/conf.dist
+<span class="gp">[root@daniel-3-test-master1 conf.dist]#</span> ll
+<span class="go">total 52
+-rw-r--r-- 1 root root  906 Oct  6  2017 connect-console-sink.properties
+-rw-r--r-- 1 root root  909 Oct  6  2017 connect-console-source.properties
+-rw-r--r-- 1 root root 5807 Oct  6  2017 connect-distributed.properties
+-rw-r--r-- 1 root root  883 Oct  6  2017 connect-file-sink.properties
+-rw-r--r-- 1 root root  881 Oct  6  2017 connect-file-source.properties
+-rw-r--r-- 1 root root 1111 Oct  6  2017 connect-log4j.properties
+-rw-r--r-- 1 root root 2730 Oct  6  2017 connect-standalone.properties
+-rw-r--r-- 1 root root 4696 Oct  6  2017 log4j.properties
+-rw-r--r-- 1 root root 6954 Oct  6  2017 server.properties
+-rw-r--r-- 1 root root 1032 Oct  6  2017 tools-log4j.properties
 </span></code></pre></div></div>
 <p>connect-log4j.properties :</p>
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">root.logger=INFO,console
@@ -305,6 +321,15 @@ ooo
     <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">rm -f /tmp/connect.offsets
 </span></code></pre></div>    </div>
   </li>
+</ul>
+
+<h3 id="kafka-rest-api">KAFKA REST API</h3>
+<ul>
+  <li>http://192.168.61.105:8083/connectors
+<img src="http://localhost:4000/assets/kafka/day7/kafka_day7_1.jpg" alt="kafka_day7_1.jpg" />
+<img src="http://localhost:4000/assets/kafka/day7/kafka_day7_2.jpg" alt="kafka_day7_2.jpg" />
+<img src="http://localhost:4000/assets/kafka/day7/kafka_day7_3.jpg" alt="kafka_day7_3.jpg" />
+<img src="http://localhost:4000/assets/kafka/day7/kafka_day7_4.jpg" alt="kafka_day7_4.jpg" /></li>
 </ul>
 
 

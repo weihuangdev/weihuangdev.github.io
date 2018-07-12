@@ -34,7 +34,6 @@ Tasks 也分兩種 SourceTask 與 SinkTask．
 另一個例子 JDBC connector 可以把一個 table 當作一個 partition．
 但這時候要定義 offset 就比較難，可以用一個 timestamp 的欄位當作 offset 判斷是否產生新的資料．
 
-
 ### Partitions and Records
 partition 是一個有順序的 sequence 存放 key-value 的 records．
 而 key 和 value 可以是複雜的結構(by org.apache.kafka.connect.data)．
@@ -73,6 +72,7 @@ connect 啟動的 shell 在 bin 資料夾底下
 -rwxr-xr-x 1 root root 1335 Oct  6  2017 connect-distributed.sh
 -rwxr-xr-x 1 root root 1332 Oct  6  2017 connect-standalone.sh
 ```
+
 接著在 config 底下增加下列 4 個檔案
 ```console
 [root@daniel-3-test-master1 kafka]# ll config/ | grep connect
@@ -80,6 +80,22 @@ connect 啟動的 shell 在 bin 資料夾底下
 -rw-r--r-- 1 root root 132 Jul 11 16:54 connect-sink.properties
 -rw-r--r-- 1 root root 130 Jul 11 16:41 connect-source.properties
 -rw-r--r-- 1 root root 540 Jul 11 15:59 connect-standalone.properties
+```
+可參考 kafka 提供的 config sample :  
+```console
+[root@daniel-3-test-master1 /]# cd /opt/cloudera/parcels/KAFKA-3.0.0-1.3.0.0.p0.40/etc/kafka/conf.dist
+[root@daniel-3-test-master1 conf.dist]# ll
+total 52
+-rw-r--r-- 1 root root  906 Oct  6  2017 connect-console-sink.properties
+-rw-r--r-- 1 root root  909 Oct  6  2017 connect-console-source.properties
+-rw-r--r-- 1 root root 5807 Oct  6  2017 connect-distributed.properties
+-rw-r--r-- 1 root root  883 Oct  6  2017 connect-file-sink.properties
+-rw-r--r-- 1 root root  881 Oct  6  2017 connect-file-source.properties
+-rw-r--r-- 1 root root 1111 Oct  6  2017 connect-log4j.properties
+-rw-r--r-- 1 root root 2730 Oct  6  2017 connect-standalone.properties
+-rw-r--r-- 1 root root 4696 Oct  6  2017 log4j.properties
+-rw-r--r-- 1 root root 6954 Oct  6  2017 server.properties
+-rw-r--r-- 1 root root 1032 Oct  6  2017 tools-log4j.properties
 ```
 connect-log4j.properties :  
 ```console
@@ -250,8 +266,12 @@ ooo
 rm -f /tmp/connect.offsets
 ```
 
-
-
+### KAFKA REST API
+* http://192.168.61.105:8083/connectors
+![kafka_day7_1.jpg]({{ "/assets/kafka/day7/kafka_day7_1.jpg" | absolute_url }})
+![kafka_day7_2.jpg]({{ "/assets/kafka/day7/kafka_day7_2.jpg" | absolute_url }})
+![kafka_day7_3.jpg]({{ "/assets/kafka/day7/kafka_day7_3.jpg" | absolute_url }})
+![kafka_day7_4.jpg]({{ "/assets/kafka/day7/kafka_day7_4.jpg" | absolute_url }})
 
 
 
