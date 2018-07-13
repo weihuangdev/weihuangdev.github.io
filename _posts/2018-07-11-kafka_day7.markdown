@@ -341,4 +341,5 @@ curl -X DELETE localhost:8083/connectors/distributed-local-file-sink
 > 參考資料  
 > [connect devguide](https://docs.confluent.io/current/connect/devguide.html)  
 > [connect managing](https://docs.confluent.io/current/connect/managing.html)  
-
+> [kafka github](https://github.com/apache/kafka)  
+> [kafka-connect-jdbc](https://github.com/confluentinc/kafka-connect-jdbc)  
