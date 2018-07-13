@@ -162,7 +162,6 @@ kafka-console-consumer.sh 會看到下列訊息
 18/07/11 17:22:39 INFO consumer.ConsumerFetcherThread: [ConsumerFetcherThread-console-consumer-9532_daniel-3-test-master1-1531300958401-ae423226-0-34]: Starting
 18/07/11 17:22:39 INFO consumer.ConsumerFetcherManager: [ConsumerFetcherManager-1531300958446] Added fetcher for partitions ArrayBuffer([connect-test-2, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-1, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-0, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] )
 
-
 {"schema":{"type":"string","optional":false},"payload":"aaa"}
 {"schema":{"type":"string","optional":false},"payload":"bbb"}
 {"schema":{"type":"string","optional":false},"payload":"ccc"}
@@ -273,8 +272,6 @@ rm -f /tmp/connect.offsets
 ![kafka_day7_3.jpg]({{ "/assets/kafka/day7/kafka_day7_3.jpg" | absolute_url }})
 ![kafka_day7_4.jpg]({{ "/assets/kafka/day7/kafka_day7_4.jpg" | absolute_url }})
 
-
-
 ### connector distributed demo
 建立 topic : 
 ```console
@@ -295,93 +292,7 @@ bootstrap.servers=daniel-3-test-master1:9092
 ./bin/connect-distributed.sh ./config/connect-distributed.properties
 ```
 
-使用 rest api 建立 connector
-建立 source connector
-curl 'http://localhost:8083/connectors' -X POST -i -H "Content-Type:application/json" -d '{ "name":"distributed-local-file-source",  
-   "config":{"connector.class":"FileStreamSourceConnector",  
-            "tasks.max":3,  
-            "topic":"connect-configs",  
-            "file":"/tmp/connectorfile/test.txt"
-    }  
-}'
-
-
-
-```console
-[root@daniel-3-test-master1 connectorfile]# curl 'http://localhost:8083/connectors' -X POST -i -H "Content-Type:application/json" -d '{ "name":"distributed-local-file-source",
->    "config":{"connector.class":"FileStreamSource",
->             "tasks.max":3,
->             "topic":"connect-test",
->             "file":"/tmp/connectorfile/test.txt"
->     }
-> }'
-HTTP/1.1 201 Created
-Date: Thu, 12 Jul 2018 16:43:02 GMT
-Location: http://localhost:8083/connectors/distributed-local-file-source
-Content-Type: application/json
-Content-Length: 217
-Server: Jetty(9.2.15.v20160210)
-
-{"name":"distributed-local-file-source","config":{"connector.class":"FileStreamSource","tasks.max":"3","topic":"connect-configs","file":"/tmp/connectorfile/test.txt","name":"distributed-local-file-source"},"tasks":[]}[root@daniel-3-test-master1 connectorfile]#
-```
-
-建立 sink connector
-curl 'http://localhost:8083/connectors' -X POST -i -H "Content-Type:application/json" -d '{ "name":"distributed-local-file-sink",  
-   "config":{"connector.class":"FileStreamSinkConnector",  
-            "tasks.max":3,  
-            "topics":"connect-test",  
-            "file":"/tmp/connectorfile/test.sink.txt"
-    }  
-}'
-
-
-
-
-```console
-[root@daniel-3-test-master1 connectorfile]# curl 'http://localhost:8083/connectors' -X POST -i -H "Content-Type:application/json" -d '{ "name":"distributed-local-file-source",
->    "config":{"connector.class":FileStreamSource,
->             "tasks.max":3,
->             "topic":connect-configs,
->             "file":/tmp/connectorfile/test.txt
->     }
-> }'
-HTTP/1.1 201 Created
-Date: Thu, 12 Jul 2018 16:43:02 GMT
-Location: http://localhost:8083/connectors/distributed-local-file-source
-Content-Type: application/json
-Content-Length: 217
-Server: Jetty(9.2.15.v20160210)
-
-{"name":"distributed-local-file-source","config":{"connector.class":"FileStreamSource","tasks.max":"3","topic":"connect-configs","file":"/tmp/connectorfile/test.txt","name":"distributed-local-file-source"},"tasks":[]}[root@daniel-3-test-masrs' -X POST -i -H "Content-Type:application/json" -d '{ "name":"distributed-local-file-sink",
->    "config":{"connector.class":FileStreamSink,
->             "tasks.max":3,
->             "topics":connect-configs,
->             "file":/tmp/connectorfile/test.sink.txt
->     }
-> }'
-HTTP/1.1 201 Created
-Date: Thu, 12 Jul 2018 16:43:40 GMT
-Location: http://localhost:8083/connectors/distributed-local-file-sink
-Content-Type: application/json
-Content-Length: 217
-Server: Jetty(9.2.15.v20160210)
-
-{"name":"distributed-local-file-sink","config":{"connector.class":"FileStreamSink","tasks.max":"3","topics":"connect-configs","file":"/tmp/connectorfile/test.sink.txt","name":"distributed-local-file-sink"},"tasks":[]}[root@daniel-3-test-master1 connectorfile]#
-```
-
-```console
-./bin/kafka-topics.sh --list --zookeeper localhost:2181
-./bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic connect-test
-./bin/kafka-console-producer.sh --broker-list localhost:9092 --topic connect-test
-```
-
-```console
-curl -X DELETE localhost:8083/connectors/distributed-local-file-source
-
-curl -X DELETE localhost:8083/connectors/distributed-local-file-sink
-```
-
-config/connect-distributed.properties  
+config/connect-distributed.properties 內容  
 ```console
 bootstrap.servers=daniel-3-test-master1:9092
 group.id=connect-cluster
@@ -402,7 +313,32 @@ status.storage.replication.factor=1
 offset.flush.interval.ms=10000
 ```
 
+* 使用 rest api 建立 connector  
+建立 source connector
 
+```
+curl -X POST -H "Content-Type: application/json" --data '{"name": "distributed-local-file-source", "config": {"connector.class":"FileStreamSourceConnector", "tasks.max":"3", "file":"/tmp/connectorfile/test.txt", "topic":"connect-test" }}' http://localhost:8083/connectors
+```
+建立 sink connector
 
+```
+curl -X POST -H "Content-Type: application/json" --data '{"name": "distributed-local-file-sink", "config": {"connector.class":"FileStreamSinkConnector", "tasks.max":"3", "file":"/tmp/connectorfile/test.sink.txt", "topics":"connect-test" }}' http://localhost:8083/connectors
+```
 
+* delete connector  
+```console
+curl -X DELETE localhost:8083/connectors/distributed-local-file-source
+
+curl -X DELETE localhost:8083/connectors/distributed-local-file-sink
+```
+* 一些指令
+```console
+./bin/kafka-topics.sh --list --zookeeper localhost:2181
+./bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic connect-test
+./bin/kafka-console-consumer.sh --zookeeper localhost:2181 -topic connect-test --from-beginning
+```
+
+> 參考資料  
+> [connect devguide](https://docs.confluent.io/current/connect/devguide.html)  
+> [connect managing](https://docs.confluent.io/current/connect/managing.html)  
 
