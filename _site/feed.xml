@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-12T11:45:06+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">kafka day 7 (kafka connector demo)</title><link href="http://localhost:4000/kafka/2018/07/11/kafka_day7.html" rel="alternate" type="text/html" title="kafka day 7 (kafka connector demo)" /><published>2018-07-11T08:44:17+08:00</published><updated>2018-07-11T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/07/11/kafka_day7</id><content type="html" xml:base="http://localhost:4000/kafka/2018/07/11/kafka_day7.html">&lt;h3 id=&quot;connectors-and-tasks&quot;&gt;Connectors and Tasks&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-16T12:32:09+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">kafka day 7 (kafka connector demo)</title><link href="http://localhost:4000/kafka/2018/07/11/kafka_day7.html" rel="alternate" type="text/html" title="kafka day 7 (kafka connector demo)" /><published>2018-07-11T08:44:17+08:00</published><updated>2018-07-11T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/07/11/kafka_day7</id><content type="html" xml:base="http://localhost:4000/kafka/2018/07/11/kafka_day7.html">&lt;h3 id=&quot;connectors-and-tasks&quot;&gt;Connectors and Tasks&lt;/h3&gt;
 &lt;p&gt;Connectors 有分兩個層面 SourceConnectors 與 SinkConnectors :&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;
@@ -147,7 +147,6 @@ topics=connect-test
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;18/07/11 17:22:39 INFO consumer.ConsumerFetcherThread: [ConsumerFetcherThread-console-consumer-9532_daniel-3-test-master1-1531300958401-ae423226-0-34]: Starting
 18/07/11 17:22:39 INFO consumer.ConsumerFetcherManager: [ConsumerFetcherManager-1531300958446] Added fetcher for partitions ArrayBuffer([connect-test-2, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-1, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-0, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] )
 
-
 {&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;aaa&quot;}
 {&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;bbb&quot;}
 {&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;ccc&quot;}
@@ -248,7 +247,82 @@ ooo
 &lt;img src=&quot;http://localhost:4000/assets/kafka/day7/kafka_day7_2.jpg&quot; alt=&quot;kafka_day7_2.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/kafka/day7/kafka_day7_3.jpg&quot; alt=&quot;kafka_day7_3.jpg&quot; /&gt;
 &lt;img src=&quot;http://localhost:4000/assets/kafka/day7/kafka_day7_4.jpg&quot; alt=&quot;kafka_day7_4.jpg&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">Connectors and Tasks Connectors 有分兩個層面 SourceConnectors 與 SinkConnectors : SourceConnectors : which import data from another system</summary></entry><entry><title type="html">Scala day 36 (spark-sql-jdbc)</title><link href="http://localhost:4000/scala/2018/07/03/scala_day36.html" rel="alternate" type="text/html" title="Scala day 36 (spark-sql-jdbc)" /><published>2018-07-03T11:44:17+08:00</published><updated>2018-07-03T11:44:17+08:00</updated><id>http://localhost:4000/scala/2018/07/03/scala_day36</id><content type="html" xml:base="http://localhost:4000/scala/2018/07/03/scala_day36.html">&lt;h4 id=&quot;使用-spark-sql-對-mysql-操作&quot;&gt;使用 spark-sql 對 mysql 操作&lt;/h4&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;connector-distributed-demo&quot;&gt;connector distributed demo&lt;/h3&gt;
+&lt;p&gt;建立 topic :&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;./bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic connect-configs --replication-factor 1 --partitions 1 --config cleanup.policy=compact
+
+./bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic connect-offsets --replication-factor 1 --partitions 1 --config cleanup.policy=compact
+
+./bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic connect-status --replication-factor 1 --partitions 1 --config cleanup.policy=compact
+
+./bin/kafka-topics.sh --list --zookeeper localhost:2181
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;修改 connect-distributed.properties :&lt;br /&gt;
+bootstrap.servers=daniel-3-test-master1:9092&lt;/p&gt;
+
+&lt;p&gt;啟動 connect-distributed&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;./bin/connect-distributed.sh ./config/connect-distributed.properties
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;config/connect-distributed.properties 內容&lt;/p&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;bootstrap.servers=daniel-3-test-master1:9092
+group.id=connect-cluster
+key.converter=org.apache.kafka.connect.json.JsonConverter
+value.converter=org.apache.kafka.connect.json.JsonConverter
+key.converter.schemas.enable=true
+value.converter.schemas.enable=true
+internal.key.converter=org.apache.kafka.connect.json.JsonConverter
+internal.value.converter=org.apache.kafka.connect.json.JsonConverter
+internal.key.converter.schemas.enable=false
+internal.value.converter.schemas.enable=false
+offset.storage.topic=connect-offsets
+offset.storage.replication.factor=1
+config.storage.topic=connect-configs
+config.storage.replication.factor=1
+status.storage.topic=connect-status
+status.storage.replication.factor=1
+offset.flush.interval.ms=10000
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;使用-rest-api-建立-connector&quot;&gt;使用 rest api 建立 connector&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;建立 source connector&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;curl -X POST -H &quot;Content-Type: application/json&quot; --data '{&quot;name&quot;: &quot;distributed-local-file-source&quot;, &quot;config&quot;: {&quot;connector.class&quot;:&quot;FileStreamSourceConnector&quot;, &quot;tasks.max&quot;:&quot;3&quot;, &quot;file&quot;:&quot;/tmp/connectorfile/test.txt&quot;, &quot;topic&quot;:&quot;connect-test&quot; }}' http://localhost:8083/connectors
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;建立 sink connector&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;curl -X POST -H &quot;Content-Type: application/json&quot; --data '{&quot;name&quot;: &quot;distributed-local-file-sink&quot;, &quot;config&quot;: {&quot;connector.class&quot;:&quot;FileStreamSinkConnector&quot;, &quot;tasks.max&quot;:&quot;3&quot;, &quot;file&quot;:&quot;/tmp/connectorfile/test.sink.txt&quot;, &quot;topics&quot;:&quot;connect-test&quot; }}' http://localhost:8083/connectors
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;delete connector&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;curl -X DELETE localhost:8083/connectors/distributed-local-file-source
+curl -X DELETE localhost:8083/connectors/distributed-local-file-sink
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;一些指令&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;./bin/kafka-topics.sh --list --zookeeper localhost:2181
+./bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic connect-test
+./bin/kafka-console-consumer.sh --zookeeper localhost:2181 -topic connect-test --from-beginning
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考資料&lt;br /&gt;
+&lt;a href=&quot;https://docs.confluent.io/current/connect/devguide.html&quot;&gt;connect devguide&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://docs.confluent.io/current/connect/managing.html&quot;&gt;connect managing&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://github.com/apache/kafka&quot;&gt;kafka github&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://github.com/confluentinc/kafka-connect-jdbc&quot;&gt;kafka-connect-jdbc&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">Connectors and Tasks Connectors 有分兩個層面 SourceConnectors 與 SinkConnectors : SourceConnectors : which import data from another system</summary></entry><entry><title type="html">Scala day 36 (spark-sql-jdbc)</title><link href="http://localhost:4000/scala/2018/07/03/scala_day36.html" rel="alternate" type="text/html" title="Scala day 36 (spark-sql-jdbc)" /><published>2018-07-03T11:44:17+08:00</published><updated>2018-07-03T11:44:17+08:00</updated><id>http://localhost:4000/scala/2018/07/03/scala_day36</id><content type="html" xml:base="http://localhost:4000/scala/2018/07/03/scala_day36.html">&lt;h4 id=&quot;使用-spark-sql-對-mysql-操作&quot;&gt;使用 spark-sql 對 mysql 操作&lt;/h4&gt;
 &lt;h4 id=&quot;buildsbt&quot;&gt;build.sbt&lt;/h4&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;name := &quot;streaming-test&quot;
 version := &quot;0.1&quot;

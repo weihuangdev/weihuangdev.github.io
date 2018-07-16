@@ -313,25 +313,25 @@ status.storage.replication.factor=1
 offset.flush.interval.ms=10000
 ```
 
-* 使用 rest api 建立 connector  
-建立 source connector
+#### 使用 rest api 建立 connector  
+* 建立 source connector
 
-```
+```console
 curl -X POST -H "Content-Type: application/json" --data '{"name": "distributed-local-file-source", "config": {"connector.class":"FileStreamSourceConnector", "tasks.max":"3", "file":"/tmp/connectorfile/test.txt", "topic":"connect-test" }}' http://localhost:8083/connectors
 ```
-建立 sink connector
+* 建立 sink connector
 
-```
+```console
 curl -X POST -H "Content-Type: application/json" --data '{"name": "distributed-local-file-sink", "config": {"connector.class":"FileStreamSinkConnector", "tasks.max":"3", "file":"/tmp/connectorfile/test.sink.txt", "topics":"connect-test" }}' http://localhost:8083/connectors
 ```
-
 * delete connector  
+
 ```console
 curl -X DELETE localhost:8083/connectors/distributed-local-file-source
-
 curl -X DELETE localhost:8083/connectors/distributed-local-file-sink
 ```
-* 一些指令
+* 一些指令  
+
 ```console
 ./bin/kafka-topics.sh --list --zookeeper localhost:2181
 ./bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic connect-test

@@ -229,7 +229,6 @@ topics=connect-test
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">18/07/11 17:22:39 INFO consumer.ConsumerFetcherThread: [ConsumerFetcherThread-console-consumer-9532_daniel-3-test-master1-1531300958401-ae423226-0-34]: Starting
 18/07/11 17:22:39 INFO consumer.ConsumerFetcherManager: [ConsumerFetcherManager-1531300958446] Added fetcher for partitions ArrayBuffer([connect-test-2, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-1, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-0, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] )
 
-
 {"schema":{"type":"string","optional":false},"payload":"aaa"}
 {"schema":{"type":"string","optional":false},"payload":"bbb"}
 {"schema":{"type":"string","optional":false},"payload":"ccc"}
@@ -332,6 +331,80 @@ ooo
 <img src="http://localhost:4000/assets/kafka/day7/kafka_day7_4.jpg" alt="kafka_day7_4.jpg" /></li>
 </ul>
 
+<h3 id="connector-distributed-demo">connector distributed demo</h3>
+<p>建立 topic :</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">./bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic connect-configs --replication-factor 1 --partitions 1 --config cleanup.policy=compact
+
+./bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic connect-offsets --replication-factor 1 --partitions 1 --config cleanup.policy=compact
+
+./bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic connect-status --replication-factor 1 --partitions 1 --config cleanup.policy=compact
+
+./bin/kafka-topics.sh --list --zookeeper localhost:2181
+</span></code></pre></div></div>
+
+<p>修改 connect-distributed.properties :<br />
+bootstrap.servers=daniel-3-test-master1:9092</p>
+
+<p>啟動 connect-distributed</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">./bin/connect-distributed.sh ./config/connect-distributed.properties
+</span></code></pre></div></div>
+
+<p>config/connect-distributed.properties 內容</p>
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">bootstrap.servers=daniel-3-test-master1:9092
+group.id=connect-cluster
+key.converter=org.apache.kafka.connect.json.JsonConverter
+value.converter=org.apache.kafka.connect.json.JsonConverter
+key.converter.schemas.enable=true
+value.converter.schemas.enable=true
+internal.key.converter=org.apache.kafka.connect.json.JsonConverter
+internal.value.converter=org.apache.kafka.connect.json.JsonConverter
+internal.key.converter.schemas.enable=false
+internal.value.converter.schemas.enable=false
+offset.storage.topic=connect-offsets
+offset.storage.replication.factor=1
+config.storage.topic=connect-configs
+config.storage.replication.factor=1
+status.storage.topic=connect-status
+status.storage.replication.factor=1
+offset.flush.interval.ms=10000
+</span></code></pre></div></div>
+
+<h4 id="使用-rest-api-建立-connector">使用 rest api 建立 connector</h4>
+<ul>
+  <li>建立 source connector</li>
+</ul>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">curl -X POST -H "Content-Type: application/json" --data '{"name": "distributed-local-file-source", "config": {"connector.class":"FileStreamSourceConnector", "tasks.max":"3", "file":"/tmp/connectorfile/test.txt", "topic":"connect-test" }}' http://localhost:8083/connectors
+</span></code></pre></div></div>
+<ul>
+  <li>建立 sink connector</li>
+</ul>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">curl -X POST -H "Content-Type: application/json" --data '{"name": "distributed-local-file-sink", "config": {"connector.class":"FileStreamSinkConnector", "tasks.max":"3", "file":"/tmp/connectorfile/test.sink.txt", "topics":"connect-test" }}' http://localhost:8083/connectors
+</span></code></pre></div></div>
+<ul>
+  <li>delete connector</li>
+</ul>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">curl -X DELETE localhost:8083/connectors/distributed-local-file-source
+curl -X DELETE localhost:8083/connectors/distributed-local-file-sink
+</span></code></pre></div></div>
+<ul>
+  <li>一些指令</li>
+</ul>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">./bin/kafka-topics.sh --list --zookeeper localhost:2181
+./bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic connect-test
+./bin/kafka-console-consumer.sh --zookeeper localhost:2181 -topic connect-test --from-beginning
+</span></code></pre></div></div>
+
+<blockquote>
+  <p>參考資料<br />
+<a href="https://docs.confluent.io/current/connect/devguide.html">connect devguide</a><br />
+<a href="https://docs.confluent.io/current/connect/managing.html">connect managing</a><br />
+<a href="https://github.com/apache/kafka">kafka github</a><br />
+<a href="https://github.com/confluentinc/kafka-connect-jdbc">kafka-connect-jdbc</a></p>
+</blockquote>
 
   </div>
 
