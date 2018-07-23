@@ -119,6 +119,31 @@ docker import test.tar test/myubuntu
 ```
 
 
+#### Docker data 掛載
+可以參考 [docker-volumes](https://docs.docker.com/storage/volumes/)
+
+#### 掛載一個本機的目錄(/Volumes/Transcend/test) 到 container 的目錄(/opt/test) 作為 data volumes
+```console
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/test > docker run -d -P --name volumetest -v /Volumes/Transcend/test:/opt/test codenvy/ubuntu_jdk8
+676f3a0adc10ba4791ee83ece5ec2d3f93a2e3e56e4fe4dd34a3e51f1fedae42
+```
+
+```console
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/test > docker ps -a | grep volumetest
+676f3a0adc10        codenvy/ubuntu_jdk8        "/bin/sh -c 'sudo /u…"   33 seconds ago      Up 35 seconds             0.0.0.0:32782->22/tcp, 0.0.0.0:32781->4403/tcp, 0.0.0.0:32780->8000/tcp, 0.0.0.0:32779->8080/tcp, 0.0.0.0:32778->9876/tcp   volumetest
+```
+#### 進入 container 看 /opt/test/ 是否與本機的 /Volumes/Transcend/test 一樣
+```console
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/test > docker exec -it volumetest /bin/bash
+user@676f3a0adc10:/projects$ ls /opt/test/
+20180130  data
+```
+#### 利用 --volumes-from 掛載到 data volume containers
+```console
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/test > docker run -it --volumes-from volumetest --name db1 codenvy/ubuntu_jdk8
+```
+
+
 
 
 

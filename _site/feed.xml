@@ -1,4 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-23T16:11:44+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Docker 2 (docker operate)</title><link href="http://localhost:4000/docker/2018/07/17/docker_day2.html" rel="alternate" type="text/html" title="Docker 2 (docker operate)" /><published>2018-07-17T10:44:17+08:00</published><updated>2018-07-17T10:44:17+08:00</updated><id>http://localhost:4000/docker/2018/07/17/docker_day2</id><content type="html" xml:base="http://localhost:4000/docker/2018/07/17/docker_day2.html">&lt;h4 id=&quot;下載-images&quot;&gt;下載 images&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-24T00:01:57+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">clickhouse day 1 (run clickhouse)</title><link href="http://localhost:4000/clickhouse/2018/07/23/docker_day1.html" rel="alternate" type="text/html" title="clickhouse day 1 (run clickhouse)" /><published>2018-07-23T10:44:17+08:00</published><updated>2018-07-23T10:44:17+08:00</updated><id>http://localhost:4000/clickhouse/2018/07/23/docker_day1</id><content type="html" xml:base="http://localhost:4000/clickhouse/2018/07/23/docker_day1.html">&lt;h4 id=&quot;使用-docker-測試&quot;&gt;使用 docker 測試&lt;/h4&gt;
+&lt;p&gt;參考 &lt;a href=&quot;https://hub.docker.com/r/yandex/clickhouse-server/&quot;&gt;clickhouse-docker&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker pull yandex/clickhouse-server
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;start-server-instance&quot;&gt;start server instance&lt;/h4&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 yandex/clickhouse-server
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;connect-to-it-from-native-client&quot;&gt;connect to it from native client&lt;/h4&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker run &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--link&lt;/span&gt; some-clickhouse-server:clickhouse-server yandex/clickhouse-client &lt;span class=&quot;nt&quot;&gt;--host&lt;/span&gt; clickhouse-server
+&lt;span class=&quot;go&quot;&gt;ClickHouse client version 1.1.54390.
+Connecting to clickhouse-server:9000 as user default.
+Connected to ClickHouse server version 1.1.54390.
+
+f16aa4707e9c :) show databases
+
+SHOW DATABASES
+
+┌─name────┐
+│ default │
+│ system  │
+│ testdb  │
+└─────────┘
+
+3 rows in set. Elapsed: 0.004 sec.
+
+f16aa4707e9c :)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;create-database-&quot;&gt;create database :&lt;/h4&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) create database testdb
+CREATE DATABASE testdb
+Ok.
+0 rows in set. Elapsed: 0.005 sec.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">使用 docker 測試 參考 clickhouse-docker</summary></entry><entry><title type="html">Docker 2 (docker operate)</title><link href="http://localhost:4000/docker/2018/07/17/docker_day2.html" rel="alternate" type="text/html" title="Docker 2 (docker operate)" /><published>2018-07-17T10:44:17+08:00</published><updated>2018-07-17T10:44:17+08:00</updated><id>http://localhost:4000/docker/2018/07/17/docker_day2</id><content type="html" xml:base="http://localhost:4000/docker/2018/07/17/docker_day2.html">&lt;h4 id=&quot;下載-images&quot;&gt;下載 images&lt;/h4&gt;
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker pull codenvy/ubuntu_jdk8
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -93,7 +130,27 @@ docker logs silly_pike
 
 &lt;h4 id=&quot;docker-import&quot;&gt;docker import&lt;/h4&gt;
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker import test.tar test/myubuntu
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">下載 images docker pull codenvy/ubuntu_jdk8</summary></entry><entry><title type="html">kafka day 7 (kafka connector demo)</title><link href="http://localhost:4000/kafka/2018/07/11/kafka_day7.html" rel="alternate" type="text/html" title="kafka day 7 (kafka connector demo)" /><published>2018-07-11T08:44:17+08:00</published><updated>2018-07-11T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/07/11/kafka_day7</id><content type="html" xml:base="http://localhost:4000/kafka/2018/07/11/kafka_day7.html">&lt;h3 id=&quot;connectors-and-tasks&quot;&gt;Connectors and Tasks&lt;/h3&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;docker-data-掛載&quot;&gt;Docker data 掛載&lt;/h4&gt;
+&lt;p&gt;可以參考 &lt;a href=&quot;https://docs.docker.com/storage/volumes/&quot;&gt;docker-volumes&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;掛載一個本機的目錄volumestranscendtest-到-container-的目錄opttest-作為-data-volumes&quot;&gt;掛載一個本機的目錄(/Volumes/Transcend/test) 到 container 的目錄(/opt/test) 作為 data volumes&lt;/h4&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; /Volumes/Transcend/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; volumetest &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /Volumes/Transcend/test:/opt/test codenvy/ubuntu_jdk8
+&lt;span class=&quot;go&quot;&gt;676f3a0adc10ba4791ee83ece5ec2d3f93a2e3e56e4fe4dd34a3e51f1fedae42
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; /Volumes/Transcend/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;volumetest
+&lt;span class=&quot;gp&quot;&gt;676f3a0adc10        codenvy/ubuntu_jdk8        &quot;/bin/sh -c 'sudo /u…&quot;   33 seconds ago      Up 35 seconds             0.0.0.0:32782-&amp;gt;&lt;/span&gt;22/tcp, 0.0.0.0:32781-&amp;gt;4403/tcp, 0.0.0.0:32780-&amp;gt;8000/tcp, 0.0.0.0:32779-&amp;gt;8080/tcp, 0.0.0.0:32778-&amp;gt;9876/tcp   volumetest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;進入-container-看-opttest-是否與本機的-volumestranscendtest-一樣&quot;&gt;進入 container 看 /opt/test/ 是否與本機的 /Volumes/Transcend/test 一樣&lt;/h4&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; /Volumes/Transcend/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; volumetest /bin/bash
+&lt;span class=&quot;gp&quot;&gt;user@676f3a0adc10:/projects$&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /opt/test/
+&lt;span class=&quot;go&quot;&gt;20180130  data
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;利用-volumes-from-掛載到-data-volume-containers&quot;&gt;利用 –volumes-from 掛載到 data volume containers&lt;/h4&gt;
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; /Volumes/Transcend/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker run &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--volumes-from&lt;/span&gt; volumetest &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; db1 codenvy/ubuntu_jdk8
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">下載 images docker pull codenvy/ubuntu_jdk8</summary></entry><entry><title type="html">kafka day 7 (kafka connector demo)</title><link href="http://localhost:4000/kafka/2018/07/11/kafka_day7.html" rel="alternate" type="text/html" title="kafka day 7 (kafka connector demo)" /><published>2018-07-11T08:44:17+08:00</published><updated>2018-07-11T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/07/11/kafka_day7</id><content type="html" xml:base="http://localhost:4000/kafka/2018/07/11/kafka_day7.html">&lt;h3 id=&quot;connectors-and-tasks&quot;&gt;Connectors and Tasks&lt;/h3&gt;
 &lt;p&gt;Connectors 有分兩個層面 SourceConnectors 與 SinkConnectors :&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;
@@ -1471,238 +1528,4 @@ Sam,18
   &lt;p&gt;參考資料&lt;br /&gt;
 &lt;a href=&quot;https://docs.scala-lang.org/getting-started-intellij-track/testing-scala-in-intellij-with-scalatest.html&quot;&gt;scala unit test&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://vimsky.com/article/2708.html&quot;&gt;dataframe 參考&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">使用 intelliJ run scala unit test</summary></entry><entry><title type="html">mysql day 1 (install mysql)</title><link href="http://localhost:4000/mysql/2018/06/20/mysql_day1.html" rel="alternate" type="text/html" title="mysql day 1 (install mysql)" /><published>2018-06-20T08:44:17+08:00</published><updated>2018-06-20T08:44:17+08:00</updated><id>http://localhost:4000/mysql/2018/06/20/mysql_day1</id><content type="html" xml:base="http://localhost:4000/mysql/2018/06/20/mysql_day1.html">&lt;h4 id=&quot;事前準備&quot;&gt;事前準備&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;檢查 hostname
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hostname
-hostname -f
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;update yum
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo yum update
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;安裝 wget
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yum install wget
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;安裝-mysql&quot;&gt;安裝 mysql&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;下載 rpm &lt;a href=&quot;https://dev.mysql.com/downloads/repo/yum/&quot;&gt;mysql community repository&lt;/a&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget http://repo.mysql.com/mysql80-community-release-el7-1.noarch.rpm
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;安裝 rpm
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;sudo rpm -ivh mysql80-community-release-el7-1.noarch.rpm
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/mysql/day1/mysql_day1_1.jpg&quot; alt=&quot;mysql_day1_1.jpg&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;update
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;yum update
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/mysql/day1/mysql_day1_2.jpg&quot; alt=&quot;mysql_day1_2.jpg&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;安裝 mysql community
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;sudo yum install mysql-community-server
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;啟動 mysql server
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;sudo systemctl start mysqld.service
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/mysql/day1/mysql_day1_3.jpg&quot; alt=&quot;mysql_day1_3.jpg&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;使用-mysql&quot;&gt;使用 mysql&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;一開始會有一個 super user (root’@’localhost)，而密碼會產生在 log 裡，可以用下列指令找出 :
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;sudo grep 'temporary password' /var/log/mysqld.log
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;pwd : DE7vfBpIsd&amp;amp;z&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/mysql/day1/mysql_day1_4.jpg&quot; alt=&quot;mysql_day1_4.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;如果要改密碼的話，可用下列指令(需符合一些密碼規則) :
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass1!';
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;一些-db-的操作&quot;&gt;一些 DB 的操作&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; show databases&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| mysql              |
-| performance_schema |
-| sys                |
-+--------------------+
-4 rows in set (0.00 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; show tables &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;mysql&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;+---------------------------+
-| Tables_in_mysql           |
-+---------------------------+
-| columns_priv              |
-| component                 |
-| db                        |
-| ...                       |
-| slow_log                  |
-| tables_priv               |
-| time_zone                 |
-| time_zone_leap_second     |
-| time_zone_name            |
-| time_zone_transition      |
-| time_zone_transition_type |
-| user                      |
-+---------------------------+
-33 rows in set (0.00 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; show tables from mysql like &lt;span class=&quot;s1&quot;&gt;'%time%'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;+---------------------------+
-| Tables_in_mysql (%time%)  |
-+---------------------------+
-| time_zone                 |
-| time_zone_leap_second     |
-| time_zone_name            |
-| time_zone_transition      |
-| time_zone_transition_type |
-+---------------------------+
-5 rows in set (0.00 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; create database testdb&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 1 row affected (0.04 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; create user &lt;span class=&quot;s1&quot;&gt;'daniel'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt; identified by &lt;span class=&quot;s1&quot;&gt;'MyNewPass1!'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.13 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; to &lt;span class=&quot;s1&quot;&gt;'daniel'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'localhost'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.01 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;查看目前有的 user
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; SELECT Host, User FROM mysql.user&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;+-----------+------------------+
-| Host      | User             |
-+-----------+------------------+
-| localhost | daniel           |
-| localhost | mysql.infoschema |
-| localhost | mysql.session    |
-| localhost | mysql.sys        |
-| localhost | root             |
-+-----------+------------------+
-5 rows in set (0.00 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;離開 mysql
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Bye
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;改用剛剛建立的 daniel 登入
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;mysql -u daniel -p
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;可以看到的 db 就沒有 root 那麼多了
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; show databases&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| testdb             |
-+--------------------+
-2 rows in set (0.00 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;使用 testdb
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; use testdb&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Database changed
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;建立 table
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; create table customers &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name TEXT, tel TEXT&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.18 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;新增資料
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; insert into customers&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name,tel&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; values&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'daniel'&lt;/span&gt;,&lt;span class=&quot;s1&quot;&gt;'123456'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 1 row affected (0.16 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;查詢資料
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; from customers &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;+----+--------+--------+
-| id | name   | tel    |
-+----+--------+--------+
-|  1 | daniel | 123456 |
-+----+--------+--------+
-1 row in set (0.00 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;更新資料
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; update customers &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;tel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'888'&lt;/span&gt; where &lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'1'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 1 row affected (0.10 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;刪除資料
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; delete from customers where &lt;span class=&quot;nv&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'1'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 1 row affected (0.04 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; update mysql.user &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt; where &lt;span class=&quot;nv&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'daniel'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 1 row affected (0.09 sec)
-Rows matched: 1  Changed: 1  Warnings: 0
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; flush privileges&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.00 sec)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; to &lt;span class=&quot;s1&quot;&gt;'daniel'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.06 sec)
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; flush privileges&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.01 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;遇到外部連不進去-vm-的問題&quot;&gt;遇到外部連不進去 VM 的問題&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;關閉防火牆
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;systemctl stop firewalld
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;修改 /etc/my.cnf
-&lt;img src=&quot;http://localhost:4000/assets/mysql/day1/mysql_day1_6.jpg&quot; alt=&quot;mysql_day1_6.jpg&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;用 root 登入 alter user
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt;&lt;/span&gt; ALTER USER &lt;span class=&quot;s1&quot;&gt;'daniel'&lt;/span&gt;@&lt;span class=&quot;s1&quot;&gt;'%'&lt;/span&gt; IDENTIFIED WITH mysql_native_password BY &lt;span class=&quot;s1&quot;&gt;'MyNewPass1!'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;Query OK, 0 rows affected (0.05 sec)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;重啟 mysql
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;sudo systemctl restart mysqld.service
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;這邊使用的版本是 mysql-connector-java 8.0.11
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;libraryDependencies += &quot;mysql&quot; % &quot;mysql-connector-java&quot; % &quot;8.0.11&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考網址&lt;br /&gt;
-&lt;a href=&quot;https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/&quot;&gt;mysql-quick-guide&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">事前準備 檢查 hostname hostname hostname -f update yum sudo yum update 安裝 wget yum install wget</summary></entry></feed>
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">使用 intelliJ run scala unit test</summary></entry></feed>
