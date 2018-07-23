@@ -1,0 +1,129 @@
+---
+layout: post
+title:  "Docker 2 (docker operate)"
+date:   2018-07-17 10:44:17 +0800
+categories: docker
+---
+
+#### 下載 images
+```console
+docker pull codenvy/ubuntu_jdk8
+```
+
+#### 看 docker 有的 images
+```console
+daniel@Danielde-MacBook-Pro > ~ >  docker images | grep ubuntu_jdk8
+codenvy/ubuntu_jdk8        latest              4074bfc5705b        20 months ago       668MB
+```
+#### docker run
+```console
+daniel@Danielde-MacBook-Pro > ~ > docker run -it 4074bfc5705b /bin/bash
+user@662414dca6e4:/projects$ ls /
+bin   dev  home  lib64  mnt  proc      root  sbin  sys  usr
+boot  etc  lib   media  opt  projects  run   srv   tmp  var
+```
+#### 看所有的 process
+```console
+daniel@Danielde-MacBook-Pro > ~ > docker ps -a
+CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS                      PORTS                                            NAMES
+662414dca6e4        4074bfc5705b               "/bin/bash"              13 seconds ago      Up 18 seconds               22/tcp, 4403/tcp, 8000/tcp, 8080/tcp, 9876/tcp   youthful_stonebraker
+```
+#### docker commit 可以產生一個新的 image(myubuntu:0.1)
+
+```console
+daniel@Danielde-MBP > ~ > docker commit -m "add new user" -a "daniel" 2bc6632d6917 myubuntu:0.1
+sha256:a90942bab3908fda41cafeae85b4be3d0097ce64eb5499bdd3124fe98f968ce7
+
+daniel@Danielde-MBP > ~ > docker images
+REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
+myubuntu                   0.1                 a90942bab390        44 seconds ago      668MB
+yandex/clickhouse-client   latest              81fd7a3606ca        11 days ago         346MB
+yandex/clickhouse-server   latest              62a3441da964        11 days ago         373MB
+codenvy/ubuntu_jdk8        latest              4074bfc5705b        19 months ago       668MB
+```
+
+#### 存成 tar
+```console
+daniel@Danielde-MacBook-Pro > ~/test > docker save -o myubuntu.tar myubuntu:0.1
+ daniel@Danielde-MacBook-Pro > ~/test > ll | grep myubuntu
+-rw-------   1 daniel  staff   654M  7 21 17:21 myubuntu.tar
+```
+
+#### load tar
+```console
+daniel@Danielde-MacBook-Pro >~/test > docker load < myubuntu.tar
+Loaded image: myubuntu:0.1
+ daniel@Danielde-MacBook-Pro > ~/test > docker images
+REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
+myubuntu                   0.1                 a90942bab390        17 minutes ago      668MB
+yandex/clickhouse-client   latest              81fd7a3606ca        11 days ago         346MB
+yandex/clickhouse-server   latest              62a3441da964        11 days ago         373MB
+codenvy/ubuntu_jdk8        latest              4074bfc5705b        19 months ago       668MB
+```
+
+#### create container
+
+```console
+daniel@Danielde-MacBook-Pro > ~/test > docker create -it myubuntu:0.1
+f80244b4dceaf8f774fa0d2839b85e2f016f744c265d1ce5295a71dbaa2ebfcc
+```
+
+#### create 後 start
+```console
+daniel@Danielde-MacBook-Pro > ~/test > docker start f80244b4dcea
+f80244b4dcea
+```
+
+#### stop container
+```console
+docker stop f80244b4dcea
+```
+#### 用 docker logs 看 container 的 output
+
+```console
+daniel@Danielde-MacBook-Pro > ~/test > docker run -d myubuntu:0.1 /bin/sh -c "while true;do echo hello world; sleep 3; done"
+5c2ec714ace8b649a8308068e452c930680173317a6ffd1714831d391a584820
+
+daniel@Danielde-MacBook-Pro > ~/test > docker ps
+CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+5c2ec714ace8        myubuntu:0.1               "/bin/sh -c 'while t…"   29 seconds ago      Up 28 seconds       22/tcp, 4403/tcp, 8000/tcp, 8080/tcp, 9876/tcp   silly_pike
+
+
+docker logs silly_pike
+```
+#### 正在執行中的 container 可以用 attach 對它操作
+
+```console
+docker attach hardcore_dubinsky
+```
+
+#### 建議不要用 attach 指令改用 exec
+
+```console
+docker exec -it hardcore_dubinsky /bin/bash
+```
+
+#### remove container
+```console
+docker rm 5c2ec714ace8
+```
+
+#### docker export
+```console
+docker export hardcore_dubinsky > test.tar
+```
+
+#### docker import
+```console
+docker import test.tar test/myubuntu
+```
+
+
+
+
+
+
+
+
+
+
