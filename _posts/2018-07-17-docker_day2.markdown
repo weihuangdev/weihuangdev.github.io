@@ -143,12 +143,3 @@ user@676f3a0adc10:/projects$ ls /opt/test/
 daniel@Danielde-MacBook-Pro > /Volumes/Transcend/test > docker run -it --volumes-from volumetest --name db1 codenvy/ubuntu_jdk8
 ```
 
-
-
-
-
-
-
-
-
-
