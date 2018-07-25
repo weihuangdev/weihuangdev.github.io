@@ -6,7 +6,8 @@ categories: clickhouse
 ---
 
 介紹 clickhouse 的一些 Array Type 的使用
-[array-functions](https://clickhouse.yandex/docs/en/query_language/functions/array_functions/)
+[array-functions](https://clickhouse.yandex/docs/en/query_language/functions/array_functions/)  
+operators 的一些操作 [clickhouse-operators](https://clickhouse.yandex/docs/en/query_language/operators/)
 
 #### create table 使用 File ENGIN 的 CSV 格式
 
