@@ -20,6 +20,27 @@ docker pull yandex/clickhouse-server
 ```console
 docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 yandex/clickhouse-server
 ```
+#### --ulimit nofile=262144:262144 的意思是限制 open files 的數量為 262144
+
+```console
+clickhouse@d2d3c8ffba95:/var/lib/clickhouse/data/default/testTables$ ulimit -a
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 7862
+max locked memory       (kbytes, -l) 82000
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 262144
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 8192
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) unlimited
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+```
 
 #### connect to it from native client
 
@@ -170,5 +191,32 @@ FORMAT JSON
 
 3 rows in set. Elapsed: 0.002 sec.
 ```
+
+
+#### 如果要自己安裝 clickhouse 只要執行下列步驟
+* check SSE 4.2 supported
+
+```console
+grep -q sse4_2 /proc/cpuinfo && echo "SSE 4.2 supported" || echo "SSE 4.2 not supported"
+```
+* 照步驟執行
+
+```console
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E0C56BD4    # optional
+
+sudo apt-add-repository "deb http://repo.yandex.ru/clickhouse/deb/stable/ main/"
+sudo apt-get update
+
+sudo apt-get install -y clickhouse-server clickhouse-client
+
+sudo service clickhouse-server start
+clickhouse-client
+
+```
+
+> 參考資料  
+> [clickhouse-docs](http://clickhouse-docs.readthedocs.io/en/latest/getting_started.html)
+
+
 
 

@@ -95,6 +95,26 @@
 <h4 id="start-server-instance">start server instance</h4>
 <div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 yandex/clickhouse-server
 </span></code></pre></div></div>
+<h4 id="ulimit-nofile262144262144-的意思是限制-open-files-的數量為-262144">–ulimit nofile=262144:262144 的意思是限制 open files 的數量為 262144</h4>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">clickhouse@d2d3c8ffba95:/var/lib/clickhouse/data/default/testTables$</span> <span class="nb">ulimit</span> <span class="nt">-a</span>
+<span class="go">core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 7862
+max locked memory       (kbytes, -l) 82000
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 262144
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 8192
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) unlimited
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+</span></code></pre></div></div>
 
 <h4 id="connect-to-it-from-native-client">connect to it from native client</h4>
 
@@ -235,6 +255,34 @@ FORMAT JSON
 
 3 rows in set. Elapsed: 0.002 sec.
 </span></code></pre></div></div>
+
+<h4 id="如果要自己安裝-clickhouse-只要執行下列步驟">如果要自己安裝 clickhouse 只要執行下列步驟</h4>
+<ul>
+  <li>check SSE 4.2 supported</li>
+</ul>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="go">grep -q sse4_2 /proc/cpuinfo &amp;&amp; echo "SSE 4.2 supported" || echo "SSE 4.2 not supported"
+</span></code></pre></div></div>
+<ul>
+  <li>照步驟執行</li>
+</ul>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E0C56BD4    #</span> optional
+<span class="go">
+sudo apt-add-repository "deb http://repo.yandex.ru/clickhouse/deb/stable/ main/"
+sudo apt-get update
+
+sudo apt-get install -y clickhouse-server clickhouse-client
+
+sudo service clickhouse-server start
+clickhouse-client
+
+</span></code></pre></div></div>
+
+<blockquote>
+  <p>參考資料<br />
+<a href="http://clickhouse-docs.readthedocs.io/en/latest/getting_started.html">clickhouse-docs</a></p>
+</blockquote>
 
 
   </div>

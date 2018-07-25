@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-25T11:45:25+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">clickhouse day 4 (java call clickhouse)</title><link href="http://localhost:4000/clickhouse/2018/07/25/clickhouse_day4.html" rel="alternate" type="text/html" title="clickhouse day 4 (java call clickhouse)" /><published>2018-07-25T10:44:17+08:00</published><updated>2018-07-25T10:44:17+08:00</updated><id>http://localhost:4000/clickhouse/2018/07/25/clickhouse_day4</id><content type="html" xml:base="http://localhost:4000/clickhouse/2018/07/25/clickhouse_day4.html">&lt;p&gt;參考 clickhouse 提供的 &lt;a href=&quot;https://clickhouse.yandex/docs/en/interfaces/third-party_client_libraries/&quot;&gt;third-party_client_libraries&lt;/a&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-07-25T16:54:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">clickhouse day 4 (java call clickhouse)</title><link href="http://localhost:4000/clickhouse/2018/07/25/clickhouse_day4.html" rel="alternate" type="text/html" title="clickhouse day 4 (java call clickhouse)" /><published>2018-07-25T10:44:17+08:00</published><updated>2018-07-25T10:44:17+08:00</updated><id>http://localhost:4000/clickhouse/2018/07/25/clickhouse_day4</id><content type="html" xml:base="http://localhost:4000/clickhouse/2018/07/25/clickhouse_day4.html">&lt;p&gt;參考 clickhouse 提供的 &lt;a href=&quot;https://clickhouse.yandex/docs/en/interfaces/third-party_client_libraries/&quot;&gt;third-party_client_libraries&lt;/a&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;pomxml&quot;&gt;pom.xml&lt;/h4&gt;
 
@@ -475,6 +475,26 @@ WHERE Attrs.Value = 'product1'
 &lt;h4 id=&quot;start-server-instance&quot;&gt;start server instance&lt;/h4&gt;
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 yandex/clickhouse-server
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;ulimit-nofile262144262144-的意思是限制-open-files-的數量為-262144&quot;&gt;–ulimit nofile=262144:262144 的意思是限制 open files 的數量為 262144&lt;/h4&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;clickhouse@d2d3c8ffba95:/var/lib/clickhouse/data/default/testTables$&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ulimit&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 7862
+max locked memory       (kbytes, -l) 82000
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 262144
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 8192
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) unlimited
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;connect-to-it-from-native-client&quot;&gt;connect to it from native client&lt;/h4&gt;
 
@@ -614,7 +634,35 @@ FORMAT JSON
 }
 
 3 rows in set. Elapsed: 0.002 sec.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">clickhouse 是 column-oriented DBMS 所以效能會比 row-oriented DBMS 還來得快，因為當要 aggregate 時可以不用像 row-oriented full scan．</summary></entry><entry><title type="html">Docker 2 (docker operate)</title><link href="http://localhost:4000/docker/2018/07/17/docker_day2.html" rel="alternate" type="text/html" title="Docker 2 (docker operate)" /><published>2018-07-17T10:44:17+08:00</published><updated>2018-07-17T10:44:17+08:00</updated><id>http://localhost:4000/docker/2018/07/17/docker_day2</id><content type="html" xml:base="http://localhost:4000/docker/2018/07/17/docker_day2.html">&lt;h4 id=&quot;下載-images&quot;&gt;下載 images&lt;/h4&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;如果要自己安裝-clickhouse-只要執行下列步驟&quot;&gt;如果要自己安裝 clickhouse 只要執行下列步驟&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;check SSE 4.2 supported&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;grep -q sse4_2 /proc/cpuinfo &amp;amp;&amp;amp; echo &quot;SSE 4.2 supported&quot; || echo &quot;SSE 4.2 not supported&quot;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;照步驟執行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E0C56BD4    #&lt;/span&gt; optional
+&lt;span class=&quot;go&quot;&gt;
+sudo apt-add-repository &quot;deb http://repo.yandex.ru/clickhouse/deb/stable/ main/&quot;
+sudo apt-get update
+
+sudo apt-get install -y clickhouse-server clickhouse-client
+
+sudo service clickhouse-server start
+clickhouse-client
+
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考資料&lt;br /&gt;
+&lt;a href=&quot;http://clickhouse-docs.readthedocs.io/en/latest/getting_started.html&quot;&gt;clickhouse-docs&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">clickhouse 是 column-oriented DBMS 所以效能會比 row-oriented DBMS 還來得快，因為當要 aggregate 時可以不用像 row-oriented full scan．</summary></entry><entry><title type="html">Docker 2 (docker operate)</title><link href="http://localhost:4000/docker/2018/07/17/docker_day2.html" rel="alternate" type="text/html" title="Docker 2 (docker operate)" /><published>2018-07-17T10:44:17+08:00</published><updated>2018-07-17T10:44:17+08:00</updated><id>http://localhost:4000/docker/2018/07/17/docker_day2</id><content type="html" xml:base="http://localhost:4000/docker/2018/07/17/docker_day2.html">&lt;h4 id=&quot;下載-images&quot;&gt;下載 images&lt;/h4&gt;
 &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker pull codenvy/ubuntu_jdk8
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
