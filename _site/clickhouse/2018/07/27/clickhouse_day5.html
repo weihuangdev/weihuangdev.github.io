@@ -590,12 +590,28 @@ FROM system.clusters
 </code></pre></div></div>
 
 <h4 id="當-container-沒裝-ifconfig-時可先用-hostname--i-查-ip">當 container 沒裝 ifconfig 時可先用 hostname -I 查 IP</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@42db1eabc7d6:/# hostname -I
+172.18.0.5
+</code></pre></div></div>
+
+<h4 id="docker-compose-的一些指令">docker-compose 的一些指令</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up
+
+docker-compose ps
+
+docker-compose logs
+
+docker-compose rm
+
+docker-compose down
+</code></pre></div></div>
 
 <blockquote>
   <p>參考資料<br />
 <a href="http://clickhouse-docs.readthedocs.io/en/latest/table_engines/distributed.html">table_engines_distributed</a><br />
 <a href="https://github.com/sonych/clickhouse-cluster">github 設定參考-1</a><br />
-<a href="https://github.com/abraithwaite/clickhouse-replication-example">github 設定參考-2</a></p>
+<a href="https://github.com/abraithwaite/clickhouse-replication-example">github 設定參考-2</a><br />
+<a href="https://www.jianshu.com/p/ae45e0aa2b52">clickhouse cluster 參考</a></p>
 </blockquote>
 
 

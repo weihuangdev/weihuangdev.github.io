@@ -529,13 +529,29 @@ FROM system.clusters
 ```
 
 #### 當 container 沒裝 ifconfig 時可先用 hostname -I 查 IP
+```
+root@42db1eabc7d6:/# hostname -I
+172.18.0.5
+```
 
+#### docker-compose 的一些指令
+```
+docker-compose up
+
+docker-compose ps
+
+docker-compose logs
+
+docker-compose rm
+
+docker-compose down
+```
 
 > 參考資料  
 > [table_engines_distributed](http://clickhouse-docs.readthedocs.io/en/latest/table_engines/distributed.html)  
 > [github 設定參考-1](https://github.com/sonych/clickhouse-cluster)  
 > [github 設定參考-2](https://github.com/abraithwaite/clickhouse-replication-example)  
-
+> [clickhouse cluster 參考](https://www.jianshu.com/p/ae45e0aa2b52)
 
 
 
