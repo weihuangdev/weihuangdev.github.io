@@ -362,7 +362,7 @@ services:
 </yandex>
 ```
 
-#### nclude_from.xml 設定
+#### include_from.xml 設定
 
 ```xml
 <yandex>
@@ -546,6 +546,73 @@ docker-compose rm
 
 docker-compose down
 ```
+
+
+#### 使用 java 程式做測試
+
+```java
+	@Test
+	public void queryDistributedTableTest() {
+		try {
+			//use clickhouse HTTP interface
+			ClickHouseClient client = new ClickHouseClient("http://127.0.0.1:8123/?database=r0", "default","");
+			/*
+			List<Object[]> rows = new ArrayList<Object[]>();
+			rows.add(new Object[] {"2018-07-01","2018"});
+			rows.add(new Object[] {"2018-07-02","2018"});
+			rows.add(new Object[] {"2018-07-03","2018"});
+			client.post("insert into r0.ontime_all", rows);
+			Thread.sleep(2000);
+			*/
+			
+			CompletableFuture<ClickHouseResponse<OntimeAll>> comp = client.get("select * from ontime_all", OntimeAll.class);
+			ClickHouseResponse<OntimeAll> response = comp.get();
+			List<OntimeAll> datas = response.data;
+			System.out.println("data count is " + datas.size());
+			for(OntimeAll data : datas) {
+				System.out.println(data.getFlightDate() + " , " + data.getYear());
+			}
+			
+			Thread.sleep(2000);
+			client.close();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+```
+#### OntimeAll.java
+
+```java
+package com.ckh.example.entity;
+
+public class OntimeAll {
+	
+	//要定的跟 table 欄位名稱一模一樣 大小寫有差
+	private String FlightDate;
+	private String Year;
+	
+	public String getFlightDate() {
+		return FlightDate;
+	}
+	public void setFlightDate(String flightDate) {
+		FlightDate = flightDate;
+	}
+	public String getYear() {
+		return Year;
+	}
+	public void setYear(String year) {
+		Year = year;
+	}
+}
+
+```
+#### 執行結果
+
+![clickhouse_day5_1.jpg]({{ "/assets/clickhouse/day5/clickhouse_day5_1.jpg" | absolute_url }})
+
+
 
 > 參考資料  
 > [table_engines_distributed](http://clickhouse-docs.readthedocs.io/en/latest/table_engines/distributed.html)  

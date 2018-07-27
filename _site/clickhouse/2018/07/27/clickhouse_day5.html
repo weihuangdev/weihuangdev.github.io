@@ -432,7 +432,7 @@ services:
 <span class="nt">&lt;/yandex&gt;</span>
 </code></pre></div></div>
 
-<h4 id="nclude_fromxml-設定">nclude_from.xml 設定</h4>
+<h4 id="include_fromxml-設定">include_from.xml 設定</h4>
 
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;yandex&gt;</span>
     <span class="nt">&lt;clickhouse_remote_servers&gt;</span>
@@ -605,6 +605,68 @@ docker-compose rm
 
 docker-compose down
 </code></pre></div></div>
+
+<h4 id="使用-java-程式做測試">使用 java 程式做測試</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="nd">@Test</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">queryDistributedTableTest</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="c1">//use clickhouse HTTP interface</span>
+			<span class="n">ClickHouseClient</span> <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ClickHouseClient</span><span class="o">(</span><span class="s">"http://127.0.0.1:8123/?database=r0"</span><span class="o">,</span> <span class="s">"default"</span><span class="o">,</span><span class="s">""</span><span class="o">);</span>
+			<span class="cm">/*
+			List&lt;Object[]&gt; rows = new ArrayList&lt;Object[]&gt;();
+			rows.add(new Object[] {"2018-07-01","2018"});
+			rows.add(new Object[] {"2018-07-02","2018"});
+			rows.add(new Object[] {"2018-07-03","2018"});
+			client.post("insert into r0.ontime_all", rows);
+			Thread.sleep(2000);
+			*/</span>
+			
+			<span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">ClickHouseResponse</span><span class="o">&lt;</span><span class="n">OntimeAll</span><span class="o">&gt;&gt;</span> <span class="n">comp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"select * from ontime_all"</span><span class="o">,</span> <span class="n">OntimeAll</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+			<span class="n">ClickHouseResponse</span><span class="o">&lt;</span><span class="n">OntimeAll</span><span class="o">&gt;</span> <span class="n">response</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+			<span class="n">List</span><span class="o">&lt;</span><span class="n">OntimeAll</span><span class="o">&gt;</span> <span class="n">datas</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">data</span><span class="o">;</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"data count is "</span> <span class="o">+</span> <span class="n">datas</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+			<span class="k">for</span><span class="o">(</span><span class="n">OntimeAll</span> <span class="n">data</span> <span class="o">:</span> <span class="n">datas</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">getFlightDate</span><span class="o">()</span> <span class="o">+</span> <span class="s">" , "</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="na">getYear</span><span class="o">());</span>
+			<span class="o">}</span>
+			
+			<span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">2000</span><span class="o">);</span>
+			<span class="n">client</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ExecutionException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+<h4 id="ontimealljava">OntimeAll.java</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">ckh</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">entity</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OntimeAll</span> <span class="o">{</span>
+	
+	<span class="c1">//要定的跟 table 欄位名稱一模一樣 大小寫有差</span>
+	<span class="kd">private</span> <span class="n">String</span> <span class="n">FlightDate</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="n">String</span> <span class="n">Year</span><span class="o">;</span>
+	
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getFlightDate</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">FlightDate</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFlightDate</span><span class="o">(</span><span class="n">String</span> <span class="n">flightDate</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">FlightDate</span> <span class="o">=</span> <span class="n">flightDate</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getYear</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">Year</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setYear</span><span class="o">(</span><span class="n">String</span> <span class="n">year</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">Year</span> <span class="o">=</span> <span class="n">year</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<h4 id="執行結果-1">執行結果</h4>
+
+<p><img src="http://localhost:4000/assets/clickhouse/day5/clickhouse_day5_1.jpg" alt="clickhouse_day5_1.jpg" /></p>
 
 <blockquote>
   <p>參考資料<br />
