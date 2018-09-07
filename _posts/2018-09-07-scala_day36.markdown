@@ -1,0 +1,184 @@
+---
+layout: post
+title:  "Scala day 36 (scalapb)"
+date:   2018-09-07 11:44:17 +0800
+categories: scala
+---
+
+#### project 目錄結構
+
+![go_day36_1.jpg]({{ "/assets/scala/day36/scala_day36_1.jpg" | absolute_url }})
+
+#### build.sbt
+```
+import scalapb.compiler.Version.scalapbVersion
+
+name := "hellopb"
+
+scalaVersion := "2.11.12"
+
+PB.targets in Compile := Seq(
+  scalapb.gen() -> (sourceManaged in Compile).value
+)
+
+libraryDependencies ++= Seq(
+ "com.thesamet.scalapb"  %%  "scalapb-runtime"       % scalapbVersion,
+ "com.thesamet.scalapb"  %%  "scalapb-runtime-grpc"  % scalapbVersion,
+ "io.grpc"               %   "grpc-okhttp"           % "1.14.0",
+ "io.grpc"               %   "grpc-netty"            % "1.14.0"
+
+)
+
+assemblyJarName in assembly := name.value + ".jar"
+
+assemblyMergeStrategy in assembly := {
+    case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+    case x => MergeStrategy.first
+}
+
+
+```
+
+#### assembly.sbt
+```
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.7")
+```
+
+#### scalapb.sbt
+```
+addSbtPlugin("com.thesamet" % "sbt-protoc" % "0.99.18")
+libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.7.4"
+```
+
+#### hello.proto
+
+```
+syntax = "proto3";
+
+package com.example.protos;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+```
+
+#### 執行 sbt compile
+build 出來的 scala 程式會在下列路徑  
+![go_day36_2.jpg]({{ "/assets/scala/day36/scala_day36_2.jpg" | absolute_url }})
+
+
+#### GreeterImpl.scala
+```
+package ght.mi.hello
+
+import com.example.protos.hello.{GreeterGrpc, HelloReply, HelloRequest}
+
+import scala.concurrent.Future
+
+class GreeterImpl extends GreeterGrpc.Greeter {
+
+  override def sayHello(req: HelloRequest) = {
+    val reply = HelloReply(message = "Hello " + req.name)
+    Future.successful(reply)
+  }
+}
+```
+
+#### HelloWorldServer.scala
+```
+package ght.mi.hello
+
+import com.example.protos.hello.GreeterGrpc
+import io.grpc.{Server, ServerBuilder}
+
+import scala.concurrent.ExecutionContext
+
+object HelloWorldServer {
+
+  def main(args: Array[String]): Unit = {
+    val server = new HelloWorldServer(ExecutionContext.global)
+    server.start()
+    server.blockUntilShutdown()
+  }
+
+  private val port = 50051
+}
+
+class HelloWorldServer(executionContext: ExecutionContext) {
+  self =>
+  private[this] var server: Server = null
+
+  private def start(): Unit = {
+    server = ServerBuilder.forPort(HelloWorldServer.port).addService(GreeterGrpc.bindService(new GreeterImpl, executionContext)).build.start
+
+    sys.addShutdownHook {
+      System.err.println("*** shutting down gRPC server since JVM is shutting down")
+      self.stop()
+      System.err.println("*** server shut down")
+    }
+  }
+
+  private def stop(): Unit = {
+    if (server != null) {
+      server.shutdown()
+    }
+  }
+
+  private def blockUntilShutdown(): Unit = {
+    if (server != null) {
+      server.awaitTermination()
+    }
+  }
+}
+```
+
+#### HelloWorldClient.scala
+```
+package ght.mi.hello
+
+import com.example.protos.hello.{GreeterGrpc, HelloReply, HelloRequest}
+import io.grpc.ManagedChannelBuilder
+
+object HelloWorldClient {
+
+  def main(args: Array[String]): Unit = {
+    val host = "localhost"
+    val port = 50051
+    val channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build
+    val request = HelloRequest(name = "World")
+    val blockingStub = GreeterGrpc.blockingStub(channel)
+    val reply: HelloReply = blockingStub.sayHello(request)
+    println(reply)
+  }
+
+}
+
+```
+
+#### 測試
+先執行 HelloWorldServer.scala 再執行 HelloWorldClient.scala
+
+
+
+
+> 參考資料  
+> [scalapb](https://scalapb.github.io/grpc.html)  
+
+
+
+
+
+
