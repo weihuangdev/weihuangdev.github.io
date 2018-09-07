@@ -1,0 +1,77 @@
+---
+layout: post
+title:  "go day 1 (run go)"
+date:   2018-09-07 10:44:17 +0800
+categories: go
+---
+
+#### 下載並安裝 go
+
+![go_day1_1.jpg]({{ "/assets/go/day1/go_day1_1.jpg" | absolute_url }})
+
+![go_day1_2.jpg]({{ "/assets/go/day1/go_day1_2.jpg" | absolute_url }})
+
+![go_day1_3.jpg]({{ "/assets/go/day1/go_day1_3.jpg" | absolute_url }})
+
+#### 安裝好的路徑
+Mac 安裝好的路徑會在  
+![go_day1_4.jpg]({{ "/assets/go/day1/go_day1_4.jpg" | absolute_url }})
+
+#### 加上環境變數
+修改 ~/.bash_profile  
+```
+export GOPATH=/usr/local/go
+export PATH=$JAVA_HOME/bin:$SCALA_HOME/bin:$GOPATH/bin:$PATH:~/bin
+```
+改完後下  
+```
+source ~/.bash_profile
+```
+
+#### 建立 Project 測試
+goHello project  
+```
+mkdir goHello
+```
+接著在 goHello 裡建立 src 目錄，然後再 src 裡建立 hello 目錄，然後再 hello 裡建立 hello.go 檔案．
+目錄結構如下  
+```
+goHello  
+ -src
+  -hello
+   hello.go
+```
+在 hello.go 加上程式  
+```
+package main
+import "fmt"
+func main() {
+  fmt.Println("Hello World")
+}
+```
+在 goHello/src/hello 底下執行 go build
+```
+/Volumes/Transcend/6-practice/golang/goHello/src/hello > go build
+warning: GOPATH set to GOROOT (/usr/local/go) has no effect
+```
+會 build 出一個 hello 的執行檔
+```
+/Volumes/Transcend/6-practice/golang/goHello/src/hello > ll
+total 4352
+-rwxrwxrwx  1 daniel  staff   1.9M  9  7 11:15 hello
+-rwxrwxrwx  1 daniel  staff    71B  9  7 11:10 hello.go
+```
+執行 hello，就成功了
+```
+/Volumes/Transcend/6-practice/golang/goHello/src/hello > ./hello
+Hello World
+```
+
+> 參考資料  
+> [The Go Programming](https://golang.org/)  
+
+
+
+
+
+
