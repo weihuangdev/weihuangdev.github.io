@@ -1,0 +1,54 @@
+---
+layout: post
+title:  "Scala day 37 (sbt proguard)"
+date:   2018-09-07 11:44:17 +0800
+categories: scala
+---
+
+#### proguard
+使用 proguard 可以幫忙混淆 decompiler 出來的 class 檔，
+
+#### 在 {project}/project 底下加上 plugins.sbt 內容為
+```
+addSbtPlugin("com.lightbend.sbt" % "sbt-proguard" % "0.3.0")
+```
+
+#### 在 build.sbt 依造需要的 option、filter 及 Merge 方式設定，如下 : 
+```
+enablePlugins(SbtProguard)
+proguardOptions in Proguard += "-dontoptimize"
+proguardOptions in Proguard ++= Seq("-dontnote", "-dontwarn", "-ignorewarnings","-keepattributes Signature,*Annotation*","-keep class scala.** { *; }","-keep class com.** { *; }","-keep class org.** { *; }")
+proguardInputs in Proguard := (dependencyClasspath in Compile).value.files
+proguardFilteredInputs in Proguard ++= ProguardOptions.noFilter((packageBin in Compile).value)
+proguardOptions in Proguard += ProguardOptions.keepMain("ght.**")
+​
+javaOptions in (Proguard, proguard) := Seq("-Xmx4G")
+​
+proguardMerge in Proguard := true
+proguardMergeStrategies in Proguard += ProguardMerge.last("javax.inject-2.4.0-b34.jar")
+proguardMergeStrategies in Proguard += ProguardMerge.last("io/netty/.*".r)
+proguardMergeStrategies in Proguard += ProguardMerge.last("org/apache/commons/.*".r)
+proguardMergeStrategies in Proguard += ProguardMerge.last("org/apache/hadoop/.*".r)
+proguardMergeStrategies in Proguard += ProguardMerge.last("org/apache/spark/.*".r)
+proguardMergeStrategies in Proguard += ProguardMerge.last("org/aopalliance/.*".r)
+proguardMergeStrategies in Proguard += ProguardMerge.last("javax/.*".r)
+proguardMergeStrategies in Proguard += ProguardMerge.last("java/.*".r)
+proguardMergeStrategies in Proguard += ProguardMerge.discard("META-INF/.*".r)
+proguardMergeStrategies in Proguard += ProguardMerge.discard("git.properties")
+proguardMergeStrategies in Proguard += ProguardMerge.rename("LICENSE.*".r)
+proguardMergeStrategies in Proguard += ProguardMerge.discard("rootdoc.txt")
+```
+
+#### 下指令 build jar
+```
+sbt proguard:proguard
+```
+
+> 參考資料  
+> [sbt-proguard](https://github.com/sbt/sbt-proguard)  
+
+
+
+
+
+
