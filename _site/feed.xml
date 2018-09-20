@@ -1,4 +1,220 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-07T17:33:07+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Scala day 36 (scalapb)</title><link href="http://localhost:4000/scala/2018/09/07/scala_day36.html" rel="alternate" type="text/html" title="Scala day 36 (scalapb)" /><published>2018-09-07T11:44:17+08:00</published><updated>2018-09-07T11:44:17+08:00</updated><id>http://localhost:4000/scala/2018/09/07/scala_day36</id><content type="html" xml:base="http://localhost:4000/scala/2018/09/07/scala_day36.html">&lt;h4 id=&quot;project-目錄結構&quot;&gt;project 目錄結構&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-20T15:07:18+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">cassandra day 2 (spark cassandra)</title><link href="http://localhost:4000/cassandra/2018/09/20/cassandra_day2.html" rel="alternate" type="text/html" title="cassandra day 2 (spark cassandra)" /><published>2018-09-20T11:44:17+08:00</published><updated>2018-09-20T11:44:17+08:00</updated><id>http://localhost:4000/cassandra/2018/09/20/cassandra_day2</id><content type="html" xml:base="http://localhost:4000/cassandra/2018/09/20/cassandra_day2.html">&lt;h4 id=&quot;buildsbt&quot;&gt;build.sbt&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;name := &quot;Enricher-ext&quot;
+
+version := &quot;0.1&quot;
+
+scalaVersion := &quot;2.11.12&quot;
+
+dependencyOverrides += &quot;com.fasterxml.jackson.core&quot; % &quot;jackson-core&quot; % &quot;2.8.7&quot;
+dependencyOverrides += &quot;com.fasterxml.jackson.core&quot; % &quot;jackson-databind&quot; % &quot;2.8.7&quot;
+dependencyOverrides += &quot;com.fasterxml.jackson.module&quot; % &quot;jackson-module-scala_2.11&quot; % &quot;2.8.7&quot;
+
+libraryDependencies ++= Seq(
+  &quot;io.grpc&quot;               %   &quot;grpc-netty&quot;            % &quot;1.14.0&quot;,
+  &quot;io.grpc&quot;               %   &quot;grpc-okhttp&quot;           % &quot;1.14.0&quot;,
+  &quot;com.google.guava&quot;      %   &quot;guava&quot;                 % &quot;21.0&quot;,
+  &quot;org.apache.spark&quot;      %%  &quot;spark-core&quot;            % &quot;2.3.1&quot; ,
+  &quot;org.apache.spark&quot;      %%  &quot;spark-sql&quot;             % &quot;2.3.1&quot; ,
+  &quot;redis.clients&quot;         %   &quot;jedis&quot;                 % &quot;2.9.0&quot;,
+  &quot;com.crealytics&quot;        %%  &quot;spark-excel&quot;           % &quot;0.9.8&quot;,
+  &quot;com.datastax.spark&quot; %% &quot;spark-cassandra-connector&quot; % &quot;2.3.2&quot;,
+  &quot;org.scalatest&quot;         %%  &quot;scalatest&quot;             % &quot;3.0.5&quot; % &quot;test&quot;
+)
+
+lazy val copyJar = taskKey[Unit](&quot;Test copy jar file&quot;)
+copyJar := {
+  val folder = new File(&quot;target/lib&quot;)
+  (managedClasspath in Compile).value.files.foreach { f =&amp;gt;
+    IO.copyFile(f, folder / f.getName)
+  }
+  val jarFile = sbt.Keys.`package`.in(Compile, packageBin).value
+  IO.copyFile(jarFile, new File(&quot;target&quot;) / jarFile.getName)
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;需要-import-connector&quot;&gt;需要 import connector&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import org.apache.spark.sql.SparkSession
+import com.datastax.spark.connector._
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;query-cassandra&quot;&gt;Query cassandra&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val rdd = spark.sparkContext.cassandraTable(&quot;castest&quot;,&quot;prod&quot;)
+println(rdd.count)
+println(rdd.first)
+rdd.foreach(raw =&amp;gt; {
+  val prodId = raw.get[String](&quot;prodid&quot;)
+  val prodCount = raw.get[Int](&quot;count&quot;)
+  println(prodId + &quot; , &quot; + prodCount)
+})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;insert-cassandra&quot;&gt;insert cassandra&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val listElements = spark.sparkContext.parallelize(
+  Seq(
+  (5,100),
+  (6,200),
+  (7,300))
+)
+listElements.saveToCassandra(&quot;castest&quot;,&quot;prod&quot;,SomeColumns(&quot;prodid&quot;,&quot;count&quot;))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;update-cassandra&quot;&gt;update cassandra&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val listElements = spark.sparkContext.parallelize(
+  Seq(
+    (6,100),
+    (8,400)
+  )
+)
+listElements.saveToCassandra(&quot;castest&quot;,&quot;prod&quot;,SomeColumns(&quot;prodid&quot;,&quot;count&quot;))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;delete-cassandra&quot;&gt;delete cassandra&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val listElements = spark.sparkContext.parallelize(
+  Seq(
+    (6,100)
+  )
+)
+listElements.deleteFromCassandra(&quot;castest&quot;,&quot;prod&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;delete-cassandra-with-where&quot;&gt;delete cassandra with where&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark.sparkContext.cassandraTable(&quot;castest&quot;,&quot;prod&quot;).where(&quot;count &amp;lt; 50&quot;).deleteFromCassandra(&quot;castest&quot;,&quot;prod&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考資料&lt;br /&gt;
+&lt;a href=&quot;https://github.com/datastax/spark-cassandra-connector&quot;&gt;spark-cassandra&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">build.sbt ``` name := “Enricher-ext”</summary></entry><entry><title type="html">cassandra day 1 (run cassandra)</title><link href="http://localhost:4000/cassandra/2018/09/20/cassandra_day1.html" rel="alternate" type="text/html" title="cassandra day 1 (run cassandra)" /><published>2018-09-20T10:44:17+08:00</published><updated>2018-09-20T10:44:17+08:00</updated><id>http://localhost:4000/cassandra/2018/09/20/cassandra_day1</id><content type="html" xml:base="http://localhost:4000/cassandra/2018/09/20/cassandra_day1.html">&lt;h4 id=&quot;下載-cassandra-images&quot;&gt;下載 cassandra images&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull cassandra
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;run-cassandra&quot;&gt;run cassandra&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name test-cassandra-1 -d cassandra
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;run-cassandra-cluster&quot;&gt;run cassandra cluster&lt;/h4&gt;
+&lt;p&gt;有 2 種 :&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;在同一台機器建不同 instances
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name test-cassandra-2 -d -e CASSANDRA_SEEDS=&quot;$(docker inspect --format='' test-cassandra-1)&quot; cassandra
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;啟動後&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                         NAMES
+87e56257fb9e        cassandra           &quot;docker-entrypoint.s…&quot;   3 seconds ago       Up 2 seconds        7000-7001/tcp, 7199/tcp, 9042/tcp, 9160/tcp   test-cassandra-2
+abcd5d24e322        cassandra           &quot;docker-entrypoint.s…&quot;   5 minutes ago       Up 5 minutes        7000-7001/tcp, 7199/tcp, 9042/tcp, 9160/tcp   test-cassandra-1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;也可以透過 –link&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name test-cassandra-2 -d --link test-cassandra-1 cassandra
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;在不同機器建不同的 instances，這邊先不實作提供指令參考
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name some-cassandra -d -e CASSANDRA_BROADCAST_ADDRESS=10.42.42.42 -p 7000:7000 cassandra:tag
+docker run --name some-cassandra -d -e CASSANDRA_BROADCAST_ADDRESS=10.43.43.43 -p 7000:7000 -e CASSANDRA_SEEDS=10.42.42.42 cassandra:tag
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;連線-cassandra&quot;&gt;連線 cassandra&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; docker run -it --link test-cassandra-1:cassandra --rm cassandra sh -c 'exec cqlsh &quot;$CASSANDRA_PORT_9042_TCP_ADDR&quot;'
+Connected to Test Cluster at 172.17.0.2:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.3 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+cqlsh&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;透過-exec-連線-cassandra再下-cqlsh&quot;&gt;透過 exec 連線 cassandra，再下 cqlsh&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker exec -it eb31ab378632 bash
+
+root@eb31ab378632:/# cqlsh
+Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.3 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+cqlsh&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;查看目前有的-keyspaces&quot;&gt;查看目前有的 keyspaces&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; describe keyspaces;
+system_schema  system_auth  system  system_distributed  system_traces
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;建立-keyspace&quot;&gt;建立 keyspace&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; CREATE KEYSPACE castest WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 1 };
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;drop-keyspace&quot;&gt;drop keyspace&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; drop keyspace castest ;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;create-table&quot;&gt;create table&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; CREATE TABLE castest.prod (prodid text PRIMARY KEY, count int);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;看所有-tables&quot;&gt;看所有 tables&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; describe tables ;
+
+Keyspace castest
+----------------
+prod
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;insert-data&quot;&gt;insert data&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; INSERT INTO castest.prod (prodid, count) VALUES ('1', 20);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;select-data&quot;&gt;select data&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; select * from castest.prod ;
+
+ prodid | count
+--------+-------
+      4 |    30
+      3 |    40
+      2 |    10
+      1 |    20
+
+(4 rows)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;update-data&quot;&gt;update data&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; update castest.prod set count=55 where prodid='3'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;delete-data&quot;&gt;delete data&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; delete from castest.prod where prodid='3' ;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考資料&lt;br /&gt;
+&lt;a href=&quot;https://docs.docker.com/samples/library/cassandra/&quot;&gt;docker-cassandra&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">下載 cassandra images docker pull cassandra</summary></entry><entry><title type="html">Scala day 37 (sbt proguard)</title><link href="http://localhost:4000/scala/2018/09/07/scala_day37.html" rel="alternate" type="text/html" title="Scala day 37 (sbt proguard)" /><published>2018-09-07T11:44:17+08:00</published><updated>2018-09-07T11:44:17+08:00</updated><id>http://localhost:4000/scala/2018/09/07/scala_day37</id><content type="html" xml:base="http://localhost:4000/scala/2018/09/07/scala_day37.html">&lt;h4 id=&quot;proguard&quot;&gt;proguard&lt;/h4&gt;
+&lt;p&gt;使用 proguard 可以幫忙混淆 decompiler 出來的 class 檔，&lt;/p&gt;
+
+&lt;h4 id=&quot;在-projectproject-底下加上-pluginssbt-內容為&quot;&gt;在 {project}/project 底下加上 plugins.sbt 內容為&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;addSbtPlugin(&quot;com.lightbend.sbt&quot; % &quot;sbt-proguard&quot; % &quot;0.3.0&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;在-buildsbt-依造需要的-optionfilter-及-merge-方式設定如下-&quot;&gt;在 build.sbt 依造需要的 option、filter 及 Merge 方式設定，如下 :&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;enablePlugins(SbtProguard)
+proguardOptions in Proguard += &quot;-dontoptimize&quot;
+proguardOptions in Proguard ++= Seq(&quot;-dontnote&quot;, &quot;-dontwarn&quot;, &quot;-ignorewarnings&quot;,&quot;-keepattributes Signature,*Annotation*&quot;,&quot;-keep class scala.** { *; }&quot;,&quot;-keep class com.** { *; }&quot;,&quot;-keep class org.** { *; }&quot;)
+proguardInputs in Proguard := (dependencyClasspath in Compile).value.files
+proguardFilteredInputs in Proguard ++= ProguardOptions.noFilter((packageBin in Compile).value)
+proguardOptions in Proguard += ProguardOptions.keepMain(&quot;ght.**&quot;)
+​
+javaOptions in (Proguard, proguard) := Seq(&quot;-Xmx4G&quot;)
+​
+proguardMerge in Proguard := true
+proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;javax.inject-2.4.0-b34.jar&quot;)
+proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;io/netty/.*&quot;.r)
+proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;org/apache/commons/.*&quot;.r)
+proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;org/apache/hadoop/.*&quot;.r)
+proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;org/apache/spark/.*&quot;.r)
+proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;org/aopalliance/.*&quot;.r)
+proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;javax/.*&quot;.r)
+proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;java/.*&quot;.r)
+proguardMergeStrategies in Proguard += ProguardMerge.discard(&quot;META-INF/.*&quot;.r)
+proguardMergeStrategies in Proguard += ProguardMerge.discard(&quot;git.properties&quot;)
+proguardMergeStrategies in Proguard += ProguardMerge.rename(&quot;LICENSE.*&quot;.r)
+proguardMergeStrategies in Proguard += ProguardMerge.discard(&quot;rootdoc.txt&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;下指令-build-jar&quot;&gt;下指令 build jar&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sbt proguard:proguard
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考資料&lt;br /&gt;
+&lt;a href=&quot;https://github.com/sbt/sbt-proguard&quot;&gt;sbt-proguard&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">proguard 使用 proguard 可以幫忙混淆 decompiler 出來的 class 檔，</summary></entry><entry><title type="html">Scala day 36 (scalapb)</title><link href="http://localhost:4000/scala/2018/09/07/scala_day36.html" rel="alternate" type="text/html" title="Scala day 36 (scalapb)" /><published>2018-09-07T11:44:17+08:00</published><updated>2018-09-07T11:44:17+08:00</updated><id>http://localhost:4000/scala/2018/09/07/scala_day36</id><content type="html" xml:base="http://localhost:4000/scala/2018/09/07/scala_day36.html">&lt;h4 id=&quot;project-目錄結構&quot;&gt;project 目錄結構&lt;/h4&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/scala/day36/scala_day36_1.jpg&quot; alt=&quot;go_day36_1.jpg&quot; /&gt;&lt;/p&gt;
 
@@ -1474,565 +1690,4 @@ clickhouse-client
 &lt;blockquote&gt;
   &lt;p&gt;參考資料&lt;br /&gt;
 &lt;a href=&quot;http://clickhouse-docs.readthedocs.io/en/latest/getting_started.html&quot;&gt;clickhouse-docs&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">clickhouse 是 column-oriented DBMS 所以效能會比 row-oriented DBMS 還來得快，因為當要 aggregate 時可以不用像 row-oriented full scan．</summary></entry><entry><title type="html">Docker 2 (docker operate)</title><link href="http://localhost:4000/docker/2018/07/17/docker_day2.html" rel="alternate" type="text/html" title="Docker 2 (docker operate)" /><published>2018-07-17T10:44:17+08:00</published><updated>2018-07-17T10:44:17+08:00</updated><id>http://localhost:4000/docker/2018/07/17/docker_day2</id><content type="html" xml:base="http://localhost:4000/docker/2018/07/17/docker_day2.html">&lt;h4 id=&quot;下載-images&quot;&gt;下載 images&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker pull codenvy/ubuntu_jdk8
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;看-docker-有的-images&quot;&gt;看 docker 有的 images&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~ &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;  docker images | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;ubuntu_jdk8
-&lt;span class=&quot;go&quot;&gt;codenvy/ubuntu_jdk8        latest              4074bfc5705b        20 months ago       668MB
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;docker-run&quot;&gt;docker run&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~ &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker run &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; 4074bfc5705b /bin/bash
-&lt;span class=&quot;gp&quot;&gt;user@662414dca6e4:/projects$&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /
-&lt;span class=&quot;go&quot;&gt;bin   dev  home  lib64  mnt  proc      root  sbin  sys  usr
-boot  etc  lib   media  opt  projects  run   srv   tmp  var
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;看所有的-process&quot;&gt;看所有的 process&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~ &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS                      PORTS                                            NAMES
-662414dca6e4        4074bfc5705b               &quot;/bin/bash&quot;              13 seconds ago      Up 18 seconds               22/tcp, 4403/tcp, 8000/tcp, 8080/tcp, 9876/tcp   youthful_stonebraker
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;docker-commit-可以產生一個新的-imagemyubuntu01&quot;&gt;docker commit 可以產生一個新的 image(myubuntu:0.1)&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MBP &amp;gt;&lt;/span&gt; ~ &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;add new user&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;daniel&quot;&lt;/span&gt; 2bc6632d6917 myubuntu:0.1
-&lt;span class=&quot;go&quot;&gt;sha256:a90942bab3908fda41cafeae85b4be3d0097ce64eb5499bdd3124fe98f968ce7
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MBP &amp;gt;&lt;/span&gt; ~ &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker images
-&lt;span class=&quot;go&quot;&gt;REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
-myubuntu                   0.1                 a90942bab390        44 seconds ago      668MB
-yandex/clickhouse-client   latest              81fd7a3606ca        11 days ago         346MB
-yandex/clickhouse-server   latest              62a3441da964        11 days ago         373MB
-codenvy/ubuntu_jdk8        latest              4074bfc5705b        19 months ago       668MB
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;存成-tar&quot;&gt;存成 tar&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker save &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; myubuntu.tar myubuntu:0.1
-&lt;span class=&quot;gp&quot;&gt; daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; ll | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;myubuntu
-&lt;span class=&quot;go&quot;&gt;-rw-------   1 daniel  staff   654M  7 21 17:21 myubuntu.tar
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;load-tar&quot;&gt;load tar&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt;~/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker load &amp;lt; myubuntu.tar
-&lt;span class=&quot;go&quot;&gt;Loaded image: myubuntu:0.1
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt; daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker images
-&lt;span class=&quot;go&quot;&gt;REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
-myubuntu                   0.1                 a90942bab390        17 minutes ago      668MB
-yandex/clickhouse-client   latest              81fd7a3606ca        11 days ago         346MB
-yandex/clickhouse-server   latest              62a3441da964        11 days ago         373MB
-codenvy/ubuntu_jdk8        latest              4074bfc5705b        19 months ago       668MB
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;create-container&quot;&gt;create container&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker create &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; myubuntu:0.1
-&lt;span class=&quot;go&quot;&gt;f80244b4dceaf8f774fa0d2839b85e2f016f744c265d1ce5295a71dbaa2ebfcc
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;create-後-start&quot;&gt;create 後 start&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker start f80244b4dcea
-&lt;span class=&quot;go&quot;&gt;f80244b4dcea
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;stop-container&quot;&gt;stop container&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker stop f80244b4dcea
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;用-docker-logs-看-container-的-output&quot;&gt;用 docker logs 看 container 的 output&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; myubuntu:0.1 /bin/sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;while true;do echo hello world; sleep 3; done&quot;&lt;/span&gt;
-&lt;span class=&quot;go&quot;&gt;5c2ec714ace8b649a8308068e452c930680173317a6ffd1714831d391a584820
-
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; ~/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker ps
-&lt;span class=&quot;go&quot;&gt;CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                                            NAMES
-5c2ec714ace8        myubuntu:0.1               &quot;/bin/sh -c 'while t…&quot;   29 seconds ago      Up 28 seconds       22/tcp, 4403/tcp, 8000/tcp, 8080/tcp, 9876/tcp   silly_pike
-
-
-docker logs silly_pike
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;正在執行中的-container-可以用-attach-對它操作&quot;&gt;正在執行中的 container 可以用 attach 對它操作&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker attach hardcore_dubinsky
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;建議不要用-attach-指令改用-exec&quot;&gt;建議不要用 attach 指令改用 exec&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker exec -it hardcore_dubinsky /bin/bash
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;remove-container&quot;&gt;remove container&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker rm 5c2ec714ace8
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;docker-export&quot;&gt;docker export&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;docker export hardcore_dubinsky &amp;gt;&lt;/span&gt; test.tar
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;docker-import&quot;&gt;docker import&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;docker import test.tar test/myubuntu
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;docker-data-掛載&quot;&gt;Docker data 掛載&lt;/h4&gt;
-&lt;p&gt;可以參考 &lt;a href=&quot;https://docs.docker.com/storage/volumes/&quot;&gt;docker-volumes&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;掛載一個本機的目錄volumestranscendtest-到-container-的目錄opttest-作為-data-volumes&quot;&gt;掛載一個本機的目錄(/Volumes/Transcend/test) 到 container 的目錄(/opt/test) 作為 data volumes&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; /Volumes/Transcend/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; volumetest &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /Volumes/Transcend/test:/opt/test codenvy/ubuntu_jdk8
-&lt;span class=&quot;go&quot;&gt;676f3a0adc10ba4791ee83ece5ec2d3f93a2e3e56e4fe4dd34a3e51f1fedae42
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; /Volumes/Transcend/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker ps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;volumetest
-&lt;span class=&quot;gp&quot;&gt;676f3a0adc10        codenvy/ubuntu_jdk8        &quot;/bin/sh -c 'sudo /u…&quot;   33 seconds ago      Up 35 seconds             0.0.0.0:32782-&amp;gt;&lt;/span&gt;22/tcp, 0.0.0.0:32781-&amp;gt;4403/tcp, 0.0.0.0:32780-&amp;gt;8000/tcp, 0.0.0.0:32779-&amp;gt;8080/tcp, 0.0.0.0:32778-&amp;gt;9876/tcp   volumetest
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;進入-container-看-opttest-是否與本機的-volumestranscendtest-一樣&quot;&gt;進入 container 看 /opt/test/ 是否與本機的 /Volumes/Transcend/test 一樣&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; /Volumes/Transcend/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; volumetest /bin/bash
-&lt;span class=&quot;gp&quot;&gt;user@676f3a0adc10:/projects$&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /opt/test/
-&lt;span class=&quot;go&quot;&gt;20180130  data
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;利用-volumes-from-掛載到-data-volume-containers&quot;&gt;利用 –volumes-from 掛載到 data volume containers&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;daniel@Danielde-MacBook-Pro &amp;gt;&lt;/span&gt; /Volumes/Transcend/test &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; docker run &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--volumes-from&lt;/span&gt; volumetest &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; db1 codenvy/ubuntu_jdk8
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">下載 images docker pull codenvy/ubuntu_jdk8</summary></entry><entry><title type="html">kafka day 7 (kafka connector demo)</title><link href="http://localhost:4000/kafka/2018/07/11/kafka_day7.html" rel="alternate" type="text/html" title="kafka day 7 (kafka connector demo)" /><published>2018-07-11T08:44:17+08:00</published><updated>2018-07-11T08:44:17+08:00</updated><id>http://localhost:4000/kafka/2018/07/11/kafka_day7</id><content type="html" xml:base="http://localhost:4000/kafka/2018/07/11/kafka_day7.html">&lt;h3 id=&quot;connectors-and-tasks&quot;&gt;Connectors and Tasks&lt;/h3&gt;
-&lt;p&gt;Connectors 有分兩個層面 SourceConnectors 與 SinkConnectors :&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;SourceConnectors :
-which import data from another system&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;SinkConnectors :
-which export data to another system&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;例如: 
-DB -&amp;gt; JDBCSourceConnector -&amp;gt; kafkaf -&amp;gt; HDFSSinkConnector -&amp;gt; HDFS&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Connectors 主要是負責將一個 job 分成多個 Task 分散在 Kafka Connect workers&lt;/p&gt;
-
-&lt;p&gt;Tasks 也分兩種 SourceTask 與 SinkTask．&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;實作 Connector 時 : 
-1.can monitor the data changes of external systems
-2.request task reconfiguration&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;當有一份資料時，Task 需要從 kafka copy．connector copy 該 data 時必須成為一個 partitioned stream．
-而每個 partition stream 都會有一個 offset 來代表．&lt;/p&gt;
-
-&lt;p&gt;有時候這種對應很清楚，例如資料來源如果是很多 log file，每個 log file 可以被切為一個 patition．
-而 file 裡的每一行資料可以當成一筆 record 行數就是 offsets．&lt;/p&gt;
-
-&lt;p&gt;另一個例子 JDBC connector 可以把一個 table 當作一個 partition．
-但這時候要定義 offset 就比較難，可以用一個 timestamp 的欄位當作 offset 判斷是否產生新的資料．&lt;/p&gt;
-
-&lt;h3 id=&quot;partitions-and-records&quot;&gt;Partitions and Records&lt;/h3&gt;
-&lt;p&gt;partition 是一個有順序的 sequence 存放 key-value 的 records．
-而 key 和 value 可以是複雜的結構(by org.apache.kafka.connect.data)．
-許多 primitive types 或 arrays, structs, nested data structures 都有 supported．&lt;/p&gt;
-
-&lt;p&gt;為了能夠解析每筆 records，Schemas 也許會包含了每筆 record．(SchemaBuilder class)&lt;/p&gt;
-
-&lt;p&gt;runtime 時的 data format 不需要特別的 serialization format．
-會有一個 Converter 介於 org.apache.kafka.connect.data runtime format 和 serialized data 成 byte[]．&lt;/p&gt;
-
-&lt;p&gt;除了 key 和 value 之外，record 還會有 partition IDs 和 offsets. 
-partition IDs 和 offsets 會由 framework 定期的 commit offsets 當資料已經被處理．
-所以當有錯誤發生時可以回復到最後 commit 的 offset 避免資料重複被處理．&lt;/p&gt;
-
-&lt;h3 id=&quot;connector-standalone-demo&quot;&gt;connector standalone demo&lt;/h3&gt;
-&lt;p&gt;這邊是用 CDH 的 KAFKA 做 demo :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;cd /opt/cloudera/parcels/KAFKA/lib/kafka
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;會看到下列目錄結構&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 kafka]#&lt;/span&gt; ll
-&lt;span class=&quot;go&quot;&gt;total 64
--rwxr-xr-x 1 root root 28824 Oct  6  2017 LICENSE
--rwxr-xr-x 1 root root   336 Oct  6  2017 NOTICE
-drwxr-xr-x 2 root root  4096 Jul 11 15:54 bin
-drwxr-xr-x 2 root root  4096 Oct  6  2017 cloudera
-&lt;/span&gt;&lt;span class=&quot;gp&quot;&gt;lrwxrwxrwx 1 root root    15 Oct  6  2017 config -&amp;gt;&lt;/span&gt; /etc/kafka/conf
-&lt;span class=&quot;go&quot;&gt;drwxr-xr-x 2 root root 12288 Oct  6  2017 libs
-drwxr-xr-x 2 root root  4096 Jul 11 15:21 logs
-drwxr-xr-x 2 root root  4096 Oct  6  2017 site-docs
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;connect 啟動的 shell 在 bin 資料夾底下&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 kafka]#&lt;/span&gt; ll bin | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;connect
-&lt;span class=&quot;go&quot;&gt;-rwxr-xr-x 1 root root 1335 Oct  6  2017 connect-distributed.sh
--rwxr-xr-x 1 root root 1332 Oct  6  2017 connect-standalone.sh
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;接著在 config 底下增加下列 4 個檔案&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 kafka]#&lt;/span&gt; ll config/ | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;connect
-&lt;span class=&quot;go&quot;&gt;-rw-r--r-- 1 root root 300 Jul 11 15:34 connect-log4j.properties
--rw-r--r-- 1 root root 132 Jul 11 16:54 connect-sink.properties
--rw-r--r-- 1 root root 130 Jul 11 16:41 connect-source.properties
--rw-r--r-- 1 root root 540 Jul 11 15:59 connect-standalone.properties
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;可參考 kafka 提供的 config sample :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 /]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /opt/cloudera/parcels/KAFKA-3.0.0-1.3.0.0.p0.40/etc/kafka/conf.dist
-&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 conf.dist]#&lt;/span&gt; ll
-&lt;span class=&quot;go&quot;&gt;total 52
--rw-r--r-- 1 root root  906 Oct  6  2017 connect-console-sink.properties
--rw-r--r-- 1 root root  909 Oct  6  2017 connect-console-source.properties
--rw-r--r-- 1 root root 5807 Oct  6  2017 connect-distributed.properties
--rw-r--r-- 1 root root  883 Oct  6  2017 connect-file-sink.properties
--rw-r--r-- 1 root root  881 Oct  6  2017 connect-file-source.properties
--rw-r--r-- 1 root root 1111 Oct  6  2017 connect-log4j.properties
--rw-r--r-- 1 root root 2730 Oct  6  2017 connect-standalone.properties
--rw-r--r-- 1 root root 4696 Oct  6  2017 log4j.properties
--rw-r--r-- 1 root root 6954 Oct  6  2017 server.properties
--rw-r--r-- 1 root root 1032 Oct  6  2017 tools-log4j.properties
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;connect-log4j.properties :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;root.logger=INFO,console
-log4j.appender.console=org.apache.log4j.ConsoleAppender
-log4j.appender.console.target=System.err
-log4j.appender.console.layout=org.apache.log4j.PatternLayout
-log4j.appender.console.layout.ConversionPattern=%d{yy/MM/dd HH:mm:ss} %p %c{2}: %m%n
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;connect-standalone.properties :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;bootstrap.servers=daniel-3-test-master1:9092
-key.converter=org.apache.kafka.connect.json.JsonConverter
-value.converter=org.apache.kafka.connect.json.JsonConverter
-key.converter.schemas.enable=true
-value.converter.schemas.enable=true
-internal.key.converter=org.apache.kafka.connect.json.JsonConverter
-internal.value.converter=org.apache.kafka.connect.json.JsonConverter
-internal.key.converter.schemas.enable=false
-internal.value.converter.schemas.enable=false
-offset.storage.file.filename=/tmp/connect.offsets
-offset.flush.interval.ms=10000
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;connect-source.properties :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;name=local-file-source
-connector.class=FileStreamSourceConnector
-tasks.max=1
-file=/tmp/connectorfile/test.txt
-topic=connect-test
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;connect-sink.properties&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;name=local-file-sink
-connector.class=FileStreamSinkConnector
-tasks.max=1
-file=/tmp/connectorfile/test.sink.txt
-topics=connect-test
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;接著啟動 connect-standalone.sh&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;./bin/connect-standalone.sh config/connect-standalone.properties config/connect-source.properties config/connect-sink.properties
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;啟動後可以用下列指令看 connect-test topic 是否被建立起來&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;./bin/kafka-topics.sh --list --zookeeper localhost:2181
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然後在啟動一個 kafka-console-consumer.sh 來取得 connect-test 的每筆 record&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;./bin/kafka-console-consumer.sh --zookeeper localhost:2181 -topic connect-test --from-beginning
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;再到 /tmp/connectorfile 底下&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;cd /tmp/connectorfile
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;新增資料到 test.txt&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;echo &quot;aaa&quot; &amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;echo &quot;bbb&quot; &amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;echo &quot;ccc&quot; &amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;kafka-console-consumer.sh 會看到下列訊息&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;18/07/11 17:22:39 INFO consumer.ConsumerFetcherThread: [ConsumerFetcherThread-console-consumer-9532_daniel-3-test-master1-1531300958401-ae423226-0-34]: Starting
-18/07/11 17:22:39 INFO consumer.ConsumerFetcherManager: [ConsumerFetcherManager-1531300958446] Added fetcher for partitions ArrayBuffer([connect-test-2, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-1, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] , [connect-test-0, initOffset -1 to broker BrokerEndPoint(34,daniel-3-test-master1.is-land.taipei,9092)] )
-
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;aaa&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;bbb&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;ccc&quot;}
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;而 test.sink.txt 會新增下列資料&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;test.sink.txt
-&lt;span class=&quot;go&quot;&gt;aaa
-bbb
-ccc
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;如果將 ccc 改成 ccc_update&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;test.txt
-&lt;span class=&quot;go&quot;&gt;aaa
-bbb
-ccc_update
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;topic 會在新加一筆資料 update&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;aaa&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;bbb&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;ccc&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;update&quot;}
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;而 test.sink.txt 的內容就會是&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;test.sink.txt
-&lt;span class=&quot;go&quot;&gt;aaa
-bbb
-ccc
-update
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;接著把 test.txt 裡的 ccc_update 刪掉&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;test.txt
-&lt;span class=&quot;go&quot;&gt;aaa
-bbb
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;connector 並不會有動作&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;test.sink.txt
-&lt;span class=&quot;go&quot;&gt;aaa
-bbb
-ccc
-update
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;接著再繼續新增資料&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;echo &quot;ddd&quot; &amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;echo &quot;eee&quot; &amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;echo &quot;fff&quot; &amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;echo &quot;ggg&quot; &amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;這時候資料順序就會亂掉了&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;test.sink.txt
-&lt;span class=&quot;go&quot;&gt;aaa
-bbb
-ccc
-update
-
-ggg
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;而 topic 的內容會是 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;aaa&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;bbb&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;ccc&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;update&quot;}{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;ggg&quot;}
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;之前的動作是新增 a,b,c,c_update,d,e,f,g，接著把 topic 清掉 檔案也都清空，但不刪 /tmp/connect.offsets 這檔案．
-然後這次新增 h,i,j,k,l,m,n,o,p．&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;hhh&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;iii&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;jjj&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;kkk&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lll&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;mmm&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;nnn&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;ooo&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; test.txt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;然後發現新增到 n 開始就會開始寫入．所以可以加設之前的 offset 是記錄到 a,b,c,d,e,f,g 第 7 個．&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;[root@daniel-3-test-master1 connectorfile]#&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;test.sink.txt
-&lt;span class=&quot;go&quot;&gt;nnn
-ooo
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;而 topic 的內容會是 :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;nnn&quot;}
-{&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;optional&quot;:false},&quot;payload&quot;:&quot;ooo&quot;}
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;所以結論是 connector 的 offsets 會存在根據 connect-standalone.properties 裡的 offset.storage.file.filename 存放，所以想整個重新測試時，該檔案記得要刪掉．
-否則 topic 還是會記得之前的 offset．這時候檔案重新新增一行由於之前的 offset 已經存在所以不會有動作，除非有增加到超過舊的 offset 比如說之前新增過 3 筆，
-這時候重新測試新增前3筆都不會有動作，要到第 4 筆才會．但這些只是目前實驗的結果，實際還是要深入看 source code 才會知道．
-    &lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;rm -f /tmp/connect.offsets
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;kafka-rest-api&quot;&gt;KAFKA REST API&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;http://192.168.61.105:8083/connectors
-&lt;img src=&quot;http://localhost:4000/assets/kafka/day7/kafka_day7_1.jpg&quot; alt=&quot;kafka_day7_1.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/kafka/day7/kafka_day7_2.jpg&quot; alt=&quot;kafka_day7_2.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/kafka/day7/kafka_day7_3.jpg&quot; alt=&quot;kafka_day7_3.jpg&quot; /&gt;
-&lt;img src=&quot;http://localhost:4000/assets/kafka/day7/kafka_day7_4.jpg&quot; alt=&quot;kafka_day7_4.jpg&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;connector-distributed-demo&quot;&gt;connector distributed demo&lt;/h3&gt;
-&lt;p&gt;建立 topic :&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;./bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic connect-configs --replication-factor 1 --partitions 1 --config cleanup.policy=compact
-
-./bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic connect-offsets --replication-factor 1 --partitions 1 --config cleanup.policy=compact
-
-./bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic connect-status --replication-factor 1 --partitions 1 --config cleanup.policy=compact
-
-./bin/kafka-topics.sh --list --zookeeper localhost:2181
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;修改 connect-distributed.properties :&lt;br /&gt;
-bootstrap.servers=daniel-3-test-master1:9092&lt;/p&gt;
-
-&lt;p&gt;啟動 connect-distributed&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;./bin/connect-distributed.sh ./config/connect-distributed.properties
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;config/connect-distributed.properties 內容&lt;/p&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;bootstrap.servers=daniel-3-test-master1:9092
-group.id=connect-cluster
-key.converter=org.apache.kafka.connect.json.JsonConverter
-value.converter=org.apache.kafka.connect.json.JsonConverter
-key.converter.schemas.enable=true
-value.converter.schemas.enable=true
-internal.key.converter=org.apache.kafka.connect.json.JsonConverter
-internal.value.converter=org.apache.kafka.connect.json.JsonConverter
-internal.key.converter.schemas.enable=false
-internal.value.converter.schemas.enable=false
-offset.storage.topic=connect-offsets
-offset.storage.replication.factor=1
-config.storage.topic=connect-configs
-config.storage.replication.factor=1
-status.storage.topic=connect-status
-status.storage.replication.factor=1
-offset.flush.interval.ms=10000
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;使用-rest-api-建立-connector&quot;&gt;使用 rest api 建立 connector&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;建立 source connector&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;curl -X POST -H &quot;Content-Type: application/json&quot; --data '{&quot;name&quot;: &quot;distributed-local-file-source&quot;, &quot;config&quot;: {&quot;connector.class&quot;:&quot;FileStreamSourceConnector&quot;, &quot;tasks.max&quot;:&quot;3&quot;, &quot;file&quot;:&quot;/tmp/connectorfile/test.txt&quot;, &quot;topic&quot;:&quot;connect-test&quot; }}' http://localhost:8083/connectors
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;建立 sink connector&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;curl -X POST -H &quot;Content-Type: application/json&quot; --data '{&quot;name&quot;: &quot;distributed-local-file-sink&quot;, &quot;config&quot;: {&quot;connector.class&quot;:&quot;FileStreamSinkConnector&quot;, &quot;tasks.max&quot;:&quot;3&quot;, &quot;file&quot;:&quot;/tmp/connectorfile/test.sink.txt&quot;, &quot;topics&quot;:&quot;connect-test&quot; }}' http://localhost:8083/connectors
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;delete connector&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;curl -X DELETE localhost:8083/connectors/distributed-local-file-source
-curl -X DELETE localhost:8083/connectors/distributed-local-file-sink
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;一些指令&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;./bin/kafka-topics.sh --list --zookeeper localhost:2181
-./bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic connect-test
-./bin/kafka-console-consumer.sh --zookeeper localhost:2181 -topic connect-test --from-beginning
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考資料&lt;br /&gt;
-&lt;a href=&quot;https://docs.confluent.io/current/connect/devguide.html&quot;&gt;connect devguide&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://docs.confluent.io/current/connect/managing.html&quot;&gt;connect managing&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://github.com/apache/kafka&quot;&gt;kafka github&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://github.com/confluentinc/kafka-connect-jdbc&quot;&gt;kafka-connect-jdbc&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">Connectors and Tasks Connectors 有分兩個層面 SourceConnectors 與 SinkConnectors : SourceConnectors : which import data from another system</summary></entry><entry><title type="html">Scala day 36 (spark-sql-jdbc)</title><link href="http://localhost:4000/scala/2018/07/03/scala_day36.html" rel="alternate" type="text/html" title="Scala day 36 (spark-sql-jdbc)" /><published>2018-07-03T11:44:17+08:00</published><updated>2018-07-03T11:44:17+08:00</updated><id>http://localhost:4000/scala/2018/07/03/scala_day36</id><content type="html" xml:base="http://localhost:4000/scala/2018/07/03/scala_day36.html">&lt;h4 id=&quot;使用-spark-sql-對-mysql-操作&quot;&gt;使用 spark-sql 對 mysql 操作&lt;/h4&gt;
-&lt;h4 id=&quot;buildsbt&quot;&gt;build.sbt&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;name := &quot;streaming-test&quot;
-version := &quot;0.1&quot;
-scalaVersion := &quot;2.11.0&quot;
-
-dependencyOverrides += &quot;com.fasterxml.jackson.core&quot; % &quot;jackson-core&quot; % &quot;2.8.7&quot;
-dependencyOverrides += &quot;com.fasterxml.jackson.core&quot; % &quot;jackson-databind&quot; % &quot;2.8.7&quot;
-dependencyOverrides += &quot;com.fasterxml.jackson.module&quot; % &quot;jackson-module-scala_2.11&quot; % &quot;2.8.7&quot;
-
-libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-streaming&quot; % &quot;2.2.0&quot;
-libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.2.0&quot;
-libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-sql&quot; % &quot;2.2.0&quot;
-libraryDependencies += &quot;com.springml&quot; % &quot;spark-sftp_2.11&quot; % &quot;1.1.1&quot;
-libraryDependencies += &quot;org.scalatest&quot; %% &quot;scalatest&quot; % &quot;3.0.5&quot; % &quot;test&quot;
-libraryDependencies += &quot;mysql&quot; % &quot;mysql-connector-java&quot; % &quot;8.0.11&quot;
-libraryDependencies += &quot;com.crealytics&quot; %% &quot;spark-excel&quot; % &quot;0.9.8&quot;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;mysqlconnecttestscala&quot;&gt;MySqlConnectTest.scala&lt;/h4&gt;
-
-&lt;div class=&quot;language-scala highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.scalatest.FunSuite&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.sql.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Connection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DriverManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Properties&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark.sql.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkSession&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.apache.spark.sql.types.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StructType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MySqlConnectTest&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;FunSuite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;TestConnection&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;jdbc:mysql://192.168.61.107:3306/testdb&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;driver&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;com.mysql.jdbc.Driver&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;daniel&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;MyNewPass1!&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Connection&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;driver&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DriverManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getConnection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;statement&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createStatement&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;statement&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executeQuery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;SELECT id, name, tel FROM customers&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;tel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;id = %s, name = %s, tel = %s&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;printStackTrace&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;spark-shell-query&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;csvPath&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkSession&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;appName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Spark-shell-jdbc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;local[2]&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getOrCreate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jdbcDF&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;jdbc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;url&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;jdbc:mysql://192.168.61.107:3306/testdb&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;dbtable&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;customers&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;MyNewPass1!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;jdbcDF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;spark-shell-insert&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;csvPath&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/Volumes/Transcend/1-program-workspace/2-intellij-workspace/streaming-test/csvfile&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkSession&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;appName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Spark-shell-jdbc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;local[2]&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getOrCreate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;personRDD&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sparkContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parallelize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;1 tom 111&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;3 jerry 222&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;4 kitty 333&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;schema&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StructType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-      &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt;
-        &lt;span class=&quot;nc&quot;&gt;StructField&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;tel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;StringType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rowRDD&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;personRDD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;trim&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;trim&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;trim&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;personDataFrame&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqlContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createDataFrame&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rowRDD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;schema&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prop&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Properties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;prop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;prop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;MyNewPass1!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;personDataFrame&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;append&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jdbc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;jdbc:mysql://192.168.61.107:3306/testdb&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;customers&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;test-udf&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkSession&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;appName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Spark-shell-jdbc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;master&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;local[2]&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getOrCreate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqlContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;udf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;register&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;strLen&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jdbcDF&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;jdbc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;url&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;jdbc:mysql://192.168.61.107:3306/testdb&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;dbtable&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;customers&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;user&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;daniel&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;option&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;MyNewPass1!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;jdbcDF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createOrReplaceTempView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;people&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqlDF&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;spark&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;SELECT id , strLen(name) nameLen FROM people where id='3'&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;sqlDF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">使用 spark-sql 對 mysql 操作 build.sbt ``` name := “streaming-test” version := “0.1” scalaVersion := “2.11.0”</summary></entry></feed>
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">clickhouse 是 column-oriented DBMS 所以效能會比 row-oriented DBMS 還來得快，因為當要 aggregate 時可以不用像 row-oriented full scan．</summary></entry></feed>
