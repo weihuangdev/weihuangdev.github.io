@@ -58,6 +58,14 @@ rdd.foreach(raw => {
 })
 ```
 
+#### query cassandra with where
+```
+spark.sparkContext.cassandraTable("castest","prod").select("count").where("count > ? " , 50).foreach(raw => {
+	val prodCount = raw.get[Int]("count")
+	println(prodCount)
+})
+```
+
 #### insert cassandra 
 ```
 val listElements = spark.sparkContext.parallelize(
