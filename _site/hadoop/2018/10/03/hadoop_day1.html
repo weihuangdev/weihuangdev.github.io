@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>hadoop day 1 (HDFS、YARN-HA)</title>
-  <meta name="description" content="目的 透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制． 整合步驟 : 1.install &amp;amp; config Zookeeper 2.Hadoop with Zookeeper 3.HDFS No...">
+  <meta name="description" content="目的 透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制． 3 台架構 5 台架構">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/hadoop/2018/10/03/hadoop_day1.html">
@@ -82,6 +82,13 @@
   <div class="post-content e-content" itemprop="articleBody">
     <h3 id="目的">目的</h3>
 <p>透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制．</p>
+<ul>
+  <li>3 台架構<br />
+<img src="http://localhost:4000/assets/hadoop/day1/hadoop_day1_1.jpg" alt="hadoop_day1_1.jpg" /></li>
+  <li>5 台架構<br />
+<img src="http://localhost:4000/assets/hadoop/day1/hadoop_day1_2.jpg" alt="hadoop_day1_2.jpg" /></li>
+</ul>
+
 <h4 id="整合步驟-">整合步驟 :</h4>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.install &amp; config Zookeeper
 2.Hadoop with Zookeeper
@@ -734,9 +741,9 @@ server.3=dmpn3:2888:3888
   <p>參考資料<br />
 <a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html">HDFS namenode HA using QJM</a><br />
 <a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithNFS.html">HDFS namenode HA using NFS</a><br />
-<a href="https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/ResourceManagerHA.html">Yarn ResourceManager HA</a></p>
+<a href="https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/ResourceManagerHA.html">Yarn ResourceManager HA</a>
+<a href="https://blog.csdn.net/Androidlushangderen/article/details/53148213">ZKFC 原理</a></p>
 </blockquote>
-
 
   </div>
 
