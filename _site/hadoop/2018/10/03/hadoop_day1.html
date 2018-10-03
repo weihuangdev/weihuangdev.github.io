@@ -150,9 +150,14 @@ server.3=dmpn3:2888:3888
 <span class="nt">&lt;/property&gt;</span>
 </code></pre></div></div>
 
+<p>Note :</p>
 <ul>
-  <li>JournalNodes 至少要啟動 3 台，奇數台(3,5,7,..)，N 台 JournalNodes 則系統能容忍至少 (N-1)/2 台機器掛掉．</li>
+  <li>JournalNodes 至少要啟動 3 台，奇數台(3,5,7,..)，N 台 JournalNodes 則系統能容忍至少 (N-1)/2 台機器掛掉．JournalNodes 的功用有點像是沒有 HA 時的 secondary namenode．</li>
   <li>在 HA 的 cluster 的環境中 standby Namenode 已經做了 namespace 狀態的 checkpoints 機制，所以不需要啟動 Secondary NameNode, CheckpointNode 或 BackupNode．</li>
+  <li>NameNode 能夠自動切換的核心是透過 ZKFC (ZKFC：DFSZKFailoverController)，ZKFC 會定期的傳送 Namenode 的狀況給 Zookeeper．
+KFC 的 HealthMonitor 是監控 Namenode，ActiveStandbyElector 是監控 Zookeeper 的 node．</li>
+  <li>當一個 Namenode 成功切換為 Active 時，Zookeeper 會建立一個 znode 來保留當前 Active Namenode 的一些資訊．當 Active Namenode 掛掉時，會把 znode 刪除並觸發下一次 Active Namenode．
+所以 ZK 可以保證最多只能有一個節點能夠成功建立 znode 成為當前的 Active Namenode．</li>
 </ul>
 
 <h3 id="hdfs-nodemanager-ha-by-zookeeper">HDFS Nodemanager HA by Zookeeper</h3>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-03T15:29:25+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hadoop day 1 (HDFS、YARN-HA)</title><link href="http://localhost:4000/hadoop/2018/10/03/hadoop_day1.html" rel="alternate" type="text/html" title="hadoop day 1 (HDFS、YARN-HA)" /><published>2018-10-03T10:44:17+08:00</published><updated>2018-10-03T10:44:17+08:00</updated><id>http://localhost:4000/hadoop/2018/10/03/hadoop_day1</id><content type="html" xml:base="http://localhost:4000/hadoop/2018/10/03/hadoop_day1.html">&lt;h3 id=&quot;目的&quot;&gt;目的&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-03T16:04:32+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hadoop day 1 (HDFS、YARN-HA)</title><link href="http://localhost:4000/hadoop/2018/10/03/hadoop_day1.html" rel="alternate" type="text/html" title="hadoop day 1 (HDFS、YARN-HA)" /><published>2018-10-03T10:44:17+08:00</published><updated>2018-10-03T10:44:17+08:00</updated><id>http://localhost:4000/hadoop/2018/10/03/hadoop_day1</id><content type="html" xml:base="http://localhost:4000/hadoop/2018/10/03/hadoop_day1.html">&lt;h3 id=&quot;目的&quot;&gt;目的&lt;/h3&gt;
 &lt;p&gt;透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制．&lt;/p&gt;
 &lt;h4 id=&quot;整合步驟-&quot;&gt;整合步驟 :&lt;/h4&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1.install &amp;amp; config Zookeeper
@@ -68,9 +68,14 @@ server.3=dmpn3:2888:3888
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;Note :&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;JournalNodes 至少要啟動 3 台，奇數台(3,5,7,..)，N 台 JournalNodes 則系統能容忍至少 (N-1)/2 台機器掛掉．&lt;/li&gt;
+  &lt;li&gt;JournalNodes 至少要啟動 3 台，奇數台(3,5,7,..)，N 台 JournalNodes 則系統能容忍至少 (N-1)/2 台機器掛掉．JournalNodes 的功用有點像是沒有 HA 時的 secondary namenode．&lt;/li&gt;
   &lt;li&gt;在 HA 的 cluster 的環境中 standby Namenode 已經做了 namespace 狀態的 checkpoints 機制，所以不需要啟動 Secondary NameNode, CheckpointNode 或 BackupNode．&lt;/li&gt;
+  &lt;li&gt;NameNode 能夠自動切換的核心是透過 ZKFC (ZKFC：DFSZKFailoverController)，ZKFC 會定期的傳送 Namenode 的狀況給 Zookeeper．
+KFC 的 HealthMonitor 是監控 Namenode，ActiveStandbyElector 是監控 Zookeeper 的 node．&lt;/li&gt;
+  &lt;li&gt;當一個 Namenode 成功切換為 Active 時，Zookeeper 會建立一個 znode 來保留當前 Active Namenode 的一些資訊．當 Active Namenode 掛掉時，會把 znode 刪除並觸發下一次 Active Namenode．
+所以 ZK 可以保證最多只能有一個節點能夠成功建立 znode 成為當前的 Active Namenode．&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;hdfs-nodemanager-ha-by-zookeeper&quot;&gt;HDFS Nodemanager HA by Zookeeper&lt;/h3&gt;
