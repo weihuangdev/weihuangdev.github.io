@@ -687,3 +687,8 @@ server.3=dmpn3:2888:3888
 ```
 
 
+> 參考資料  
+> [HDFS namenode HA using QJM](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html)  
+> [HDFS namenode HA using NFS](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithNFS.html)  
+> [Yarn ResourceManager HA](https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/ResourceManagerHA.html)
+
