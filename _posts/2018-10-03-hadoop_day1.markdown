@@ -172,7 +172,7 @@ dfs.ha.automatic-failover.enabled 設為 true 時，start-dfs.sh 或 start-all.s
    <value>true</value>
 </property>
 ```
-如果沒有自動帶起的話可以手動起
+如果沒有自動帶起的話可以手動起，只要起在 2 台 Namenode 的機器上即可
 ```
 hadoop-daemon.sh start zkfc
 ```
