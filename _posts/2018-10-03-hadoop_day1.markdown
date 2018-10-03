@@ -82,6 +82,9 @@ server.3=dmpn3:2888:3888
 </property>
 ```
 
+* JournalNodes 至少要啟動 3 台，奇數台(3,5,7,..)，N 台 JournalNodes 則系統能容忍至少 (N-1)/2 台機器掛掉．
+* 在 HA 的 cluster 的環境中 standby Namenode 已經做了 namespace 狀態的 checkpoints 機制，所以不需要啟動 Secondary NameNode, CheckpointNode 或 BackupNode．
+
 
 ### HDFS Nodemanager HA by Zookeeper
 修改 hdfs-site.xml (/opt/hadoop-2.9.0/etc/hadoop)
