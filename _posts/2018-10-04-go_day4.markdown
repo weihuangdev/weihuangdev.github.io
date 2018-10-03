@@ -1,0 +1,134 @@
+---
+layout: post
+title:  "go day 4 (variables)"
+date:   2018-10-04 10:44:17 +0800
+categories: go
+---
+
+#### 宣告變數
+使用 var 定義一個 name 型別為 string 的變數，並給予值 "Daniel"
+
+```
+package main
+
+func main() {
+	var name string = "Daniel"
+}
+```
+
+執行 go run 出現 name declared and not used
+```
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/golang/goHello/src/hello > go run hello.go
+# command-line-arguments
+./hello.go:4:6: name declared and not used
+```
+加上印出 name 到 console
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var name string = "Daniel"
+	fmt.Println(name)
+}
+```
+執行就正常了，所以變數沒用到似乎會告訴你該變數沒用到，感覺好嚴謹
+```
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/golang/goHello/src/hello > go run hello.go
+Daniel
+```
+用 Visual Studio Code 雖然沒錯誤但還會提醒說可以忽略 type string 因為會靠右邊來推斷型別
+
+![go_day4_1.jpg]({{ "/assets/go/day4/go_day4_1.jpg" | absolute_url }})
+
+這樣寫程式也可以跑
+```
+var name string
+fmt.Println(name)
+```
+用 var 宣告的變數值***可以改變***
+
+```
+var name string
+name = "Daniel"
+fmt.Println(name)
+```
+用 const 宣告的變數值***不可以改變***
+```
+const name = "Daniel"
+fmt.Println(name)
+```
+可以一次定義多個變數
+```
+var name, age, tel = "Daniel", 11, "12345"
+fmt.Println(name)
+fmt.Println(age)
+fmt.Println(tel)
+```
+也可以先一次定義好型別，再給值
+```
+var name, age, tel string
+name = "Daniel"
+age = "11"
+tel = "12345"
+fmt.Println(name)
+fmt.Println(age)
+fmt.Println(tel)
+```
+
+#### 短變數宣告
+另外在 function 裡可以用短變數宣告的方式***初始化***區域變數，變數的型別由 = 號右邊的值決定，短變數的值可以改變
+
+```
+name := "Daniel"
+name = "Allen"
+fmt.Println(name)
+```
+可以一次初始化多個短變數
+
+```
+name, age, tel := "Daniel", 11, "12345"
+fmt.Println(name)
+fmt.Println(age)
+fmt.Println(tel)
+```
+
+#### 變數大小寫
+在 go 大寫開頭的變數或方法都是可以讓外部呼叫的，而內部自己使用的則都是小寫開頭外部無法使用
+
+goHello/src/util/append/appendstr.go
+
+```
+package append
+
+var name = "inner"
+var Name = "exported"
+
+func Add(str string) string {
+	return str + name
+}
+```
+
+大寫開頭的變數可以讀得到，小寫的無法
+```
+package main
+
+import (
+	"fmt"
+	"util/append"
+)
+
+func main() {
+	fmt.Println(append.Name) // 印出 exported
+	//fmt.Println(append.name)//error
+}
+
+```
+
+
+
+
+
