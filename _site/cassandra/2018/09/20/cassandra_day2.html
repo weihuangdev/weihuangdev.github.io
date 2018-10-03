@@ -130,6 +130,13 @@ rdd.foreach(raw =&gt; {
 })
 </code></pre></div></div>
 
+<h4 id="query-cassandra-with-where">query cassandra with where</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spark.sparkContext.cassandraTable("castest","prod").select("count").where("count &gt; ? " , 50).foreach(raw =&gt; {
+	val prodCount = raw.get[Int]("count")
+	println(prodCount)
+})
+</code></pre></div></div>
+
 <h4 id="insert-cassandra">insert cassandra</h4>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val listElements = spark.sparkContext.parallelize(
   Seq(

@@ -1,0 +1,456 @@
+---
+layout: post
+title:  "hadoop day 1 (HDFS、YARN-HA)"
+date:   2018-10-03 10:44:17 +0800
+categories: hadoop
+---
+
+### 目的
+透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制．  
+#### 整合步驟 :  
+```
+1.install & config Zookeeper
+2.Hadoop with Zookeeper
+3.HDFS Nodemanager HA by Zookeeper
+4.Yarn Resourcemanager HA by Zookeeper
+5.Initializing HA state in ZooKeeper
+6.Start HA cluster
+```
+#### 原來的 active 掛後，修復步驟參考 :  
+```
+1.restart fail active machine
+```
+#### 目前遇到的問題參考 : 
+```
+1.問題排除
+```
+
+### install & config Zookeeper
+下載 zookeeper [download page](https://www.apache.org/dyn/closer.cgi/zookeeper/) 解壓縮後，到 conf 底下，將zoo_sample.cfg 複製成 zoo.cfg
+
+* 修改 zoo.cfg  
+修改 data 存放的目錄
+```
+dataDir=/opt/zookeeper-3.4.13/data  
+```
+加上 zookeeper 的 cluster
+```
+server.1=dmpn1:2888:3888
+server.2=dmpn2:2888:3888
+server.3=dmpn3:2888:3888
+```
+範例參考 : 
+```
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/opt/zookeeper-3.4.13/data
+clientPort=2181
+server.1=dmpn1:2888:3888
+server.2=dmpn2:2888:3888
+server.3=dmpn3:2888:3888
+```
+
+* 建立 myid 檔案
+在 zoo.cfg 設定的 dataDir 底下建立 myid 檔案
+```
+dataDir=/opt/zookeeper-3.4.13/data
+```
+myid 檔案內容就根據 zoo.cfg 的設定
+```
+server.1=dmpn1:2888:3888
+server.2=dmpn2:2888:3888
+server.3=dmpn3:2888:3888
+```
+第一台就寫 1 , 第二台寫 2 , 第三台寫 3
+
+
+### Hadoop with Zookeeper
+修改 core-site.xml(/opt/hadoop-2.9.0/etc/hadoop)
+```xml
+<property>
+  <name>fs.defaultFS</name>
+  <value>hdfs://dmpcluster</value>
+</property>
+<property>
+  <name>dfs.journalnode.edits.dir</name>
+  <value>/opt/zookeeper-3.4.13/journaldata</value>
+</property>
+<property>
+   <name>ha.zookeeper.quorum</name>
+   <value>dmpn1:2181,dmpn2:2181,dmpn3:2181</value>
+</property>
+```
+
+
+### HDFS Nodemanager HA by Zookeeper
+修改 hdfs-site.xml (/opt/hadoop-2.9.0/etc/hadoop)
+```xml
+<property>
+  <name>dfs.nameservices</name>
+  <value>dmpcluster</value>
+</property>
+<property>
+  <name>dfs.ha.namenodes.dmpcluster</name>
+  <value>nn1,nn2</value>
+</property>
+<property>
+  <name>dfs.namenode.rpc-address.dmpcluster.nn1</name>
+  <value>dmpn1:8020</value>
+</property>
+<property>
+  <name>dfs.namenode.rpc-address.dmpcluster.nn2</name>
+  <value>dmpn2:8020</value>
+</property>
+<property>
+  <name>dfs.namenode.http-address.dmpcluster.nn1</name>
+  <value>dmpn1:50070</value>
+</property>
+<property>
+  <name>dfs.namenode.http-address.dmpcluster.nn2</name>
+  <value>dmpn2:50070</value>
+</property>
+<property>
+  <name>dfs.namenode.shared.edits.dir</name>
+  <value>qjournal://dmpn1:8485;dmpn2:8485;dmpn3:8485/dmpcluster</value>
+</property>
+<property>
+  <name>dfs.client.failover.proxy.provider.dmpcluster</name>
+  <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+</property>
+<property>
+  <name>dfs.ha.fencing.methods</name>
+  <value>sshfence</value>
+</property>
+<property>
+  <name>dfs.ha.fencing.ssh.private-key-files</name>
+  <value>/home/miuser/.ssh/id_rsa</value>
+</property>
+<property>
+   <name>dfs.ha.automatic-failover.enabled</name>
+   <value>true</value>
+</property>
+```
+
+原本 fencing 這樣設定，如果只用 kill -9 {namenodePID} 可以 HA，但機器關掉後沒辦法 HA
+```xml
+<property>
+  <name>dfs.ha.fencing.methods</name>
+  <value>sshfence</value>
+</property>
+```
+所以改成
+```xml
+<property>
+  <name>dfs.ha.fencing.methods</name>
+  <value>shell(/bin/true)</value>
+</property>
+```
+
+dfs.namenode.shared.edits.dir 這個參數是在設定 2 台 namenode 的 metadata 要能夠同步．
+active 會不斷寫入，而 standby 會一直讀取更新 metadata．而這邊的設定是使用 Quorum Journal Manager 來管理．
+```xml
+<property>
+  <name>dfs.namenode.shared.edits.dir</name>
+  <value>qjournal://dmpn1:8485;dmpn2:8485;dmpn3:8485/dmpcluster</value>
+</property>
+```
+另外一種方式是用 NFS(Network FileSystem) 的方式同步 metadata．讓 namenode 可以讀取到同一個目錄．
+```xml
+<property>
+  <name>dfs.namenode.shared.edits.dir</name>
+  <value>file:///mnt/filer1/dfs/ha-name-dir-shared</value>
+</property>
+```
+dfs.ha.automatic-failover.enabled 設為 true 時，start-dfs.sh 或 start-all.sh 時會自動帶起 zkfc daemon(DFSZKFailoverController)．
+```xml
+<property>
+   <name>dfs.ha.automatic-failover.enabled</name>
+   <value>true</value>
+</property>
+```
+如果沒有自動帶起的話可以手動起
+```
+hadoop-daemon.sh start zkfc
+```
+
+### Yarn Resourcemanager HA by Zookeeper
+修改 yarn-site.xml
+
+```xml
+<property>
+  <name>yarn.resourcemanager.ha.enabled</name>
+  <value>true</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.cluster-id</name>
+  <value>dmpcluster</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.ha.rm-ids</name>
+  <value>rm1,rm2</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.hostname.rm1</name>
+  <value>dmpn1</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.hostname.rm2</name>
+  <value>dmpn2</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.webapp.address.rm1</name>
+  <value>dmpn1:8088</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.webapp.address.rm2</name>
+  <value>dmpn2:8088</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.scheduler.address.rm1</name>
+  <value>dmpn1:8030</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.scheduler.address.rm2</name>
+  <value>dmpn2:8030</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.resource-tracker.address.rm1</name>
+  <value>dmpn1:8031</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.resource-tracker.address.rm2</name>
+  <value>dmpn2:8031</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.admin.address.rm1</name>
+  <value>dmpn1:8033</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.admin.address.rm2</name>
+  <value>dmpn2:8033</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.zk-address</name>
+  <value>dmpn1:2181,dmpn2:2181,dmpn3:2181</value>
+</property>
+```
+
+
+### Initializing HA state in ZooKeeper
+```
+hdfs zkfc -formatZK
+```
+
+### Start HA cluster
+
+1.在每台機器(dn1,dn2,dn3)啟動 zookeeper
+```
+zkServer.sh start
+```
+2.到 dn1 那台 format namenode
+```
+hdfs namenode -format
+```
+3.在 dn1 啟動 cluster
+```
+start-all.sh
+```
+4.在 dn2 的 namenode 下 bootstrapStandby
+```
+hdfs namenode -bootstrapStandby
+```
+5.再啟動 dn2 standby 的 namenode
+```
+hadoop-daemon.sh start namenode
+```
+6.啟動 dn2 的 Yarn Resourcemanager
+```
+yarn-daemon.sh start resourcemanager
+```
+
+
+
+
+
+### restart fail active machine
+將原來掛掉的 active namenode (dn1) 重新啟動修復步驟 : 
+
+1.啟動 zookeeper
+```
+./zkServer.sh start
+```
+2.啟動 DFSZKFailoverController
+```
+hadoop-daemon.sh start zkfc
+```
+3.啟動 journalnode
+```
+hadoop-daemon.sh start journalnode
+```
+4.啟動 namenode
+```
+hadoop-daemon.sh start namenode
+```
+5.啟動 datanode
+```
+hadoop-daemon.sh start datanode
+```
+6.啟動 resourcemanager
+```
+yarn-daemon.sh start resourcemanager
+```
+7.啟動 nodemanager
+```
+yarn-daemon.sh start nodemanager
+```
+8.確認 namenode active / standby 狀態
+```
+hdfs haadmin -getServiceState nn1
+hdfs haadmin -getServiceState nn2
+```
+9.確認 resourcemanager active / standby 狀態
+```
+yarn rmadmin -getServiceState rm1
+yarn rmadmin -getServiceState rm2
+```
+10.確認 cat hdfs 檔案是否正常
+```
+hdfs dfs -cat /temp/wordcount/workcount.txt
+```
+11.測試 spark-submit 的 yarn cluster mode 是否正常
+```
+spark-submit --class com.example.job.WordCount --master yarn --deploy-mode cluster wordcount.jar /temp/wordcount/workcount.txt /temp/data
+```
+
+
+
+### 問題排除
+#### [問題] HA 2 台 namenode 的資料(hdfs資料)不一致的問題，或著遇到 active 掛掉 standby 啟動時 hdfs cat 檔案時出現下列錯誤訊息
+```console
+2018-10-02 15:14:02 WARN  DFSClient:981 - Could not obtain block: BP-106148578-192.168.3.13-1538386246613:blk_1073741825_1001 file=/temp/wordcount/workcount.txt No live nodes contain current block Block locations: Dead nodes: . Throwing a BlockMissingException
+2018-10-02 15:14:02 WARN  DFSClient:907 - DFS Read
+org.apache.hadoop.hdfs.BlockMissingException: Could not obtain block: BP-106148578-192.168.3.13-1538386246613:blk_1073741825_1001 file=/temp/wordcount/workcount.txt
+  at org.apache.hadoop.hdfs.DFSInputStream.chooseDataNode(DFSInputStream.java:984)
+  at org.apache.hadoop.hdfs.DFSInputStream.blockSeekTo(DFSInputStream.java:642)
+  at org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy(DFSInputStream.java:882)
+  at org.apache.hadoop.hdfs.DFSInputStream.read(DFSInputStream.java:934)
+  at java.io.DataInputStream.read(DataInputStream.java:149)
+  at org.apache.hadoop.mapreduce.lib.input.UncompressedSplitLineReader.fillBuffer(UncompressedSplitLineReader.java:62)
+  at org.apache.hadoop.util.LineReader.readDefaultLine(LineReader.java:216
+```
+確認 2 台 namenode 的 metadata 的同步設定．  
+如果是用 JournalNode 要用 jps 檢查是否有啟動．  
+如果是用 NFS 要確認 2 台 nmaenode 是否有讀取到 mount 的同一目錄．
+* 檢查 hdfs-site.xml
+
+#### [問題] HA 切換時 datanode 好像會掛掉，或著出現類似下面錯誤訊息
+```console
+2018-09-27 19:18:29,634 WARN org.apache.hadoop.hdfs.server.common.Storage: Failed to add storage directory [DISK]file:/data/hadoop/dfs/data/
+java.io.IOException: Incompatible clusterIDs in /data/hadoop/dfs/data: namenode clusterID = CID-92ddbfd6-6a07-454b-8848-22f9f15d2621; datanode clusterID = CID-4f03e59a-ea80-42a5-8a7d-a6db94c0cc19
+        at org.apache.hadoop.hdfs.server.datanode.DataStorage.doTransition(DataStorage.java:760)
+        at org.apache.hadoop.hdfs.server.datanode.DataStorage.loadStorageDirectory(DataStorage.java:293)
+```
+或著
+```console
+2018-09-27 19:18:17,387 WARN org.apache.hadoop.hdfs.server.namenode.FSNamesystem: Encountered exception loading fsimage
+java.io.FileNotFoundException: /data/hadoop/dfs/name/current/VERSION (Permission denied)
+        at java.io.RandomAccessFile.open0(Native Method)
+        at java.io.RandomAccessFile.open(RandomAccessFile.java:316)
+        at java.io.RandomAccessFile.<init>(RandomAccessFile.java:243)
+        at org.apache.hadoop.hdfs.server.common.StorageInfo.readPropertiesFile(StorageInfo.java:244)
+        at org.apache.hadoop.hdfs.server.namenode.NNStorage.readProperties(NNStorage.java:650)
+        at org.apache.hadoop.hdfs.server.namenode.FSImage.recoverStorageDirs(FSImage.java:381)
+        at org.apache.hadoop.hdfs.server.namenode.FSImage.recoverTransitionRead(FSImage.java:220)
+        at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.loadFSImage(FSNamesystem.java:1048)
+```
+
+HA 機制沒同步好，standby 的 namenode 可能沒有下 bootstrapStandby 下成 namenode -format．導致 namnode 與 datanode 的 version 沒有對到．  
+1.先把服務都關掉，然後清空每台的暫存資料 :
+```
+sudo rm -fr /data/hadoop/dfs/name/current
+sudo rm -fr /data/hadoop/dfs/data/current
+rm -fr /tmp/hadoop*
+```
+2.format active 的 namenode :
+```
+hdfs namenode -format
+```
+3.在 active 的機器上把服務起起來
+```
+start-all.sh
+```
+4.在 standby 下 bootstrapStandby 
+```
+hdfs namenode -bootstrapStandby
+```
+5.再啟動 standby 的 namenode
+```
+./hadoop-daemon.sh start namenode
+```
+
+#### 指令速查
+* 查看所有 node 的狀態
+```
+hdfs dfsadmin -report
+```
+* 查看 zookeeper 的 leader 或 follower
+```
+zkServer.sh status
+```
+* 查看正在 listen 的 port
+```
+lsof -i -P -n | grep LISTEN
+sudo netstat -plten | grep LISTEN -> 要 root
+```
+* 啟動、關閉、查看防火牆狀態(centos 7)
+```
+systemctl status firewalld
+systemctl start firewalld
+systemctl stop firewalld
+```
+* 查看目前防火墻設定的 port
+```
+sudo firewall-cmd --zone=public --list-ports
+```
+* 加上防火牆的 port，並 reload
+```
+sudo firewall-cmd --zone=public --permanent --add-port=8088/tcp
+firewall-cmd --reload
+```
+* gen rsa key 及複製到各機器(ssh 免密碼登入)
+```
+su - muser
+ssh-keygen -t rsa
+ssh-copy-id -i ~/.ssh/id_rsa.pub muser@dn1
+ssh-copy-id -i ~/.ssh/id_rsa.pub muser@dn2
+ssh-copy-id -i ~/.ssh/id_rsa.pub muser@dn3
+```
+* hdfs HA 相關指令
+```
+hdfs haadmin -failover nn1 nn2
+hdfs haadmin -transitionToActive --forcemanual nn1
+hdfs haadmin -getServiceState nn1
+hdfs haadmin -transitionToActive --forcemanual --forceactive nn1
+hdfs haadmin -transitionToStandby --forcemanual nn2
+```
+* yarn HA 相關指令 
+```
+yarn rmadmin -getServiceState rm1
+yarn rmadmin -getServiceState rm2
+```
+* yarn service 相關指令 
+```
+yarn-daemon.sh start resourcemanager
+yarn-daemons.sh start nodemanager
+yarn resourcemanager -format-state-store
+```
+* HDFS service 相關指令
+```
+hadoop-daemon.sh start namenode
+hadoop-daemon.sh start datanode
+hadoop-daemon.sh start journalnode
+hadoop-daemon.sh start zkfc
+```
+
+

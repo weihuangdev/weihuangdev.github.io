@@ -111,6 +111,16 @@ docker run --name some-cassandra -d -e CASSANDRA_BROADCAST_ADDRESS=10.43.43.43 -
   </li>
 </ol>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@d0447e24625d:/# nodetool status
+Datacenter: datacenter1
+=======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address     Load       Tokens       Owns (effective)  Host ID                               Rack
+UN  172.17.0.3  75.19 KiB  256          52.1%             c4cd5109-83ff-4adc-81d1-7d05b7dd2bfb  rack1
+UN  172.17.0.2  80.16 KiB  256          47.9%             0dc02012-3b01-4bd2-bcf4-65855f630e9a  rack1
+</code></pre></div></div>
+
 <h4 id="連線-cassandra">連線 cassandra</h4>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker run -it --link test-cassandra-1:cassandra --rm cassandra sh -c 'exec cqlsh "$CASSANDRA_PORT_9042_TCP_ADDR"'
 Connected to Test Cluster at 172.17.0.2:9042.
@@ -172,7 +182,9 @@ prod
 
 <blockquote>
   <p>參考資料<br />
-<a href="https://docs.docker.com/samples/library/cassandra/">docker-cassandra</a></p>
+<a href="https://docs.docker.com/samples/library/cassandra/">docker-cassandra</a><br />
+<a href="https://opencredo.com/deploy-spark-apache-cassandra/">Deploy Spark with Cassandra cluster</a>
+<a href="http://abiasforaction.net/apache-cassandra-cluster-docker/">configur cassandra cluster with docker</a></p>
 </blockquote>
 
 

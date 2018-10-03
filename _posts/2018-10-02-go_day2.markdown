@@ -1,0 +1,166 @@
+---
+layout: post
+title:  "go day 2 (package)"
+date:   2018-10-02 10:44:17 +0800
+categories: go
+---
+
+#### 先移除 day 1 warning
+在 day 1 時，下指令 都會看到一串 warning 如下，來想辦法把它移除
+```
+warning: GOPATH set to GOROOT (/usr/local/go) has no effect
+```
+
+查看 go 的環境變數，使用 go env
+```
+daniel@Danielde-MacBook-Pro > /usr/local/go > go env
+GOARCH="amd64"
+GOBIN=""
+GOCACHE="/Users/daniel/Library/Caches/go-build"
+GOEXE=""
+GOFLAGS=""
+GOHOSTARCH="amd64"
+GOHOSTOS="darwin"
+GOOS="darwin"
+GOPATH="/Users/daniel/go"
+GOPROXY=""
+GORACE=""
+GOROOT="/usr/local/go"
+GOTMPDIR=""
+GOTOOLDIR="/usr/local/go/pkg/tool/darwin_amd64"
+GCCGO="gccgo"
+CC="clang"
+CXX="clang++"
+CGO_ENABLED="1"
+GOMOD=""
+CGO_CFLAGS="-g -O2"
+CGO_CPPFLAGS=""
+CGO_CXXFLAGS="-g -O2"
+CGO_FFLAGS="-g -O2"
+CGO_LDFLAGS="-g -O2"
+PKG_CONFIG="pkg-config"
+GOGCCFLAGS="-fPIC -m64 -pthread -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=/var/folders/8v/9r5mf0y506734gvj_j337w7w0000gn/T/go-build164081726=/tmp/go-build -gno-record-gcc-switches -fno-common"
+```
+
+可以看到 GOROOT 及 GOPATH 預設路徑
+```
+GOROOT="/usr/local/go"
+GOPATH="/Users/daniel/go"
+```
+
+接著修改 ~/.bash_profile，將 GOPATH 改成目前測試 go 的 project 路徑
+```
+export GOPATH=/Volumes/Transcend/golang/goHello
+export PATH=$JAVA_HOME/bin:$SCALA_HOME/bin:$GOPATH/bin:$PATH:~/bin
+```
+改完重新讀取一下
+```
+source ~/.bash_profile
+```
+再用 go env 查看一下，可以看到 GOPATH 位置已經改掉了
+
+```
+GOPATH="/Volumes/Transcend/golang/goHello"
+GOROOT="/usr/local/go"
+...
+
+```
+在 run 一下 day 1 寫的程式就可以發現 warning 已經移除了
+
+```
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/golang/goHello/src/hello > go run hello.go Daniel
+Hello Daniel
+```
+
+#### package main
+修改 day 1 hello.go 的 package name，改成 mymain
+```
+package mymain
+```
+結果會發現不能 run 了
+```
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/golang/goHello/src/hello > go run hello.go Daniel
+go run: cannot run non-main package
+```
+可見 package main 是定義可直接執行的 go 程式
+
+#### function main
+接著修改 hello.go 的 func main() 名稱
+```
+func mymain() {
+  var name = os.Args[1]
+  fmt.Println("Hello " + name)
+}
+```
+結果也是不行 run 
+```
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/golang/goHello/src/hello > go run hello.go Daniel
+# command-line-arguments
+runtime.main_main·f: function main is undeclared in the main package
+```
+
+所以看來 Go 的程式進入點是要定義在 package main 裡的 function main 底下．
+而且不是 package main 的 Go 程式無法使用 go build 產生出可執行檔．
+
+
+#### 替 package 名稱定義別名
+新增 2 隻程式 appendstr.go 與 appendnum.go，package name 都是 append 要跟目錄名稱一樣 main 除外，目錄結構如下 : 
+
+```
+goHello  
+ -src
+  -util
+   -append
+    appendstr.go
+  -hello
+   -append
+    appendnum.go
+   hello.go
+```
+
+appendstr.go，方法名稱第一個字要大寫
+```
+package append
+
+func Add(str string) string {
+  return str + "abcde"
+}
+```
+
+appendnum.go 
+```
+package append
+
+func Add(str string) string {
+  return str + "12345"
+}
+```
+
+接著修改 hello.go，由於兩個最後的 package name 都一樣，所以其中一個要定別名，將 "util/append" 前面定別名 newutil
+
+```
+package main
+import (
+ "fmt"
+ "os"
+ "hello/append"
+ newutil "util/append"
+)
+
+func main() {
+  var name = os.Args[1]
+  fmt.Println(newutil.Add(append.Add("Hello " + name)))
+}
+```
+
+執行成功
+```
+daniel@Danielde-MacBook-Pro > /Volumes/Transcend/golang/goHello/src/hello > go run hello.go Daniel
+Hello Daniel12345abcde
+```
+
+
+
+
+
+

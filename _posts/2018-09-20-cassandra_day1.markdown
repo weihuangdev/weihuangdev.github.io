@@ -38,6 +38,19 @@ docker run --name some-cassandra -d -e CASSANDRA_BROADCAST_ADDRESS=10.42.42.42 -
 docker run --name some-cassandra -d -e CASSANDRA_BROADCAST_ADDRESS=10.43.43.43 -p 7000:7000 -e CASSANDRA_SEEDS=10.42.42.42 cassandra:tag
 ```
 
+
+```
+root@d0447e24625d:/# nodetool status
+Datacenter: datacenter1
+=======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address     Load       Tokens       Owns (effective)  Host ID                               Rack
+UN  172.17.0.3  75.19 KiB  256          52.1%             c4cd5109-83ff-4adc-81d1-7d05b7dd2bfb  rack1
+UN  172.17.0.2  80.16 KiB  256          47.9%             0dc02012-3b01-4bd2-bcf4-65855f630e9a  rack1
+```
+
+
 #### 連線 cassandra
 ```
 > docker run -it --link test-cassandra-1:cassandra --rm cassandra sh -c 'exec cqlsh "$CASSANDRA_PORT_9042_TCP_ADDR"'
@@ -111,8 +124,8 @@ cqlsh> delete from castest.prod where prodid='3' ;
 
 > 參考資料  
 > [docker-cassandra](https://docs.docker.com/samples/library/cassandra/)  
-
-
+> [Deploy Spark with Cassandra cluster](https://opencredo.com/deploy-spark-apache-cassandra/)
+> [configur cassandra cluster with docker](http://abiasforaction.net/apache-cassandra-cluster-docker/)
 
 
 
