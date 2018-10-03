@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-03T16:33:43+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hadoop day 1 (HDFS、YARN-HA)</title><link href="http://localhost:4000/hadoop/2018/10/03/hadoop_day1.html" rel="alternate" type="text/html" title="hadoop day 1 (HDFS、YARN-HA)" /><published>2018-10-03T10:44:17+08:00</published><updated>2018-10-03T10:44:17+08:00</updated><id>http://localhost:4000/hadoop/2018/10/03/hadoop_day1</id><content type="html" xml:base="http://localhost:4000/hadoop/2018/10/03/hadoop_day1.html">&lt;h3 id=&quot;目的&quot;&gt;目的&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-03T19:20:28+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hadoop day 1 (HDFS、YARN-HA)</title><link href="http://localhost:4000/hadoop/2018/10/03/hadoop_day1.html" rel="alternate" type="text/html" title="hadoop day 1 (HDFS、YARN-HA)" /><published>2018-10-03T10:44:17+08:00</published><updated>2018-10-03T10:44:17+08:00</updated><id>http://localhost:4000/hadoop/2018/10/03/hadoop_day1</id><content type="html" xml:base="http://localhost:4000/hadoop/2018/10/03/hadoop_day1.html">&lt;h3 id=&quot;目的&quot;&gt;目的&lt;/h3&gt;
 &lt;p&gt;透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制．&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;3 台架構&lt;br /&gt;
@@ -662,7 +662,53 @@ server.3=dmpn3:2888:3888
 &lt;a href=&quot;https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/ResourceManagerHA.html&quot;&gt;Yarn ResourceManager HA&lt;/a&gt;
 &lt;a href=&quot;https://blog.csdn.net/Androidlushangderen/article/details/53148213&quot;&gt;ZKFC 原理&lt;/a&gt;
 &lt;a href=&quot;https://blog.xuite.net/zerofirst/blog/212791661-Hadoop+HA%E7%B0%A1%E5%96%AE%E8%A8%98%E4%BA%8B&quot;&gt;Hadoop HA 筆記&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">目的 透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制． 3 台架構 5 台架構</summary></entry><entry><title type="html">go day 2 (package)</title><link href="http://localhost:4000/go/2018/10/02/go_day2.html" rel="alternate" type="text/html" title="go day 2 (package)" /><published>2018-10-02T10:44:17+08:00</published><updated>2018-10-02T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/02/go_day2</id><content type="html" xml:base="http://localhost:4000/go/2018/10/02/go_day2.html">&lt;h4 id=&quot;先移除-day-1-warning&quot;&gt;先移除 day 1 warning&lt;/h4&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">目的 透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制． 3 台架構 5 台架構</summary></entry><entry><title type="html">go day 3 (use IDE)</title><link href="http://localhost:4000/go/2018/10/03/go_day3.html" rel="alternate" type="text/html" title="go day 3 (use IDE)" /><published>2018-10-03T10:44:17+08:00</published><updated>2018-10-03T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/03/go_day3</id><content type="html" xml:base="http://localhost:4000/go/2018/10/03/go_day3.html">&lt;h4 id=&quot;下載-ide&quot;&gt;下載 IDE&lt;/h4&gt;
+
+&lt;p&gt;這邊使用的是 &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;Visual Studio Code&lt;/a&gt; 來開發，先下載下來然後開啟．&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_1.jpg&quot; alt=&quot;go_day3_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;安裝-go-的-plugin&quot;&gt;安裝 Go 的 plugin&lt;/h4&gt;
+
+&lt;p&gt;接著點左邊第 5 個圖示，然後找 go 並安裝
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_2.jpg&quot; alt=&quot;go_day3_2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;open-project&quot;&gt;open Project&lt;/h4&gt;
+
+&lt;p&gt;open 要跑的 go project
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_3.jpg&quot; alt=&quot;go_day3_3.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;會有一些錯誤訊息，GOPATH 環境變數沒有對到要執行的 project
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_4.jpg&quot; alt=&quot;go_day3_4.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mac 的話可以下 command + shift + p 可以跑一些 IDE 的指令
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_5.jpg&quot; alt=&quot;go_day3_5.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;打開 settings
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_6.jpg&quot; alt=&quot;go_day3_6.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用 json 方式打開
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_7.jpg&quot; alt=&quot;go_day3_7.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可以在 USER SETTINGS 的地方，寫要覆蓋的參數值
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_8.jpg&quot; alt=&quot;go_day3_8.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;執行程式&quot;&gt;執行程式&lt;/h4&gt;
+
+&lt;p&gt;點選左邊第 4 個圖示，然後再點開 launch.json 檔案，加上 Args 所需要的參數，然後就可以點綠色箭頭執行成功
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_9.jpg&quot; alt=&quot;go_day3_9.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可以在數字前面下中斷點，然後上方會有可以下一步的鍵，方便 debug
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_10.jpg&quot; alt=&quot;go_day3_10.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ide-console&quot;&gt;IDE Console&lt;/h4&gt;
+
+&lt;p&gt;在 console 頁籤，就像開一個 terminal 一樣，所以吃的環境變數是 local 的，不是 IDE 的環境變數
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_11.jpg&quot; alt=&quot;go_day3_11.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;find-references&quot;&gt;find references&lt;/h4&gt;
+&lt;p&gt;游標移到要找的 function 名稱後按右鍵，或著按 fn + shift + F12
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_12.jpg&quot; alt=&quot;go_day3_12.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">下載 IDE</summary></entry><entry><title type="html">go day 2 (package)</title><link href="http://localhost:4000/go/2018/10/02/go_day2.html" rel="alternate" type="text/html" title="go day 2 (package)" /><published>2018-10-02T10:44:17+08:00</published><updated>2018-10-02T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/02/go_day2</id><content type="html" xml:base="http://localhost:4000/go/2018/10/02/go_day2.html">&lt;h4 id=&quot;先移除-day-1-warning&quot;&gt;先移除 day 1 warning&lt;/h4&gt;
 &lt;p&gt;在 day 1 時，下指令 都會看到一串 warning 如下，來想辦法把它移除&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;warning: GOPATH set to GOROOT (/usr/local/go) has no effect
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -1971,207 +2017,4 @@ docker-compose down
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;執行結果&quot;&gt;執行結果&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/clickhouse/day4/clickhouse_day4_1.jpg&quot; alt=&quot;clickhouse_day4_1.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">參考 clickhouse 提供的 third-party_client_libraries</summary></entry><entry><title type="html">clickhouse day 3 (Array)</title><link href="http://localhost:4000/clickhouse/2018/07/24/clickhouse_day3.html" rel="alternate" type="text/html" title="clickhouse day 3 (Array)" /><published>2018-07-24T11:44:17+08:00</published><updated>2018-07-24T11:44:17+08:00</updated><id>http://localhost:4000/clickhouse/2018/07/24/clickhouse_day3</id><content type="html" xml:base="http://localhost:4000/clickhouse/2018/07/24/clickhouse_day3.html">&lt;p&gt;介紹 clickhouse 的一些 Array Type 的使用
-&lt;a href=&quot;https://clickhouse.yandex/docs/en/query_language/functions/array_functions/&quot;&gt;array-functions&lt;/a&gt;&lt;br /&gt;
-operators 的一些操作 &lt;a href=&quot;https://clickhouse.yandex/docs/en/query_language/operators/&quot;&gt;clickhouse-operators&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;create-table-使用-file-engin-的-csv-格式&quot;&gt;create table 使用 File ENGIN 的 CSV 格式&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) CREATE TABLE t1
-:-] (
-:-]     v1 Int32,
-:-]     a1 Array(Int32),
-:-]     s2 Array(String)
-:-] ) ENGINE = File(CSV)
-
-CREATE TABLE t1
-(
-    v1 Int32,
-    a1 Array(Int32),
-    s2 Array(String)
-)
-ENGINE = File(CSV)
-
-Ok.
-
-0 rows in set. Elapsed: 0.005 sec.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;新增幾筆資料可以用-format-csv-的方式&quot;&gt;新增幾筆資料，可以用 format CSV 的方式&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) insert into t1 format CSV 1,&quot;[1,2]&quot;,&quot;['a1','a2']&quot;
-
-INSERT INTO t1 FORMAT CSV
-
-Ok.
-
-1 rows in set. Elapsed: 0.002 sec.
-
-f16aa4707e9c :) insert into t1 format CSV 2,&quot;[2,3]&quot;,&quot;['a3','a4']&quot;
-
-INSERT INTO t1 FORMAT CSV
-
-Ok.
-
-1 rows in set. Elapsed: 0.002 sec.
-
-f16aa4707e9c :) insert into t1 format CSV 3,&quot;[4,5,6]&quot;,&quot;['a5','a6','a7']&quot;
-
-INSERT INTO t1 FORMAT CSV
-
-Ok.
-
-1 rows in set. Elapsed: 0.002 sec.
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;資料結構如下&quot;&gt;資料結構如下&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) select * from t1
-
-SELECT *
-FROM t1
-
-┌─v1─┬─a1──────┬─s2───────────────┐
-│  1 │ [1,2]   │ ['a1','a2']      │
-│  2 │ [2,3]   │ ['a3','a4']      │
-│  3 │ [4,5,6] │ ['a5','a6','a7'] │
-└────┴─────────┴──────────────────┘
-
-3 rows in set. Elapsed: 0.003 sec.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;看-clickhouse-data-底下產生的-data-格式&quot;&gt;看 clickhouse data 底下產生的 data 格式&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;clickhouse@f16aa4707e9c:/var/lib/clickhouse/data/default/t1$&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;data.CSV
-&lt;span class=&quot;go&quot;&gt;1,&quot;[1,2]&quot;,&quot;['a1','a2']&quot;
-2,&quot;[2,3]&quot;,&quot;['a3','a4']&quot;
-3,&quot;[4,5,6]&quot;,&quot;['a5','a6','a7']&quot;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;測試-arrayarraystring&quot;&gt;測試 Array(Array(String))&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) CREATE TABLE t2
-:-] (
-:-]     v1 Int32,
-:-]     a1 Array(Int32),
-:-]     s2 Array(String),
-:-]     s3 Array(Array(String))
-:-] ) ENGINE = File(CSV)
-
-CREATE TABLE t2
-(
-    v1 Int32,
-    a1 Array(Int32),
-    s2 Array(String),
-    s3 Array(Array(String))
-)
-ENGINE = File(CSV)
-
-Ok.
-
-0 rows in set. Elapsed: 0.004 sec.
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;新增資料-arrayarraystring-資料格式為-a3a4a5a6a7&quot;&gt;新增資料 Array(Array(String)) 資料格式為 “[[‘a3’,’a4’],[‘a5’,’a6’,’a7’]]”&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) insert into t2 format CSV 1,&quot;[1,2]&quot;,&quot;['a1','a2']&quot;,&quot;[['a3','a4'],['a5','a6','a7']]&quot;
-
-INSERT INTO t2 FORMAT CSV
-
-Ok.
-
-1 rows in set. Elapsed: 0.002 sec.
-
-
-f16aa4707e9c :) insert into t2 format CSV 2,&quot;[3,4]&quot;,&quot;['a8','a9']&quot;,&quot;[['a10'],['a11','a12','a13','a14']]&quot;
-
-INSERT INTO t2 FORMAT CSV
-
-Ok.
-
-1 rows in set. Elapsed: 0.002 sec.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;資料結構如下-1&quot;&gt;資料結構如下&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) select * from t2
-
-SELECT *
-FROM t2
-
-┌─v1─┬─a1────┬─s2──────────┬─s3──────────────────────────────────┐
-│  1 │ [1,2] │ ['a1','a2'] │ [['a3','a4'],['a5','a6','a7']]      │
-│  2 │ [3,4] │ ['a8','a9'] │ [['a10'],['a11','a12','a13','a14']] │
-└────┴───────┴─────────────┴─────────────────────────────────────┘
-
-2 rows in set. Elapsed: 0.002 sec.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;可以使用-array-join-再展開&quot;&gt;可以使用 Array join 再展開&lt;/h4&gt;
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) select * from t2 Array join s3
-
-SELECT *
-FROM t2
-ARRAY JOIN s3
-
-┌─v1─┬─a1────┬─s2──────────┬─s3────────────────────────┐
-│  1 │ [1,2] │ ['a1','a2'] │ ['a3','a4']               │
-│  1 │ [1,2] │ ['a1','a2'] │ ['a5','a6','a7']          │
-│  2 │ [3,4] │ ['a8','a9'] │ ['a10']                   │
-│  2 │ [3,4] │ ['a8','a9'] │ ['a11','a12','a13','a14'] │
-└────┴───────┴─────────────┴───────────────────────────┘
-
-4 rows in set. Elapsed: 0.004 sec.
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;運用一些-clckhouse-提供的-array-function-找到資料例如-hastargearrayfindelement&quot;&gt;運用一些 clckhouse 提供的 array function 找到資料，例如 has(targeArray,findElement)&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) select has(s3,'a6') from t2 Array join s3
-
-SELECT has(s3, 'a6')
-FROM t2
-ARRAY JOIN s3
-
-┌─has(s3, 'a6')─┐
-│             0 │
-│             1 │
-│             0 │
-│             0 │
-└───────────────┘
-
-4 rows in set. Elapsed: 0.003 sec.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;當成-where-條件&quot;&gt;當成 where 條件&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) select * from t2 Array join s3 where has(s3,'a6') != 0
-
-SELECT *
-FROM t2
-ARRAY JOIN s3
-WHERE has(s3, 'a6') != 0
-
-┌─v1─┬─a1────┬─s2──────────┬─s3───────────────┐
-│  1 │ [1,2] │ ['a1','a2'] │ ['a5','a6','a7'] │
-└────┴───────┴─────────────┴──────────────────┘
-
-1 rows in set. Elapsed: 0.003 sec.
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;多個條件下&quot;&gt;多個條件下&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;go&quot;&gt;f16aa4707e9c :) select * from t2 Array join s3 where has(s3,'a6') != 0 or has(s3,'a12')
-
-SELECT *
-FROM t2
-ARRAY JOIN s3
-WHERE (has(s3, 'a6') != 0) OR has(s3, 'a12')
-
-┌─v1─┬─a1────┬─s2──────────┬─s3────────────────────────┐
-│  1 │ [1,2] │ ['a1','a2'] │ ['a5','a6','a7']          │
-│  2 │ [3,4] │ ['a8','a9'] │ ['a11','a12','a13','a14'] │
-└────┴───────┴─────────────┴───────────────────────────┘
-
-2 rows in set. Elapsed: 0.003 sec.
-
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;檔案實際存放結構如下&quot;&gt;檔案實際存放結構如下&lt;/h4&gt;
-
-&lt;div class=&quot;language-console highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;clickhouse@f16aa4707e9c:/var/lib/clickhouse/data/default/t2$&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;data.CSV
-&lt;span class=&quot;go&quot;&gt;1,&quot;[1,2]&quot;,&quot;['a1','a2']&quot;,&quot;[['a3','a4'],['a5','a6','a7']]&quot;
-2,&quot;[3,4]&quot;,&quot;['a8','a9']&quot;,&quot;[['a10'],['a11','a12','a13','a14']]&quot;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">介紹 clickhouse 的一些 Array Type 的使用 array-functions operators 的一些操作 clickhouse-operators</summary></entry></feed>
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/clickhouse/day4/clickhouse_day4_1.jpg&quot; alt=&quot;clickhouse_day4_1.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">參考 clickhouse 提供的 third-party_client_libraries</summary></entry></feed>

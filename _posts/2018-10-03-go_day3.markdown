@@ -1,0 +1,58 @@
+---
+layout: post
+title:  "go day 3 (use IDE)"
+date:   2018-10-03 10:44:17 +0800
+categories: go
+---
+
+#### 下載 IDE
+
+這邊使用的是 [Visual Studio Code](https://code.visualstudio.com/) 來開發，先下載下來然後開啟．
+
+![go_day3_1.jpg]({{ "/assets/go/day3/go_day3_1.jpg" | absolute_url }})
+
+#### 安裝 Go 的 plugin
+
+接著點左邊第 5 個圖示，然後找 go 並安裝
+![go_day3_2.jpg]({{ "/assets/go/day3/go_day3_2.jpg" | absolute_url }})
+
+#### open Project
+
+open 要跑的 go project
+![go_day3_3.jpg]({{ "/assets/go/day3/go_day3_3.jpg" | absolute_url }})
+
+會有一些錯誤訊息，GOPATH 環境變數沒有對到要執行的 project
+![go_day3_4.jpg]({{ "/assets/go/day3/go_day3_4.jpg" | absolute_url }})
+
+Mac 的話可以下 command + shift + p 可以跑一些 IDE 的指令
+![go_day3_5.jpg]({{ "/assets/go/day3/go_day3_5.jpg" | absolute_url }})
+
+打開 settings
+![go_day3_6.jpg]({{ "/assets/go/day3/go_day3_6.jpg" | absolute_url }})
+
+使用 json 方式打開
+![go_day3_7.jpg]({{ "/assets/go/day3/go_day3_7.jpg" | absolute_url }})
+
+可以在 USER SETTINGS 的地方，寫要覆蓋的參數值
+![go_day3_8.jpg]({{ "/assets/go/day3/go_day3_8.jpg" | absolute_url }})
+
+#### 執行程式
+
+點選左邊第 4 個圖示，然後再點開 launch.json 檔案，加上 Args 所需要的參數，然後就可以點綠色箭頭執行成功
+![go_day3_9.jpg]({{ "/assets/go/day3/go_day3_9.jpg" | absolute_url }})
+
+可以在數字前面下中斷點，然後上方會有可以下一步的鍵，方便 debug
+![go_day3_10.jpg]({{ "/assets/go/day3/go_day3_10.jpg" | absolute_url }})
+
+#### IDE Console
+
+在 console 頁籤，就像開一個 terminal 一樣，所以吃的環境變數是 local 的，不是 IDE 的環境變數
+![go_day3_11.jpg]({{ "/assets/go/day3/go_day3_11.jpg" | absolute_url }})
+
+#### find references
+游標移到要找的 function 名稱後按右鍵，或著按 fn + shift + F12
+![go_day3_12.jpg]({{ "/assets/go/day3/go_day3_12.jpg" | absolute_url }})
+
+
+
+
