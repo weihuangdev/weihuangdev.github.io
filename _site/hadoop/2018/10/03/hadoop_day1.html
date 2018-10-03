@@ -483,6 +483,243 @@ hadoop-daemon.sh start zkfc
   </li>
 </ul>
 
+<h4 id="實際設定值參考">實際設定值參考</h4>
+<ul>
+  <li>core-site.xml</li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="cp">&lt;?xml-stylesheet type="text/xsl" href="configuration.xsl"?&gt;</span>
+<span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>fs.defaultFS<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>hdfs://dmpcluster<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>dfs.journalnode.edits.dir<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>/opt/zookeeper-3.4.13/journaldata<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>ha.zookeeper.quorum<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>dmpn1:2181,dmpn2:2181,dmpn3:2181<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>dfs.permissions<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>fs.trash.interval<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>1440<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>hdfs-site.xml</li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="cp">&lt;?xml-stylesheet type="text/xsl" href="configuration.xsl"?&gt;</span>
+<span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.name.dir<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>file:///data/hadoop/dfs/name<span class="nt">&lt;/value&gt;</span>
+          <span class="nt">&lt;final&gt;</span>true<span class="nt">&lt;/final&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.data.dir<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>file:///data/hadoop/dfs/data<span class="nt">&lt;/value&gt;</span>
+          <span class="nt">&lt;final&gt;</span>true<span class="nt">&lt;/final&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.replication<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>3<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.blocksize<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>134217728<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.namenode.checkpoint.dir<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>file:///data/def/namesecondary<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.nameservices<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>dmpcluster<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.ha.namenodes.dmpcluster<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>nn1,nn2<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.namenode.rpc-address.dmpcluster.nn1<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>dmpn1:8020<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.namenode.rpc-address.dmpcluster.nn2<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>dmpn2:8020<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.namenode.http-address.dmpcluster.nn1<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>dmpn1:50070<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.namenode.http-address.dmpcluster.nn2<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>dmpn2:50070<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.namenode.shared.edits.dir<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>qjournal://dmpn1:8485;dmpn2:8485;dmpn3:8485/dmpcluster<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.client.failover.proxy.provider.dmpcluster<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.ha.fencing.methods<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>shell(/bin/true)<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.ha.fencing.ssh.private-key-files<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>/home/miuser/.ssh/id_rsa<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+          <span class="nt">&lt;name&gt;</span>dfs.ha.automatic-failover.enabled<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>yarn-site.xml</li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;configuration&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.hostname<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>dmpn1<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+    <span class="nt">&lt;name&gt;</span>yarn.nodemanager.vmem-pmem-ratio<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;value&gt;</span>3<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.nodemanager.aux-services<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>mapreduce_shuffle<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.scheduler.maximum-allocation-mb<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>24576<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.scheduler.maximum-allocation-vcores<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>18<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.nodemanager.resource.memory-mb<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>8192<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.nodemanager.resource.cpu-vcores<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>6<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.log-aggregation-enable<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>3600<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.log-aggregation.retain-seconds<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>1209600<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.log-aggregation.retain-check-interval-seconds<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>172800<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.nodemanager.aux-services<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>spark_shuffle<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>yarn.nodemanager.aux-services.spark_shuffle.class<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>org.apache.spark.network.yarn.YarnShuffleService<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.ha.enabled<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>true<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.cluster-id<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpcluster<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.ha.rm-ids<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>rm1,rm2<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.hostname.rm1<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn1<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.hostname.rm2<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn2<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.webapp.address.rm1<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn1:8088<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.webapp.address.rm2<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn2:8088<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.scheduler.address.rm1<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn1:8030<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.scheduler.address.rm2<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn2:8030<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.resource-tracker.address.rm1<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn1:8031<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.resource-tracker.address.rm2<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn2:8031<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.admin.address.rm1<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn1:8033<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.admin.address.rm2<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn2:8033<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.zk-address<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>dmpn1:2181,dmpn2:2181,dmpn3:2181<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+<ul>
+  <li>zoo.cfg</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tickTime=2000
+initLimit=100
+syncLimit=5
+dataDir=/opt/zookeeper-3.4.13/data
+clientPort=2181
+server.1=dmpn1:2888:3888
+server.2=dmpn2:2888:3888
+server.3=dmpn3:2888:3888
+</code></pre></div></div>
+
 
   </div>
 
