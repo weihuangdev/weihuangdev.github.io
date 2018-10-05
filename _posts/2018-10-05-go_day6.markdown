@@ -68,8 +68,7 @@ func main() {
 ### type
 type 可以用來根據基底的型別創造新的型別，像下面的 Anamal 與 Plant 的基底的型別都還是 string ，
 所以也具備 string 的功能初始值也是 ""．然後也可以用 var 宣告型別為 Anamal 與 Plant 的變數．
-兩者由於是不同型別所以也無法比較．
-```
+兩者由於是不同型別所以也無法比較．而每個新型別 T 都可以透過 T(v) 可將 v 值轉換成新的型別．
 package main
 
 import (
