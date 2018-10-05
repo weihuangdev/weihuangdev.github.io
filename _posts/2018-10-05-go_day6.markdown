@@ -1,0 +1,103 @@
+---
+layout: post
+title:  "go day 6 (new & lifecycle & type)"
+date:   2018-10-05 10:44:17 +0800
+categories: go
+---
+
+### new
+go 的 new 寫法是 new(T)，T 是代表型別(int,string,...)．會建立一個初始化 T 型別的位址值．  
+下面的範例 num 會指向 0xc000090008 位址，並印出 int 的初始值，之後可以改變值但位址不變．
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	num := new(int)
+	fmt.Println(num)  // 0xc000090008
+	fmt.Println(*num) // 0
+	*num = 10
+	fmt.Println(num)  // 0xc000090008
+	fmt.Println(*num) // 10
+}
+
+```
+如果沒有使用 new 則需要先宣告一個 int 變數，num 再指到 n 的位址．
+
+```
+var n int
+num := &n
+fmt.Println(num)  // 0xc000090008
+fmt.Println(*num) // 0
+*num = 10
+fmt.Println(num)  // 0xc000090008
+fmt.Println(*num) // 10
+```
+### lifecycle
+package 層級的變數的 lifecycle 在結束程式前都會一直存活．
+區域變數每次呼叫都會建立新的 instance，當建立出來的 instance 都沒被使用到時，就可能被垃圾回收機制回收．
+但像範例 nt 指到第 2 個 test()，所以第 2 個 test() 的 localv 就不會被回收．
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+var globalv string
+var nt *int
+
+func test() *int {
+	var localv int
+	return &localv
+}
+
+func main() {
+	fmt.Println(&globalv) // 0x118b890
+	fmt.Println(test())   // 0xc0000140b8
+	nt := test()
+	fmt.Println(nt) // 0xc0000140d0
+}
+
+```
+
+### type
+type 可以用來根據基底的型別創造新的型別，像下面的 Anamal 與 Plant 的基底的型別都還是 string ，
+所以也具備 string 的功能初始值也是 ""．然後也可以用 var 宣告型別為 Anamal 與 Plant 的變數．
+兩者由於是不同型別所以也無法比較．
+```
+package main
+
+import (
+	"fmt"
+)
+
+type Anamal string
+type Plant string
+
+func getAnamal(name Anamal) Anamal {
+	return Anamal(name)
+}
+
+func getPlant(name Plant) Plant {
+	return Plant(name)
+}
+
+func main() {
+	fmt.Println(getAnamal("Dog")) // Dog
+	fmt.Println(getPlant("Rose")) // Rose
+	var anamal Anamal
+	var plant Plant
+	fmt.Println(anamal == "") // true
+	//fmt.Println(plant == anamal) // invalid operation: plant == anamal (mismatched types Plant and Anamal)
+	fmt.Println(plant == Plant(anamal)) // true
+}
+
+```
+
+
+

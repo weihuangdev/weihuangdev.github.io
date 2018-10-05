@@ -1,0 +1,143 @@
+---
+layout: post
+title:  "go day 31 (AES 加解密)"
+date:   2018-10-05 12:44:17 +0800
+categories: go
+---
+
+```
+package main
+
+import (
+	"bytes"
+	"crypto/aes"
+	"crypto/cipher"
+	"encoding/base64"
+	"fmt"
+	"os"
+)
+
+func main() {
+	operate := os.Args[1]
+	passwd := os.Args[2]
+	key := os.Args[3]
+	if "encode" == operate {
+		encryptPwd := AesEncrypt(passwd, key)
+		fmt.Println(encryptPwd)
+	} else if "decode" == operate {
+		decryptPwd := AesDecrypt(passwd, key)
+		fmt.Println(decryptPwd)
+	}
+}
+
+func AesDecrypt(encryptstr, key string) string {
+	crypted, _ := base64.StdEncoding.DecodeString(encryptstr)
+	keybyte := []byte(key)
+	block, err := aes.NewCipher(keybyte)
+	if err != nil {
+		fmt.Println("err is:", err)
+	}
+	blockMode := NewECBDecrypter(block)
+	origData := make([]byte, len(crypted))
+	blockMode.CryptBlocks(origData, crypted)
+	origData = PKCS5UnPadding(origData)
+	return string(origData)
+}
+
+func AesEncrypt(src, key string) string {
+	block, err := aes.NewCipher([]byte(key))
+	if err != nil {
+		fmt.Println("key error1", err)
+	}
+	if src == "" {
+		fmt.Println("plain content empty")
+	}
+	ecb := NewECBEncrypter(block)
+	content := []byte(src)
+	content = PKCS5Padding(content, block.BlockSize())
+	crypted := make([]byte, len(content))
+	ecb.CryptBlocks(crypted, content)
+	return base64.StdEncoding.EncodeToString(crypted)
+}
+
+func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(ciphertext, padtext...)
+}
+
+func PKCS5UnPadding(origData []byte) []byte {
+	length := len(origData)
+	unpadding := int(origData[length-1])
+	return origData[:(length - unpadding)]
+}
+
+type ecb struct {
+	b         cipher.Block
+	blockSize int
+}
+
+func newECB(b cipher.Block) *ecb {
+	return &ecb{
+		b:         b,
+		blockSize: b.BlockSize(),
+	}
+}
+
+type ecbEncrypter ecb
+
+// NewECBEncrypter returns a BlockMode which encrypts in electronic code book
+// mode, using the given Block.
+func NewECBEncrypter(b cipher.Block) cipher.BlockMode {
+	return (*ecbEncrypter)(newECB(b))
+}
+func (x *ecbEncrypter) BlockSize() int { return x.blockSize }
+func (x *ecbEncrypter) CryptBlocks(dst, src []byte) {
+	if len(src)%x.blockSize != 0 {
+		panic("crypto/cipher: input not full blocks")
+	}
+	if len(dst) < len(src) {
+		panic("crypto/cipher: output smaller than input")
+	}
+	for len(src) > 0 {
+		x.b.Encrypt(dst, src[:x.blockSize])
+		src = src[x.blockSize:]
+		dst = dst[x.blockSize:]
+	}
+}
+
+type ecbDecrypter ecb
+
+func NewECBDecrypter(b cipher.Block) cipher.BlockMode {
+	return (*ecbDecrypter)(newECB(b))
+}
+func (x *ecbDecrypter) BlockSize() int { return x.blockSize }
+func (x *ecbDecrypter) CryptBlocks(dst, src []byte) {
+	if len(src)%x.blockSize != 0 {
+		panic("crypto/cipher: input not full blocks")
+	}
+	if len(dst) < len(src) {
+		panic("crypto/cipher: output smaller than input")
+	}
+	for len(src) > 0 {
+		x.b.Decrypt(dst, src[:x.blockSize])
+		src = src[x.blockSize:]
+		dst = dst[x.blockSize:]
+	}
+}
+
+```
+
+針對 linux 環境打包  
+```
+env GOOS=linux GOARCH=amd64 go build hello.go
+```
+
+
+> 參考資料  
+> [ref-1](https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/313050/)  
+> [ref-2](https://blog.csdn.net/aflyeaglenku/article/details/74188222)  
+
+
+
+
