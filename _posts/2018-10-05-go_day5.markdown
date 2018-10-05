@@ -1,0 +1,138 @@
+---
+layout: post
+title:  "go day 5 (pointer & assign)"
+date:   2018-10-05 10:44:17 +0800
+categories: go
+---
+
+### pointer
+變數是存值，而指標存的是變數的位址，所以可以透過指標來讀取或修改變數的值．
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	name := "Daniel"
+	pname := &name
+	fmt.Println(pname)  //印出 0xc0000541c0
+	fmt.Println(*pname) //印出 Daniel
+	*pname = "Jack"     // 相當於 name = "Jack"
+	fmt.Println(name)   //印出 Jack
+}
+
+```
+任何型別的指標的零值為 nil
+
+```
+var name *int
+fmt.Println(name) // 印出 nil
+var str *string
+fmt.Println(str) // 印出 nil
+```
+有給位址時就不為 nil 了
+```
+var str *string
+fmt.Println(str == nil) // 印出 true
+var name = "Daniel"
+str = &name
+fmt.Println(str == nil) // 印出 false
+```
+
+function 可以回傳區域變數的位址，讓外部可以參照到區域變數，每次呼叫的位址會不一樣．
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func getName() *string {
+	name := "Daniel"
+	return &name
+}
+
+func main() {
+	var name = getName()
+	mt.Println(name == getName()) // 印出 false
+	fmt.Println(*name) // 印出 "Daniel"
+	*name = "Sam"
+	fmt.Println(*name) // 印出 "Sam"
+}
+
+```
+傳位址給 function，function 就可以直接對該位址的變數修改值
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func add(num *int) int {
+	*num++
+	return *num
+}
+
+func main() {
+	sum := 0
+	fmt.Println(add(&sum)) // 印出 1
+	fmt.Println(add(&sum)) // 印出 2
+	fmt.Println(add(&sum)) // 印出 3
+}
+
+```
+go 可以使用 ++ 及 -- 符號，i++ 代表 i = i + 1，i-- 代表 i = i - 1
+
+```
+func sub(num *int) int {
+	*num--
+	return *num
+}
+
+func main() {
+	sum := 10
+	fmt.Println(sub(&sum)) // 印出 9
+	fmt.Println(sub(&sum)) // 印出 8
+	fmt.Println(sub(&sum)) // 印出 7
+}
+
+```
+
+### assign
+
+go 一次可以 assign 多組變數，所以可以很方便交換兩個值，如果 funtion 有回傳兩個值，可以使用 _ 略過不需要的
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func getNums() (a string, b string) {
+	return "3", "4"
+}
+
+func main() {
+	var num1, num2 = "1", "2"
+	num1, num2 = num2, num1
+	fmt.Println(num1 + " , " + num2) // 印出 2, 1
+	var num3, num4 string
+	_, num3 = getNums()
+	fmt.Println(num3) // 印出 4
+	num4, _ = getNums()
+	fmt.Println(num4) // 印出 3
+}
+
+```
+
+
+
+
+
