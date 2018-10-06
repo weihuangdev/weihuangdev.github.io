@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-06T00:10:41+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/05/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-05T12:44:17+08:00</published><updated>2018-10-05T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/05/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/05/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-06T22:37:37+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/05/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-05T12:44:17+08:00</published><updated>2018-10-05T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/05/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/05/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
 	&lt;span class=&quot;s2&quot;&gt;&quot;bytes&quot;&lt;/span&gt;
@@ -128,7 +128,130 @@
   &lt;p&gt;參考資料&lt;br /&gt;
 &lt;a href=&quot;https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/313050/&quot;&gt;ref-1&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://blog.csdn.net/aflyeaglenku/article/details/74188222&quot;&gt;ref-2&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 6 (new &amp;amp; lifecycle &amp;amp; type)</title><link href="http://localhost:4000/go/2018/10/05/go_day6.html" rel="alternate" type="text/html" title="go day 6 (new &amp; lifecycle &amp; type)" /><published>2018-10-05T10:44:17+08:00</published><updated>2018-10-05T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/05/go_day6</id><content type="html" xml:base="http://localhost:4000/go/2018/10/05/go_day6.html">&lt;h3 id=&quot;new&quot;&gt;new&lt;/h3&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 7 (init &amp;amp; scope)</title><link href="http://localhost:4000/go/2018/10/05/go_day7.html" rel="alternate" type="text/html" title="go day 7 (init &amp; scope)" /><published>2018-10-05T10:44:17+08:00</published><updated>2018-10-05T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/05/go_day7</id><content type="html" xml:base="http://localhost:4000/go/2018/10/05/go_day7.html">&lt;h3 id=&quot;init&quot;&gt;init&lt;/h3&gt;
+
+&lt;p&gt;init function 可以用來對該程式進行一些初始化的動作．&lt;/p&gt;
+
+&lt;h4 id=&quot;sumutilgo&quot;&gt;sumutil.go&lt;/h4&gt;
+&lt;p&gt;透過 init 初始化變數 sum 為 10&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;util/mymath&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mymath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GetSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mymath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mymath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mymath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GetSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;目錄結構 :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;goHello
+ -src
+  -util
+   -mymath
+    sumutil.go
+  -practice
+   example.go
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;examplego&quot;&gt;example.go&lt;/h4&gt;
+&lt;p&gt;根據上面放置的目錄結構 import sumutil.go 的 package 是 util/mymath&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;util/mymath&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mymath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GetSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mymath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mymath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;15&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mymath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GetSum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;15&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;scope&quot;&gt;scope&lt;/h3&gt;
+&lt;p&gt;在宣告變數時，也要注意宣告的範圍 (scope) 也就是一個程式文字區域，在 compile 時就會先檢查．
+會從最內層的區塊先開始查詢到全域的區塊，如果所有的範圍都找不到的話就會出現 undefined．&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;變數&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;sam!&quot;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;daniel!&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;變數&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;++&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;變數&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;!= '!' {
+&lt;/span&gt;			&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'a'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;變數&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;%c , &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;undefined&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;在上面的範例裡 4 個不同變數 x 都出現在不同的程式區塊裡，
+而變數 i 是存在 for 迴圈的隱含區塊裡．&lt;/p&gt;
+
+&lt;p&gt;執行結果 :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sam!
+D , 100
+A , 97
+N , 110
+I , 105
+E , 101
+L , 108
+33
+daniel!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;for , if , switch 除了本體的程式區塊之外，還有另外的隱含區塊&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;retx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rety&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;retx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;本體程式區塊&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rety&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;隱含區塊&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;compiler&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;undefined&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">init</summary></entry><entry><title type="html">go day 6 (new &amp;amp; lifecycle &amp;amp; type)</title><link href="http://localhost:4000/go/2018/10/05/go_day6.html" rel="alternate" type="text/html" title="go day 6 (new &amp; lifecycle &amp; type)" /><published>2018-10-05T10:44:17+08:00</published><updated>2018-10-05T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/05/go_day6</id><content type="html" xml:base="http://localhost:4000/go/2018/10/05/go_day6.html">&lt;h3 id=&quot;new&quot;&gt;new&lt;/h3&gt;
 &lt;p&gt;go 的 new 寫法是 new(T)，T 是代表型別(int,string,…)．會建立一個初始化 T 型別的位址值．&lt;br /&gt;
 下面的範例 num 會指向 0xc000090008 位址，並印出 int 的初始值，之後可以改變值但位址不變．&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
@@ -1484,43 +1607,4 @@ prod
 &lt;a href=&quot;https://docs.docker.com/samples/library/cassandra/&quot;&gt;docker-cassandra&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://opencredo.com/deploy-spark-apache-cassandra/&quot;&gt;Deploy Spark with Cassandra cluster&lt;/a&gt;
 &lt;a href=&quot;http://abiasforaction.net/apache-cassandra-cluster-docker/&quot;&gt;configur cassandra cluster with docker&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">下載 cassandra images docker pull cassandra</summary></entry><entry><title type="html">Scala day 37 (sbt proguard)</title><link href="http://localhost:4000/scala/2018/09/07/scala_day37.html" rel="alternate" type="text/html" title="Scala day 37 (sbt proguard)" /><published>2018-09-07T11:44:17+08:00</published><updated>2018-09-07T11:44:17+08:00</updated><id>http://localhost:4000/scala/2018/09/07/scala_day37</id><content type="html" xml:base="http://localhost:4000/scala/2018/09/07/scala_day37.html">&lt;h4 id=&quot;proguard&quot;&gt;proguard&lt;/h4&gt;
-&lt;p&gt;使用 proguard 可以幫忙混淆 decompiler 出來的 class 檔，&lt;/p&gt;
-
-&lt;h4 id=&quot;在-projectproject-底下加上-pluginssbt-內容為&quot;&gt;在 {project}/project 底下加上 plugins.sbt 內容為&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;addSbtPlugin(&quot;com.lightbend.sbt&quot; % &quot;sbt-proguard&quot; % &quot;0.3.0&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;在-buildsbt-依造需要的-optionfilter-及-merge-方式設定如下-&quot;&gt;在 build.sbt 依造需要的 option、filter 及 Merge 方式設定，如下 :&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;enablePlugins(SbtProguard)
-proguardOptions in Proguard += &quot;-dontoptimize&quot;
-proguardOptions in Proguard ++= Seq(&quot;-dontnote&quot;, &quot;-dontwarn&quot;, &quot;-ignorewarnings&quot;,&quot;-keepattributes Signature,*Annotation*&quot;,&quot;-keep class scala.** { *; }&quot;,&quot;-keep class com.** { *; }&quot;,&quot;-keep class org.** { *; }&quot;)
-proguardInputs in Proguard := (dependencyClasspath in Compile).value.files
-proguardFilteredInputs in Proguard ++= ProguardOptions.noFilter((packageBin in Compile).value)
-proguardOptions in Proguard += ProguardOptions.keepMain(&quot;ght.**&quot;)
-​
-javaOptions in (Proguard, proguard) := Seq(&quot;-Xmx4G&quot;)
-​
-proguardMerge in Proguard := true
-proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;javax.inject-2.4.0-b34.jar&quot;)
-proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;io/netty/.*&quot;.r)
-proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;org/apache/commons/.*&quot;.r)
-proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;org/apache/hadoop/.*&quot;.r)
-proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;org/apache/spark/.*&quot;.r)
-proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;org/aopalliance/.*&quot;.r)
-proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;javax/.*&quot;.r)
-proguardMergeStrategies in Proguard += ProguardMerge.last(&quot;java/.*&quot;.r)
-proguardMergeStrategies in Proguard += ProguardMerge.discard(&quot;META-INF/.*&quot;.r)
-proguardMergeStrategies in Proguard += ProguardMerge.discard(&quot;git.properties&quot;)
-proguardMergeStrategies in Proguard += ProguardMerge.rename(&quot;LICENSE.*&quot;.r)
-proguardMergeStrategies in Proguard += ProguardMerge.discard(&quot;rootdoc.txt&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;下指令-build-jar&quot;&gt;下指令 build jar&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sbt proguard:proguard
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考資料&lt;br /&gt;
-&lt;a href=&quot;https://github.com/sbt/sbt-proguard&quot;&gt;sbt-proguard&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">proguard 使用 proguard 可以幫忙混淆 decompiler 出來的 class 檔，</summary></entry></feed>
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">下載 cassandra images docker pull cassandra</summary></entry></feed>
