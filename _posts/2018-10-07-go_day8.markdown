@@ -1,0 +1,47 @@
+---
+layout: post
+title:  "go day 8 (basic types)"
+date:   2018-10-07 10:44:17 +0800
+categories: go
+---
+
+### basic types
+
+go 的基本型別主要有 7 種 3 種數值(int、float、complex)，以及 boo、string、byte、rune．而 3 種數值 又根據不同的位元數做分類．  
+整數又分為帶正負號的整數，另外 int32 跟 rune 是同義的，rune 用來指該值為 Unicode : 
+```
+int  int8  int16  int32  int64
+```
+無正負號的整數，而 uint8 跟 byte 是同義的，byte 用來強調該值的原始資料而不是數值 : 
+```
+uint uint8 uint16 uint32 uint64 uintptr
+```
+浮點數分為 32 及 64 :  
+
+```
+float32 float64
+```
+複數分為 64 及 128 : 
+
+```
+complex64 complex128
+```
+在 Go 的 +、-、*、/都可用在整數、浮點數、及複數上，但只有餘數運算子(%)只能用在整數上且正負號與被除數相同．
+
+```
+fmt.Println(-10 % 4)  // -2
+fmt.Println(-10 % -4) // -2
+fmt.Println(10 % -4)  // 2
+```
+### overflow
+如果經過運算後位元數超過型別的範圍則會發生 overflow．
+uint8 的範圍為 0~255，int8 的範圍為 -182 ~ 127．
+
+```
+var u uint8 = 255
+fmt.Println(u, u+1, u+2) // 255 0 1
+var i int8 = 127
+fmt.Println(i, i+1, i+2) // 127 -128 -127
+```
+
+

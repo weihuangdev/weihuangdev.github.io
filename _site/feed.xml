@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-07T10:54:49+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/05/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-05T12:44:17+08:00</published><updated>2018-10-05T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/05/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/05/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T01:00:21+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/31/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-31T12:44:17+08:00</published><updated>2018-10-31T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
 	&lt;span class=&quot;s2&quot;&gt;&quot;bytes&quot;&lt;/span&gt;
@@ -128,7 +128,38 @@
   &lt;p&gt;參考資料&lt;br /&gt;
 &lt;a href=&quot;https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/313050/&quot;&gt;ref-1&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://blog.csdn.net/aflyeaglenku/article/details/74188222&quot;&gt;ref-2&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 7 (init &amp;amp; scope)</title><link href="http://localhost:4000/go/2018/10/05/go_day7.html" rel="alternate" type="text/html" title="go day 7 (init &amp; scope)" /><published>2018-10-05T10:44:17+08:00</published><updated>2018-10-05T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/05/go_day7</id><content type="html" xml:base="http://localhost:4000/go/2018/10/05/go_day7.html">&lt;h3 id=&quot;init&quot;&gt;init&lt;/h3&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 8 (basic types)</title><link href="http://localhost:4000/go/2018/10/07/go_day8.html" rel="alternate" type="text/html" title="go day 8 (basic types)" /><published>2018-10-07T10:44:17+08:00</published><updated>2018-10-07T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/07/go_day8</id><content type="html" xml:base="http://localhost:4000/go/2018/10/07/go_day8.html">&lt;h3 id=&quot;basic-types&quot;&gt;basic types&lt;/h3&gt;
+
+&lt;p&gt;go 的基本型別主要有 7 種 3 種數值(int、float、complex)，以及 boo、string、byte、rune．而 3 種數值 又根據不同的位元數做分類．&lt;br /&gt;
+整數又分為帶正負號的整數，另外 int32 跟 rune 是同義的，rune 用來指該值為 Unicode :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;int  int8  int16  int32  int64
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;無正負號的整數，而 uint8 跟 byte 是同義的，byte 用來強調該值的原始資料而不是數值 :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;uint uint8 uint16 uint32 uint64 uintptr
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;浮點數分為 32 及 64 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;float32 float64
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;複數分為 64 及 128 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;complex64 complex128
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;在 Go 的 +、-、*、/都可用在整數、浮點數、及複數上，但只有餘數運算子(%)只能用在整數上且正負號與被除數相同．&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fmt.Println(-10 % 4)  // -2
+fmt.Println(-10 % -4) // -2
+fmt.Println(10 % -4)  // 2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;overflow&quot;&gt;overflow&lt;/h3&gt;
+&lt;p&gt;如果經過運算後位元數超過型別的範圍則會發生 overflow．
+uint8 的範圍為 0~255，int8 的範圍為 -182 ~ 127．&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var u uint8 = 255
+fmt.Println(u, u+1, u+2) // 255 0 1
+var i int8 = 127
+fmt.Println(i, i+1, i+2) // 127 -128 -127
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">basic types</summary></entry><entry><title type="html">go day 7 (init &amp;amp; scope)</title><link href="http://localhost:4000/go/2018/10/05/go_day7.html" rel="alternate" type="text/html" title="go day 7 (init &amp; scope)" /><published>2018-10-05T10:44:17+08:00</published><updated>2018-10-05T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/05/go_day7</id><content type="html" xml:base="http://localhost:4000/go/2018/10/05/go_day7.html">&lt;h3 id=&quot;init&quot;&gt;init&lt;/h3&gt;
 
 &lt;p&gt;init function 可以用來對該程式進行一些初始化的動作．&lt;/p&gt;
 
@@ -1511,109 +1542,4 @@ listElements.deleteFromCassandra(&quot;castest&quot;,&quot;prod&quot;)
 &lt;blockquote&gt;
   &lt;p&gt;參考資料&lt;br /&gt;
 &lt;a href=&quot;https://github.com/datastax/spark-cassandra-connector&quot;&gt;spark-cassandra&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">build.sbt ``` name := “Enricher-ext”</summary></entry><entry><title type="html">cassandra day 1 (run cassandra)</title><link href="http://localhost:4000/cassandra/2018/09/20/cassandra_day1.html" rel="alternate" type="text/html" title="cassandra day 1 (run cassandra)" /><published>2018-09-20T10:44:17+08:00</published><updated>2018-09-20T10:44:17+08:00</updated><id>http://localhost:4000/cassandra/2018/09/20/cassandra_day1</id><content type="html" xml:base="http://localhost:4000/cassandra/2018/09/20/cassandra_day1.html">&lt;h4 id=&quot;下載-cassandra-images&quot;&gt;下載 cassandra images&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull cassandra
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;run-cassandra&quot;&gt;run cassandra&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name test-cassandra-1 -d cassandra
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;run-cassandra-cluster&quot;&gt;run cassandra cluster&lt;/h4&gt;
-&lt;p&gt;有 2 種 :&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;在同一台機器建不同 instances
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name test-cassandra-2 -d -e CASSANDRA_SEEDS=&quot;$(docker inspect --format='' test-cassandra-1)&quot; cassandra
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;啟動後&lt;/p&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; docker ps
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                         NAMES
-87e56257fb9e        cassandra           &quot;docker-entrypoint.s…&quot;   3 seconds ago       Up 2 seconds        7000-7001/tcp, 7199/tcp, 9042/tcp, 9160/tcp   test-cassandra-2
-abcd5d24e322        cassandra           &quot;docker-entrypoint.s…&quot;   5 minutes ago       Up 5 minutes        7000-7001/tcp, 7199/tcp, 9042/tcp, 9160/tcp   test-cassandra-1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;也可以透過 –link&lt;/p&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name test-cassandra-2 -d --link test-cassandra-1 cassandra
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;在不同機器建不同的 instances，這邊先不實作提供指令參考
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name some-cassandra -d -e CASSANDRA_BROADCAST_ADDRESS=10.42.42.42 -p 7000:7000 cassandra:tag
-docker run --name some-cassandra -d -e CASSANDRA_BROADCAST_ADDRESS=10.43.43.43 -p 7000:7000 -e CASSANDRA_SEEDS=10.42.42.42 cassandra:tag
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@d0447e24625d:/# nodetool status
-Datacenter: datacenter1
-=======================
-Status=Up/Down
-|/ State=Normal/Leaving/Joining/Moving
---  Address     Load       Tokens       Owns (effective)  Host ID                               Rack
-UN  172.17.0.3  75.19 KiB  256          52.1%             c4cd5109-83ff-4adc-81d1-7d05b7dd2bfb  rack1
-UN  172.17.0.2  80.16 KiB  256          47.9%             0dc02012-3b01-4bd2-bcf4-65855f630e9a  rack1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;連線-cassandra&quot;&gt;連線 cassandra&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; docker run -it --link test-cassandra-1:cassandra --rm cassandra sh -c 'exec cqlsh &quot;$CASSANDRA_PORT_9042_TCP_ADDR&quot;'
-Connected to Test Cluster at 172.17.0.2:9042.
-[cqlsh 5.0.1 | Cassandra 3.11.3 | CQL spec 3.4.4 | Native protocol v4]
-Use HELP for help.
-cqlsh&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;透過-exec-連線-cassandra再下-cqlsh&quot;&gt;透過 exec 連線 cassandra，再下 cqlsh&lt;/h4&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker exec -it eb31ab378632 bash
-
-root@eb31ab378632:/# cqlsh
-Connected to Test Cluster at 127.0.0.1:9042.
-[cqlsh 5.0.1 | Cassandra 3.11.3 | CQL spec 3.4.4 | Native protocol v4]
-Use HELP for help.
-cqlsh&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;查看目前有的-keyspaces&quot;&gt;查看目前有的 keyspaces&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; describe keyspaces;
-system_schema  system_auth  system  system_distributed  system_traces
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;建立-keyspace&quot;&gt;建立 keyspace&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; CREATE KEYSPACE castest WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 1 };
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;drop-keyspace&quot;&gt;drop keyspace&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; drop keyspace castest ;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;create-table&quot;&gt;create table&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; CREATE TABLE castest.prod (prodid text PRIMARY KEY, count int);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;看所有-tables&quot;&gt;看所有 tables&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; describe tables ;
-
-Keyspace castest
-----------------
-prod
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;insert-data&quot;&gt;insert data&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; INSERT INTO castest.prod (prodid, count) VALUES ('1', 20);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;select-data&quot;&gt;select data&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; select * from castest.prod ;
-
- prodid | count
---------+-------
-      4 |    30
-      3 |    40
-      2 |    10
-      1 |    20
-
-(4 rows)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;update-data&quot;&gt;update data&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; update castest.prod set count=55 where prodid='3'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;delete-data&quot;&gt;delete data&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cqlsh&amp;gt; delete from castest.prod where prodid='3' ;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考資料&lt;br /&gt;
-&lt;a href=&quot;https://docs.docker.com/samples/library/cassandra/&quot;&gt;docker-cassandra&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;https://opencredo.com/deploy-spark-apache-cassandra/&quot;&gt;Deploy Spark with Cassandra cluster&lt;/a&gt;
-&lt;a href=&quot;http://abiasforaction.net/apache-cassandra-cluster-docker/&quot;&gt;configur cassandra cluster with docker&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">下載 cassandra images docker pull cassandra</summary></entry></feed>
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">build.sbt ``` name := “Enricher-ext”</summary></entry></feed>

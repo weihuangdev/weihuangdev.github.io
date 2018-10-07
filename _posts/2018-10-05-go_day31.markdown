@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "go day 31 (AES 加解密)"
-date:   2018-10-05 12:44:17 +0800
+date:   2018-10-31 12:44:17 +0800
 categories: go
 ---
 
