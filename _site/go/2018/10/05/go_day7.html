@@ -86,19 +86,28 @@
 
 <h4 id="sumutilgo">sumutil.go</h4>
 <p>透過 init 初始化變數 sum 為 10</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">mymath</span>
 
-<span class="n">import</span> <span class="p">(</span>
-	<span class="s2">"fmt"</span>
-	<span class="s2">"util/mymath"</span>
-<span class="p">)</span>
+<span class="n">var</span> <span class="k">sum</span> <span class="n">int</span>
 
-<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">mymath</span><span class="p">.</span><span class="n">GetSum</span><span class="p">())</span>
-	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">mymath</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="m">10</span><span class="p">))</span>
-	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">mymath</span><span class="p">.</span><span class="n">Sub</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
-	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">mymath</span><span class="p">.</span><span class="n">GetSum</span><span class="p">())</span>
+<span class="n">func</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">sum</span> <span class="p">=</span> <span class="m">10</span>
 <span class="p">}</span>
+
+<span class="n">func</span> <span class="n">GetSum</span><span class="p">()</span> <span class="n">int</span> <span class="p">{</span>
+	<span class="n">return</span> <span class="k">sum</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">Add</span><span class="p">(</span><span class="n">num</span> <span class="n">int</span><span class="p">)</span> <span class="n">int</span> <span class="p">{</span>
+	<span class="k">sum</span> <span class="p">+=</span> <span class="n">num</span>
+	<span class="n">return</span> <span class="k">sum</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">Sub</span><span class="p">(</span><span class="n">num</span> <span class="n">int</span><span class="p">)</span> <span class="n">int</span> <span class="p">{</span>
+	<span class="k">sum</span> <span class="p">-=</span> <span class="n">num</span>
+	<span class="n">return</span> <span class="k">sum</span>
+<span class="p">}</span>
+
 </code></pre></div></div>
 
 <p>目錄結構 :</p>

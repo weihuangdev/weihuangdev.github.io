@@ -12,19 +12,28 @@ init function 可以用來對該程式進行一些初始化的動作．
 #### sumutil.go
 透過 init 初始化變數 sum 為 10
 ```
-package main
+package mymath
 
-import (
-	"fmt"
-	"util/mymath"
-)
+var sum int
 
-func main() {
-	fmt.Println(mymath.GetSum())
-	fmt.Println(mymath.Add(10))
-	fmt.Println(mymath.Sub(5))
-	fmt.Println(mymath.GetSum())
+func init() {
+	sum = 10
 }
+
+func GetSum() int {
+	return sum
+}
+
+func Add(num int) int {
+	sum += num
+	return sum
+}
+
+func Sub(num int) int {
+	sum -= num
+	return sum
+}
+
 ```
 
 目錄結構 : 
