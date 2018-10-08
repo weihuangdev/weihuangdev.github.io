@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T16:35:27+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/31/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-31T12:44:17+08:00</published><updated>2018-10-31T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T19:18:00+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/31/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-31T12:44:17+08:00</published><updated>2018-10-31T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
 	&lt;span class=&quot;s2&quot;&gt;&quot;bytes&quot;&lt;/span&gt;
@@ -130,7 +130,7 @@
 &lt;a href=&quot;https://blog.csdn.net/aflyeaglenku/article/details/74188222&quot;&gt;ref-2&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 8 (basic types)</title><link href="http://localhost:4000/go/2018/10/07/go_day8.html" rel="alternate" type="text/html" title="go day 8 (basic types)" /><published>2018-10-07T10:44:17+08:00</published><updated>2018-10-07T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/07/go_day8</id><content type="html" xml:base="http://localhost:4000/go/2018/10/07/go_day8.html">&lt;h3 id=&quot;basic-types&quot;&gt;basic types&lt;/h3&gt;
 
-&lt;p&gt;go 的基本型別主要有 7 種 3 種數值(int、float、complex)，以及 boo、string、byte、rune．而 3 種數值 又根據不同的位元數做分類．&lt;br /&gt;
+&lt;p&gt;go 的基本型別主要有 7 種 3 種數值型別(int、float、complex)，以及 boo、string、byte、rune．而 3 種數值型別又根據不同的位元數做分類．&lt;br /&gt;
 整數又分為帶正負號的整數，另外 int32 跟 rune 是同義的，rune 用來指該值為 Unicode :&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;int  int8  int16  int32  int64
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -159,6 +159,23 @@ uint8 的範圍為 0~255，int8 的範圍為 -182 ~ 127．&lt;/p&gt;
 fmt.Println(u, u+1, u+2) // 255 0 1
 var i int8 = 127
 fmt.Println(i, i+1, i+2) // 127 -128 -127
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;浮點數表示&quot;&gt;浮點數表示&lt;/h4&gt;
+&lt;p&gt;浮點數通常以 Printf 的 %g 輸出，%g 會選擇適合的精確度表示，也可以透過 %e (指數)或 %f (無指數)表示．
+%23.16f 表示 16 位精確度的 e 次方值，並以 23 個字元寬顯示．&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3.14159265358979323846264&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;c : %g , %e , %23.16f ,%25.23f &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3.141592653589793&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3.141593e+00&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;      &lt;span class=&quot;m&quot;&gt;3.1415926535897931&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3.14159265358979311599796&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;複數運算&quot;&gt;複數運算&lt;/h4&gt;

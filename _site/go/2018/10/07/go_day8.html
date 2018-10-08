@@ -112,6 +112,23 @@ fmt.Println(u, u+1, u+2) // 255 0 1
 var i int8 = 127
 fmt.Println(i, i+1, i+2) // 127 -128 -127
 </code></pre></div></div>
+<h4 id="浮點數表示">浮點數表示</h4>
+<p>浮點數通常以 Printf 的 %g 輸出，%g 會選擇適合的精確度表示，也可以透過 %e (指數)或 %f (無指數)表示．
+%23.16f 表示 16 位精確度的 e 次方值，並以 23 個字元寬顯示．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">var</span> <span class="n">c</span> <span class="p">=</span> <span class="m">3.14159265358979323846264</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Printf</span><span class="p">(</span><span class="s2">"c : %g , %e , %23.16f ,%25.23f "</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+	<span class="p">//</span> <span class="n">c</span> <span class="p">:</span> <span class="m">3.141592653589793</span> <span class="p">,</span> <span class="m">3.141593e+00</span> <span class="p">,</span>      <span class="m">3.1415926535897931</span> <span class="p">,</span><span class="m">3.14159265358979311599796</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
 
 <h4 id="複數運算">複數運算</h4>
 
