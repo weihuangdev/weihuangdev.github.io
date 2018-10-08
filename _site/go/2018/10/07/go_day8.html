@@ -113,6 +113,29 @@ var i int8 = 127
 fmt.Println(i, i+1, i+2) // 127 -128 -127
 </code></pre></div></div>
 
+<h4 id="複數運算">複數運算</h4>
+
+<p>複數的運算如下，(1 + 2i) * (3 + 4i) = 3 + 4i + 6i + 8(-1) = -5 + 10i，
+-5 是實數透過 real() 取出，10 是實數透過 imag() 取出</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">var</span> <span class="n">c1</span> <span class="n">complex128</span> <span class="p">=</span> <span class="n">complex</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+	<span class="n">var</span> <span class="n">c2</span> <span class="n">complex128</span> <span class="p">=</span> <span class="n">complex</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">c1</span> <span class="p">+</span> <span class="n">c2</span><span class="p">)</span> <span class="p">//</span> <span class="p">(</span><span class="m">4</span><span class="p">+</span><span class="m">6</span><span class="n">i</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">c1</span> <span class="p">-</span> <span class="n">c2</span><span class="p">)</span> <span class="p">//</span> <span class="p">(-</span><span class="m">2</span><span class="p">-</span><span class="m">2</span><span class="n">i</span><span class="p">)</span>
+	<span class="n">var</span> <span class="n">c3</span> <span class="p">=</span> <span class="n">c1</span> <span class="p">*</span> <span class="n">c2</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">c3</span><span class="p">)</span>       <span class="p">//</span> <span class="p">(-</span><span class="m">5</span><span class="p">+</span><span class="m">10</span><span class="n">i</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="k">real</span><span class="p">(</span><span class="n">c3</span><span class="p">))</span> <span class="p">//</span> <span class="p">-</span><span class="m">5</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">imag</span><span class="p">(</span><span class="n">c3</span><span class="p">))</span> <span class="p">//</span> <span class="m">10</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
 
   </div>
 
