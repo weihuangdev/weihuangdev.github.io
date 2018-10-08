@@ -1,0 +1,56 @@
+---
+layout: post
+title:  "go day 9 (bool & string)"
+date:   2018-10-08 10:44:17 +0800
+categories: go
+---
+
+### bool
+bool 只有 true 或 false．go 的 bool 跟數值 0 或 1 沒有間接的轉換，還有邏輯運算子 && 會比 || 先執行．
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println(checkLetter('A')) // 1
+	fmt.Println(checkLetter(5))   // 0
+}
+
+func checkLetter(c byte) int {
+	if 'a' <= c && c <= 'z' ||
+		'A' <= c && c <= 'Z' {
+		return 1
+	} else {
+		return 0
+	}
+}
+
+```
+
+### string
+string 是不可變的一系列位元組．由於不可變所以下面範例的 oldstr 還是原來的值
+
+```
+str := "hello, Daniel"
+oldstr := str
+str += " World"
+fmt.Println(str)    // hello, Daniel World
+fmt.Println(oldstr) //hello, Daniel
+```
+子字串操作 s[i:j] 從原始字串的索引 i 到 j-1 的位元組．
+
+```
+str := "hello, Daniel"
+fmt.Println(len(str))        // 13
+fmt.Println(str[0])          // 104
+fmt.Println(str[len(str)-1]) // 108
+fmt.Println(str[0:5])        // hello
+fmt.Println(str[7:])         // Daniel
+fmt.Println(str[:])          // hello, Daniel
+```
+
+

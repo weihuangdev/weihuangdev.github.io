@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T19:18:00+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/31/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-31T12:44:17+08:00</published><updated>2018-10-31T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T23:44:11+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/31/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-31T12:44:17+08:00</published><updated>2018-10-31T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
 	&lt;span class=&quot;s2&quot;&gt;&quot;bytes&quot;&lt;/span&gt;
@@ -128,7 +128,50 @@
   &lt;p&gt;參考資料&lt;br /&gt;
 &lt;a href=&quot;https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/313050/&quot;&gt;ref-1&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://blog.csdn.net/aflyeaglenku/article/details/74188222&quot;&gt;ref-2&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 8 (basic types)</title><link href="http://localhost:4000/go/2018/10/07/go_day8.html" rel="alternate" type="text/html" title="go day 8 (basic types)" /><published>2018-10-07T10:44:17+08:00</published><updated>2018-10-07T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/07/go_day8</id><content type="html" xml:base="http://localhost:4000/go/2018/10/07/go_day8.html">&lt;h3 id=&quot;basic-types&quot;&gt;basic types&lt;/h3&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 9 (bool &amp;amp; string)</title><link href="http://localhost:4000/go/2018/10/08/go_day9.html" rel="alternate" type="text/html" title="go day 9 (bool &amp; string)" /><published>2018-10-08T10:44:17+08:00</published><updated>2018-10-08T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/08/go_day9</id><content type="html" xml:base="http://localhost:4000/go/2018/10/08/go_day9.html">&lt;h3 id=&quot;bool&quot;&gt;bool&lt;/h3&gt;
+&lt;p&gt;bool 只有 true 或 false．go 的 bool 跟數值 0 或 1 沒有間接的轉換，還有邏輯運算子 &amp;amp;&amp;amp; 會比 || 先執行．&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;checkLetter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;checkLetter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;checkLetter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'a'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'z'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;||&lt;/span&gt;
+		&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Z'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;string&quot;&gt;string&lt;/h3&gt;
+&lt;p&gt;string 是不可變的一系列位元組．由於不可變所以下面範例的 oldstr 還是原來的值&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;str := &quot;hello, Daniel&quot;
+oldstr := str
+str += &quot; World&quot;
+fmt.Println(str)    // hello, Daniel World
+fmt.Println(oldstr) //hello, Daniel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;子字串操作 s[i:j] 從原始字串的索引 i 到 j-1 的位元組．&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;str := &quot;hello, Daniel&quot;
+fmt.Println(len(str))        // 13
+fmt.Println(str[0])          // 104
+fmt.Println(str[len(str)-1]) // 108
+fmt.Println(str[0:5])        // hello
+fmt.Println(str[7:])         // Daniel
+fmt.Println(str[:])          // hello, Daniel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">bool bool 只有 true 或 false．go 的 bool 跟數值 0 或 1 沒有間接的轉換，還有邏輯運算子 &amp;amp;&amp;amp; 會比 || 先執行．</summary></entry><entry><title type="html">go day 8 (basic types)</title><link href="http://localhost:4000/go/2018/10/07/go_day8.html" rel="alternate" type="text/html" title="go day 8 (basic types)" /><published>2018-10-07T10:44:17+08:00</published><updated>2018-10-07T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/07/go_day8</id><content type="html" xml:base="http://localhost:4000/go/2018/10/07/go_day8.html">&lt;h3 id=&quot;basic-types&quot;&gt;basic types&lt;/h3&gt;
 
 &lt;p&gt;go 的基本型別主要有 7 種 3 種數值型別(int、float、complex)，以及 boo、string、byte、rune．而 3 種數值型別又根據不同的位元數做分類．&lt;br /&gt;
 整數又分為帶正負號的整數，另外 int32 跟 rune 是同義的，rune 用來指該值為 Unicode :&lt;/p&gt;
@@ -1492,95 +1535,4 @@ runtime.main_main·f: function main is undeclared in the main package
 &lt;p&gt;執行成功&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;daniel@Danielde-MacBook-Pro &amp;gt; /Volumes/Transcend/golang/goHello/src/hello &amp;gt; go run hello.go Daniel
 Hello Daniel12345abcde
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">先移除 day 1 warning 在 day 1 時，下指令 都會看到一串 warning 如下，來想辦法把它移除 warning: GOPATH set to GOROOT (/usr/local/go) has no effect</summary></entry><entry><title type="html">cassandra day 2 (spark cassandra)</title><link href="http://localhost:4000/cassandra/2018/09/20/cassandra_day2.html" rel="alternate" type="text/html" title="cassandra day 2 (spark cassandra)" /><published>2018-09-20T11:44:17+08:00</published><updated>2018-09-20T11:44:17+08:00</updated><id>http://localhost:4000/cassandra/2018/09/20/cassandra_day2</id><content type="html" xml:base="http://localhost:4000/cassandra/2018/09/20/cassandra_day2.html">&lt;h4 id=&quot;buildsbt&quot;&gt;build.sbt&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;name := &quot;Enricher-ext&quot;
-
-version := &quot;0.1&quot;
-
-scalaVersion := &quot;2.11.12&quot;
-
-dependencyOverrides += &quot;com.fasterxml.jackson.core&quot; % &quot;jackson-core&quot; % &quot;2.8.7&quot;
-dependencyOverrides += &quot;com.fasterxml.jackson.core&quot; % &quot;jackson-databind&quot; % &quot;2.8.7&quot;
-dependencyOverrides += &quot;com.fasterxml.jackson.module&quot; % &quot;jackson-module-scala_2.11&quot; % &quot;2.8.7&quot;
-
-libraryDependencies ++= Seq(
-  &quot;io.grpc&quot;               %   &quot;grpc-netty&quot;            % &quot;1.14.0&quot;,
-  &quot;io.grpc&quot;               %   &quot;grpc-okhttp&quot;           % &quot;1.14.0&quot;,
-  &quot;com.google.guava&quot;      %   &quot;guava&quot;                 % &quot;21.0&quot;,
-  &quot;org.apache.spark&quot;      %%  &quot;spark-core&quot;            % &quot;2.3.1&quot; ,
-  &quot;org.apache.spark&quot;      %%  &quot;spark-sql&quot;             % &quot;2.3.1&quot; ,
-  &quot;redis.clients&quot;         %   &quot;jedis&quot;                 % &quot;2.9.0&quot;,
-  &quot;com.crealytics&quot;        %%  &quot;spark-excel&quot;           % &quot;0.9.8&quot;,
-  &quot;com.datastax.spark&quot; %% &quot;spark-cassandra-connector&quot; % &quot;2.3.2&quot;,
-  &quot;org.scalatest&quot;         %%  &quot;scalatest&quot;             % &quot;3.0.5&quot; % &quot;test&quot;
-)
-
-lazy val copyJar = taskKey[Unit](&quot;Test copy jar file&quot;)
-copyJar := {
-  val folder = new File(&quot;target/lib&quot;)
-  (managedClasspath in Compile).value.files.foreach { f =&amp;gt;
-    IO.copyFile(f, folder / f.getName)
-  }
-  val jarFile = sbt.Keys.`package`.in(Compile, packageBin).value
-  IO.copyFile(jarFile, new File(&quot;target&quot;) / jarFile.getName)
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;需要-import-connector&quot;&gt;需要 import connector&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import org.apache.spark.sql.SparkSession
-import com.datastax.spark.connector._
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;query-cassandra&quot;&gt;Query cassandra&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val rdd = spark.sparkContext.cassandraTable(&quot;castest&quot;,&quot;prod&quot;)
-println(rdd.count)
-println(rdd.first)
-rdd.foreach(raw =&amp;gt; {
-  val prodId = raw.get[String](&quot;prodid&quot;)
-  val prodCount = raw.get[Int](&quot;count&quot;)
-  println(prodId + &quot; , &quot; + prodCount)
-})
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;query-cassandra-with-where&quot;&gt;query cassandra with where&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark.sparkContext.cassandraTable(&quot;castest&quot;,&quot;prod&quot;).select(&quot;count&quot;).where(&quot;count &amp;gt; ? &quot; , 50).foreach(raw =&amp;gt; {
-	val prodCount = raw.get[Int](&quot;count&quot;)
-	println(prodCount)
-})
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;insert-cassandra&quot;&gt;insert cassandra&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val listElements = spark.sparkContext.parallelize(
-  Seq(
-  (5,100),
-  (6,200),
-  (7,300))
-)
-listElements.saveToCassandra(&quot;castest&quot;,&quot;prod&quot;,SomeColumns(&quot;prodid&quot;,&quot;count&quot;))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;update-cassandra&quot;&gt;update cassandra&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val listElements = spark.sparkContext.parallelize(
-  Seq(
-    (6,100),
-    (8,400)
-  )
-)
-listElements.saveToCassandra(&quot;castest&quot;,&quot;prod&quot;,SomeColumns(&quot;prodid&quot;,&quot;count&quot;))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;delete-cassandra&quot;&gt;delete cassandra&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val listElements = spark.sparkContext.parallelize(
-  Seq(
-    (6,100)
-  )
-)
-listElements.deleteFromCassandra(&quot;castest&quot;,&quot;prod&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;h4 id=&quot;delete-cassandra-with-where&quot;&gt;delete cassandra with where&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark.sparkContext.cassandraTable(&quot;castest&quot;,&quot;prod&quot;).where(&quot;count &amp;lt; 50&quot;).deleteFromCassandra(&quot;castest&quot;,&quot;prod&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考資料&lt;br /&gt;
-&lt;a href=&quot;https://github.com/datastax/spark-cassandra-connector&quot;&gt;spark-cassandra&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">build.sbt ``` name := “Enricher-ext”</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">先移除 day 1 warning 在 day 1 時，下指令 都會看到一串 warning 如下，來想辦法把它移除 warning: GOPATH set to GOROOT (/usr/local/go) has no effect</summary></entry></feed>
