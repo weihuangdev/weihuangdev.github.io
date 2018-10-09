@@ -133,6 +133,48 @@ services:
 <p>下載 gopkg.in/mgo.v2 套件</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get gopkg.in/mgo.v2
 </code></pre></div></div>
+<p>go get 一開始不行，因為忘記 source</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ~/.bash_profile
+daniel@Danielde-MBP &gt; go get gopkg.in/mgo.v2
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+  <span class="s2">"fmt"</span>
+
+  <span class="s2">"gopkg.in/mgo.v2"</span>
+<span class="p">)</span>
+
+<span class="n">type</span> <span class="n">User</span> <span class="n">struct</span> <span class="p">{</span>
+  <span class="n">Name</span> <span class="k">string</span> <span class="s2">"bson:`name`"</span>
+  <span class="n">Age</span>  <span class="n">int</span>    <span class="s2">"bson:`age`"</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">var</span> <span class="n">mydb</span> <span class="p">=</span> <span class="n">getDB</span><span class="p">()</span>
+  <span class="n">mydb</span><span class="p">.</span><span class="n">Login</span><span class="p">(</span><span class="s2">"root"</span><span class="p">,</span> <span class="s2">"123456"</span><span class="p">)</span>
+  <span class="n">c</span> <span class="p">:=</span> <span class="n">mydb</span><span class="p">.</span><span class="n">C</span><span class="p">(</span><span class="s2">"student"</span><span class="p">)</span>
+  <span class="n">err</span> <span class="p">:=</span> <span class="n">c</span><span class="p">.</span><span class="n">Insert</span><span class="p">(&amp;</span><span class="n">User</span><span class="p">{</span><span class="n">Name</span><span class="p">:</span> <span class="s2">"Daniel"</span><span class="p">,</span> <span class="n">Age</span><span class="p">:</span> <span class="m">30</span><span class="p">})</span>
+  <span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>    <span class="n">panic</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">getDB</span><span class="p">()</span> <span class="p">*</span><span class="n">mgo</span><span class="p">.</span><span class="n">Database</span> <span class="p">{</span>
+  <span class="n">session</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">mgo</span><span class="p">.</span><span class="n">Dial</span><span class="p">(</span><span class="s2">"127.0.0.1:27017"</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>    <span class="n">panic</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="n">session</span><span class="p">.</span><span class="n">SetMode</span><span class="p">(</span><span class="n">mgo</span><span class="p">.</span><span class="n">Monotonic</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span>
+  <span class="n">db</span> <span class="p">:=</span> <span class="n">session</span><span class="p">.</span><span class="n">DB</span><span class="p">(</span><span class="s2">"test"</span><span class="p">)</span>
+  <span class="n">return</span> <span class="n">db</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
 
 <blockquote>
   <p>參考資料<br />

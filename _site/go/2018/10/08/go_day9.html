@@ -124,6 +124,67 @@ fmt.Println(str[0:5])        // hello
 fmt.Println(str[7:])         // Daniel
 fmt.Println(str[:])          // hello, Daniel
 </code></pre></div></div>
+<p>string 可加入跳脫字元例如要加上雙引號("”)、單引號(')、tab(\t)或換行(\n)等… :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fmt.Println("Hello \t \"Daniel\"") // Hello 	 "Daniel"
+</code></pre></div></div>
+
+<p>如果不要有跳脫字元只要保留原始的字串只要使用反引號取代雙引號 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fmt.Println(`He'l'lo	"Daniel" \t`) // He'l'lo	"Daniel" \t
+
+</code></pre></div></div>
+
+<h3 id="string-與-int-的轉換">string 與 int 的轉換</h3>
+<p>使用 fmt.Sprintf 從 int 轉換成 string</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>num1 := 12345678
+num2 := fmt.Sprintf("%d", num1)
+fmt.Println("number is " + num2)
+</code></pre></div></div>
+<p>strconv 套件可以在不同進位格式化數字</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"strconv"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">num1</span> <span class="p">:=</span> <span class="m">10</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"number is "</span> <span class="p">+</span> <span class="n">strconv</span><span class="p">.</span><span class="n">FormatInt</span><span class="p">(</span><span class="n">int64</span><span class="p">(</span><span class="n">num1</span><span class="p">),</span> <span class="m">10</span><span class="p">))</span> <span class="p">//</span> <span class="n">number</span> <span class="n">is</span> <span class="m">10</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"number is "</span> <span class="p">+</span> <span class="n">strconv</span><span class="p">.</span><span class="n">FormatInt</span><span class="p">(</span><span class="n">int64</span><span class="p">(</span><span class="n">num1</span><span class="p">),</span> <span class="m">2</span><span class="p">))</span>  <span class="p">//</span> <span class="n">number</span> <span class="n">is</span> <span class="m">1010</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"number is "</span> <span class="p">+</span> <span class="n">strconv</span><span class="p">.</span><span class="n">FormatInt</span><span class="p">(</span><span class="n">int64</span><span class="p">(</span><span class="n">num1</span><span class="p">),</span> <span class="m">8</span><span class="p">))</span>  <span class="p">//</span> <span class="n">number</span> <span class="n">is</span> <span class="m">12</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"number is "</span> <span class="p">+</span> <span class="n">strconv</span><span class="p">.</span><span class="n">FormatInt</span><span class="p">(</span><span class="n">int64</span><span class="p">(</span><span class="n">num1</span><span class="p">),</span> <span class="m">16</span><span class="p">))</span> <span class="p">//</span> <span class="n">number</span> <span class="n">is</span> <span class="n">a</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>使用 trconv.Atoi 或 strconv.ParseInt 從 string 轉換成 int</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"strconv"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">str1</span> <span class="p">:=</span> <span class="s2">"1000"</span>
+
+	<span class="n">i1</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">strconv</span><span class="p">.</span><span class="n">Atoi</span><span class="p">(</span><span class="n">str1</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="p">==</span> <span class="n">nil</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">i1</span> <span class="p">+</span> <span class="m">10</span><span class="p">)</span> <span class="p">//</span> <span class="err">印出</span> <span class="m">1010</span>
+	<span class="p">}</span>
+
+	<span class="n">str2</span> <span class="p">:=</span> <span class="s2">"2000"</span>
+	<span class="n">i2</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">strconv</span><span class="p">.</span><span class="nf">ParseInt</span><span class="p">(</span><span class="n">str2</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">64</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="p">==</span> <span class="n">nil</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">i2</span> <span class="p">+</span> <span class="m">10</span><span class="p">)</span> <span class="p">//</span> <span class="err">印出</span> <span class="m">2010</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
 
 
   </div>

@@ -52,5 +52,71 @@ fmt.Println(str[0:5])        // hello
 fmt.Println(str[7:])         // Daniel
 fmt.Println(str[:])          // hello, Daniel
 ```
+string 可加入跳脫字元例如要加上雙引號(\"")、單引號(\')、tab(\t)或換行(\n)等... : 
+
+```
+fmt.Println("Hello \t \"Daniel\"") // Hello 	 "Daniel"
+```
+
+如果不要有跳脫字元只要保留原始的字串只要使用反引號取代雙引號 :  
+
+```
+fmt.Println(`He'l'lo	"Daniel" \t`) // He'l'lo	"Daniel" \t
+
+```
+
+### string 與 int 的轉換
+使用 fmt.Sprintf 從 int 轉換成 string  
+
+```
+num1 := 12345678
+num2 := fmt.Sprintf("%d", num1)
+fmt.Println("number is " + num2)
+```
+strconv 套件可以在不同進位格式化數字  
+
+```
+package main
+
+import (
+	"fmt"
+	"strconv"
+)
+
+func main() {
+	num1 := 10
+	fmt.Println("number is " + strconv.FormatInt(int64(num1), 10)) // number is 10
+	fmt.Println("number is " + strconv.FormatInt(int64(num1), 2))  // number is 1010
+	fmt.Println("number is " + strconv.FormatInt(int64(num1), 8))  // number is 12
+	fmt.Println("number is " + strconv.FormatInt(int64(num1), 16)) // number is a
+}
+
+```
+使用 trconv.Atoi 或 strconv.ParseInt 從 string 轉換成 int
+
+```
+package main
+
+import (
+	"fmt"
+	"strconv"
+)
+
+func main() {
+	str1 := "1000"
+
+	i1, err := strconv.Atoi(str1)
+	if err == nil {
+		fmt.Println(i1 + 10) // 印出 1010
+	}
+
+	str2 := "2000"
+	i2, err := strconv.ParseInt(str2, 10, 64)
+	if err == nil {
+		fmt.Println(i2 + 10) // 印出 2010
+	}
+}
+
+```
 
 
