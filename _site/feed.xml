@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-09T16:52:41+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/31/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-31T12:44:17+08:00</published><updated>2018-10-31T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-09T19:16:42+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/31/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-31T12:44:17+08:00</published><updated>2018-10-31T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
 	&lt;span class=&quot;s2&quot;&gt;&quot;bytes&quot;&lt;/span&gt;
@@ -128,7 +128,64 @@
   &lt;p&gt;參考資料&lt;br /&gt;
 &lt;a href=&quot;https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/313050/&quot;&gt;ref-1&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://blog.csdn.net/aflyeaglenku/article/details/74188222&quot;&gt;ref-2&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">mongo day 1 (install)</title><link href="http://localhost:4000/mongo/2018/10/09/mongo_day1.html" rel="alternate" type="text/html" title="mongo day 1 (install)" /><published>2018-10-09T10:44:17+08:00</published><updated>2018-10-09T10:44:17+08:00</updated><id>http://localhost:4000/mongo/2018/10/09/mongo_day1</id><content type="html" xml:base="http://localhost:4000/mongo/2018/10/09/mongo_day1.html">&lt;p&gt;MongoDB 是一種 document-oriented 的 database，沒有 row 的概念，而是用 document．&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">mongo day 2 (docker mongo)</title><link href="http://localhost:4000/mongo/2018/10/09/mongo_day2.html" rel="alternate" type="text/html" title="mongo day 2 (docker mongo)" /><published>2018-10-09T11:44:17+08:00</published><updated>2018-10-09T11:44:17+08:00</updated><id>http://localhost:4000/mongo/2018/10/09/mongo_day2</id><content type="html" xml:base="http://localhost:4000/mongo/2018/10/09/mongo_day2.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull mongo
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /Users/daniel/mongo-docker
+touch docker-compose.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;docker-compose.yml 內容 :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    volumes:
+      - /Users/daniel/mongo-docker/data
+
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行 docker-compose up&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mongo Express 網址 (http://localhost:8081/)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/mongo/day2/mongo-day2_1.jpg&quot; alt=&quot;mongo-day2_1.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker exec -it mongo-docker_mongo_1 bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;連進 mongo shell&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mongo --host 127.0.0.1:27017
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;下載 gopkg.in/mgo.v2 套件&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;go get gopkg.in/mgo.v2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考資料&lt;br /&gt;
+&lt;a href=&quot;https://hub.docker.com/_/mongo/&quot;&gt;mongo docker&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">docker pull mongo</summary></entry><entry><title type="html">mongo day 1 (install)</title><link href="http://localhost:4000/mongo/2018/10/09/mongo_day1.html" rel="alternate" type="text/html" title="mongo day 1 (install)" /><published>2018-10-09T10:44:17+08:00</published><updated>2018-10-09T10:44:17+08:00</updated><id>http://localhost:4000/mongo/2018/10/09/mongo_day1</id><content type="html" xml:base="http://localhost:4000/mongo/2018/10/09/mongo_day1.html">&lt;p&gt;MongoDB 是一種 document-oriented 的 database，沒有 row 的概念，而是用 document．&lt;/p&gt;
 
 &lt;p&gt;row data :&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;id name 
@@ -286,6 +343,22 @@ student
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.student.find()
 { &quot;_id&quot; : ObjectId(&quot;5bbc6455d33691bc6113bdaf&quot;), &quot;id&quot; : 1, &quot;name&quot; : &quot;Daniel&quot;, &quot;age&quot; : 30 }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以查看目前 db 支持哪些方法 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.help()
+DB methods:
+  db.adminCommand(nameOrDocument) - switches to 'admin' db, and runs command [just calls db.runCommand(...)]
+  db.aggregate([pipeline], {options}) - performs a collectionless aggregation on this database; returns a cursor
+  db.auth(username, password)
+  db.cloneDatabase(fromhost) - deprecated
+  db.commandHelp(name) returns the help for the command
+  db.copyDatabase(fromdb, todb, fromhost) - deprecated
+  db.createCollection(name, {size: ..., capped: ..., max: ...})
+  db.createView(name, viewOn, [{$operator: {...}}, ...], {viewOptions})
+  db.createUser(userDocument)
+...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
@@ -1096,19 +1169,22 @@ active 會不斷寫入，而 standby 會一直讀取更新 metadata．而這邊�
 &lt;p&gt;1.在每台機器(dn1,dn2,dn3)啟動 zookeeper&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zkServer.sh start
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;2.到 dn1 那台 format namenode&lt;/p&gt;
+&lt;p&gt;2.啟動每台機器(dn1,dn2,dn3)的journalnode，不然執行 hdfs namenode -format 時會出現 8485 port 連不到&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hadoop-daemon.sh start journalnode
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;3.到 dn1 那台 format namenode&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hdfs namenode -format
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;3.在 dn1 啟動 cluster&lt;/p&gt;
+&lt;p&gt;4.在 dn1 啟動 cluster&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;start-all.sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;4.在 dn2 的 namenode 下 bootstrapStandby&lt;/p&gt;
+&lt;p&gt;5.在 dn2 的 namenode 下 bootstrapStandby&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hdfs namenode -bootstrapStandby
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;5.再啟動 dn2 standby 的 namenode&lt;/p&gt;
+&lt;p&gt;6.再啟動 dn2 standby 的 namenode&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hadoop-daemon.sh start namenode
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;6.啟動 dn2 的 Yarn Resourcemanager&lt;/p&gt;
+&lt;p&gt;7.啟動 dn2 的 Yarn Resourcemanager&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yarn-daemon.sh start resourcemanager
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -1519,50 +1595,4 @@ server.3=dmpn3:2888:3888
 &lt;a href=&quot;https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/ResourceManagerHA.html&quot;&gt;Yarn ResourceManager HA&lt;/a&gt;
 &lt;a href=&quot;https://blog.csdn.net/Androidlushangderen/article/details/53148213&quot;&gt;ZKFC 原理&lt;/a&gt;
 &lt;a href=&quot;https://blog.xuite.net/zerofirst/blog/212791661-Hadoop+HA%E7%B0%A1%E5%96%AE%E8%A8%98%E4%BA%8B&quot;&gt;Hadoop HA 筆記&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">目的 透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制． 3 台架構 5 台架構</summary></entry><entry><title type="html">go day 3 (use IDE)</title><link href="http://localhost:4000/go/2018/10/03/go_day3.html" rel="alternate" type="text/html" title="go day 3 (use IDE)" /><published>2018-10-03T10:44:17+08:00</published><updated>2018-10-03T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/03/go_day3</id><content type="html" xml:base="http://localhost:4000/go/2018/10/03/go_day3.html">&lt;h4 id=&quot;下載-ide&quot;&gt;下載 IDE&lt;/h4&gt;
-
-&lt;p&gt;這邊使用的是 &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;Visual Studio Code&lt;/a&gt; 來開發，先下載下來然後開啟．&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_1.jpg&quot; alt=&quot;go_day3_1.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;安裝-go-的-plugin&quot;&gt;安裝 Go 的 plugin&lt;/h4&gt;
-
-&lt;p&gt;接著點左邊第 5 個圖示，然後找 go 並安裝
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_2.jpg&quot; alt=&quot;go_day3_2.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;open-project&quot;&gt;open Project&lt;/h4&gt;
-
-&lt;p&gt;open 要跑的 go project
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_3.jpg&quot; alt=&quot;go_day3_3.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;會有一些錯誤訊息，GOPATH 環境變數沒有對到要執行的 project
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_4.jpg&quot; alt=&quot;go_day3_4.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Mac 的話可以下 command + shift + p 可以跑一些 IDE 的指令
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_5.jpg&quot; alt=&quot;go_day3_5.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;打開 settings
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_6.jpg&quot; alt=&quot;go_day3_6.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;使用 json 方式打開
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_7.jpg&quot; alt=&quot;go_day3_7.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;可以在 USER SETTINGS 的地方，寫要覆蓋的參數值
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_8.jpg&quot; alt=&quot;go_day3_8.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;執行程式&quot;&gt;執行程式&lt;/h4&gt;
-
-&lt;p&gt;點選左邊第 4 個圖示，然後再點開 launch.json 檔案，加上 Args 所需要的參數，然後就可以點綠色箭頭執行成功
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_9.jpg&quot; alt=&quot;go_day3_9.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;可以在數字前面下中斷點，然後上方會有可以下一步的鍵，方便 debug
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_10.jpg&quot; alt=&quot;go_day3_10.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;ide-console&quot;&gt;IDE Console&lt;/h4&gt;
-
-&lt;p&gt;在 console 頁籤，就像開一個 terminal 一樣，所以吃的環境變數是 local 的，不是 IDE 的環境變數
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_11.jpg&quot; alt=&quot;go_day3_11.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;find-references&quot;&gt;find references&lt;/h4&gt;
-&lt;p&gt;游標移到要找的 function 名稱後按右鍵，或著按 fn + shift + F12
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_12.jpg&quot; alt=&quot;go_day3_12.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">下載 IDE</summary></entry></feed>
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">目的 透過 zookeeper 針對 HDFS 的 namenode 及 Yarn 的 resourcemanager 的 High Availability 機制． 3 台架構 5 台架構</summary></entry></feed>

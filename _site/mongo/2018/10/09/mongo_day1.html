@@ -240,6 +240,22 @@ student
 { "_id" : ObjectId("5bbc6455d33691bc6113bdaf"), "id" : 1, "name" : "Daniel", "age" : 30 }
 </code></pre></div></div>
 
+<p>可以查看目前 db 支持哪些方法 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; db.help()
+DB methods:
+  db.adminCommand(nameOrDocument) - switches to 'admin' db, and runs command [just calls db.runCommand(...)]
+  db.aggregate([pipeline], {options}) - performs a collectionless aggregation on this database; returns a cursor
+  db.auth(username, password)
+  db.cloneDatabase(fromhost) - deprecated
+  db.commandHelp(name) returns the help for the command
+  db.copyDatabase(fromdb, todb, fromhost) - deprecated
+  db.createCollection(name, {size: ..., capped: ..., max: ...})
+  db.createView(name, viewOn, [{$operator: {...}}, ...], {viewOptions})
+  db.createUser(userDocument)
+...
+</code></pre></div></div>
+
 <blockquote>
   <p>參考網址<br />
 <a href="https://docs.mongodb.com/guides/server/install/">mongodb</a><br />

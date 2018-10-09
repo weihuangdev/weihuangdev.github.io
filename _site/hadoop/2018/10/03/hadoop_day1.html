@@ -321,19 +321,22 @@ active 會不斷寫入，而 standby 會一直讀取更新 metadata．而這邊�
 <p>1.在每台機器(dn1,dn2,dn3)啟動 zookeeper</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zkServer.sh start
 </code></pre></div></div>
-<p>2.到 dn1 那台 format namenode</p>
+<p>2.啟動每台機器(dn1,dn2,dn3)的journalnode，不然執行 hdfs namenode -format 時會出現 8485 port 連不到</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hadoop-daemon.sh start journalnode
+</code></pre></div></div>
+<p>3.到 dn1 那台 format namenode</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hdfs namenode -format
 </code></pre></div></div>
-<p>3.在 dn1 啟動 cluster</p>
+<p>4.在 dn1 啟動 cluster</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>start-all.sh
 </code></pre></div></div>
-<p>4.在 dn2 的 namenode 下 bootstrapStandby</p>
+<p>5.在 dn2 的 namenode 下 bootstrapStandby</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hdfs namenode -bootstrapStandby
 </code></pre></div></div>
-<p>5.再啟動 dn2 standby 的 namenode</p>
+<p>6.再啟動 dn2 standby 的 namenode</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hadoop-daemon.sh start namenode
 </code></pre></div></div>
-<p>6.啟動 dn2 的 Yarn Resourcemanager</p>
+<p>7.啟動 dn2 的 Yarn Resourcemanager</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn-daemon.sh start resourcemanager
 </code></pre></div></div>
 

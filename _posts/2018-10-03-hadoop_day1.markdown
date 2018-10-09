@@ -260,28 +260,30 @@ hdfs zkfc -formatZK
 ```
 zkServer.sh start
 ```
-2.到 dn1 那台 format namenode
+2.啟動每台機器(dn1,dn2,dn3)的journalnode，不然執行 hdfs namenode -format 時會出現 8485 port 連不到
+```
+hadoop-daemon.sh start journalnode
+```
+3.到 dn1 那台 format namenode
 ```
 hdfs namenode -format
 ```
-3.在 dn1 啟動 cluster
+4.在 dn1 啟動 cluster
 ```
 start-all.sh
 ```
-4.在 dn2 的 namenode 下 bootstrapStandby
+5.在 dn2 的 namenode 下 bootstrapStandby
 ```
 hdfs namenode -bootstrapStandby
 ```
-5.再啟動 dn2 standby 的 namenode
+6.再啟動 dn2 standby 的 namenode
 ```
 hadoop-daemon.sh start namenode
 ```
-6.啟動 dn2 的 Yarn Resourcemanager
+7.啟動 dn2 的 Yarn Resourcemanager
 ```
 yarn-daemon.sh start resourcemanager
 ```
-
-
 
 
 
