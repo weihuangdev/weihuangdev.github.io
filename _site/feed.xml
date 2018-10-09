@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-08T23:44:11+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/31/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-31T12:44:17+08:00</published><updated>2018-10-31T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-09T16:52:41+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 31 (AES 加解密)</title><link href="http://localhost:4000/go/2018/10/31/go_day31.html" rel="alternate" type="text/html" title="go day 31 (AES 加解密)" /><published>2018-10-31T12:44:17+08:00</published><updated>2018-10-31T12:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day31</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day31.html">&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
 	&lt;span class=&quot;s2&quot;&gt;&quot;bytes&quot;&lt;/span&gt;
@@ -128,7 +128,172 @@
   &lt;p&gt;參考資料&lt;br /&gt;
 &lt;a href=&quot;https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/313050/&quot;&gt;ref-1&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://blog.csdn.net/aflyeaglenku/article/details/74188222&quot;&gt;ref-2&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 9 (bool &amp;amp; string)</title><link href="http://localhost:4000/go/2018/10/08/go_day9.html" rel="alternate" type="text/html" title="go day 9 (bool &amp; string)" /><published>2018-10-08T10:44:17+08:00</published><updated>2018-10-08T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/08/go_day9</id><content type="html" xml:base="http://localhost:4000/go/2018/10/08/go_day9.html">&lt;h3 id=&quot;bool&quot;&gt;bool&lt;/h3&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">mongo day 1 (install)</title><link href="http://localhost:4000/mongo/2018/10/09/mongo_day1.html" rel="alternate" type="text/html" title="mongo day 1 (install)" /><published>2018-10-09T10:44:17+08:00</published><updated>2018-10-09T10:44:17+08:00</updated><id>http://localhost:4000/mongo/2018/10/09/mongo_day1</id><content type="html" xml:base="http://localhost:4000/mongo/2018/10/09/mongo_day1.html">&lt;p&gt;MongoDB 是一種 document-oriented 的 database，沒有 row 的概念，而是用 document．&lt;/p&gt;
+
+&lt;p&gt;row data :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;id name 
+1  &quot;Daniel&quot;
+2  &quot;Sam&quot;
+3  &quot;Allen&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;document(json 格式) :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[
+  {id:1,name:&quot;Daniel&quot;},
+  {id:2,name:&quot;Sam&quot;},
+  {id:3,name:&quot;Allen&quot;}
+]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;建立-mongodb-org-40repo&quot;&gt;建立 mongodb-org-4.0.repo&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo touch /etc/yum.repos.d/mongodb-org-4.0.repo
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;加上內容&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[mongodb-org-4.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;安裝-mongodb-packages&quot;&gt;安裝 mongodb packages&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo yum install -y mongodb-org
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;啟動 mongod&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo service mongod start
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;啟動後可以查看 log 路徑如下 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/var/log/mongodb/mongod.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;正常啟動的內容 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2018-10-09T07:19:06.735+0000 I CONTROL  [main] ***** SERVER RESTARTED *****
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] MongoDB starting : pid=17859 port=27017 dbpath=/var/lib/mongo 64-bit host=dmpt-2
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] db version v4.0.3
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] git version: 7ea530946fa7880364d88c8d8b6026bbc9ffa48c
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] allocator: tcmalloc
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] modules: none
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] build environment:
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten]     distmod: rhel70
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten]     distarch: x86_64
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten]     target_arch: x86_64
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] options: { config: &quot;/etc/mongod.conf&quot;, net: { bindIp: &quot;127.0.0.1&quot;, port: 27017 }, processManagement: { fork: true, pidFilePath: &quot;/var/run/mongodb/mongod.pid&quot;, timeZoneInfo: &quot;/usr/share/zoneinfo&quot; }, storage: { dbPath: &quot;/var/lib/mongo&quot;, journal: { enabled: true } }, systemLog: { destination: &quot;file&quot;, logAppend: true, path: &quot;/var/log/mongodb/mongod.log&quot; } }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;設定檔的路徑如下 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/mongod.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;檔案內容如下 :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[miuser@dmpt-2 mongodb]$ cat /etc/mongod.conf
+# mongod.conf
+
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod.log
+
+# Where and how to store data.
+storage:
+  dbPath: /var/lib/mongo
+  journal:
+    enabled: true
+#  engine:
+#  mmapv1:
+#  wiredTiger:
+
+# how the process runs
+processManagement:
+  fork: true  # fork and run in background
+  pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
+  timeZoneInfo: /usr/share/zoneinfo
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 127.0.0.1  # Enter 0.0.0.0,:: to bind to all IPv4 and IPv6 addresses or, alternatively, use the net.bindIpAll setting.
+
+
+#security:
+
+#operationProfiling:
+
+#replication:
+
+#sharding:
+
+## Enterprise-Only Options
+
+#auditLog:
+
+#snmp:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;下指令進入&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mongo --host 127.0.0.1:27017
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;show 出目前的 databases :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+&amp;gt; show databases
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看當前的 db :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db
+test
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看資料筆數 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.collection.count()
+0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看所有 collections&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; show collections
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;mongodb 本身有 javascript shell 可以寫一些 javascript 語法．
+新增資料 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; student1 = { id : 1 , name : &quot;Daniel&quot; , age : 30 }
+{ &quot;id&quot; : 1, &quot;name&quot; : &quot;Daniel&quot;, &quot;age&quot; : 30 }
+&amp;gt; db.student.insert(student1)
+WriteResult({ &quot;nInserted&quot; : 1 })
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;會看到 mongo 建立了 student 的 collection&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; show collections
+student
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;查看資料 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.student.find()
+{ &quot;_id&quot; : ObjectId(&quot;5bbc6455d33691bc6113bdaf&quot;), &quot;id&quot; : 1, &quot;name&quot; : &quot;Daniel&quot;, &quot;age&quot; : 30 }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;參考網址&lt;br /&gt;
+&lt;a href=&quot;https://docs.mongodb.com/guides/server/install/&quot;&gt;mongodb&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/&quot;&gt;mongodb-install-redhat&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://blog.toright.com/posts/4552/mongodb-sharding-%E5%88%86%E6%95%A3%E5%BC%8F%E5%84%B2%E5%AD%98%E6%9E%B6%E6%A7%8B%E5%BB%BA%E7%BD%AE-%E6%A6%82%E5%BF%B5%E7%AF%87.html&quot;&gt;MongoDB Sharding&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">MongoDB 是一種 document-oriented 的 database，沒有 row 的概念，而是用 document．</summary></entry><entry><title type="html">go day 9 (bool &amp;amp; string)</title><link href="http://localhost:4000/go/2018/10/08/go_day9.html" rel="alternate" type="text/html" title="go day 9 (bool &amp; string)" /><published>2018-10-08T10:44:17+08:00</published><updated>2018-10-08T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/08/go_day9</id><content type="html" xml:base="http://localhost:4000/go/2018/10/08/go_day9.html">&lt;h3 id=&quot;bool&quot;&gt;bool&lt;/h3&gt;
 &lt;p&gt;bool 只有 true 或 false．go 的 bool 跟數值 0 或 1 沒有間接的轉換，還有邏輯運算子 &amp;amp;&amp;amp; 會比 || 先執行．&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
@@ -1400,139 +1565,4 @@ server.3=dmpn3:2888:3888
 
 &lt;h4 id=&quot;find-references&quot;&gt;find references&lt;/h4&gt;
 &lt;p&gt;游標移到要找的 function 名稱後按右鍵，或著按 fn + shift + F12
-&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_12.jpg&quot; alt=&quot;go_day3_12.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">下載 IDE</summary></entry><entry><title type="html">go day 2 (package)</title><link href="http://localhost:4000/go/2018/10/02/go_day2.html" rel="alternate" type="text/html" title="go day 2 (package)" /><published>2018-10-02T10:44:17+08:00</published><updated>2018-10-02T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/02/go_day2</id><content type="html" xml:base="http://localhost:4000/go/2018/10/02/go_day2.html">&lt;h4 id=&quot;先移除-day-1-warning&quot;&gt;先移除 day 1 warning&lt;/h4&gt;
-&lt;p&gt;在 day 1 時，下指令 都會看到一串 warning 如下，來想辦法把它移除&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;warning: GOPATH set to GOROOT (/usr/local/go) has no effect
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看 go 的環境變數，使用 go env&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;daniel@Danielde-MacBook-Pro &amp;gt; /usr/local/go &amp;gt; go env
-GOARCH=&quot;amd64&quot;
-GOBIN=&quot;&quot;
-GOCACHE=&quot;/Users/daniel/Library/Caches/go-build&quot;
-GOEXE=&quot;&quot;
-GOFLAGS=&quot;&quot;
-GOHOSTARCH=&quot;amd64&quot;
-GOHOSTOS=&quot;darwin&quot;
-GOOS=&quot;darwin&quot;
-GOPATH=&quot;/Users/daniel/go&quot;
-GOPROXY=&quot;&quot;
-GORACE=&quot;&quot;
-GOROOT=&quot;/usr/local/go&quot;
-GOTMPDIR=&quot;&quot;
-GOTOOLDIR=&quot;/usr/local/go/pkg/tool/darwin_amd64&quot;
-GCCGO=&quot;gccgo&quot;
-CC=&quot;clang&quot;
-CXX=&quot;clang++&quot;
-CGO_ENABLED=&quot;1&quot;
-GOMOD=&quot;&quot;
-CGO_CFLAGS=&quot;-g -O2&quot;
-CGO_CPPFLAGS=&quot;&quot;
-CGO_CXXFLAGS=&quot;-g -O2&quot;
-CGO_FFLAGS=&quot;-g -O2&quot;
-CGO_LDFLAGS=&quot;-g -O2&quot;
-PKG_CONFIG=&quot;pkg-config&quot;
-GOGCCFLAGS=&quot;-fPIC -m64 -pthread -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=/var/folders/8v/9r5mf0y506734gvj_j337w7w0000gn/T/go-build164081726=/tmp/go-build -gno-record-gcc-switches -fno-common&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;可以看到 GOROOT 及 GOPATH 預設路徑&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GOROOT=&quot;/usr/local/go&quot;
-GOPATH=&quot;/Users/daniel/go&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;接著修改 ~/.bash_profile，將 GOPATH 改成目前測試 go 的 project 路徑&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export GOPATH=/Volumes/Transcend/golang/goHello
-export PATH=$JAVA_HOME/bin:$SCALA_HOME/bin:$GOPATH/bin:$PATH:~/bin
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;改完重新讀取一下&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source ~/.bash_profile
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;再用 go env 查看一下，可以看到 GOPATH 位置已經改掉了&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GOPATH=&quot;/Volumes/Transcend/golang/goHello&quot;
-GOROOT=&quot;/usr/local/go&quot;
-...
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;在 run 一下 day 1 寫的程式就可以發現 warning 已經移除了&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;daniel@Danielde-MacBook-Pro &amp;gt; /Volumes/Transcend/golang/goHello/src/hello &amp;gt; go run hello.go Daniel
-Hello Daniel
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;package-main&quot;&gt;package main&lt;/h4&gt;
-&lt;p&gt;修改 day 1 hello.go 的 package name，改成 mymain&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mymain&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;結果會發現不能 run 了&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;daniel@Danielde-MacBook-Pro &amp;gt; /Volumes/Transcend/golang/goHello/src/hello &amp;gt; go run hello.go Daniel
-go run: cannot run non-main package
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;可見 package main 是定義可直接執行的 go 程式&lt;/p&gt;
-
-&lt;h4 id=&quot;function-main&quot;&gt;function main&lt;/h4&gt;
-&lt;p&gt;接著修改 hello.go 的 func main() 名稱&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func mymain() {
-  var name = os.Args[1]
-  fmt.Println(&quot;Hello &quot; + name)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;結果也是不行 run&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;daniel@Danielde-MacBook-Pro &amp;gt; /Volumes/Transcend/golang/goHello/src/hello &amp;gt; go run hello.go Daniel
-# command-line-arguments
-runtime.main_main·f: function main is undeclared in the main package
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;所以看來 Go 的程式進入點是要定義在 package main 裡的 function main 底下．
-而且不是 package main 的 Go 程式無法使用 go build 產生出可執行檔．&lt;/p&gt;
-
-&lt;h4 id=&quot;替-package-名稱定義別名&quot;&gt;替 package 名稱定義別名&lt;/h4&gt;
-&lt;p&gt;新增 2 隻程式 appendstr.go 與 appendnum.go，package name 都是 append 要跟目錄名稱一樣 main 除外，目錄結構如下 :&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;goHello  
- -src
-  -util
-   -append
-    appendstr.go
-  -hello
-   -append
-    appendnum.go
-   hello.go
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;appendstr.go，方法名稱第一個字要大寫&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;abcde&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;appendnum.go&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;12345&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;接著修改 hello.go，由於兩個最後的 package name 都一樣，所以其中一個要定別名，將 “util/append” 前面定別名 newutil&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
- &lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
- &lt;span class=&quot;s2&quot;&gt;&quot;os&quot;&lt;/span&gt;
- &lt;span class=&quot;s2&quot;&gt;&quot;hello/append&quot;&lt;/span&gt;
- &lt;span class=&quot;n&quot;&gt;newutil&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;util/append&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Args&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;newutil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello &quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;執行成功&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;daniel@Danielde-MacBook-Pro &amp;gt; /Volumes/Transcend/golang/goHello/src/hello &amp;gt; go run hello.go Daniel
-Hello Daniel12345abcde
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">先移除 day 1 warning 在 day 1 時，下指令 都會看到一串 warning 如下，來想辦法把它移除 warning: GOPATH set to GOROOT (/usr/local/go) has no effect</summary></entry></feed>
+&lt;img src=&quot;http://localhost:4000/assets/go/day3/go_day3_12.jpg&quot; alt=&quot;go_day3_12.jpg&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">下載 IDE</summary></entry></feed>

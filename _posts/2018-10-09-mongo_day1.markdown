@@ -1,0 +1,196 @@
+---
+layout: post
+title:  "mongo day 1 (install)"
+date:   2018-10-09 10:44:17 +0800
+categories: mongo
+---
+
+MongoDB 是一種 document-oriented 的 database，沒有 row 的概念，而是用 document．  
+
+row data :  
+```
+id name 
+1  "Daniel"
+2  "Sam"
+3  "Allen"
+```
+document(json 格式) :  
+```
+[
+  {id:1,name:"Daniel"},
+  {id:2,name:"Sam"},
+  {id:3,name:"Allen"}
+]
+```
+
+
+#### 建立 mongodb-org-4.0.repo
+```
+sudo touch /etc/yum.repos.d/mongodb-org-4.0.repo
+```
+加上內容
+```
+[mongodb-org-4.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
+```
+
+
+#### 安裝 mongodb packages
+```
+sudo yum install -y mongodb-org
+```
+
+啟動 mongod
+
+```
+sudo service mongod start
+```
+啟動後可以查看 log 路徑如下 : 
+
+```
+/var/log/mongodb/mongod.log
+```
+正常啟動的內容 :  
+
+```
+2018-10-09T07:19:06.735+0000 I CONTROL  [main] ***** SERVER RESTARTED *****
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] MongoDB starting : pid=17859 port=27017 dbpath=/var/lib/mongo 64-bit host=dmpt-2
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] db version v4.0.3
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] git version: 7ea530946fa7880364d88c8d8b6026bbc9ffa48c
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1e-fips 11 Feb 2013
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] allocator: tcmalloc
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] modules: none
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] build environment:
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten]     distmod: rhel70
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten]     distarch: x86_64
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten]     target_arch: x86_64
+2018-10-09T07:19:07.287+0000 I CONTROL  [initandlisten] options: { config: "/etc/mongod.conf", net: { bindIp: "127.0.0.1", port: 27017 }, processManagement: { fork: true, pidFilePath: "/var/run/mongodb/mongod.pid", timeZoneInfo: "/usr/share/zoneinfo" }, storage: { dbPath: "/var/lib/mongo", journal: { enabled: true } }, systemLog: { destination: "file", logAppend: true, path: "/var/log/mongodb/mongod.log" } }
+```
+設定檔的路徑如下 :  
+
+```
+/etc/mongod.conf
+```
+檔案內容如下 :  
+```
+[miuser@dmpt-2 mongodb]$ cat /etc/mongod.conf
+# mongod.conf
+
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod.log
+
+# Where and how to store data.
+storage:
+  dbPath: /var/lib/mongo
+  journal:
+    enabled: true
+#  engine:
+#  mmapv1:
+#  wiredTiger:
+
+# how the process runs
+processManagement:
+  fork: true  # fork and run in background
+  pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
+  timeZoneInfo: /usr/share/zoneinfo
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 127.0.0.1  # Enter 0.0.0.0,:: to bind to all IPv4 and IPv6 addresses or, alternatively, use the net.bindIpAll setting.
+
+
+#security:
+
+#operationProfiling:
+
+#replication:
+
+#sharding:
+
+## Enterprise-Only Options
+
+#auditLog:
+
+#snmp:
+```
+
+下指令進入
+
+```
+mongo --host 127.0.0.1:27017
+```
+show 出目前的 databases :  
+
+```
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+> show databases
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+```
+
+查看當前的 db :  
+```
+> db
+test
+```
+
+查看資料筆數 :  
+
+```
+> db.collection.count()
+0
+```
+
+查看所有 collections
+
+```
+> show collections
+```
+
+mongodb 本身有 javascript shell 可以寫一些 javascript 語法．
+新增資料 :  
+
+```
+> student1 = { id : 1 , name : "Daniel" , age : 30 }
+{ "id" : 1, "name" : "Daniel", "age" : 30 }
+> db.student.insert(student1)
+WriteResult({ "nInserted" : 1 })
+```
+會看到 mongo 建立了 student 的 collection
+
+```
+> show collections
+student
+```
+查看資料 :  
+
+```
+> db.student.find()
+{ "_id" : ObjectId("5bbc6455d33691bc6113bdaf"), "id" : 1, "name" : "Daniel", "age" : 30 }
+```
+
+
+
+> 參考網址  
+> [mongodb](https://docs.mongodb.com/guides/server/install/)  
+> [mongodb-install-redhat](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/)  
+> [MongoDB Sharding](https://blog.toright.com/posts/4552/mongodb-sharding-%E5%88%86%E6%95%A3%E5%BC%8F%E5%84%B2%E5%AD%98%E6%9E%B6%E6%A7%8B%E5%BB%BA%E7%BD%AE-%E6%A6%82%E5%BF%B5%E7%AF%87.html)  
+
+
+
