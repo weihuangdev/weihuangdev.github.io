@@ -17,6 +17,9 @@ touch docker-compose.yml
 ```
 
 docker-compose.yml 內容 :  
+設定一個 user 和 password．  
+This user is created in the admin authentication database and given the role of root.
+
 ```
 # Use root/example as user/password credentials
 version: '3.1'
@@ -61,7 +64,7 @@ docker exec -it mongo-docker_mongo_1 bash
 連進 mongo shell
 
 ```
-mongo --host 127.0.0.1:27017
+mongo --host 127.0.0.1:27017 -u root -p 123456 --authenticationDatabase admin
 ```
 
 
@@ -78,15 +81,15 @@ daniel@Danielde-MBP > go get gopkg.in/mgo.v2
 
 
 
-
-
 ```
 package main
 
 import (
   "fmt"
+  "log"
 
   "gopkg.in/mgo.v2"
+  "gopkg.in/mgo.v2/bson"
 )
 
 type User struct {
@@ -102,7 +105,15 @@ func main() {
   if err != nil {
     panic(err)
   }
-  fmt.Println(err)
+  fmt.Println(err) // <nil>
+
+  result := User{}
+  err = c.Find(bson.M{"name": "Daniel"}).One(&result)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  fmt.Println("Age:", result.Age) // Age: 30
 }
 
 func getDB() *mgo.Database {
@@ -112,9 +123,26 @@ func getDB() *mgo.Database {
   }
 
   session.SetMode(mgo.Monotonic, true)
-  db := session.DB("test")
+  db := session.DB("admin") //root user is created in the admin authentication database and given the role of root.
   return db
 }
+
+```
+
+一些 mongo 的查詢指令 :  
+
+```
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+test    0.000GB
+> db.collection.count()
+0
+> show collections
+student
+> db.student.find()
+{ "_id" : ObjectId("5bbcd3c3b082c29547bc95c9"), "name" : "Daniel", "age" : 30 }
 
 ```
 

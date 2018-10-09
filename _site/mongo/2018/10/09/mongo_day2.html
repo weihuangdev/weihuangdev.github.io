@@ -87,7 +87,10 @@
 touch docker-compose.yml
 </code></pre></div></div>
 
-<p>docker-compose.yml 內容 :</p>
+<p>docker-compose.yml 內容 :<br />
+設定一個 user 和 password．<br />
+This user is created in the admin authentication database and given the role of root.</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Use root/example as user/password credentials
 version: '3.1'
 
@@ -127,7 +130,7 @@ services:
 </code></pre></div></div>
 <p>連進 mongo shell</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongo --host 127.0.0.1:27017
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongo --host 127.0.0.1:27017 -u root -p 123456 --authenticationDatabase admin
 </code></pre></div></div>
 
 <p>下載 gopkg.in/mgo.v2 套件</p>
@@ -143,8 +146,10 @@ daniel@Danielde-MBP &gt; go get gopkg.in/mgo.v2
 
 <span class="n">import</span> <span class="p">(</span>
   <span class="s2">"fmt"</span>
+  <span class="s2">"log"</span>
 
   <span class="s2">"gopkg.in/mgo.v2"</span>
+  <span class="s2">"gopkg.in/mgo.v2/bson"</span>
 <span class="p">)</span>
 
 <span class="n">type</span> <span class="n">User</span> <span class="n">struct</span> <span class="p">{</span>
@@ -160,7 +165,15 @@ daniel@Danielde-MBP &gt; go get gopkg.in/mgo.v2
   <span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
 </span>    <span class="n">panic</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
   <span class="p">}</span>
-  <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+  <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">//</span> <span class="p">&lt;</span><span class="n">nil</span><span class="p">&gt;</span>
+
+  <span class="n">result</span> <span class="p">:=</span> <span class="n">User</span><span class="p">{}</span>
+  <span class="n">err</span> <span class="p">=</span> <span class="n">c</span><span class="p">.</span><span class="n">Find</span><span class="p">(</span><span class="n">bson</span><span class="p">.</span><span class="n">M</span><span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Daniel"</span><span class="p">}).</span><span class="n">One</span><span class="p">(&amp;</span><span class="n">result</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>    <span class="nb">log</span><span class="p">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"Age:"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">Age</span><span class="p">)</span> <span class="p">//</span> <span class="n">Age</span><span class="p">:</span> <span class="m">30</span>
 <span class="p">}</span>
 
 <span class="n">func</span> <span class="n">getDB</span><span class="p">()</span> <span class="p">*</span><span class="n">mgo</span><span class="p">.</span><span class="n">Database</span> <span class="p">{</span>
@@ -170,9 +183,25 @@ daniel@Danielde-MBP &gt; go get gopkg.in/mgo.v2
   <span class="p">}</span>
 
   <span class="n">session</span><span class="p">.</span><span class="n">SetMode</span><span class="p">(</span><span class="n">mgo</span><span class="p">.</span><span class="n">Monotonic</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span>
-  <span class="n">db</span> <span class="p">:=</span> <span class="n">session</span><span class="p">.</span><span class="n">DB</span><span class="p">(</span><span class="s2">"test"</span><span class="p">)</span>
+  <span class="n">db</span> <span class="p">:=</span> <span class="n">session</span><span class="p">.</span><span class="n">DB</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">)</span> <span class="p">//</span><span class="n">root</span> <span class="n">user</span> <span class="n">is</span> <span class="n">created</span> <span class="k">in</span> <span class="n">the</span> <span class="n">admin</span> <span class="n">authentication</span> <span class="n">database</span> <span class="k">and</span> <span class="n">given</span> <span class="n">the</span> <span class="n">role</span> <span class="k">of</span> <span class="n">root</span><span class="p">.</span>
   <span class="n">return</span> <span class="n">db</span>
 <span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>一些 mongo 的查詢指令 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+test    0.000GB
+&gt; db.collection.count()
+0
+&gt; show collections
+student
+&gt; db.student.find()
+{ "_id" : ObjectId("5bbcd3c3b082c29547bc95c9"), "name" : "Daniel", "age" : 30 }
 
 </code></pre></div></div>
 
