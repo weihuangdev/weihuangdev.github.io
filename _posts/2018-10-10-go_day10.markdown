@@ -1,9 +1,11 @@
 ---
 layout: post
-title:  "go day 10 (Composite Types)"
+title:  "go day 10 (Array & slice)"
 date:   2018-10-10 10:44:17 +0800
 categories: go
 ---
+
+Array 與 slice 都是屬於 Composite Types．
 
 ### Array
 
@@ -54,4 +56,143 @@ fmt.Println(num2[0]) // 1
 fmt.Println(num1[1]) // 2
 fmt.Println(num2[1]) // 8
 ```
+
+Array 可以透過 [...] 讓 compiler 根據元素的數量來決定長度
+
+```
+names := [...]string{"Daniel", "Sam"}
+fmt.Println(reflect.TypeOf(names)) // [2]string
+```
+
+### slice
+slice 比較像是沒有固定長度的 Array．使用方式為[]T．T 是代表元素的型別．
+
+
+```
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+func main() {
+	var num1 []int = []int{1, 2, 3}
+	fmt.Println(reflect.TypeOf(num1)) // []int
+}
+
+```
+slice 跟 Arrsy 不一樣沒有辦法用 == 比較，只能跟 nil 比較
+
+```
+var num1 []int = []int{1, 2, 3}
+var num2 []int = []int{1, 2, 3}
+//fmt.Println(num1 == num2) // invalid operation: num1 == num2 (slice can only be compared to nil)
+```
+
+可以對 Array 取得 slice (片段)並透過 len() 與 cap() 取得 slice 的長度跟容量．
+長度是 slice 引用的數目，而容量是底層 Array 的數目．
+
+* %v : 預設格式  
+* %d : 10 進位的 integer  
+
+```
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+func main() {
+	numbers := [6]int{1, 2, 3, 4, 5, 6}
+	printArray(numbers)      // type=[]int , len=6 , cap=6 , slice=[1 2 3 4 5 6]
+	printSlice(numbers[1:4]) // type=[]int , len=3 , cap=5 , slice=[2 3 4]
+	printSlice(numbers[:4])  // type=[]int , len=4 , cap=6 , slice=[1 2 3 4]
+	printSlice(numbers[1:])  // type=[]int , len=5 , cap=5 , slice=[2 3 4 5 6]
+	printSlice(numbers[:])   // type=[]int , len=6 , cap=6 , slice=[1 2 3 4 5 6]
+
+}
+
+func printArray(numbers [6]int) {
+	fmt.Printf("type=%v , len=%d , cap=%d , slice=%v\n", reflect.TypeOf(numbers), len(numbers), cap(numbers), numbers)
+}
+
+func printSlice(numbers []int) {
+	fmt.Printf("type=%v , len=%d , cap=%d , slice=%v\n", reflect.TypeOf(numbers), len(numbers), cap(numbers), numbers)
+}
+
+```
+長度跟容量的圖示  
+
+![go_day10_1.jpg]({{ "/assets/go/day10/go_day10_1.jpg" | absolute_url }})
+
+
+可以透過 make 建立 slice，需要 3 個參數型別(指標)、長度跟容量．make 如果沒有給容量的話，長度會等於容量．
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var num1 []int = make([]int, 5, 6)
+	fmt.Println(len(num1)) // 5
+	fmt.Println(cap(num1)) // 6
+	fmt.Println(num1)      // [0 0 0 0 0]
+}
+
+```
+透過 append 對 slice 增加元素
+
+```
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+func main() {
+	num1 := make([]int, 1)
+	num1 = []int{1}
+	printSlice(num1) // type=[]int , len=1 , cap=1 , slice=[1]
+	num2 := append(num1, 2, 3, 4)
+	printSlice(num2) // type=[]int , len=4 , cap=4 , slice=[1 2 3 4]
+}
+
+func printSlice(numbers []int) {
+	fmt.Printf("type=%v , len=%d , cap=%d , slice=%v\n", reflect.TypeOf(numbers), len(numbers), cap(numbers), numbers)
+}
+
+```
+
+使用 copy 複製 slice，下面範例由於 num1 的容量開 6，所以還可以透過 append 加上元素
+
+```
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+func main() {
+	numbers := [6]int{1, 2, 3, 4, 5, 6}
+	var num1 []int = make([]int, 3, 6)
+	copy(num1, numbers[1:])
+	printSlice(num1)                  // type=[]int , len=3 , cap=6 , slice=[2 3 4]
+	printSlice(append(num1, 7, 8, 9)) // type=[]int , len=6 , cap=6 , slice=[2 3 4 7 8 9]
+
+}
+func printSlice(numbers []int) {
+	fmt.Printf("type=%v , len=%d , cap=%d , slice=%v\n", reflect.TypeOf(numbers), len(numbers), cap(numbers), numbers)
+}
+
+```
+
+
+
 

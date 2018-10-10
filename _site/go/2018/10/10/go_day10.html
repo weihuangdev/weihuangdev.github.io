@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>go day 10 (Composite Types)</title>
-  <meta name="description" content="Array">
+  <title>go day 10 (Array &amp; slice)</title>
+  <meta name="description" content="Array 與 slice 都是屬於 Composite Types．">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/go/2018/10/10/go_day10.html">
@@ -70,7 +70,7 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">go day 10 (Composite Types)</h1>
+    <h1 class="post-title p-name" itemprop="name headline">go day 10 (Array &amp; slice)</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2018-10-10T10:44:17+08:00" itemprop="datePublished">
         
@@ -80,7 +80,9 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h3 id="array">Array</h3>
+    <p>Array 與 slice 都是屬於 Composite Types．</p>
+
+<h3 id="array">Array</h3>
 
 <p>Array 是由 0 或多個特定型別元素，而且固定長度的．</p>
 
@@ -124,6 +126,135 @@ fmt.Println(num1[0]) // 7
 fmt.Println(num2[0]) // 1
 fmt.Println(num1[1]) // 2
 fmt.Println(num2[1]) // 8
+</code></pre></div></div>
+
+<p>Array 可以透過 […] 讓 compiler 根據元素的數量來決定長度</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>names := [...]string{"Daniel", "Sam"}
+fmt.Println(reflect.TypeOf(names)) // [2]string
+</code></pre></div></div>
+
+<h3 id="slice">slice</h3>
+<p>slice 比較像是沒有固定長度的 Array．使用方式為[]T．T 是代表元素的型別．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"reflect"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">var</span> <span class="n">num1</span> <span class="p">[]</span><span class="n">int</span> <span class="p">=</span> <span class="p">[]</span><span class="n">int</span><span class="p">{</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">}</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">reflect</span><span class="p">.</span><span class="n">TypeOf</span><span class="p">(</span><span class="n">num1</span><span class="p">))</span> <span class="p">//</span> <span class="p">[]</span><span class="n">int</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>slice 跟 Arrsy 不一樣沒有辦法用 == 比較，只能跟 nil 比較</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var num1 []int = []int{1, 2, 3}
+var num2 []int = []int{1, 2, 3}
+//fmt.Println(num1 == num2) // invalid operation: num1 == num2 (slice can only be compared to nil)
+</code></pre></div></div>
+
+<p>可以對 Array 取得 slice (片段)並透過 len() 與 cap() 取得 slice 的長度跟容量．
+長度是 slice 引用的數目，而容量是底層 Array 的數目．</p>
+
+<ul>
+  <li>%v : 預設格式</li>
+  <li>%d : 10 進位的 integer</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"reflect"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">numbers</span> <span class="p">:=</span> <span class="p">[</span><span class="m">6</span><span class="p">]</span><span class="n">int</span><span class="p">{</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">}</span>
+	<span class="n">printArray</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>      <span class="p">//</span> <span class="n">type</span><span class="p">=[]</span><span class="n">int</span> <span class="p">,</span> <span class="n">len</span><span class="p">=</span><span class="m">6</span> <span class="p">,</span> <span class="n">cap</span><span class="p">=</span><span class="m">6</span> <span class="p">,</span> <span class="n">slice</span><span class="p">=[</span><span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span> <span class="m">5</span> <span class="m">6</span><span class="p">]</span>
+	<span class="n">printSlice</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="m">1</span><span class="p">:</span><span class="m">4</span><span class="p">])</span> <span class="p">//</span> <span class="n">type</span><span class="p">=[]</span><span class="n">int</span> <span class="p">,</span> <span class="n">len</span><span class="p">=</span><span class="m">3</span> <span class="p">,</span> <span class="n">cap</span><span class="p">=</span><span class="m">5</span> <span class="p">,</span> <span class="n">slice</span><span class="p">=[</span><span class="m">2</span> <span class="m">3</span> <span class="m">4</span><span class="p">]</span>
+	<span class="n">printSlice</span><span class="p">(</span><span class="n">numbers</span><span class="p">[:</span><span class="m">4</span><span class="p">])</span>  <span class="p">//</span> <span class="n">type</span><span class="p">=[]</span><span class="n">int</span> <span class="p">,</span> <span class="n">len</span><span class="p">=</span><span class="m">4</span> <span class="p">,</span> <span class="n">cap</span><span class="p">=</span><span class="m">6</span> <span class="p">,</span> <span class="n">slice</span><span class="p">=[</span><span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span><span class="p">]</span>
+	<span class="n">printSlice</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="m">1</span><span class="p">:])</span>  <span class="p">//</span> <span class="n">type</span><span class="p">=[]</span><span class="n">int</span> <span class="p">,</span> <span class="n">len</span><span class="p">=</span><span class="m">5</span> <span class="p">,</span> <span class="n">cap</span><span class="p">=</span><span class="m">5</span> <span class="p">,</span> <span class="n">slice</span><span class="p">=[</span><span class="m">2</span> <span class="m">3</span> <span class="m">4</span> <span class="m">5</span> <span class="m">6</span><span class="p">]</span>
+	<span class="n">printSlice</span><span class="p">(</span><span class="n">numbers</span><span class="p">[:])</span>   <span class="p">//</span> <span class="n">type</span><span class="p">=[]</span><span class="n">int</span> <span class="p">,</span> <span class="n">len</span><span class="p">=</span><span class="m">6</span> <span class="p">,</span> <span class="n">cap</span><span class="p">=</span><span class="m">6</span> <span class="p">,</span> <span class="n">slice</span><span class="p">=[</span><span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span> <span class="m">5</span> <span class="m">6</span><span class="p">]</span>
+
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">printArray</span><span class="p">(</span><span class="n">numbers</span> <span class="p">[</span><span class="m">6</span><span class="p">]</span><span class="n">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Printf</span><span class="p">(</span><span class="s2">"type=%v , len=%d , cap=%d , slice=%v</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">reflect</span><span class="p">.</span><span class="n">TypeOf</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">cap</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">numbers</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">printSlice</span><span class="p">(</span><span class="n">numbers</span> <span class="p">[]</span><span class="n">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Printf</span><span class="p">(</span><span class="s2">"type=%v , len=%d , cap=%d , slice=%v</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">reflect</span><span class="p">.</span><span class="n">TypeOf</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">cap</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">numbers</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>長度跟容量的圖示</p>
+
+<p><img src="http://localhost:4000/assets/go/day10/go_day10_1.jpg" alt="go_day10_1.jpg" /></p>
+
+<p>可以透過 make 建立 slice，需要 3 個參數型別(指標)、長度跟容量．make 如果沒有給容量的話，長度會等於容量．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">var</span> <span class="n">num1</span> <span class="p">[]</span><span class="n">int</span> <span class="p">=</span> <span class="n">make</span><span class="p">([]</span><span class="n">int</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">len</span><span class="p">(</span><span class="n">num1</span><span class="p">))</span> <span class="p">//</span> <span class="m">5</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">cap</span><span class="p">(</span><span class="n">num1</span><span class="p">))</span> <span class="p">//</span> <span class="m">6</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">num1</span><span class="p">)</span>      <span class="p">//</span> <span class="p">[</span><span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span><span class="p">]</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>透過 append 對 slice 增加元素</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"reflect"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">num1</span> <span class="p">:=</span> <span class="n">make</span><span class="p">([]</span><span class="n">int</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+	<span class="n">num1</span> <span class="p">=</span> <span class="p">[]</span><span class="n">int</span><span class="p">{</span><span class="m">1</span><span class="p">}</span>
+	<span class="n">printSlice</span><span class="p">(</span><span class="n">num1</span><span class="p">)</span> <span class="p">//</span> <span class="n">type</span><span class="p">=[]</span><span class="n">int</span> <span class="p">,</span> <span class="n">len</span><span class="p">=</span><span class="m">1</span> <span class="p">,</span> <span class="n">cap</span><span class="p">=</span><span class="m">1</span> <span class="p">,</span> <span class="n">slice</span><span class="p">=[</span><span class="m">1</span><span class="p">]</span>
+	<span class="n">num2</span> <span class="p">:=</span> <span class="n">append</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+	<span class="n">printSlice</span><span class="p">(</span><span class="n">num2</span><span class="p">)</span> <span class="p">//</span> <span class="n">type</span><span class="p">=[]</span><span class="n">int</span> <span class="p">,</span> <span class="n">len</span><span class="p">=</span><span class="m">4</span> <span class="p">,</span> <span class="n">cap</span><span class="p">=</span><span class="m">4</span> <span class="p">,</span> <span class="n">slice</span><span class="p">=[</span><span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">printSlice</span><span class="p">(</span><span class="n">numbers</span> <span class="p">[]</span><span class="n">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Printf</span><span class="p">(</span><span class="s2">"type=%v , len=%d , cap=%d , slice=%v</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">reflect</span><span class="p">.</span><span class="n">TypeOf</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">cap</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">numbers</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>使用 copy 複製 slice，下面範例由於 num1 的容量開 6，所以還可以透過 append 加上元素</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"reflect"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">numbers</span> <span class="p">:=</span> <span class="p">[</span><span class="m">6</span><span class="p">]</span><span class="n">int</span><span class="p">{</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">}</span>
+	<span class="n">var</span> <span class="n">num1</span> <span class="p">[]</span><span class="n">int</span> <span class="p">=</span> <span class="n">make</span><span class="p">([]</span><span class="n">int</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">6</span><span class="p">)</span>
+	<span class="n">copy</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">numbers</span><span class="p">[</span><span class="m">1</span><span class="p">:])</span>
+	<span class="n">printSlice</span><span class="p">(</span><span class="n">num1</span><span class="p">)</span>                  <span class="p">//</span> <span class="n">type</span><span class="p">=[]</span><span class="n">int</span> <span class="p">,</span> <span class="n">len</span><span class="p">=</span><span class="m">3</span> <span class="p">,</span> <span class="n">cap</span><span class="p">=</span><span class="m">6</span> <span class="p">,</span> <span class="n">slice</span><span class="p">=[</span><span class="m">2</span> <span class="m">3</span> <span class="m">4</span><span class="p">]</span>
+	<span class="n">printSlice</span><span class="p">(</span><span class="n">append</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> <span class="m">9</span><span class="p">))</span> <span class="p">//</span> <span class="n">type</span><span class="p">=[]</span><span class="n">int</span> <span class="p">,</span> <span class="n">len</span><span class="p">=</span><span class="m">6</span> <span class="p">,</span> <span class="n">cap</span><span class="p">=</span><span class="m">6</span> <span class="p">,</span> <span class="n">slice</span><span class="p">=[</span><span class="m">2</span> <span class="m">3</span> <span class="m">4</span> <span class="m">7</span> <span class="m">8</span> <span class="m">9</span><span class="p">]</span>
+
+<span class="p">}</span>
+<span class="n">func</span> <span class="n">printSlice</span><span class="p">(</span><span class="n">numbers</span> <span class="p">[]</span><span class="n">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Printf</span><span class="p">(</span><span class="s2">"type=%v , len=%d , cap=%d , slice=%v</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">reflect</span><span class="p">.</span><span class="n">TypeOf</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">cap</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="n">numbers</span><span class="p">)</span>
+<span class="p">}</span>
+
 </code></pre></div></div>
 
 
