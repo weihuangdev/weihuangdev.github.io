@@ -1,0 +1,57 @@
+---
+layout: post
+title:  "go day 10 (Composite Types)"
+date:   2018-10-10 10:44:17 +0800
+categories: go
+---
+
+### Array
+
+Array 是由 0 或多個特定型別元素，而且固定長度的．
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var nums [3]int = [3]int{1, 2, 3}
+	fmt.Println(nums[2]) // 3
+}
+
+```
+初始化預設 int 的話是 0，預設 string 是空字串 ""
+
+```
+var nums [3]int = [3]int{1, 2}
+fmt.Println(nums[2]) // 0
+
+var strs [3]string = [3]string{"a", "b"}
+fmt.Println(strs[2])
+```
+
+Array 的比較也是用 == 或 !=
+
+```
+var num1 [3]int = [3]int{1, 2, 3}
+var num2 [3]int = [3]int{1, 2, 3}
+var num3 [3]int = [3]int{1, 2}
+fmt.Println(num1 == num2) // true
+fmt.Println(num1 == num3) // false
+```
+
+下面的範例將 num1 的值給 num2，但兩邊陣列的值不影響  
+
+```
+var num1 [3]int = [3]int{1, 2, 3}
+var num2 = num1
+num1[0] = 7
+num2[1] = 8
+fmt.Println(num1[0]) // 7
+fmt.Println(num2[0]) // 1
+fmt.Println(num1[1]) // 2
+fmt.Println(num2[1]) // 8
+```
+

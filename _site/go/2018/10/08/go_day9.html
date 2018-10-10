@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>go day 9 (bool &amp; string)</title>
+  <title>go day 9 (bool &amp; string &amp; iota)</title>
   <meta name="description" content="bool bool 只有 true 或 false．go 的 bool 跟數值 0 或 1 沒有間接的轉換，還有邏輯運算子 &amp;amp;&amp;amp; 會比 || 先執行．">
 
   <link rel="stylesheet" href="/assets/main.css">
@@ -70,7 +70,7 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">go day 9 (bool &amp; string)</h1>
+    <h1 class="post-title p-name" itemprop="name headline">go day 9 (bool &amp; string &amp; iota)</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2018-10-08T10:44:17+08:00" itemprop="datePublished">
         
@@ -183,6 +183,89 @@ fmt.Println("number is " + num2)
 		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">i2</span> <span class="p">+</span> <span class="m">10</span><span class="p">)</span> <span class="p">//</span> <span class="err">印出</span> <span class="m">2010</span>
 	<span class="p">}</span>
 <span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="iota-常數產生器">iota 常數產生器</h3>
+<p>const 常數宣告可以使用 iota 常數產生器，可以產生一系列相關值．iota 值從 0 開始對序列中的每個元素遞增．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+<span class="p">)</span>
+
+<span class="n">type</span> <span class="n">Weekday</span> <span class="n">int</span>
+
+<span class="n">const</span> <span class="p">(</span>
+	<span class="n">Sunday</span> <span class="n">Weekday</span> <span class="p">=</span> <span class="n">iota</span>
+	<span class="n">Monday</span>
+	<span class="n">Tuesday</span>
+	<span class="n">Wednesday</span>
+	<span class="n">Thursday</span>
+	<span class="n">Friday</span>
+	<span class="n">Saturday</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">Sunday</span><span class="p">)</span>    <span class="p">//</span> <span class="m">0</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">Monday</span><span class="p">)</span>    <span class="p">//</span> <span class="m">1</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">Tuesday</span><span class="p">)</span>   <span class="p">//</span> <span class="m">2</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">Wednesday</span><span class="p">)</span> <span class="p">//</span> <span class="m">3</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">Thursday</span><span class="p">)</span>  <span class="p">//</span> <span class="m">4</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">Friday</span><span class="p">)</span>    <span class="p">//</span> <span class="m">5</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">Saturday</span><span class="p">)</span>  <span class="p">//</span> <span class="m">6</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>也可以從 1 開始</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type Weekday int
+
+const (
+	Sunday Weekday = 1 + iota
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Saturday
+)
+
+func main() {
+	fmt.Println(Sunday)    // 1
+	fmt.Println(Monday)    // 2
+	fmt.Println(Tuesday)   // 3
+	fmt.Println(Wednesday) // 4
+	fmt.Println(Thursday)  // 5
+	fmt.Println(Friday)    // 6
+	fmt.Println(Saturday)  // 7
+}
+
+</code></pre></div></div>
+<p>透過 « 將每一個值 * 2 遞增</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type Weekday int
+
+const (
+	Sunday Weekday = 3 &lt;&lt; iota
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Saturday
+)
+
+func main() {
+	fmt.Println(Sunday)    // 3
+	fmt.Println(Monday)    // 6
+	fmt.Println(Tuesday)   // 12
+	fmt.Println(Wednesday) // 24
+	fmt.Println(Thursday)  // 48
+	fmt.Println(Friday)    // 96
+	fmt.Println(Saturday)  // 192
+}
 
 </code></pre></div></div>
 

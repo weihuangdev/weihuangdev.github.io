@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "go day 9 (bool & string)"
+title:  "go day 9 (bool & string & iota)"
 date:   2018-10-08 10:44:17 +0800
 categories: go
 ---
@@ -119,4 +119,89 @@ func main() {
 
 ```
 
+### iota 常數產生器
+const 常數宣告可以使用 iota 常數產生器，可以產生一系列相關值．iota 值從 0 開始對序列中的每個元素遞增．
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+type Weekday int
+
+const (
+	Sunday Weekday = iota
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Saturday
+)
+
+func main() {
+	fmt.Println(Sunday)    // 0
+	fmt.Println(Monday)    // 1
+	fmt.Println(Tuesday)   // 2
+	fmt.Println(Wednesday) // 3
+	fmt.Println(Thursday)  // 4
+	fmt.Println(Friday)    // 5
+	fmt.Println(Saturday)  // 6
+}
+
+```
+也可以從 1 開始
+
+```
+type Weekday int
+
+const (
+	Sunday Weekday = 1 + iota
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Saturday
+)
+
+func main() {
+	fmt.Println(Sunday)    // 1
+	fmt.Println(Monday)    // 2
+	fmt.Println(Tuesday)   // 3
+	fmt.Println(Wednesday) // 4
+	fmt.Println(Thursday)  // 5
+	fmt.Println(Friday)    // 6
+	fmt.Println(Saturday)  // 7
+}
+
+```
+透過 << 將每一個值 * 2 遞增
+
+```
+type Weekday int
+
+const (
+	Sunday Weekday = 3 << iota
+	Monday
+	Tuesday
+	Wednesday
+	Thursday
+	Friday
+	Saturday
+)
+
+func main() {
+	fmt.Println(Sunday)    // 3
+	fmt.Println(Monday)    // 6
+	fmt.Println(Tuesday)   // 12
+	fmt.Println(Wednesday) // 24
+	fmt.Println(Thursday)  // 48
+	fmt.Println(Friday)    // 96
+	fmt.Println(Saturday)  // 192
+}
+
+```
 
