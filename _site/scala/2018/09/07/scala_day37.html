@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Scala day 37 (sbt proguard)</title>
-  <meta name="description" content="proguard 使用 proguard 可以幫忙混淆 decompiler 出來的 class 檔，">
+  <title>Scala day 37 (scalapb)</title>
+  <meta name="description" content="project 目錄結構">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/scala/2018/09/07/scala_day37.html">
@@ -70,7 +70,7 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Scala day 37 (sbt proguard)</h1>
+    <h1 class="post-title p-name" itemprop="name headline">Scala day 37 (scalapb)</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2018-09-07T11:44:17+08:00" itemprop="datePublished">
         
@@ -80,45 +80,167 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h4 id="proguard">proguard</h4>
-<p>使用 proguard 可以幫忙混淆 decompiler 出來的 class 檔，</p>
+    <h4 id="project-目錄結構">project 目錄結構</h4>
 
-<h4 id="在-projectproject-底下加上-pluginssbt-內容為">在 {project}/project 底下加上 plugins.sbt 內容為</h4>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>addSbtPlugin("com.lightbend.sbt" % "sbt-proguard" % "0.3.0")
+<p><img src="http://localhost:4000/assets/scala/day36/scala_day36_1.jpg" alt="go_day36_1.jpg" /></p>
+
+<h4 id="buildsbt">build.sbt</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import scalapb.compiler.Version.scalapbVersion
+
+name := "hellopb"
+
+scalaVersion := "2.11.12"
+
+PB.targets in Compile := Seq(
+  scalapb.gen() -&gt; (sourceManaged in Compile).value
+)
+
+libraryDependencies ++= Seq(
+ "com.thesamet.scalapb"  %%  "scalapb-runtime"       % scalapbVersion,
+ "com.thesamet.scalapb"  %%  "scalapb-runtime-grpc"  % scalapbVersion,
+ "io.grpc"               %   "grpc-okhttp"           % "1.14.0",
+ "io.grpc"               %   "grpc-netty"            % "1.14.0"
+
+)
+
+assemblyJarName in assembly := name.value + ".jar"
+
+assemblyMergeStrategy in assembly := {
+    case PathList("META-INF", xs @ _*) =&gt; MergeStrategy.discard
+    case x =&gt; MergeStrategy.first
+}
+
+
 </code></pre></div></div>
 
-<h4 id="在-buildsbt-依造需要的-optionfilter-及-merge-方式設定如下-">在 build.sbt 依造需要的 option、filter 及 Merge 方式設定，如下 :</h4>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>enablePlugins(SbtProguard)
-proguardOptions in Proguard += "-dontoptimize"
-proguardOptions in Proguard ++= Seq("-dontnote", "-dontwarn", "-ignorewarnings","-keepattributes Signature,*Annotation*","-keep class scala.** { *; }","-keep class com.** { *; }","-keep class org.** { *; }")
-proguardInputs in Proguard := (dependencyClasspath in Compile).value.files
-proguardFilteredInputs in Proguard ++= ProguardOptions.noFilter((packageBin in Compile).value)
-proguardOptions in Proguard += ProguardOptions.keepMain("ght.**")
-​
-javaOptions in (Proguard, proguard) := Seq("-Xmx4G")
-​
-proguardMerge in Proguard := true
-proguardMergeStrategies in Proguard += ProguardMerge.last("javax.inject-2.4.0-b34.jar")
-proguardMergeStrategies in Proguard += ProguardMerge.last("io/netty/.*".r)
-proguardMergeStrategies in Proguard += ProguardMerge.last("org/apache/commons/.*".r)
-proguardMergeStrategies in Proguard += ProguardMerge.last("org/apache/hadoop/.*".r)
-proguardMergeStrategies in Proguard += ProguardMerge.last("org/apache/spark/.*".r)
-proguardMergeStrategies in Proguard += ProguardMerge.last("org/aopalliance/.*".r)
-proguardMergeStrategies in Proguard += ProguardMerge.last("javax/.*".r)
-proguardMergeStrategies in Proguard += ProguardMerge.last("java/.*".r)
-proguardMergeStrategies in Proguard += ProguardMerge.discard("META-INF/.*".r)
-proguardMergeStrategies in Proguard += ProguardMerge.discard("git.properties")
-proguardMergeStrategies in Proguard += ProguardMerge.rename("LICENSE.*".r)
-proguardMergeStrategies in Proguard += ProguardMerge.discard("rootdoc.txt")
+<h4 id="assemblysbt">assembly.sbt</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.7")
 </code></pre></div></div>
 
-<h4 id="下指令-build-jar">下指令 build jar</h4>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sbt proguard:proguard
+<h4 id="scalapbsbt">scalapb.sbt</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>addSbtPlugin("com.thesamet" % "sbt-protoc" % "0.99.18")
+libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.7.4"
 </code></pre></div></div>
+
+<h4 id="helloproto">hello.proto</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">syntax</span> <span class="p">=</span> <span class="s2">"proto3"</span><span class="p">;</span>
+
+<span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">protos</span><span class="p">;</span>
+
+<span class="p">//</span> <span class="n">The</span> <span class="n">greeting</span> <span class="n">service</span> <span class="n">definition</span><span class="p">.</span>
+<span class="n">service</span> <span class="n">Greeter</span> <span class="p">{</span>
+  <span class="p">//</span> <span class="n">Sends</span> <span class="n">a</span> <span class="n">greeting</span>
+  <span class="n">rpc</span> <span class="n">SayHello</span> <span class="p">(</span><span class="n">HelloRequest</span><span class="p">)</span> <span class="n">returns</span> <span class="p">(</span><span class="n">HelloReply</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="p">//</span> <span class="n">The</span> <span class="n">request</span> <span class="n">message</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">user</span><span class="s1">'s name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+</span></code></pre></div></div>
+
+<h4 id="執行-sbt-compile">執行 sbt compile</h4>
+<p>build 出來的 scala 程式會在下列路徑<br />
+<img src="http://localhost:4000/assets/scala/day36/scala_day36_2.jpg" alt="go_day36_2.jpg" /></p>
+
+<h4 id="greeterimplscala">GreeterImpl.scala</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">ght</span><span class="p">.</span><span class="n">mi</span><span class="p">.</span><span class="n">hello</span>
+
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">protos</span><span class="p">.</span><span class="n">hello</span><span class="p">.{</span><span class="n">GreeterGrpc</span><span class="p">,</span> <span class="n">HelloReply</span><span class="p">,</span> <span class="n">HelloRequest</span><span class="p">}</span>
+
+<span class="n">import</span> <span class="n">scala</span><span class="p">.</span><span class="n">concurrent</span><span class="p">.</span><span class="n">Future</span>
+
+<span class="n">class</span> <span class="n">GreeterImpl</span> <span class="n">extends</span> <span class="n">GreeterGrpc</span><span class="p">.</span><span class="n">Greeter</span> <span class="p">{</span>
+
+  <span class="n">override</span> <span class="n">def</span> <span class="n">sayHello</span><span class="p">(</span><span class="n">req</span><span class="p">:</span> <span class="n">HelloRequest</span><span class="p">)</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="n">val</span> <span class="n">reply</span> <span class="p">=</span> <span class="n">HelloReply</span><span class="p">(</span><span class="n">message</span> <span class="p">=</span> <span class="s2">"Hello "</span> <span class="p">+</span> <span class="n">req</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">Future</span><span class="p">.</span><span class="n">successful</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="helloworldserverscala">HelloWorldServer.scala</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">ght</span><span class="p">.</span><span class="n">mi</span><span class="p">.</span><span class="n">hello</span>
+
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">protos</span><span class="p">.</span><span class="n">hello</span><span class="p">.</span><span class="n">GreeterGrpc</span>
+<span class="n">import</span> <span class="n">io</span><span class="p">.</span><span class="n">grpc</span><span class="p">.{</span><span class="n">Server</span><span class="p">,</span> <span class="n">ServerBuilder</span><span class="p">}</span>
+
+<span class="n">import</span> <span class="n">scala</span><span class="p">.</span><span class="n">concurrent</span><span class="p">.</span><span class="n">ExecutionContext</span>
+
+<span class="n">object</span> <span class="n">HelloWorldServer</span> <span class="p">{</span>
+
+  <span class="n">def</span> <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="k">Array</span><span class="p">[</span><span class="k">String</span><span class="p">]):</span> <span class="n">Unit</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="n">val</span> <span class="n">server</span> <span class="p">=</span> <span class="n">new</span> <span class="n">HelloWorldServer</span><span class="p">(</span><span class="n">ExecutionContext</span><span class="p">.</span><span class="n">global</span><span class="p">)</span>
+    <span class="n">server</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">server</span><span class="p">.</span><span class="n">blockUntilShutdown</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="n">private</span> <span class="n">val</span> <span class="n">port</span> <span class="p">=</span> <span class="m">50051</span>
+<span class="p">}</span>
+
+<span class="n">class</span> <span class="n">HelloWorldServer</span><span class="p">(</span><span class="n">executionContext</span><span class="p">:</span> <span class="n">ExecutionContext</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">self</span> <span class="p">=&gt;</span>
+  <span class="n">private</span><span class="p">[</span><span class="n">this</span><span class="p">]</span> <span class="n">var</span> <span class="n">server</span><span class="p">:</span> <span class="n">Server</span> <span class="p">=</span> <span class="n">null</span>
+
+  <span class="n">private</span> <span class="n">def</span> <span class="n">start</span><span class="p">():</span> <span class="n">Unit</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="n">server</span> <span class="p">=</span> <span class="n">ServerBuilder</span><span class="p">.</span><span class="n">forPort</span><span class="p">(</span><span class="n">HelloWorldServer</span><span class="p">.</span><span class="n">port</span><span class="p">).</span><span class="n">addService</span><span class="p">(</span><span class="n">GreeterGrpc</span><span class="p">.</span><span class="n">bindService</span><span class="p">(</span><span class="n">new</span> <span class="n">GreeterImpl</span><span class="p">,</span> <span class="n">executionContext</span><span class="p">)).</span><span class="n">build</span><span class="p">.</span><span class="n">start</span>
+
+    <span class="n">sys</span><span class="p">.</span><span class="n">addShutdownHook</span> <span class="p">{</span>
+      <span class="nf">System</span><span class="p">.</span><span class="n">err</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"*** shutting down gRPC server since JVM is shutting down"</span><span class="p">)</span>
+      <span class="n">self</span><span class="p">.</span><span class="nf">stop</span><span class="p">()</span>
+      <span class="nf">System</span><span class="p">.</span><span class="n">err</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"*** server shut down"</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">private</span> <span class="n">def</span> <span class="nf">stop</span><span class="p">():</span> <span class="n">Unit</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">server</span> <span class="c1">!= null) {
+</span>      <span class="n">server</span><span class="p">.</span><span class="n">shutdown</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">private</span> <span class="n">def</span> <span class="n">blockUntilShutdown</span><span class="p">():</span> <span class="n">Unit</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">server</span> <span class="c1">!= null) {
+</span>      <span class="n">server</span><span class="p">.</span><span class="n">awaitTermination</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="helloworldclientscala">HelloWorldClient.scala</h4>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">ght</span><span class="p">.</span><span class="n">mi</span><span class="p">.</span><span class="n">hello</span>
+
+<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">protos</span><span class="p">.</span><span class="n">hello</span><span class="p">.{</span><span class="n">GreeterGrpc</span><span class="p">,</span> <span class="n">HelloReply</span><span class="p">,</span> <span class="n">HelloRequest</span><span class="p">}</span>
+<span class="n">import</span> <span class="n">io</span><span class="p">.</span><span class="n">grpc</span><span class="p">.</span><span class="n">ManagedChannelBuilder</span>
+
+<span class="n">object</span> <span class="n">HelloWorldClient</span> <span class="p">{</span>
+
+  <span class="n">def</span> <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="k">Array</span><span class="p">[</span><span class="k">String</span><span class="p">]):</span> <span class="n">Unit</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="n">val</span> <span class="n">host</span> <span class="p">=</span> <span class="s2">"localhost"</span>
+    <span class="n">val</span> <span class="n">port</span> <span class="p">=</span> <span class="m">50051</span>
+    <span class="n">val</span> <span class="n">channel</span> <span class="p">=</span> <span class="n">ManagedChannelBuilder</span><span class="p">.</span><span class="n">forAddress</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">).</span><span class="n">usePlaintext</span><span class="p">(</span><span class="nb">true</span><span class="p">).</span><span class="n">build</span>
+    <span class="n">val</span> <span class="n">request</span> <span class="p">=</span> <span class="n">HelloRequest</span><span class="p">(</span><span class="n">name</span> <span class="p">=</span> <span class="s2">"World"</span><span class="p">)</span>
+    <span class="n">val</span> <span class="n">blockingStub</span> <span class="p">=</span> <span class="n">GreeterGrpc</span><span class="p">.</span><span class="n">blockingStub</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+    <span class="n">val</span> <span class="n">reply</span><span class="p">:</span> <span class="n">HelloReply</span> <span class="p">=</span> <span class="n">blockingStub</span><span class="p">.</span><span class="n">sayHello</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">reply</span><span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h4 id="測試">測試</h4>
+<p>先執行 HelloWorldServer.scala 再執行 HelloWorldClient.scala</p>
 
 <blockquote>
   <p>參考資料<br />
-<a href="https://github.com/sbt/sbt-proguard">sbt-proguard</a></p>
+<a href="https://scalapb.github.io/grpc.html">scalapb</a></p>
 </blockquote>
 
 

@@ -1,0 +1,49 @@
+---
+layout: post
+title:  "Scala day 39 (mongo)"
+date:   2018-09-07 11:44:17 +0800
+categories: scala
+---
+
+#### build.sbt
+
+```
+"org.mongodb.scala"    %%   "mongo-scala-driver"    % "2.3.0"
+```
+
+
+#### MongoTest.scala
+
+```
+package interface.output
+
+import org.mongodb.scala._
+import org.scalatest.FunSuite
+
+class MongoTest extends FunSuite {
+
+  test("ConnectionTest") {
+    val mongoClient: MongoClient = MongoClient("mongodb://root:123456@localhost/?authSource=admin")
+    val database: MongoDatabase = mongoClient.getDatabase("admin")
+    val collection: MongoCollection[Document] = database.getCollection("LabelCount_TEST")
+
+    import org.mongodb.scala.model.Filters._
+    import interface.output.Helpers._
+    //equal 會用到 org.mongodb.scala.model.Filters._ ，printHeadResult() 會用到 interface.output.Helpers._
+    collection.find(equal("labelindex", 96)).first().printHeadResult()
+
+  }
+}
+
+```
+
+
+> 參考資料  
+> [scala-mongodb-driver](https://docs.mongodb.com/ecosystem/drivers/scala/)  
+> [scala-mongodb-driver-github](https://github.com/mongodb/mongo-scala-driver/blob/master/docs/reference/content/reference/connecting/authenticating.md)
+
+
+
+
+
+
