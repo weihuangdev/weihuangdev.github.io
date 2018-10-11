@@ -105,6 +105,19 @@
     <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">equal</span><span class="p">(</span><span class="s2">"labelindex"</span><span class="p">,</span> <span class="m">96</span><span class="p">)).</span><span class="n">first</span><span class="p">().</span><span class="n">printHeadResult</span><span class="p">()</span>
 
   <span class="p">}</span>
+
+   <span class="n">test</span><span class="p">(</span><span class="s2">"insertOneTest"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">val</span> <span class="n">mongoClient</span><span class="p">:</span> <span class="n">MongoClient</span> <span class="p">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s2">"mongodb://root:123456@localhost/?authSource=admin"</span><span class="p">)</span>
+    <span class="n">val</span> <span class="n">database</span><span class="p">:</span> <span class="n">MongoDatabase</span> <span class="p">=</span> <span class="n">mongoClient</span><span class="p">.</span><span class="n">getDatabase</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">)</span>
+    <span class="n">val</span> <span class="n">collection</span><span class="p">:</span> <span class="n">MongoCollection</span><span class="p">[</span><span class="n">Document</span><span class="p">]</span> <span class="p">=</span> <span class="n">database</span><span class="p">.</span><span class="n">getCollection</span><span class="p">(</span><span class="s2">"LabelCount_TEST"</span><span class="p">)</span>
+    <span class="n">val</span> <span class="n">doc</span><span class="p">:</span> <span class="n">Document</span> <span class="p">=</span> <span class="n">Document</span><span class="p">(</span><span class="s2">"labelindex"</span> <span class="p">-&gt;</span> <span class="m">99999</span><span class="p">,</span>
+      <span class="s2">"createdAt"</span> <span class="p">-&gt;</span> <span class="n">Calendar</span><span class="p">.</span><span class="n">getInstance</span><span class="p">().</span><span class="nf">getTime</span><span class="p">(),</span>
+      <span class="s2">"count"</span> <span class="p">-&gt;</span> <span class="m">88888</span><span class="p">,</span>
+      <span class="s2">"updatedAt"</span> <span class="p">-&gt;</span> <span class="n">Calendar</span><span class="p">.</span><span class="n">getInstance</span><span class="p">().</span><span class="nf">getTime</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">import</span> <span class="n">interface</span><span class="p">.</span><span class="n">output</span><span class="p">.</span><span class="n">Helpers</span><span class="p">.</span><span class="n">_</span>
+    <span class="n">collection</span><span class="p">.</span><span class="n">insertOne</span><span class="p">(</span><span class="n">doc</span><span class="p">).</span><span class="n">results</span><span class="p">()</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 
 </code></pre></div></div>

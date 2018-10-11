@@ -33,6 +33,19 @@ class MongoTest extends FunSuite {
     collection.find(equal("labelindex", 96)).first().printHeadResult()
 
   }
+
+   test("insertOneTest") {
+    val mongoClient: MongoClient = MongoClient("mongodb://root:123456@localhost/?authSource=admin")
+    val database: MongoDatabase = mongoClient.getDatabase("admin")
+    val collection: MongoCollection[Document] = database.getCollection("LabelCount_TEST")
+    val doc: Document = Document("labelindex" -> 99999,
+      "createdAt" -> Calendar.getInstance().getTime(),
+      "count" -> 88888,
+      "updatedAt" -> Calendar.getInstance().getTime()
+    )
+    import interface.output.Helpers._
+    collection.insertOne(doc).results()
+  }
 }
 
 ```
