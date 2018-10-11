@@ -1,0 +1,165 @@
+---
+layout: post
+title:  "go day 11 (map & struct)"
+date:   2018-10-11 10:44:17 +0800
+categories: go
+---
+
+map 與 struct 都是屬於 Composite Types．
+
+### map
+
+map 是 key value 的形式，map 宣告的形式為 map[K]V．map 的 key 為同一型別，value 也都為同一型別，但 key 跟 value 可以是不同型別．
+
+可以使用 make 建立 map  
+
+```
+students := make(map[int]string)
+```
+
+或使用下列方式初始化 map. 
+
+```
+students := map[int]string{
+	1: "Daniel",
+	2: "Sam",
+	3: "Allen",
+}
+```
+
+put 值使用 students[1] = "Daniel" 的方式，當 get 的 key 不存在時會取得 value 的初始值  
+
+```
+students[1] = "Daniel"
+students[2] = "Sam"
+students[3] = "Allen"
+students[4] = "Jack"
+fmt.Println(students[2]) // Sam
+fmt.Println(students[5]) // ""
+```
+
+刪除 key 使用 delete  
+
+```
+delete(students, 3)
+```
+
+使用 for 以及 range 取得 map 所有的元素  
+
+```
+for id, name := range students {
+	fmt.Printf("%s\t%d\n", name, id)
+}
+```
+
+程式範例  
+
+```
+
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	students := make(map[int]string)
+	students[1] = "Daniel"
+	students[2] = "Sam"
+	students[3] = "Allen"
+	students[4] = "Jack"
+	fmt.Println(students[2]) // Sam
+	fmt.Println(students[5]) // ""
+	delete(students, 3)
+
+	for id, name := range students {
+		fmt.Printf("%s\t%d\n", name, id)
+	}
+}
+
+```
+
+印出結果  
+
+```
+Sam
+
+Daniel	1
+Sam	2
+Jack	4
+
+```
+
+### struct
+struct 是集合資料型別，可以將 0 或多個任意型別組成．每個值可當作欄位來看．
+下面範例有不同的給 struct 初始值方式．再利用 sort.Strings 排序 Array．
+
+
+```
+package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+type Student struct {
+	ID   int
+	Name string
+}
+
+func main() {
+	var student1 Student
+	student1.ID = 1
+	student1.Name = "Daniel"
+
+	student2 := new(Student)
+	student2.ID = 2
+	student2.Name = "Sam"
+
+	student3 := Student{3, "Allen"}
+
+	students := make(map[string]Student)
+	students["s1"] = student1
+	students["s2"] = *student2
+	students["s3"] = student3
+
+	var names []string
+
+	for studentIndex, studentobj := range students {
+		fmt.Println(studentIndex)
+		fmt.Println(studentobj)
+		names = append(names, studentobj.Name)
+	}
+
+	sort.Strings(names)
+
+	for _, name := range names {
+		fmt.Println(name)
+	}
+}
+
+```
+
+印出結果  
+
+```
+s1
+{1 Daniel}
+s2
+{2 Sam}
+s3
+{3 Allen}
+Allen
+Daniel
+Sam
+
+```
+
+
+
+
+
+
+
+
