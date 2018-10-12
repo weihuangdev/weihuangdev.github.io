@@ -16,7 +16,7 @@ cd /Users/daniel/mongo-docker
 touch docker-compose.yml
 ```
 
-docker-compose.yml 內容 :  
+docker-compose.yml 內容(/Users/daniel/mongo-docker) :  
 設定一個 user 和 password．  
 This user is created in the admin authentication database and given the role of root.
 
@@ -143,8 +143,34 @@ test    0.000GB
 student
 > db.student.find()
 { "_id" : ObjectId("5bbcd3c3b082c29547bc95c9"), "name" : "Daniel", "age" : 30 }
+```
+使用 admin db 查詢 miRootUser 的資訊  
+```
+cfg_dmp_people:PRIMARY> use admin
+switched to db admin
+
+cfg_dmp_people:PRIMARY> db.getUser("miRootUser")
+{
+  "_id" : "admin.miRootUser",
+  "user" : "miRootUser",
+  "db" : "admin",
+  "roles" : [
+    {
+      "role" : "root",
+      "db" : "admin"
+    }
+  ]
+}
+
+db.grantRolesToUser(
+    "miRootUser",
+   [ "readWrite" , { role: "root", db: "mi3" } ],
+   { w: "majority" , wtimeout: 4000 }
+)
 
 ```
+
+
 
 
 > 參考資料  

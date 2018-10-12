@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-12T18:06:40+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 32 (read file insert mongo)</title><link href="http://localhost:4000/go/2018/10/31/go_day32.html" rel="alternate" type="text/html" title="go day 32 (read file insert mongo)" /><published>2018-10-31T12:45:17+08:00</published><updated>2018-10-31T12:45:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day32</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day32.html">&lt;p&gt;程式碼 :&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-12T18:44:54+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 32 (read file insert mongo)</title><link href="http://localhost:4000/go/2018/10/31/go_day32.html" rel="alternate" type="text/html" title="go day 32 (read file insert mongo)" /><published>2018-10-31T12:45:17+08:00</published><updated>2018-10-31T12:45:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day32</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day32.html">&lt;p&gt;程式碼 :&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
 
@@ -673,7 +673,7 @@ var num2 []int = []int{1, 2, 3}
 touch docker-compose.yml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;docker-compose.yml 內容 :&lt;br /&gt;
+&lt;p&gt;docker-compose.yml 內容(/Users/daniel/mongo-docker) :&lt;br /&gt;
 設定一個 user 和 password．&lt;br /&gt;
 This user is created in the admin authentication database and given the role of root.&lt;/p&gt;
 
@@ -788,6 +788,29 @@ test    0.000GB
 student
 &amp;gt; db.student.find()
 { &quot;_id&quot; : ObjectId(&quot;5bbcd3c3b082c29547bc95c9&quot;), &quot;name&quot; : &quot;Daniel&quot;, &quot;age&quot; : 30 }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;使用 admin db 查詢 miRootUser 的資訊&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cfg_dmp_people:PRIMARY&amp;gt; use admin
+switched to db admin
+
+cfg_dmp_people:PRIMARY&amp;gt; db.getUser(&quot;miRootUser&quot;)
+{
+  &quot;_id&quot; : &quot;admin.miRootUser&quot;,
+  &quot;user&quot; : &quot;miRootUser&quot;,
+  &quot;db&quot; : &quot;admin&quot;,
+  &quot;roles&quot; : [
+    {
+      &quot;role&quot; : &quot;root&quot;,
+      &quot;db&quot; : &quot;admin&quot;
+    }
+  ]
+}
+
+db.grantRolesToUser(
+    &quot;miRootUser&quot;,
+   [ &quot;readWrite&quot; , { role: &quot;root&quot;, db: &quot;mi3&quot; } ],
+   { w: &quot;majority&quot; , wtimeout: 4000 }
+)
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
