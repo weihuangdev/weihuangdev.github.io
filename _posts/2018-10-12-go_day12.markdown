@@ -1,0 +1,95 @@
+---
+layout: post
+title:  "go day 12 (function)"
+date:   2018-10-12 10:44:17 +0800
+categories: go
+---
+
+
+### function
+
+function 的結構如下，使用 func 宣告且需要有名稱、輸入參數、回傳結果跟 function 主體  
+
+```
+func name(parameter-list) (result-list) {
+	body
+}
+```
+輸入參數如果是同型別的話可以簡化成 add(x, y int)．輸入參數沒用到的話可以用 _ 省略．
+回傳結果可以給一個變數，這樣在 function 裡就可以不用最後再 return 一個值．
+
+
+```
+package main
+
+import (
+	"crypto/rand"
+	"fmt"
+	"math/big"
+	mathRand "math/rand"
+	"time"
+)
+
+func main() {
+	fmt.Println(add(1, 2))         // 3
+	fmt.Println(randomNum(100, 3)) // 66
+	fmt.Println(mathRandom(100))   // 2813524261773535146
+
+}
+func add(x int, y int) int {
+	return x + y
+}
+func randomNum(seed, _ int) (ret *big.Int) {
+	ret, _ = rand.Int(rand.Reader, big.NewInt(int64(seed)))
+	return
+}
+func mathRandom(seed int) (ret int) {
+	mathRand.Seed(int64(time.Now().UnixNano()))
+	ret = mathRand.Int()
+	return
+}
+
+```
+
+匿名函式的呼叫方式  
+
+```
+sayHello := func(name string) {
+	fmt.Println("Hello " + name)
+}
+sayHello("Daniel") // Hello Daniel
+```
+
+把函式當作參數傳遞  
+
+```
+package main
+
+import (
+	"crypto/rand"
+	"fmt"
+	"math/big"
+	"strconv"
+)
+
+func main() {
+	sayHello := func(name string) string {
+		return "Hello " + name
+	}
+	fmt.Println(randomNum(100, 1, sayHello))
+}
+
+func randomNum(seed, _ int, sayHello func(string) string) (ret string) {
+	number, _ := rand.Int(rand.Reader, big.NewInt(int64(seed)))
+	ret = sayHello("Daniel") + ",your number is " + strconv.FormatInt(number.Int64(), 10)
+	return
+}
+
+```
+
+
+
+
+
+
+
