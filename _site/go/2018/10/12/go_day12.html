@@ -88,6 +88,7 @@
 	body
 }
 </code></pre></div></div>
+
 <p>輸入參數如果是同型別的話可以簡化成 add(x, y int)．輸入參數沒用到的話可以用 _ 省略．
 回傳結果可以給一個變數，這樣在 function 裡就可以不用最後再 return 一個值．</p>
 
@@ -152,6 +153,80 @@ sayHello("Daniel") // Hello Daniel
 	<span class="n">number</span><span class="p">,</span> <span class="n">_</span> <span class="p">:=</span> <span class="n">rand</span><span class="p">.</span><span class="n">Int</span><span class="p">(</span><span class="n">rand</span><span class="p">.</span><span class="n">Reader</span><span class="p">,</span> <span class="n">big</span><span class="p">.</span><span class="n">NewInt</span><span class="p">(</span><span class="n">int64</span><span class="p">(</span><span class="n">seed</span><span class="p">)))</span>
 	<span class="n">ret</span> <span class="p">=</span> <span class="n">sayHello</span><span class="p">(</span><span class="s2">"Daniel"</span><span class="p">)</span> <span class="p">+</span> <span class="s2">",your number is "</span> <span class="p">+</span> <span class="n">strconv</span><span class="p">.</span><span class="n">FormatInt</span><span class="p">(</span><span class="n">number</span><span class="p">.</span><span class="n">Int64</span><span class="p">(),</span> <span class="m">10</span><span class="p">)</span>
 	<span class="n">return</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>像 strings.Map 是把 funtcion 當參數傳遞，第 2 個參數字串會根據第 1 個參數的方法來做轉換</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"strings"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">trans</span> <span class="p">:=</span> <span class="n">func</span><span class="p">(</span><span class="n">r</span> <span class="n">rune</span><span class="p">)</span> <span class="n">rune</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="n">r</span> <span class="p">==</span> <span class="s1">'A'</span> <span class="p">||</span> <span class="n">r</span> <span class="p">==</span> <span class="m">97</span> <span class="p">{</span>
+			<span class="n">return</span> <span class="s1">'*'</span>
+		<span class="p">}</span>
+		<span class="n">return</span> <span class="n">r</span>
+	<span class="p">}</span>
+	<span class="n">retstr</span> <span class="p">:=</span> <span class="n">strings</span><span class="p">.</span><span class="n">Map</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="s2">"ABCDEabcde"</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">retstr</span><span class="p">)</span> <span class="p">//</span> <span class="p">*</span><span class="n">BCDE</span><span class="p">*</span><span class="n">bcde</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>function 回傳多個結果</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">sum</span><span class="p">,</span> <span class="n">message</span> <span class="p">:=</span> <span class="n">add</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">10</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="k">sum</span><span class="p">)</span>     <span class="p">//</span> <span class="m">15</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="p">//</span> <span class="n">High</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="n">int</span><span class="p">)</span> <span class="p">(</span><span class="n">retSum</span> <span class="n">int</span><span class="p">,</span> <span class="n">message</span> <span class="k">string</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">sum</span> <span class="p">:=</span> <span class="n">x</span> <span class="p">+</span> <span class="n">y</span>
+	<span class="n">retSum</span> <span class="p">=</span> <span class="k">sum</span>
+	<span class="k">if</span> <span class="k">sum</span> <span class="p">&gt;</span> <span class="m">10</span> <span class="p">{</span>
+		<span class="n">message</span> <span class="p">=</span> <span class="s2">"High"</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="n">message</span> <span class="p">=</span> <span class="s2">"Low"</span>
+	<span class="p">}</span>
+	<span class="n">return</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>可變的輸入參數</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="k">sum</span><span class="p">())</span>        <span class="p">//</span> <span class="m">0</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="k">sum</span><span class="p">(</span><span class="m">1</span><span class="p">))</span>       <span class="p">//</span> <span class="m">1</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="k">sum</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">))</span>    <span class="p">//</span> <span class="m">3</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="k">sum</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">))</span> <span class="p">//</span> <span class="m">6</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="k">sum</span><span class="p">(</span><span class="n">nums</span> <span class="p">...</span><span class="n">int</span><span class="p">)</span> <span class="n">int</span> <span class="p">{</span>
+	<span class="k">sum</span> <span class="p">:=</span> <span class="m">0</span>
+	<span class="n">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">num</span> <span class="p">:=</span> <span class="k">range</span> <span class="n">nums</span> <span class="p">{</span>
+		<span class="k">sum</span> <span class="p">+=</span> <span class="n">num</span>
+	<span class="p">}</span>
+	<span class="n">return</span> <span class="k">sum</span>
 <span class="p">}</span>
 
 </code></pre></div></div>

@@ -15,6 +15,7 @@ func name(parameter-list) (result-list) {
 	body
 }
 ```
+
 輸入參數如果是同型別的話可以簡化成 add(x, y int)．輸入參數沒用到的話可以用 _ 省略．
 回傳結果可以給一個變數，這樣在 function 裡就可以不用最後再 return 一個值．
 
@@ -86,6 +87,86 @@ func randomNum(seed, _ int, sayHello func(string) string) (ret string) {
 }
 
 ```
+
+像 strings.Map 是把 funtcion 當參數傳遞，第 2 個參數字串會根據第 1 個參數的方法來做轉換  
+
+```
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func main() {
+	trans := func(r rune) rune {
+		if r == 'A' || r == 97 {
+			return '*'
+		}
+		return r
+	}
+	retstr := strings.Map(trans, "ABCDEabcde")
+	fmt.Println(retstr) // *BCDE*bcde
+}
+
+```
+
+function 回傳多個結果  
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	sum, message := add(5, 10)
+	fmt.Println(sum)     // 15
+	fmt.Println(message) // High
+}
+
+func add(x, y int) (retSum int, message string) {
+	sum := x + y
+	retSum = sum
+	if sum > 10 {
+		message = "High"
+	} else {
+		message = "Low"
+	}
+	return
+}
+
+```
+
+可變的輸入參數  
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println(sum())        // 0
+	fmt.Println(sum(1))       // 1
+	fmt.Println(sum(1, 2))    // 3
+	fmt.Println(sum(1, 2, 3)) // 6
+}
+
+func sum(nums ...int) int {
+	sum := 0
+	for _, num := range nums {
+		sum += num
+	}
+	return sum
+}
+
+```
+
+
+
 
 
 
