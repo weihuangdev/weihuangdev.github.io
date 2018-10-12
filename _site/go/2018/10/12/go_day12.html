@@ -123,7 +123,7 @@
 
 </code></pre></div></div>
 
-<p>匿名函式的呼叫方式</p>
+<p>把匿名函式傳給變數的呼叫方式</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sayHello := func(name string) {
 	fmt.Println("Hello " + name)
@@ -146,7 +146,7 @@ sayHello("Daniel") // Hello Daniel
 	<span class="n">sayHello</span> <span class="p">:=</span> <span class="n">func</span><span class="p">(</span><span class="n">name</span> <span class="k">string</span><span class="p">)</span> <span class="k">string</span> <span class="p">{</span>
 		<span class="n">return</span> <span class="s2">"Hello "</span> <span class="p">+</span> <span class="n">name</span>
 	<span class="p">}</span>
-	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">randomNum</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="n">sayHello</span><span class="p">))</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">randomNum</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="n">sayHello</span><span class="p">))</span> <span class="p">//</span> <span class="n">Hello</span> <span class="n">Daniel</span><span class="p">,</span><span class="n">your</span> <span class="n">number</span> <span class="n">is</span> <span class="m">75</span>
 <span class="p">}</span>
 
 <span class="n">func</span> <span class="n">randomNum</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">_</span> <span class="n">int</span><span class="p">,</span> <span class="n">sayHello</span> <span class="n">func</span><span class="p">(</span><span class="k">string</span><span class="p">)</span> <span class="k">string</span><span class="p">)</span> <span class="p">(</span><span class="n">ret</span> <span class="k">string</span><span class="p">)</span> <span class="p">{</span>

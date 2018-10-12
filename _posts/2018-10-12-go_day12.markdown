@@ -52,7 +52,7 @@ func mathRandom(seed int) (ret int) {
 
 ```
 
-匿名函式的呼叫方式  
+把匿名函式傳給變數的呼叫方式  
 
 ```
 sayHello := func(name string) {
@@ -77,7 +77,7 @@ func main() {
 	sayHello := func(name string) string {
 		return "Hello " + name
 	}
-	fmt.Println(randomNum(100, 1, sayHello))
+	fmt.Println(randomNum(100, 1, sayHello)) // Hello Daniel,your number is 75
 }
 
 func randomNum(seed, _ int, sayHello func(string) string) (ret string) {
