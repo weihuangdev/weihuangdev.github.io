@@ -46,6 +46,22 @@ class MongoTest extends FunSuite {
     import interface.output.Helpers._
     collection.insertOne(doc).results()
   }
+
+  test("insertManyTest") {
+    val mongoClient: MongoClient = MongoClient("mongodb://root:123456@localhost/?authSource=admin")
+    val database: MongoDatabase = mongoClient.getDatabase("admin")
+    val collection: MongoCollection[Document] = database.getCollection("LabelCount_TEST")
+    val doc: Document = Document("labelindex" -> 99999,
+      "createdAt" -> Calendar.getInstance().getTime(),
+      "count" -> 88888,
+      "updatedAt" -> Calendar.getInstance().getTime()
+    )
+    import interface.output.Helpers._
+
+    val documents: IndexedSeq[Document] = (1 to 10) map { i: Int => Document("i" -> i) }
+    documents.foreach(println(_))
+    collection.insertMany(documents).results()
+  }
 }
 
 ```
