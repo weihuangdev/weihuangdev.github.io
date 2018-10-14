@@ -1,0 +1,167 @@
+---
+layout: post
+title:  "go day 14 (interface)"
+date:   2018-10-14 10:44:17 +0800
+categories: go
+---
+
+
+### interface
+
+interface 可以讓多個 type 都屬於同一種類的 interface type ．
+只要每個 type 都有實作 interface type 開的 method．
+
+#### 定義 interface
+定義一個 Counter 的 interface type，並開出了兩個方法 Add 與 GetSum，但都沒有實作，屬於抽象方法．
+代表只要有 type 同時也有 Add 與 GetSum 方法並實作出來，他們就都可以屬於 Counter 這 interface type．
+
+```
+type Counter interface {
+	Add()
+	GetSum() int
+}
+```
+
+#### 定義 Counter1
+Counter1 實作了 Add 與 GetSum 並多實作了 Sub 方法
+
+```
+type Counter1 struct {
+	sum int
+}
+
+func (c *Counter1) Add() {
+	c.sum++
+}
+func (c *Counter1) GetSum() int {
+	return c.sum
+}
+func (c *Counter1) Sub() {
+	c.sum--
+}
+```
+
+#### 定義 Counter2
+Counter2 實作了 Add 與 GetSum 並多實作了 Mod 方法
+
+```
+type Counter2 struct {
+	sum int
+}
+
+func (c *Counter2) Add() {
+	c.sum += 10
+}
+func (c *Counter2) GetSum() int {
+	return c.sum * 2
+}
+func (c *Counter2) Mod() int {
+	return c.sum % 2
+}
+```
+
+定義一個長度為 2 的 Counter Array 的 slice，然後把 Counter1 跟 Counter2 加入該 slice．
+Counter1 跟 Counter2 由於都實作了 Counter 這 interface 開的方法 Add 跟 GetSum 所以它們都是屬於 Counter type．
+所以可以加入該 counters slice  
+
+```
+counters := make([]Counter, 2)
+counters[0] = new(Counter1)
+counters[1] = new(Counter2)
+```
+
+接著跑迴圈呼叫 Counter1 與 Counter2
+
+```
+for _, c := range counters {
+	c.Add()
+	fmt.Println(c.GetSum())
+}
+```
+
+
+程式範例  
+
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+type Counter interface {
+	Add()
+	GetSum() int
+}
+
+type Counter1 struct {
+	sum int
+}
+
+func (c *Counter1) Add() {
+	c.sum++
+}
+func (c *Counter1) GetSum() int {
+	return c.sum
+}
+func (c *Counter1) Sub() {
+	c.sum--
+}
+
+type Counter2 struct {
+	sum int
+}
+
+func (c *Counter2) Add() {
+	c.sum += 10
+}
+func (c *Counter2) GetSum() int {
+	return c.sum * 2
+}
+func (c *Counter2) mod() int {
+	return c.sum % 2
+}
+
+func main() {
+	counters := make([]Counter, 2)
+	counters[0] = new(Counter1)
+	counters[1] = new(Counter2)
+
+	for _, c := range counters {
+		c.Add()
+		fmt.Println(c.GetSum())
+	}
+}
+
+
+```
+印出  
+```
+1
+20
+```
+
+#### interface 嵌入
+interface 還可以嵌入多個 interface，並增加不同的方法  
+
+```
+type NewCounter interface {
+	Counter
+	Sub()
+}
+```
+像上面的範例如果改成用 NewCounter 的 slice Counter1 由於有實作 Sub 方法所以 Counter1 除了屬於 Counter 也屬於 NewCounter．   
+
+```
+counters := make([]NewCounter, 2)
+counters[0] = new(Counter1) // ok
+counters[1] = new(Counter2) // error
+```
+
+
+
+
+
+
+

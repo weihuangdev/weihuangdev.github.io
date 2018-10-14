@@ -1,0 +1,106 @@
+---
+layout: post
+title:  "go day 13 (methods)"
+date:   2018-10-13 10:44:17 +0800
+categories: go
+---
+
+
+### method
+
+在 Go 裡 method 是與特定型別關聯的 function．宣告方式就是在 function 名稱之前再加上一個額外的參數．
+而 function 就會附在該參數的型別上．
+
+```
+func (m MyMath) add(x int, y int) int {
+	return x + y
+}
+
+```
+
+拿之前的範例來看，第 1 個 add 是 function 而第 2 個 add 算是 MyMath 的 method，與 struct MyMath 綁定關聯，所以 MyMath 可以用該方法．
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+type MyMath struct{}
+
+func main() {
+	fmt.Println(add(1, 2)) // 3
+	var myMath = new(MyMath)
+	fmt.Println(myMath.add(4, 5)) // 9
+}
+func add(x int, y int) int {
+	return x + y
+}
+
+func (m MyMath) add(x int, y int) int {
+	return x + y
+}
+
+```
+
+使用 pointer 的方式  
+
+```
+func (m *MyMath) add(x int, y int) int {
+	return x + y
+}
+```
+呼叫方式
+
+```
+newMath := &MyMath{}
+fmt.Println(newMath.add(1, 2)) // 3
+```
+
+記得要加括號 (&newMath).add 不然會被當成 &(newMath.add) 會出錯．
+
+```
+newMath := MyMath{}
+fmt.Println(newMath.add(1, 2))    // 3
+fmt.Println((&newMath).add(3, 5)) // 8
+```
+
+可以透過 method 方式，取得或改變 struct 封裝起來的變數  
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+type Counter struct {
+	sum int
+}
+
+func (c *Counter) add() {
+	c.sum++
+}
+func (c *Counter) getSum() int {
+	return c.sum
+}
+
+func main() {
+	var ct Counter
+	ct.add()
+	ct.add()
+	fmt.Println(ct.getSum()) // 2
+}
+
+```
+
+
+
+
+
+
+
+
+
+
