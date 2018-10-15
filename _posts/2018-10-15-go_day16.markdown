@@ -1,0 +1,125 @@
+---
+layout: post
+title:  "go day 16 (goroutines)"
+date:   2018-10-15 11:44:17 +0800
+categories: go
+---
+
+
+### goroutines
+
+一般呼叫 main function 裡面的程式會造順序執行．
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	showMessage("start")
+	showMessage("1")
+	showMessage("2")
+	showMessage("3")
+	showMessage("4")
+	showMessage("end")
+	fmt.Println("done")
+}
+
+func showMessage(msg string) {
+	fmt.Println(msg)
+}
+
+```
+
+印出
+
+```
+start
+1
+2
+3
+4
+end
+done
+
+```
+
+建立一個 goroutine 就是在使用 function 面前再加上 go 關鍵字．
+下面的例子 main function 不會等 goroutine 回傳結果，還沒等 goroutine 印出數字時，程式就會結束了．
+所以加上 fmt.Scanln(&input) 讓程式暫停，等隨便按了一個鍵後再按 Enter main function 才會結束．
+每次數字印出的順序都會不一樣就看哪個 goroutine 先執行完，所以這些 goroutine 是同時在進行工作的．
+
+
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	showMessage("start")
+	go showMessage("1")
+	go showMessage("2")
+	go showMessage("3")
+	go showMessage("4")
+	showMessage("end")
+	var input string
+	fmt.Scanln(&input)
+	fmt.Println("done")
+}
+
+func showMessage(msg string) {
+	fmt.Println(msg)
+}
+
+```
+
+印出
+
+```
+start
+end
+2
+4
+3
+1
+(Enter)
+done
+```
+
+由於 goroutine 會同時執行，所以有用到共用的資源時，執行順序有可能會影響到最後的結果  
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	sum := 10
+	go func() { sum += 3 }()
+	go func() { sum -= 5 }()
+	go func() { sum *= 2 }()
+	var input string
+	fmt.Scanln(&input)
+	fmt.Println(sum)
+}
+
+```
+像上面的範例排列組合有幾種，每次執行有可能出現不同答案  	
+
+```
+(10 + 3 - 5) * 2 = 16
+10 * 2 + 3 - 5 = 18
+(10 + 3) * 2 - 5 = 21
+...
+```
+
+
+
+
+
+

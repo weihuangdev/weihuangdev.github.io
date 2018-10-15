@@ -165,8 +165,22 @@ func sum(nums ...int) int {
 
 ```
 
+匿名函式的使用方式  
 
+```
+package main
 
+import "fmt"
+
+func main() {
+	sum := 10
+	func(num int) { sum += num }(3) // 有參數呼叫
+	func() { sum -= 5 }() // 無參數呼叫
+	func() { sum *= 2 }()
+	fmt.Println(sum) // 16
+}
+
+```
 
 
 

@@ -231,6 +231,22 @@ sayHello("Daniel") // Hello Daniel
 
 </code></pre></div></div>
 
+<p>匿名函式的使用方式</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="s2">"fmt"</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">sum</span> <span class="p">:=</span> <span class="m">10</span>
+	<span class="n">func</span><span class="p">(</span><span class="n">num</span> <span class="n">int</span><span class="p">)</span> <span class="p">{</span> <span class="k">sum</span> <span class="p">+=</span> <span class="n">num</span> <span class="p">}(</span><span class="m">3</span><span class="p">)</span> <span class="p">//</span> <span class="err">有參數呼叫</span>
+	<span class="n">func</span><span class="p">()</span> <span class="p">{</span> <span class="k">sum</span> <span class="p">-=</span> <span class="m">5</span> <span class="p">}()</span> <span class="p">//</span> <span class="err">無參數呼叫</span>
+	<span class="n">func</span><span class="p">()</span> <span class="p">{</span> <span class="k">sum</span> <span class="p">*=</span> <span class="m">2</span> <span class="p">}()</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="k">sum</span><span class="p">)</span> <span class="p">//</span> <span class="m">16</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
 
   </div>
 

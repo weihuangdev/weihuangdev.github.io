@@ -1,0 +1,45 @@
+---
+layout: post
+title:  "go day 17 (channel)"
+date:   2018-10-15 12:44:17 +0800
+categories: go
+---
+
+
+### channel
+channel 是可以讓 goroutine 之間可以互相通信的一種機制．
+建立一個 int 的 channel．
+
+```
+ci := make(chan int)
+```
+
+把值塞給 channel  
+
+```
+ci <- 5
+```
+
+從 channel 把值取出
+
+```
+<-ci
+```
+程式範例  
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	ci := make(chan int)
+	go func() { ci <- 5 }()
+	fmt.Println(<-ci) // 5
+}
+
+```
+
+
