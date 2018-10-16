@@ -7,6 +7,8 @@ categories: go
 
 
 ### goroutines
+goroutines 是類似 thread 的東西，但它比 thread 還輕量．它被視為一個獨立的工作單位．
+
 
 一般呼叫 main function 裡面的程式會造順序執行．
 
@@ -116,6 +118,41 @@ func main() {
 10 * 2 + 3 - 5 = 18
 (10 + 3) * 2 - 5 = 21
 ...
+```
+
+在 The Go Programming Language 這本書有寫這個範例，執行的時候會先看到 spinner function 一直轉圈圈，
+直到算出 fibonacci 數之後才會停止印出結果．代表說這兩件事是同時在做的也就是 concurrency 的概念．  
+
+
+```
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	go spinner(100 * time.Millisecond)
+	const n = 45
+	fibN := fib(n)
+	fmt.Printf("\rFibonacci(%d) = %d \n", n, fibN)
+}
+func spinner(delay time.Duration) {
+	for {
+		for _, r := range `-\|/` {
+			fmt.Printf("\r%c", r)
+			time.Sleep(delay)
+		}
+	}
+}
+func fib(x int) int {
+	if x < 2 {
+		return x
+	}
+	return fib(x-1) + fib(x-2)
+}
+
 ```
 
 

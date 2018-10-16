@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>go day 16 (goroutines)</title>
-  <meta name="description" content="goroutines">
+  <meta name="description" content="goroutines goroutines 是類似 thread 的東西，但它比 thread 還輕量．它被視為一個獨立的工作單位．">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/go/2018/10/15/go_day16.html">
@@ -81,6 +81,7 @@
 
   <div class="post-content e-content" itemprop="articleBody">
     <h3 id="goroutines">goroutines</h3>
+<p>goroutines 是類似 thread 的東西，但它比 thread 還輕量．它被視為一個獨立的工作單位．</p>
 
 <p>一般呼叫 main function 裡面的程式會造順序執行．</p>
 
@@ -182,6 +183,39 @@ done
 10 * 2 + 3 - 5 = 18
 (10 + 3) * 2 - 5 = 21
 ...
+</code></pre></div></div>
+
+<p>在 The Go Programming Language 這本書有寫這個範例，執行的時候會先看到 spinner function 一直轉圈圈，
+直到算出 fibonacci 數之後才會停止印出結果．代表說這兩件事是同時在做的也就是 concurrency 的概念．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"time"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">go</span> <span class="n">spinner</span><span class="p">(</span><span class="m">100</span> <span class="p">*</span> <span class="n">time</span><span class="p">.</span><span class="n">Millisecond</span><span class="p">)</span>
+	<span class="n">const</span> <span class="n">n</span> <span class="p">=</span> <span class="m">45</span>
+	<span class="n">fibN</span> <span class="p">:=</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Printf</span><span class="p">(</span><span class="s2">"</span><span class="se">\r</span><span class="s2">Fibonacci(%d) = %d </span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">fibN</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">func</span> <span class="n">spinner</span><span class="p">(</span><span class="n">delay</span> <span class="n">time</span><span class="p">.</span><span class="n">Duration</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">for</span> <span class="p">{</span>
+		<span class="n">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">r</span> <span class="p">:=</span> <span class="k">range</span> <span class="p">`-\|/`</span> <span class="p">{</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Printf</span><span class="p">(</span><span class="s2">"</span><span class="se">\r</span><span class="s2">%c"</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+			<span class="n">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="n">func</span> <span class="n">fib</span><span class="p">(</span><span class="n">x</span> <span class="n">int</span><span class="p">)</span> <span class="n">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">x</span> <span class="p">&lt;</span> <span class="m">2</span> <span class="p">{</span>
+		<span class="n">return</span> <span class="n">x</span>
+	<span class="p">}</span>
+	<span class="n">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">x</span><span class="p">-</span><span class="m">1</span><span class="p">)</span> <span class="p">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">x</span><span class="p">-</span><span class="m">2</span><span class="p">)</span>
+<span class="p">}</span>
+
 </code></pre></div></div>
 
 
