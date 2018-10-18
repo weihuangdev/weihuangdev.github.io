@@ -8,6 +8,8 @@ categories: go
 
 ### channel
 channel 是可以讓 goroutine 之間可以互相通信的一種機制．
+所以一個 goroutine 的輸出可以當作另一個 goroutine 的輸入，可稱為 pipeline  
+
 建立一個 int 的 channel．
 
 ```
@@ -41,5 +43,120 @@ func main() {
 }
 
 ```
+
+### Unbuffered channels
+
+下面的範例 naturals、squares 就是屬於 Unbuffered channels．執行過程如下
+counter(goroutine) -> naturals(channel) -> squarer(goroutine) -> squares(channel) -> Printer
+
+```
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	naturals := make(chan int)
+	squares := make(chan int)
+
+	// counter
+	go func() {
+		for x := 0; x < 10; x++ {
+			naturals <- x
+		}
+		close(naturals)
+	}()
+
+	// squarer
+	go func() {
+		for x := range naturals {
+			squares <- x * x
+		}
+		close(squares)
+	}()
+
+	// Printer
+	for x := range squares {
+		fmt.Println(x)
+	}
+
+}
+
+```
+
+
+### Buffered channels
+
+建立一個 Buffered channel，就是給 channel 一個值來決定該 buffered 的容量．
+下面就是建立一個能夠保存三個 string 的 Buffered channels  
+
+```
+ch = make(chan string , 3)
+```
+
+如果塞到第 4 個時就會 error  
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan string, 3)
+	ch <- "a"
+	ch <- "b"
+	ch <- "c"
+	ch <- "d" // fatal error: all goroutines are asleep - deadlock!
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+}
+
+```
+如果只有 channels 都取完時再取也會發生 error  
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan string, 3)
+	ch <- "a"
+	ch <- "b"
+	ch <- "c"
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+	fmt.Println(<-ch) // fatal error: all goroutines are asleep - deadlock!
+}
+
+```
+
+範例程式  
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan string, 3)
+	ch <- "a"
+	ch <- "b"
+	ch <- "c"
+	fmt.Println(<-ch) // a
+	fmt.Println(<-ch) // b
+	fmt.Println(<-ch) // c
+	ch <- "d"
+	ch <- "e"
+	fmt.Println(<-ch) // d
+}
+
+```
+
+
+
 
 

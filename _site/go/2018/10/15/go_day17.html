@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>go day 17 (channel)</title>
-  <meta name="description" content="channel channel 是可以讓 goroutine 之間可以互相通信的一種機制． 建立一個 int 的 channel．">
+  <meta name="description" content="channel channel 是可以讓 goroutine 之間可以互相通信的一種機制． 所以一個 goroutine 的輸出可以當作另一個 goroutine 的輸入，可稱為 pipeline">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/go/2018/10/15/go_day17.html">
@@ -82,7 +82,9 @@
   <div class="post-content e-content" itemprop="articleBody">
     <h3 id="channel">channel</h3>
 <p>channel 是可以讓 goroutine 之間可以互相通信的一種機制．
-建立一個 int 的 channel．</p>
+所以一個 goroutine 的輸出可以當作另一個 goroutine 的輸入，可稱為 pipeline</p>
+
+<p>建立一個 int 的 channel．</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ci := make(chan int)
 </code></pre></div></div>
@@ -108,6 +110,112 @@
 	<span class="n">ci</span> <span class="p">:=</span> <span class="n">make</span><span class="p">(</span><span class="n">chan</span> <span class="n">int</span><span class="p">)</span>
 	<span class="n">go</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span> <span class="n">ci</span> <span class="p">&lt;-</span> <span class="m">5</span> <span class="p">}()</span>
 	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ci</span><span class="p">)</span> <span class="p">//</span> <span class="m">5</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="unbuffered-channels">Unbuffered channels</h3>
+
+<p>下面的範例 naturals、squares 就是屬於 Unbuffered channels．執行過程如下
+counter(goroutine) -&gt; naturals(channel) -&gt; squarer(goroutine) -&gt; squares(channel) -&gt; Printer</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">naturals</span> <span class="p">:=</span> <span class="n">make</span><span class="p">(</span><span class="n">chan</span> <span class="n">int</span><span class="p">)</span>
+	<span class="n">squares</span> <span class="p">:=</span> <span class="n">make</span><span class="p">(</span><span class="n">chan</span> <span class="n">int</span><span class="p">)</span>
+
+	<span class="p">//</span> <span class="k">counter</span>
+	<span class="n">go</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">for</span> <span class="n">x</span> <span class="p">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">x</span> <span class="p">&lt;</span> <span class="m">10</span><span class="p">;</span> <span class="n">x</span><span class="p">++</span> <span class="p">{</span>
+			<span class="n">naturals</span> <span class="p">&lt;-</span> <span class="n">x</span>
+		<span class="p">}</span>
+		<span class="n">close</span><span class="p">(</span><span class="n">naturals</span><span class="p">)</span>
+	<span class="p">}()</span>
+
+	<span class="p">//</span> <span class="n">squarer</span>
+	<span class="n">go</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">for</span> <span class="n">x</span> <span class="p">:=</span> <span class="k">range</span> <span class="n">naturals</span> <span class="p">{</span>
+			<span class="n">squares</span> <span class="p">&lt;-</span> <span class="n">x</span> <span class="p">*</span> <span class="n">x</span>
+		<span class="p">}</span>
+		<span class="n">close</span><span class="p">(</span><span class="n">squares</span><span class="p">)</span>
+	<span class="p">}()</span>
+
+	<span class="p">//</span> <span class="n">Printer</span>
+	<span class="n">for</span> <span class="n">x</span> <span class="p">:=</span> <span class="k">range</span> <span class="n">squares</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+	<span class="p">}</span>
+
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="buffered-channels">Buffered channels</h3>
+
+<p>建立一個 Buffered channel，就是給 channel 一個值來決定該 buffered 的容量．
+下面就是建立一個能夠保存三個 string 的 Buffered channels</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ch = make(chan string , 3)
+</code></pre></div></div>
+
+<p>如果塞到第 4 個時就會 error</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="s2">"fmt"</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ch</span> <span class="p">:=</span> <span class="n">make</span><span class="p">(</span><span class="n">chan</span> <span class="k">string</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"a"</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"b"</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"c"</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"d"</span> <span class="p">//</span> <span class="n">fatal</span> <span class="n">error</span><span class="p">:</span> <span class="n">all</span> <span class="n">goroutines</span> <span class="n">are</span> <span class="n">asleep</span> <span class="p">-</span> <span class="n">deadlock</span><span class="c1">!
+</span>	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>如果只有 channels 都取完時再取也會發生 error</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="s2">"fmt"</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ch</span> <span class="p">:=</span> <span class="n">make</span><span class="p">(</span><span class="n">chan</span> <span class="k">string</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"a"</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"b"</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"c"</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span> <span class="p">//</span> <span class="n">fatal</span> <span class="n">error</span><span class="p">:</span> <span class="n">all</span> <span class="n">goroutines</span> <span class="n">are</span> <span class="n">asleep</span> <span class="p">-</span> <span class="n">deadlock</span><span class="c1">!
+</span><span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>範例程式</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="s2">"fmt"</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">ch</span> <span class="p">:=</span> <span class="n">make</span><span class="p">(</span><span class="n">chan</span> <span class="k">string</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"a"</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"b"</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"c"</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span> <span class="p">//</span> <span class="n">a</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span> <span class="p">//</span> <span class="n">b</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span> <span class="p">//</span> <span class="n">c</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"d"</span>
+	<span class="n">ch</span> <span class="p">&lt;-</span> <span class="s2">"e"</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(&lt;-</span><span class="n">ch</span><span class="p">)</span> <span class="p">//</span> <span class="n">d</span>
 <span class="p">}</span>
 
 </code></pre></div></div>
