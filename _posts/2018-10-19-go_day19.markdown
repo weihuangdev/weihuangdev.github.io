@@ -1,0 +1,261 @@
+---
+layout: post
+title:  "go day 19 (looping in parallel、select case)"
+date:   2018-10-19 10:44:17 +0800
+categories: go
+---
+
+### looping in parallel
+
+goroutine 也可以運用在 for loop 裡面，讓 for loop 裡面的工作也可以同時進行．
+下面的範例沒有使用 goroutine 時，迴圈會逐一取得 names 的名字，然後算出加總，每個迴圈都讓它停 1 秒．  
+
+```
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	start := time.Now()
+
+	names := []string{"Allen", "Jack", "Daniel", "Sam", "Lucas"}
+	namesLength := len(names)
+
+	var totalLength int
+
+	for i := 0; i < namesLength; i++ {
+		name := names[i]
+		totalLength += len(name)
+		time.Sleep(1 * time.Second)
+		fmt.Printf("index : %v, name : %v\n", i, name)
+	}
+	fmt.Printf("total length is %d \n", totalLength)
+
+	end := time.Now()
+	executeTime := end.Sub(start)
+	fmt.Printf("executeTime : %v ", executeTime)
+}
+
+```
+
+執行結果  
+
+```
+index : 0, name : Allen
+index : 1, name : Jack
+index : 2, name : Daniel
+index : 3, name : Sam
+index : 4, name : Lucas
+total length is 23
+executeTime : 5.021016241s %
+```
+
+改使用 goroutine 的方式讓 for loop 每個要做的事都變成每一個 goroutine 變成非同步的方式，
+並把每個 goroutine 取得到的 name 長度加到 channel 裡，等每個 goroutine 都工作完後，
+再取出 channel 所有的長度做加總．  
+
+
+```
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func main() {
+	start := time.Now()
+
+	names := []string{"Allen", "Jack", "Daniel", "Sam", "Lucas"}
+	namesLength := len(names)
+
+	totalLengthChen := make(chan int, namesLength)
+	var wg sync.WaitGroup
+	wg.Add(namesLength)
+
+	for i := 0; i < namesLength; i++ {
+		go func(i int) {
+			defer wg.Done()
+			name := names[i]
+			totalLengthChen <- len(name)
+			time.Sleep(1 * time.Second)
+			fmt.Printf("index : %v, name : %v\n", i, name)
+		}(i)
+	}
+	wg.Wait()
+	var totalLength int
+	for i := 0; i < namesLength; i++ {
+		totalLength += <-totalLengthChen
+	}
+	fmt.Printf("total length is %d \n", totalLength)
+	end := time.Now()
+	executeTime := end.Sub(start)
+	fmt.Printf("executeTime : %v ", executeTime)
+}
+
+```
+
+執行結果只花了 1 秒，比沒有使用 goroutine 快了 4 秒  
+
+```
+index : 2, name : Daniel
+index : 1, name : Jack
+index : 3, name : Sam
+index : 0, name : Allen
+index : 4, name : Lucas
+total length is 23
+executeTime : 1.000596334s %
+```
+
+### select case
+select case 可以針對不同的 channel，接收該 channel 的值．
+繼續利用上面的例子，但不用 sync.WaitGroup 等待 goroutine 了，
+在最後跑個 for 的無窮迴圈利用 select case 如果 channel 有值的話就取出來做加總．
+
+```
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	names := []string{"Allen", "Jack", "Daniel", "Sam", "Lucas"}
+	namesLength := len(names)
+
+	totalLengthChen := make(chan int, namesLength)
+	namesChen := make(chan string, namesLength)
+
+	for i := 0; i < namesLength; i++ {
+		go func(i int) {
+			name := names[i]
+			totalLengthChen <- len(name)
+			namesChen <- name
+			time.Sleep(1 * time.Second)
+			fmt.Printf("index : %v, name : %v\n", i, name)
+		}(i)
+	}
+
+	var totalLength int
+	var totalNames string
+
+	for {
+		time.Sleep(500 * time.Millisecond)
+		select {
+		case len := <-totalLengthChen:
+			totalLength += len
+			fmt.Printf("current totalLength is %d \n", totalLength)
+		case name := <-namesChen:
+			totalNames += name + ","
+			fmt.Printf("Get names %v \n", totalNames)
+		}
+	}
+}
+
+```
+
+如果 select case 沒有給 default 在 channel 都被取完後會發生 deadlock．
+
+```
+Get names Sam,
+Get names Sam,Daniel,
+current totalLength is 3
+current totalLength is 9
+current totalLength is 14
+Get names Sam,Daniel,Lucas,
+current totalLength is 18
+current totalLength is 23
+Get names Sam,Daniel,Lucas,Jack,
+index : 1, name : Jack
+index : 2, name : Daniel
+index : 3, name : Sam
+index : 4, name : Lucas
+index : 0, name : Allen
+Get names Sam,Daniel,Lucas,Jack,Allen,
+fatal error: all goroutines are asleep - deadlock!
+
+goroutine 1 [select]:
+main.main()
+        /Volumes/Transcend/golang/goHello/src/practice/example.go:29 +0x1f9
+exit status 2
+```
+
+所以最後再加上 default 可以不做任何事，在兩個 channel 都沒有值時，就會一直跑 default  
+
+```
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	names := []string{"Allen", "Jack", "Daniel", "Sam", "Lucas"}
+	namesLength := len(names)
+
+	totalLengthChen := make(chan int, namesLength)
+	namesChen := make(chan string, namesLength)
+
+	for i := 0; i < namesLength; i++ {
+		go func(i int) {
+			name := names[i]
+			totalLengthChen <- len(name)
+			namesChen <- name
+			time.Sleep(1 * time.Second)
+			fmt.Printf("index : %v, name : %v\n", i, name)
+		}(i)
+	}
+
+	var totalLength int
+	var totalNames string
+
+	for {
+		time.Sleep(1 * time.Second)
+		select {
+		case len := <-totalLengthChen:
+			totalLength += len
+			fmt.Printf("current totalLength is %d \n", totalLength)
+		case name := <-namesChen:
+			totalNames += name + ","
+			fmt.Printf("Get names %v \n", totalNames)
+		default:
+			fmt.Println("nothing")
+		}
+	}
+}
+
+```
+
+執行結果  
+
+```
+index : 0, name : Allen
+index : 3, name : Sam
+Get names Jack,
+index : 2, name : Daniel
+index : 4, name : Lucas
+index : 1, name : Jack
+current totalLength is 4
+Get names Jack,Lucas,
+current totalLength is 9
+current totalLength is 15
+current totalLength is 20
+Get names Jack,Lucas,Daniel,
+current totalLength is 23
+Get names Jack,Lucas,Daniel,Allen,
+Get names Jack,Lucas,Daniel,Allen,Sam,
+nothing
+nothing
+nothing
+nothing
+```
+
+
+
+
