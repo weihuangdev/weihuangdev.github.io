@@ -1,0 +1,125 @@
+---
+layout: post
+title:  "go day 20 (race condition、Mutex)"
+date:   2018-10-20 10:44:17 +0800
+categories: go
+---
+
+### race condition
+在多個 goroutine 同時執行工作時，如果有存取到共用的資源，會造成每次的結果可能不一致．
+下面的例子中每個 goroutine 都會對 sum + 1，但跑了很多次結果都會不一樣．
+因為有可能有多個 goroutine 同時間取得的 sum 是一樣的．
+
+```
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func main() {
+	var w sync.WaitGroup
+	var sum = 0
+	for i := 0; i < 1000; i++ {
+		w.Add(1)
+		go func() {
+			defer w.Done()
+			sum++
+		}()
+	}
+	w.Wait()
+	fmt.Println("final sum is", sum)
+}
+
+```
+
+印出的值會不一定
+
+```
+final sum is 909
+final sum is 944
+final sum is 948
+...
+```
+
+
+### Mutex
+
+使用 sync.Mutex 來解決 race condition，再要改變共用變數的值前面加上 m.Lock()，
+讓其他 goroutine 不能再對 sum 做加 1 的動作，直到該 goroutine 加 1 完後 m.Unlock()，
+下個 goroutine 才可以繼續執行 sum++ 使用了 sync.Mutex 雖然可以避免 race condition 
+但卻會犧牲一點效能，所以使用上要注意  
+
+```
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func main() {
+	var w sync.WaitGroup
+	var m sync.Mutex
+	var sum = 0
+	for i := 0; i < 1000; i++ {
+		w.Add(1)
+		go func() {
+			defer w.Done()
+			m.Lock()
+			sum++
+			m.Unlock()
+		}()
+	}
+	w.Wait()
+	fmt.Println("final sum is", sum)
+}
+```
+
+印出的值都會是 1000  
+
+```
+final value is 1000
+final value is 1000
+...
+```
+
+### 使用 chennel
+也可以使用容量為 1 的 chennel 來確保每次最多一個 goroutine 存取共用變數，解決 race condition  
+
+```
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func main() {
+	var w sync.WaitGroup
+	ch := make(chan bool, 1)
+	var sum = 0
+	for i := 0; i < 1000; i++ {
+		w.Add(1)
+		go func() {
+			defer w.Done()
+			ch <- true
+			sum++
+			<-ch
+		}()
+	}
+	w.Wait()
+	fmt.Println("final sum is", sum)
+}
+
+```
+印出的值都會是 1000  
+
+```
+final value is 1000
+final value is 1000
+...
+```
+
+
