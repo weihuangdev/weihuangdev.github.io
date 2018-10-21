@@ -1,0 +1,244 @@
+---
+layout: post
+title:  "go day 21 (web server)"
+date:   2018-10-21 10:44:17 +0800
+categories: go
+---
+
+### web server
+
+建立一個簡單的 http 伺服器，使用 http.ListenAndServe 啟動一個 server 監聽 8081 port，
+http.HandleFunc("/", handler) 代表 url 路徑以 / 開頭的 request 都會被 handler function 處理．
+http.Request 的參數 r.URL.Path 可以取得 url 的路徑．  
+
+```
+package main
+
+import (
+	"net/http"
+)
+
+func main() {
+	http.HandleFunc("/", handler)
+	http.ListenAndServe(":8081", nil)
+
+}
+func handler(w http.ResponseWriter, r *http.Request) {
+	message := "Request URL Path is " + r.URL.Path
+	w.Write([]byte(message))
+}
+
+
+```
+
+使用 curl 指令測試，r.URL.Path 會印出 http://localhost:8081 之後的路徑   
+
+```
+> curl http://localhost:8081/
+Request URL Path is /
+
+> curl http://localhost:8081/hello
+Request URL Path is /hello
+
+> curl http://localhost:8081/hello/Daniel
+Request URL Path is /hello/Daniel
+```
+
+#### 計算呼叫網站的總數
+
+宣告一個全域變數 count 並在 handler 加上 count++ 每次呼叫網站時總數就加 1，
+並另外開一個 count 的 function，當有人呼叫 /count 這 url 時就會顯示目前網站被呼叫的次數．
+
+```
+package main
+
+import (
+	"net/http"
+	"strconv"
+)
+
+var count int
+
+func main() {
+	http.HandleFunc("/", handler)
+	http.HandleFunc("/count", counter)
+	http.ListenAndServe(":8081", nil)
+
+}
+func handler(w http.ResponseWriter, r *http.Request) {
+	message := "Request URL Path is " + r.URL.Path
+	count++
+	w.Write([]byte(message))
+}
+func counter(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(strconv.Itoa(count)))
+}
+
+```
+
+使用 go build 建一個執行檔，並執行它  
+```
+go build example.go
+./example
+```
+
+一開始的總數是 0  
+
+```
+> curl http://localhost:8081/count
+0
+```
+
+然後再寫一隻 Main 程式，並使用 goroutine 發送 http.Get 1000 次，
+所以 count 應該要是 1000  
+
+```
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"sync"
+)
+
+var count int
+var w sync.WaitGroup
+
+func main() {
+	for i := 0; i < 1000; i++ {
+		w.Add(1)
+		go sendRequest()
+	}
+	w.Wait()
+}
+func sendRequest() {
+	defer w.Done()
+	resp, err := http.Get("http://localhost:8081/Hello")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(string(body))
+}
+
+```
+
+執行結果  
+
+```
+
+Request URL Path is /Hello
+Request URL Path is /Hello
+...
+```
+
+然後去 get count 的總數時會發現並不是 1000  
+
+```
+> curl http://localhost:8081/count
+986
+```
+
+在同時有很多 user 在使用網站時，在使用共用變數時，讀或寫也都會遇到 race condition 的問題．
+所以在 handler 與 counter function 裡，都要加上之前介紹的 sync.Mutex 來 Lock 與 Unlock 會對共用變數有讀寫的操作．
+
+
+```
+package main
+
+import (
+	"net/http"
+	"strconv"
+	"sync"
+)
+
+var count int
+var m sync.Mutex
+
+func main() {
+	http.HandleFunc("/", handler)
+	http.HandleFunc("/count", counter)
+	http.ListenAndServe(":8081", nil)
+
+}
+func handler(w http.ResponseWriter, r *http.Request) {
+	message := "Request URL Path is " + r.URL.Path
+	m.Lock()
+	count++
+	m.Unlock()
+	w.Write([]byte(message))
+}
+func counter(w http.ResponseWriter, r *http.Request) {
+	m.Lock()
+	w.Write([]byte(strconv.Itoa(count)))
+	m.Unlock()
+}
+
+```
+
+#### 取得 request 參數
+
+使用 http.Request.URL.Query().Get("num") 取得 num 的參數．  
+
+```
+package main
+
+import (
+	"net/http"
+	"strconv"
+	"sync"
+)
+
+var count int
+var m sync.Mutex
+
+func main() {
+	http.HandleFunc("/", handler)
+	http.HandleFunc("/count", counter)
+	http.HandleFunc("/add", adder)
+	http.ListenAndServe(":8081", nil)
+
+}
+func handler(w http.ResponseWriter, r *http.Request) {
+	message := "Request URL Path is " + r.URL.Path
+	m.Lock()
+	count++
+	m.Unlock()
+	w.Write([]byte(message))
+}
+func adder(w http.ResponseWriter, r *http.Request) {
+	num := r.URL.Query().Get("num")
+	addNum, _ := strconv.Atoi(num)
+	m.Lock()
+	count += addNum
+	m.Unlock()
+	w.Write([]byte(num))
+}
+func counter(w http.ResponseWriter, r *http.Request) {
+	m.Lock()
+	w.Write([]byte(strconv.Itoa(count)))
+	m.Unlock()
+}
+
+```
+呼叫 add 並給參數 num = 5
+
+```
+> curl http://localhost:8081/add\?num\=5
+5
+```
+取得 count 為 5  
+
+```
+curl http://localhost:8081/count
+5
+```
+
+
+
