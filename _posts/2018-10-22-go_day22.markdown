@@ -1,0 +1,225 @@
+---
+layout: post
+title:  "go day 22 (gin-gonic)"
+date:   2018-10-22 10:44:17 +0800
+categories: go
+---
+
+### gin-gonic
+
+gin-gonic 是一個 golang 的 HTTP web framework，使用 framework 可以簡化程式碼，因為很多東西 framework 都幫忙整合做掉了．
+先使用 go get 下載 gin-gonic
+
+```
+go get github.com/gin-gonic/gin
+```
+
+#### Hello Name
+
+使用 gin-gonic 跑一個簡單的範例，url 如果 match /hello/Daniel 會回傳一個 json 格式的資料．  
+
+```
+package main
+
+import (
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+	r := gin.Default()
+	r.GET("/hello/:name", func(c *gin.Context) {
+		name := c.Param("name")
+		c.JSON(200, gin.H{
+			"message": "hello " + name,
+		})
+	})
+	r.Run()
+}
+
+```
+執行 example.go，會啟動一個預設為 8080 的 port，console 會印出綁定的 GET 的 handler．
+之後接收到 request 時也會印出 log．    
+
+```
+go run example.go
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:   export GIN_MODE=release
+ - using code:  gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /hello/:name              --> main.main.func1 (3 handlers)
+[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2018/10/22 - 11:58:39 | 200 |      17.721µs |             ::1 | GET      /hello/Daniel
+
+```
+
+輸出結果  
+
+```
+> curl http://localhost:8080/hello/Daniel
+{"message":"hello Daniel"}
+```
+
+#### 路徑 : 與 * 的差異
+
+net/http 裡面定義了很多 http status 的 type 可以直接使用．這次在前面的範例再加上 *action 來取得 action 的值    
+
+```
+package main
+package main
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+	r := gin.Default()
+	r.GET("/hello/:name/*action", func(c *gin.Context) {
+		name := c.Param("name")
+		action := c.Param("action")
+
+		c.JSON(http.StatusOK, gin.H{
+			"name":   name,
+			"action": action,
+		})
+	})
+	r.Run(":8081")
+}
+
+
+```
+
+輸出結果  
+
+```
+> curl http://localhost:8081/hello/Daniel/play
+{"action":"/play","name":"Daniel"}
+```
+
+: 跟 * 的差異在於，: 如果沒給參數的話會 404，* 可以不給沒關係．  
+
+```
+> curl http://localhost:8081/hello/Daniel/
+{"action":"/","name":"Daniel"}
+
+> curl http://localhost:8081/hello/
+404 page not found
+```
+
+#### 取得 request 參數
+
+使用 Query 與 DefaultQuery 來取得 request 參數．
+DefaultQuery 的話如果沒有 firstname 這參數，就會給預設值第二個參數(None)．
+
+
+```
+package main
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+	r := gin.Default()
+	r.GET("/hello/:name/*action", func(c *gin.Context) {
+		name := c.Param("name")
+		action := c.Param("action")
+
+		firstname := c.DefaultQuery("firstname", "None")
+		lastname := c.Query("lastname")
+
+		c.JSON(http.StatusOK, gin.H{
+			"name":      name,
+			"action":    action,
+			"firstname": firstname,
+			"lastname":  lastname,
+		})
+	})
+	r.Run(":8081")
+}
+
+```
+
+輸出結果  
+
+```
+> curl http://localhost:8081/hello/Daniel/play\?firstnam=Sam\&lastname=Lucas
+{"action":"/play","firstname":"None","lastname":"Lucas","name":"Daniel"}
+```
+
+#### 使用 BasicAuth 做認證
+
+使用 BasicAuth 認證並給他 Accounts 參數就是使用者的帳密，
+所以只有 Daniel 與 Sam 可以對 "/hello/:name/*action" 做呼叫  
+
+```
+package main
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+func main() {
+	r := gin.Default()
+
+	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
+		"Daniel": "123456",
+		"Sam":    "abc123",
+	}))
+
+	authorized.GET("/hello/:name/*action", func(c *gin.Context) {
+		name := c.Param("name")
+		action := c.Param("action")
+
+		firstname := c.DefaultQuery("firstname", "None")
+		lastname := c.Query("lastname")
+
+		c.JSON(http.StatusOK, gin.H{
+			"name":      name,
+			"action":    action,
+			"firstname": firstname,
+			"lastname":  lastname,
+		})
+	})
+	r.Run(":8081")
+}
+
+```
+
+
+如果沒給帳密的話會什麼都沒有  
+```
+> curl http://localhost:8081/hello/Daniel/play\?firstnam=Sam\&lastname=Lucas
+```
+
+使用 curl 給帳密的方式測試，有下列 3 種 :  
+
+```
+> curl Daniel:123456@localhost:8081/hello/Daniel/play\?firstnam=Sam\&lastname=Lucas
+{"action":"/play","firstname":"None","lastname":"Lucas","name":"Daniel"}
+
+> curl -u Sam localhost:8081/hello/Daniel/play\?firstnam=Sam\&lastname=Lucas
+Enter host password for user 'Sam':
+{"action":"/play","firstname":"None","lastname":"Lucas","name":"Daniel"}%
+
+curl -u Sam:abc123 localhost:8081/hello/Daniel/play\?firstnam=Sam\&lastname=Lucas
+{"action":"/play","firstname":"None","lastname":"Lucas","name":"Daniel"}
+
+```
+
+
+
+
+
+> 參考資料  
+> [gin-gonic](https://github.com/gin-gonic/)
+
+
+
