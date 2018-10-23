@@ -424,16 +424,25 @@ java.io.FileNotFoundException: /data/hadoop/dfs/name/current/VERSION (Permission
 sudo rm -fr /data/hadoop/dfs/data/current
 rm -fr /tmp/hadoop*
 </code></pre></div></div>
-<p>2.format active 的 namenode :</p>
+
+<p>2.啟動 journalnode</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hadoop-daemon.sh start journalnode
+</code></pre></div></div>
+
+<p>3.format active 的 namenode :</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hdfs namenode -format
 </code></pre></div></div>
-<p>3.在 active 的機器上把服務起起來</p>
+
+<p>4.在 active 的機器上把服務起起來</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>start-all.sh
 </code></pre></div></div>
-<p>4.在 standby 下 bootstrapStandby</p>
+
+<p>5.在 standby 下 bootstrapStandby</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hdfs namenode -bootstrapStandby
 </code></pre></div></div>
-<p>5.再啟動 standby 的 namenode</p>
+
+<p>6.再啟動 standby 的 namenode</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./hadoop-daemon.sh start namenode
 </code></pre></div></div>
 

@@ -1,0 +1,59 @@
+---
+layout: post
+title:  "go day 23 (io)"
+date:   2018-10-23 10:44:17 +0800
+categories: go
+---
+
+### io.Reader
+
+
+```
+
+package main
+
+import (
+	"fmt"
+	"io"
+	"strings"
+)
+
+func main() {
+	reader := strings.NewReader("ab cde fghij k l  m")
+	s := make([]byte, 5)
+	for {
+		n, err := reader.Read(s)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			break
+		}
+		str := string(s[:n])
+		fmt.Println(str)
+	}
+}
+
+```
+
+輸出結果，每次讀取 5 個 byte
+
+```
+ab cd
+e fgh
+ij k
+l  m
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
