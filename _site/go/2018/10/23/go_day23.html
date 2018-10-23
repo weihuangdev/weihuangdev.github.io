@@ -117,6 +117,46 @@ ij k
 l  m
 </code></pre></div></div>
 
+<h3 id="iowriter">io.Writer</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"bytes"</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"io"</span>
+	<span class="s2">"os"</span>
+	<span class="s2">"strings"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">reader</span> <span class="p">:=</span> <span class="n">strings</span><span class="p">.</span><span class="n">NewReader</span><span class="p">(</span><span class="s2">"ab cde fghij k l  m"</span><span class="p">)</span>
+	<span class="n">s</span> <span class="p">:=</span> <span class="n">make</span><span class="p">([]</span><span class="n">byte</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+	<span class="n">var</span> <span class="n">writer</span> <span class="n">bytes</span><span class="p">.</span><span class="n">Buffer</span>
+
+	<span class="n">for</span> <span class="p">{</span>
+		<span class="n">n</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">reader</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>			<span class="k">if</span> <span class="n">err</span> <span class="p">==</span> <span class="n">io</span><span class="p">.</span><span class="n">EOF</span> <span class="p">{</span>
+				<span class="k">break</span>
+			<span class="p">}</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
+		<span class="n">str</span> <span class="p">:=</span> <span class="k">string</span><span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+		<span class="n">wr</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">([]</span><span class="n">byte</span><span class="p">(</span><span class="n">str</span><span class="p">))</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">wr</span><span class="p">)</span> <span class="p">//</span> <span class="err">寫了多少</span> <span class="n">byte</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+			<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">writer</span><span class="p">.</span><span class="k">String</span><span class="p">())</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
 
   </div>
 

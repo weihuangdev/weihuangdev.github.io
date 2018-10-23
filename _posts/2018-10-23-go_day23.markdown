@@ -46,10 +46,48 @@ l  m
 ```
 
 
+### io.Writer
 
 
 
+```
+package main
 
+import (
+	"bytes"
+	"fmt"
+	"io"
+	"os"
+	"strings"
+)
+
+func main() {
+	reader := strings.NewReader("ab cde fghij k l  m")
+	s := make([]byte, 5)
+	var writer bytes.Buffer
+
+	for {
+		n, err := reader.Read(s)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			break
+		}
+		str := string(s[:n])
+		fmt.Println(str)
+		wr, err := writer.Write([]byte(str))
+		fmt.Println(wr) // 寫了多少 byte
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+	}
+	fmt.Println(writer.String())
+}
+
+```
 
 
 
