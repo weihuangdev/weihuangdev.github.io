@@ -212,6 +212,154 @@ coverage: 100.0% of statements
 ok      command-line-arguments  0.005s  coverage: 100.0% of statements
 </code></pre></div></div>
 
+<h4 id="gotests">gotests</h4>
+
+<p>可以使用 <a href="https://github.com/cweill/gotests">gotests 套件</a> 幫忙產生測試程式．</p>
+
+<p>下載安裝</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go get -u github.com/cweill/gotests/...
+</code></pre></div></div>
+
+<p>下指令幫忙產生 example_test.go 這隻測試程式</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gotests -all -w example.go example_test.go
+Generated TestAdd
+Generated TestIsFindName
+No tests generated for example_test.go
+</code></pre></div></div>
+
+<p>產生出來的 example_test.go，只剩下參數的部分要自己補上．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">test</span>
+
+<span class="n">import</span> <span class="s2">"testing"</span>
+
+<span class="n">func</span> <span class="n">TestAdd</span><span class="p">(</span><span class="n">t</span> <span class="p">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">type</span> <span class="n">args</span> <span class="n">struct</span> <span class="p">{</span>
+		<span class="n">x</span> <span class="n">int</span>
+		<span class="n">y</span> <span class="n">int</span>
+	<span class="p">}</span>
+	<span class="n">tests</span> <span class="p">:=</span> <span class="p">[]</span><span class="n">struct</span> <span class="p">{</span>
+		<span class="n">name</span> <span class="k">string</span>
+		<span class="n">args</span> <span class="n">args</span>
+		<span class="n">want</span> <span class="n">int</span>
+	<span class="p">}{</span>
+		<span class="p">//</span> <span class="n">TODO</span><span class="p">:</span> <span class="n">Add</span> <span class="n">test</span> <span class="n">cases</span><span class="p">.</span>
+	<span class="p">}</span>
+	<span class="n">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tt</span> <span class="p">:=</span> <span class="k">range</span> <span class="n">tests</span> <span class="p">{</span>
+		<span class="n">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">t</span> <span class="p">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="n">got</span> <span class="p">:=</span> <span class="n">Add</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">tt</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">y</span><span class="p">);</span> <span class="n">got</span> <span class="c1">!= tt.want {
+</span>				<span class="n">t</span><span class="p">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s2">"Add() = %v, want %v"</span><span class="p">,</span> <span class="n">got</span><span class="p">,</span> <span class="n">tt</span><span class="p">.</span><span class="n">want</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">})</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">TestIsFindName</span><span class="p">(</span><span class="n">t</span> <span class="p">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">type</span> <span class="n">args</span> <span class="n">struct</span> <span class="p">{</span>
+		<span class="n">findName</span> <span class="k">string</span>
+		<span class="n">names</span>    <span class="p">[]</span><span class="k">string</span>
+	<span class="p">}</span>
+	<span class="n">tests</span> <span class="p">:=</span> <span class="p">[]</span><span class="n">struct</span> <span class="p">{</span>
+		<span class="n">name</span> <span class="k">string</span>
+		<span class="n">args</span> <span class="n">args</span>
+		<span class="n">want</span> <span class="n">bool</span>
+	<span class="p">}{</span>
+		<span class="p">//</span> <span class="n">TODO</span><span class="p">:</span> <span class="n">Add</span> <span class="n">test</span> <span class="n">cases</span><span class="p">.</span>
+	<span class="p">}</span>
+	<span class="n">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tt</span> <span class="p">:=</span> <span class="k">range</span> <span class="n">tests</span> <span class="p">{</span>
+		<span class="n">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">t</span> <span class="p">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="n">got</span> <span class="p">:=</span> <span class="n">IsFindName</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">findName</span><span class="p">,</span> <span class="n">tt</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">names</span><span class="p">);</span> <span class="n">got</span> <span class="c1">!= tt.want {
+</span>				<span class="n">t</span><span class="p">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s2">"IsFindName() = %v, want %v"</span><span class="p">,</span> <span class="n">got</span><span class="p">,</span> <span class="n">tt</span><span class="p">.</span><span class="n">want</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">})</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>接著只要在 TODO 補上要測試的參數即可，name 就是定個名稱，args 就是 input 的參數，want 就是想要的結果．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">test</span>
+
+<span class="n">import</span> <span class="s2">"testing"</span>
+
+<span class="n">func</span> <span class="n">TestAdd</span><span class="p">(</span><span class="n">t</span> <span class="p">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">type</span> <span class="n">args</span> <span class="n">struct</span> <span class="p">{</span>
+		<span class="n">x</span> <span class="n">int</span>
+		<span class="n">y</span> <span class="n">int</span>
+	<span class="p">}</span>
+	<span class="n">tests</span> <span class="p">:=</span> <span class="p">[]</span><span class="n">struct</span> <span class="p">{</span>
+		<span class="n">name</span> <span class="k">string</span>
+		<span class="n">args</span> <span class="n">args</span>
+		<span class="n">want</span> <span class="n">int</span>
+	<span class="p">}{</span>
+		<span class="p">//</span> <span class="n">TODO</span><span class="p">:</span> <span class="n">Add</span> <span class="n">test</span> <span class="n">cases</span><span class="p">.</span>
+		<span class="p">{</span>
+			<span class="n">name</span><span class="p">:</span> <span class="s2">"TestAddSuccess"</span><span class="p">,</span>
+			<span class="n">args</span><span class="p">:</span> <span class="n">args</span><span class="p">{</span>
+				<span class="n">x</span><span class="p">:</span> <span class="m">1</span><span class="p">,</span>
+				<span class="n">y</span><span class="p">:</span> <span class="m">2</span><span class="p">,</span>
+			<span class="p">},</span>
+			<span class="n">want</span><span class="p">:</span> <span class="m">3</span><span class="p">,</span>
+		<span class="p">},</span>
+	<span class="p">}</span>
+	<span class="n">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tt</span> <span class="p">:=</span> <span class="k">range</span> <span class="n">tests</span> <span class="p">{</span>
+		<span class="n">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">t</span> <span class="p">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="n">got</span> <span class="p">:=</span> <span class="n">Add</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">tt</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">y</span><span class="p">);</span> <span class="n">got</span> <span class="c1">!= tt.want {
+</span>				<span class="n">t</span><span class="p">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s2">"Add() = %v, want %v"</span><span class="p">,</span> <span class="n">got</span><span class="p">,</span> <span class="n">tt</span><span class="p">.</span><span class="n">want</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">})</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">TestIsFindName</span><span class="p">(</span><span class="n">t</span> <span class="p">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">type</span> <span class="n">args</span> <span class="n">struct</span> <span class="p">{</span>
+		<span class="n">findName</span> <span class="k">string</span>
+		<span class="n">names</span>    <span class="p">[]</span><span class="k">string</span>
+	<span class="p">}</span>
+	<span class="n">tests</span> <span class="p">:=</span> <span class="p">[]</span><span class="n">struct</span> <span class="p">{</span>
+		<span class="n">name</span> <span class="k">string</span>
+		<span class="n">args</span> <span class="n">args</span>
+		<span class="n">want</span> <span class="n">bool</span>
+	<span class="p">}{</span>
+		<span class="p">//</span> <span class="n">TODO</span><span class="p">:</span> <span class="n">Add</span> <span class="n">test</span> <span class="n">cases</span><span class="p">.</span>
+		<span class="p">{</span>
+			<span class="n">name</span><span class="p">:</span> <span class="s2">"TestIsFindNameSuccess"</span><span class="p">,</span>
+			<span class="n">args</span><span class="p">:</span> <span class="n">args</span><span class="p">{</span>
+				<span class="n">findName</span><span class="p">:</span> <span class="s2">"Daniel"</span><span class="p">,</span>
+				<span class="n">names</span><span class="p">:</span>    <span class="p">[]</span><span class="k">string</span><span class="p">{</span><span class="s2">"Andy"</span><span class="p">,</span> <span class="s2">"Jack"</span><span class="p">,</span> <span class="s2">"Daniel"</span><span class="p">,</span> <span class="s2">"Sam"</span><span class="p">},</span>
+			<span class="p">},</span>
+			<span class="n">want</span><span class="p">:</span> <span class="nb">true</span><span class="p">,</span>
+		<span class="p">},</span>
+	<span class="p">}</span>
+	<span class="n">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tt</span> <span class="p">:=</span> <span class="k">range</span> <span class="n">tests</span> <span class="p">{</span>
+		<span class="n">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">t</span> <span class="p">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="n">got</span> <span class="p">:=</span> <span class="n">IsFindName</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">findName</span><span class="p">,</span> <span class="n">tt</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">names</span><span class="p">);</span> <span class="n">got</span> <span class="c1">!= tt.want {
+</span>				<span class="n">t</span><span class="p">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s2">"IsFindName() = %v, want %v"</span><span class="p">,</span> <span class="n">got</span><span class="p">,</span> <span class="n">tt</span><span class="p">.</span><span class="n">want</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">})</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>執行測試</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go test -v -cover=true example_test.go example.go
+=== RUN   TestAdd
+=== RUN   TestAdd/TestAddSuccess
+--- PASS: TestAdd (0.00s)
+    --- PASS: TestAdd/TestAddSuccess (0.00s)
+=== RUN   TestIsFindName
+=== RUN   TestIsFindName/TestIsFindNameSuccess
+--- PASS: TestIsFindName (0.00s)
+    --- PASS: TestIsFindName/TestIsFindNameSuccess (0.00s)
+PASS
+coverage: 80.0% of statements
+ok      command-line-arguments  (cached)        coverage: 80.0% of statements
+</code></pre></div></div>
 
   </div>
 

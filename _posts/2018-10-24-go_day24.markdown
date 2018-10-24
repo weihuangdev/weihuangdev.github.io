@@ -146,5 +146,156 @@ ok      command-line-arguments  0.005s  coverage: 100.0% of statements
 ```
 
 
+#### gotests
 
+可以使用 [gotests 套件](https://github.com/cweill/gotests) 幫忙產生測試程式．  
 
+下載安裝  
+
+```
+> go get -u github.com/cweill/gotests/...
+```
+
+下指令幫忙產生 example_test.go 這隻測試程式  
+
+```
+gotests -all -w example.go example_test.go
+Generated TestAdd
+Generated TestIsFindName
+No tests generated for example_test.go
+```
+
+產生出來的 example_test.go，只剩下參數的部分要自己補上．  
+
+```
+package test
+
+import "testing"
+
+func TestAdd(t *testing.T) {
+	type args struct {
+		x int
+		y int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Add(tt.args.x, tt.args.y); got != tt.want {
+				t.Errorf("Add() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestIsFindName(t *testing.T) {
+	type args struct {
+		findName string
+		names    []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsFindName(tt.args.findName, tt.args.names); got != tt.want {
+				t.Errorf("IsFindName() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+```
+
+接著只要在 TODO 補上要測試的參數即可，name 就是定個名稱，args 就是 input 的參數，want 就是想要的結果．  
+
+```
+package test
+
+import "testing"
+
+func TestAdd(t *testing.T) {
+	type args struct {
+		x int
+		y int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			name: "TestAddSuccess",
+			args: args{
+				x: 1,
+				y: 2,
+			},
+			want: 3,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Add(tt.args.x, tt.args.y); got != tt.want {
+				t.Errorf("Add() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestIsFindName(t *testing.T) {
+	type args struct {
+		findName string
+		names    []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "TestIsFindNameSuccess",
+			args: args{
+				findName: "Daniel",
+				names:    []string{"Andy", "Jack", "Daniel", "Sam"},
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsFindName(tt.args.findName, tt.args.names); got != tt.want {
+				t.Errorf("IsFindName() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+```
+
+執行測試  
+
+```
+go test -v -cover=true example_test.go example.go
+=== RUN   TestAdd
+=== RUN   TestAdd/TestAddSuccess
+--- PASS: TestAdd (0.00s)
+    --- PASS: TestAdd/TestAddSuccess (0.00s)
+=== RUN   TestIsFindName
+=== RUN   TestIsFindName/TestIsFindNameSuccess
+--- PASS: TestIsFindName (0.00s)
+    --- PASS: TestIsFindName/TestIsFindNameSuccess (0.00s)
+PASS
+coverage: 80.0% of statements
+ok      command-line-arguments  (cached)        coverage: 80.0% of statements
+```
