@@ -1,0 +1,150 @@
+---
+layout: post
+title:  "go day 24 (testing)"
+date:   2018-10-24 10:44:17 +0800
+categories: go
+---
+
+
+### testing
+
+在 go 要寫測試程式只要在程式名稱後面加上 _test．
+例如程式名稱叫 example.go 只要再加上一隻 example_test.go．  
+目錄結構如下  
+```
+goHello
+ -src
+  -practice
+   -test
+    example.go
+    example_test.go
+```
+
+#### example.go
+
+在 example.go 裡，提供了 Add 與 IsFindName 兩個方法讓外部呼叫．
+Add 就是做加法，IsFindName 就是給個名字，可以幫你確認是否有這個 Name 在 names 這 Array 裡．  
+
+```
+package test
+
+func Add(x int, y int) int {
+	return x + y
+}
+
+func IsFindName(findName string, names []string) bool {
+	for _, n := range names {
+		if n == findName {
+			return true
+		}
+	}
+	return false
+}
+
+```
+
+#### example_test.go
+
+測試程式除了檔名後面要加上 _test，裡面的測試 function 命名要以 Test 開頭在加上要測試的 function Name．  
+那因為 1 + 2 會等於 3，所以就寫說如果答案是 3 就印 success，否則就印 fail．
+
+```
+package test
+
+import "testing"
+
+func TestAdd(t *testing.T) {
+	n := Add(1, 2)
+	if n == 3 {
+		t.Log("success")
+	} else {
+		t.Error("fail")
+	}
+}
+func TestIsFindName(t *testing.T) {
+	if isSuccess := IsFindName("Daniel", []string{"Andy", "Jack", "Daniel", "Sam"}); isSuccess {
+		t.Log("success")
+	} else {
+		t.Error("fail")
+	}
+}
+
+```
+
+#### go test
+
+寫好測試程式後，就下測試指令如下．-v 是顯示詳細測試結果，-cover=true 代表加上測試涵蓋率．  
+
+```
+> go test -v -cover=true example_test.go example.
+
+=== RUN   TestAdd
+--- PASS: TestAdd (0.00s)
+    example_test.go:8: success
+=== RUN   TestIsFindName
+--- PASS: TestIsFindName (0.00s)
+    example_test.go:15: success
+PASS
+coverage: 80.0% of statements
+ok      command-line-arguments  (cached)        coverage: 80.0% of statements
+
+```
+
+執行完後會發現測試涵蓋率只有 80.0%，代表說 funtcion 可能有些地方沒有測到．
+因為 Add 這 function 裡就只有 return x + y，所以應該是都測了．
+所以應該是 IsFindName 這 function 有些地方沒測到，那因為測試案例裡，
+目前只有測找得到 name 的結果，但找不到的沒測，也就是 return false 那邊可能沒測試到．
+所以在 example_test.go 裡再補上針對 IsFindName 找不到 name 的測試(TestIsNotFindNames)．  
+
+
+```
+package test
+
+import "testing"
+
+func TestAdd(t *testing.T) {
+	n := Add(1, 2)
+	if n == 3 {
+		t.Log("success")
+	} else {
+		t.Error("fail")
+	}
+}
+func TestIsFindName(t *testing.T) {
+	if isSuccess := IsFindName("Daniel", []string{"Andy", "Jack", "Daniel", "Sam"}); isSuccess {
+		t.Log("success")
+	} else {
+		t.Error("fail")
+	}
+}
+func TestIsNotFindNames(t *testing.T) {
+	if isSuccess := IsFindName("Lucy", []string{"Andy", "Jack", "Daniel", "Sam"}); isSuccess {
+		t.Error("fail")
+	} else {
+		t.Log("success")
+	}
+}
+
+```
+
+這時候在跑 go test 就會發現測試涵蓋率就會是 100% 了．  
+
+```
+go test -v -cover=true example_test.go example.go
+=== RUN   TestAdd
+--- PASS: TestAdd (0.00s)
+    example_test.go:8: success
+=== RUN   TestIsFindName
+--- PASS: TestIsFindName (0.00s)
+    example_test.go:15: success
+=== RUN   TestIsNotFindNames
+--- PASS: TestIsNotFindNames (0.00s)
+    example_test.go:25: success
+PASS
+coverage: 100.0% of statements
+ok      command-line-arguments  0.005s  coverage: 100.0% of statements
+```
+
+
+
+

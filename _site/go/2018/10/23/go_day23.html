@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>go day 23 (io)</title>
-  <meta name="description" content="io.Reader">
+  <meta name="description" content="strings.NewReader">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/go/2018/10/23/go_day23.html">
@@ -80,7 +80,9 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h3 id="ioreader">io.Reader</h3>
+    <h3 id="stringsnewreader">strings.NewReader</h3>
+
+<p>使用 strings.NewReader，讀取字串再透過一個大小為 5 的 slice 逐步讀取 string 資料．</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="k">package</span> <span class="n">main</span>
@@ -117,7 +119,9 @@ ij k
 l  m
 </code></pre></div></div>
 
-<h3 id="iowriter">io.Writer</h3>
+<h3 id="bytesbuffer">bytes.Buffer</h3>
+
+<p>使用 bytes.Buffer 讀取資料</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
@@ -156,6 +160,285 @@ l  m
 <span class="p">}</span>
 
 </code></pre></div></div>
+
+<h3 id="oscreate">os.Create</h3>
+
+<p>使用 os.Create 建立檔案並寫入資料</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"os"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">contexts</span> <span class="p">:=</span> <span class="p">[]</span><span class="k">string</span><span class="p">{</span>
+		<span class="s2">"Hello </span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span>
+		<span class="s2">"World </span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span>
+		<span class="s2">"go lang </span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span>
+		<span class="s2">"gopher </span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span>
+	<span class="p">}</span>
+
+	<span class="n">file</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">os</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">"./testFile.txt"</span><span class="p">)</span> <span class="p">//</span> <span class="err">建立檔案</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+		<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">defer</span> <span class="n">file</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+
+	<span class="n">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">context</span> <span class="p">:=</span> <span class="k">range</span> <span class="n">contexts</span> <span class="p">{</span>
+		<span class="n">n</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">file</span><span class="p">.</span><span class="n">Write</span><span class="p">([]</span><span class="n">byte</span><span class="p">(</span><span class="n">context</span><span class="p">))</span> <span class="p">//</span> <span class="err">將內容寫入檔案</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+			<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="n">n</span> <span class="c1">!= len(context) {
+</span>			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"failed to write data"</span><span class="p">)</span>
+			<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"file write done"</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>在當前目錄下會產生一個 testFile.txt，裡面會有寫入的內容</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-rwxrwxrwx  1 daniel  staff   504B Oct 23 19:44 example.go
+-rwxrwxrwx  1 daniel  staff    31B Oct 23 19:44 testFile.txt
+daniel@Danielde-MBP &gt; /Volumes/Transcend/golang/goHello/src/practice &gt; cat testFile.txt
+Hello
+World
+go lang
+gopher
+
+</code></pre></div></div>
+
+<h3 id="osopen">os.Open</h3>
+
+<p>使用 os.Open 打開檔案讀取資料</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"io"</span>
+	<span class="s2">"os"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">file</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">os</span><span class="p">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">"./testFile.txt"</span><span class="p">)</span> <span class="p">//</span> <span class="err">打開檔案</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+		<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">defer</span> <span class="n">file</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+
+	<span class="n">p</span> <span class="p">:=</span> <span class="n">make</span><span class="p">([]</span><span class="n">byte</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+	<span class="n">for</span> <span class="p">{</span>
+		<span class="n">n</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">file</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="p">==</span> <span class="n">io</span><span class="p">.</span><span class="n">EOF</span> <span class="p">{</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
+		<span class="n">data</span> <span class="p">:=</span> <span class="k">string</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="iocopy">io.Copy</h3>
+
+<p>使用 io.Copy 將 bytes.Buffer 的資料 copy 到另一個檔案裡</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"bytes"</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"io"</span>
+	<span class="s2">"os"</span>
+	<span class="s2">"strings"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+
+	<span class="n">reader</span> <span class="p">:=</span> <span class="n">strings</span><span class="p">.</span><span class="n">NewReader</span><span class="p">(</span><span class="s2">"ab cde fghij k l  m"</span><span class="p">)</span>
+	<span class="n">s</span> <span class="p">:=</span> <span class="n">make</span><span class="p">([]</span><span class="n">byte</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+	<span class="n">var</span> <span class="n">writer</span> <span class="n">bytes</span><span class="p">.</span><span class="n">Buffer</span>
+
+	<span class="n">for</span> <span class="p">{</span>
+		<span class="n">n</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">reader</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>			<span class="k">if</span> <span class="n">err</span> <span class="p">==</span> <span class="n">io</span><span class="p">.</span><span class="n">EOF</span> <span class="p">{</span>
+				<span class="k">break</span>
+			<span class="p">}</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
+		<span class="n">str</span> <span class="p">:=</span> <span class="k">string</span><span class="p">(</span><span class="n">s</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+		<span class="n">wr</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">([]</span><span class="n">byte</span><span class="p">(</span><span class="n">str</span><span class="p">))</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">wr</span><span class="p">)</span> <span class="p">//</span> <span class="err">寫了多少</span> <span class="n">byte</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+			<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="n">file</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">os</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">"./testFile.txt"</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+		<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">defer</span> <span class="n">file</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+
+	<span class="p">//</span> <span class="n">copy</span> <span class="k">from</span> <span class="n">reader</span> <span class="n">data</span> <span class="n">into</span> <span class="n">writer</span> <span class="n">file</span>
+	<span class="k">if</span> <span class="n">_</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">io</span><span class="p">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="p">&amp;</span><span class="n">writer</span><span class="p">);</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+		<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"file created"</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<h3 id="iowritestring">io.WriteString</h3>
+
+<p>使用 io.WriteString 寫入資料到檔案</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"io"</span>
+	<span class="s2">"os"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">file</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">os</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">"./testFile.txt"</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+		<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">defer</span> <span class="n">file</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+	<span class="k">if</span> <span class="n">_</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">io</span><span class="p">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">"Hello World 1 ! </span><span class="se">\n</span><span class="s2">"</span><span class="p">);</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+		<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">io</span><span class="p">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">"Hello World 2 ! "</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>輸出結果</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; cat testFile.txt
+Hello World 1 !
+Hello World 2 ! 
+</code></pre></div></div>
+
+<h3 id="bufionewreader">bufio.NewReader</h3>
+<p>使用 bufio.NewReader 的 ReadString 並透過想分割的符號來逐個讀取資料，這邊使用 ! 做分割．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"bufio"</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"io"</span>
+	<span class="s2">"os"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">file</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">os</span><span class="p">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">"./testFile.txt"</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+		<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">defer</span> <span class="n">file</span><span class="p">.</span><span class="n">Close</span><span class="p">()</span>
+	<span class="n">reader</span> <span class="p">:=</span> <span class="n">bufio</span><span class="p">.</span><span class="n">NewReader</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+	<span class="n">for</span> <span class="p">{</span>
+		<span class="n">line</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">reader</span><span class="p">.</span><span class="n">ReadString</span><span class="p">(</span><span class="s1">'!'</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>			<span class="k">if</span> <span class="n">err</span> <span class="p">==</span> <span class="n">io</span><span class="p">.</span><span class="n">EOF</span> <span class="p">{</span>
+				<span class="k">break</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+				<span class="n">os</span><span class="p">.</span><span class="k">Exit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>輸出結果</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run example.go
+Hello World 1 !
+Hello World 2 !
+</code></pre></div></div>
+
+<h3 id="bufionewscanner">bufio.NewScanner</h3>
+
+<p>做個測試檔案</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; cat testFile.txt
+abc
+def
+
+ghi
+</code></pre></div></div>
+
+<p>使用 bufio.NewScanner 一行一行的讀取資料</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"bufio"</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"os"</span>
+<span class="p">)</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">file</span><span class="p">,</span> <span class="n">_</span> <span class="p">:=</span> <span class="n">os</span><span class="p">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">"./testFile.txt"</span><span class="p">)</span> <span class="p">//</span> <span class="err">打開檔案</span>
+	<span class="n">scanner</span> <span class="p">:=</span> <span class="n">bufio</span><span class="p">.</span><span class="n">NewScanner</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+	<span class="n">for</span> <span class="n">scanner</span><span class="p">.</span><span class="n">Scan</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">lineData</span> <span class="p">:=</span> <span class="n">scanner</span><span class="p">.</span><span class="n">Text</span><span class="p">()</span>
+		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">lineData</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>輸出結果</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run example.go
+abc
+def
+
+ghi
+</code></pre></div></div>
+
+<p>最後做個整理</p>
+
+<ul>
+  <li>In
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>strings.NewReader
+os.Open
+reader.ReadString
+bufio.NewScanner
+</code></pre></div>    </div>
+  </li>
+  <li>Out
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bytes.Buffer
+os.Create
+io.Copy
+io.WriteString
+</code></pre></div>    </div>
+  </li>
+</ul>
 
 
   </div>

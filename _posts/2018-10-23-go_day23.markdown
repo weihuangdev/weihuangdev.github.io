@@ -5,8 +5,9 @@ date:   2018-10-23 10:44:17 +0800
 categories: go
 ---
 
-### io.Reader
+### strings.NewReader
 
+使用 strings.NewReader，讀取字串再透過一個大小為 5 的 slice 逐步讀取 string 資料．
 
 ```
 
@@ -46,9 +47,9 @@ l  m
 ```
 
 
-### io.Writer
+### bytes.Buffer
 
-
+使用 bytes.Buffer 讀取資料
 
 ```
 package main
@@ -89,9 +90,293 @@ func main() {
 
 ```
 
+### os.Create
 
+使用 os.Create 建立檔案並寫入資料  
 
+```
+package main
 
+import (
+	"fmt"
+	"os"
+)
 
+func main() {
+	contexts := []string{
+		"Hello \n",
+		"World \n",
+		"go lang \n",
+		"gopher \n",
+	}
+
+	file, err := os.Create("./testFile.txt") // 建立檔案
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer file.Close()
+
+	for _, context := range contexts {
+		n, err := file.Write([]byte(context)) // 將內容寫入檔案
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		if n != len(context) {
+			fmt.Println("failed to write data")
+			os.Exit(1)
+		}
+	}
+	fmt.Println("file write done")
+}
+
+```
+
+在當前目錄下會產生一個 testFile.txt，裡面會有寫入的內容  
+
+```
+-rwxrwxrwx  1 daniel  staff   504B Oct 23 19:44 example.go
+-rwxrwxrwx  1 daniel  staff    31B Oct 23 19:44 testFile.txt
+daniel@Danielde-MBP > /Volumes/Transcend/golang/goHello/src/practice > cat testFile.txt
+Hello
+World
+go lang
+gopher
+
+```
+
+### os.Open
+
+使用 os.Open 打開檔案讀取資料  
+
+```
+package main
+
+import (
+	"fmt"
+	"io"
+	"os"
+)
+
+func main() {
+	file, err := os.Open("./testFile.txt") // 打開檔案
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer file.Close()
+
+	p := make([]byte, 5)
+	for {
+		n, err := file.Read(p)
+		if err == io.EOF {
+			break
+		}
+		data := string(p[:n])
+		fmt.Print(data)
+	}
+}
+
+```
+
+### io.Copy
+
+使用 io.Copy 將 bytes.Buffer 的資料 copy 到另一個檔案裡  
+
+```
+package main
+
+import (
+	"bytes"
+	"fmt"
+	"io"
+	"os"
+	"strings"
+)
+
+func main() {
+
+	reader := strings.NewReader("ab cde fghij k l  m")
+	s := make([]byte, 5)
+	var writer bytes.Buffer
+
+	for {
+		n, err := reader.Read(s)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			break
+		}
+		str := string(s[:n])
+		fmt.Println(str)
+		wr, err := writer.Write([]byte(str))
+		fmt.Println(wr) // 寫了多少 byte
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	}
+
+	file, err := os.Create("./testFile.txt")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer file.Close()
+
+	// copy from reader data into writer file
+	if _, err := io.Copy(file, &writer); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Println("file created")
+}
+
+```
+
+### io.WriteString
+
+使用 io.WriteString 寫入資料到檔案  
+
+```
+package main
+
+import (
+	"fmt"
+	"io"
+	"os"
+)
+
+func main() {
+	file, err := os.Create("./testFile.txt")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer file.Close()
+	if _, err := io.WriteString(file, "Hello World 1 ! \n"); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	io.WriteString(file, "Hello World 2 ! ")
+}
+
+```
+輸出結果  
+
+```
+> cat testFile.txt
+Hello World 1 !
+Hello World 2 ! 
+```
+
+### bufio.NewReader
+使用 bufio.NewReader 的 ReadString 並透過想分割的符號來逐個讀取資料，這邊使用 ! 做分割．  
+
+```
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+)
+
+func main() {
+	file, err := os.Open("./testFile.txt")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer file.Close()
+	reader := bufio.NewReader(file)
+
+	for {
+		line, err := reader.ReadString('!')
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+		}
+		fmt.Print(line)
+	}
+}
+
+```
+輸出結果  
+
+```
+> go run example.go
+Hello World 1 !
+Hello World 2 !
+```
+
+### bufio.NewScanner
+
+做個測試檔案  
+
+```
+> cat testFile.txt
+abc
+def
+
+ghi
+```
+
+使用 bufio.NewScanner 一行一行的讀取資料  
+
+```
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
+
+func main() {
+	file, _ := os.Open("./testFile.txt") // 打開檔案
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lineData := scanner.Text()
+		fmt.Println(lineData)
+	}
+}
+
+```
+
+輸出結果  
+
+```
+> go run example.go
+abc
+def
+
+ghi
+```
+
+最後做個整理  
+
+* In  
+```
+strings.NewReader
+os.Open
+reader.ReadString
+bufio.NewScanner
+```
+
+* Out  
+```
+bytes.Buffer
+os.Create
+io.Copy
+io.WriteString
+```
 
 
