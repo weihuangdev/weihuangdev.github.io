@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>mongo day 2 (docker mongo)</title>
-  <meta name="description" content="docker pull mongo">
+  <meta name="description" content="使用 docker 方式測試 Mongo DB">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/mongo/2018/10/09/mongo_day2.html">
@@ -80,8 +80,12 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull mongo
+    <p>使用 docker 方式測試 Mongo DB</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull mongo
 </code></pre></div></div>
+
+<p>建立一個 docker-compose.yml，使用 docker-compose 的方式測試</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /Users/daniel/mongo-docker
 touch docker-compose.yml
@@ -141,6 +145,8 @@ services:
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ~/.bash_profile
 daniel@Danielde-MBP &gt; go get gopkg.in/mgo.v2
 </code></pre></div></div>
+
+<p>使用 golang 新增及查詢 Mongo</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 

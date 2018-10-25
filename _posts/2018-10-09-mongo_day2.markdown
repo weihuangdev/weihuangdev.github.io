@@ -5,11 +5,13 @@ date:   2018-10-09 11:44:17 +0800
 categories: mongo
 ---
 
-
+使用 docker 方式測試 Mongo DB  
 
 ```
 docker pull mongo
 ```
+
+建立一個 docker-compose.yml，使用 docker-compose 的方式測試  
 
 ```
 cd /Users/daniel/mongo-docker
@@ -79,7 +81,7 @@ source ~/.bash_profile
 daniel@Danielde-MBP > go get gopkg.in/mgo.v2
 ```
 
-
+使用 golang 新增及查詢 Mongo  
 
 ```
 package main

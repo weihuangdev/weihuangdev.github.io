@@ -82,7 +82,21 @@
   <div class="post-content e-content" itemprop="articleBody">
     <h4 id="json">json</h4>
 
-<p>json 是一種資料格式，json.Unmarshal 可以把 json 字串轉成 struct，而 json.Marshal 可以將 struct 轉成 json 字串．</p>
+<p>json 是一種很好擴充的資料格式，格式像這樣</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+	"cId" : "A" , 
+	"cType" : "English" , 
+	"saddr" : { "hsnId" : "C" , "addr" : "中正路12號" } , 
+	"persons" : [
+		{"id" : 1 , "name" : "Daniel"},
+		{"id" : 2 , "name" : "Allen"},
+		{"id" : 3 , "name" : "Sam"}
+	]
+}
+</code></pre></div></div>
+
+<p>go 的 json.Unmarshal 可以把 json 字串轉成 struct，而 json.Marshal 可以將 struct 轉成 json 字串．</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
@@ -107,7 +121,23 @@
 
 </code></pre></div></div>
 
+<p>輸出結果</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run example1.go
+{1 Daniel}
+{"id":1,"Name":"Daniel"}
+</code></pre></div></div>
+
 <h4 id="json-array">json Array</h4>
+
+<p>json Array 的格式像這樣，就是 Array 裡邊的元素是 json 格式．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[
+	{"id" : 1 , "name" : "Daniel"},
+	{"id" : 2 , "name" : "Allen"},
+	{"id" : 3 , "name" : "Sam"}
+]
+</code></pre></div></div>
 
 <p>json Array 的 parser 方式</p>
 
@@ -174,6 +204,20 @@
 
 <p>更複雜的巢狀結構，Students 包含了 string、[]Person 及 Address．</p>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+	"cId" : "A" , 
+	"cType" : "English" , 
+	"saddr" : { "hsnId" : "C" , "addr" : "中正路12號" } , 
+	"persons" : [
+		{"id" : 1 , "name" : "Daniel"},
+		{"id" : 2 , "name" : "Allen"},
+		{"id" : 3 , "name" : "Sam"}
+	]
+}
+</code></pre></div></div>
+
+<p>範例程式</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
 <span class="n">import</span> <span class="p">(</span>
@@ -222,7 +266,7 @@
 {"cId":"A","cType":"English","persons":[{"id":1,"Name":"Daniel"},{"id":2,"Name":"Allen"},{"id":3,"Name":"Sam"}],"saddr":{"hsnId":"C","addr":"中正路12號"}}
 </code></pre></div></div>
 
-<p>不使用 struct 的方式去 parser，使用空的 interface</p>
+<p>不使用 struct 的方式去 parser，使用 map 的方式</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
@@ -261,7 +305,7 @@
 
 <p>輸出結果</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go run example1.go
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run example1.go
 A
 English
 C

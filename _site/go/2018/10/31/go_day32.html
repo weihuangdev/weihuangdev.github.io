@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>go day 32 (read file insert mongo)</title>
-  <meta name="description" content="程式碼 :">
+  <title>go day 32 (read file to mongo)</title>
+  <meta name="description" content="測試檔案">
 
   <link rel="stylesheet" href="/assets/main.css">
   <link rel="canonical" href="http://localhost:4000/go/2018/10/31/go_day32.html">
@@ -70,7 +70,7 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">go day 32 (read file insert mongo)</h1>
+    <h1 class="post-title p-name" itemprop="name headline">go day 32 (read file to mongo)</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2018-10-31T12:45:17+08:00" itemprop="datePublished">
         
@@ -80,7 +80,19 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <p>程式碼 :</p>
+    <p>測試檔案</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; cat 20181011_report
+96,2288266
+240,3501
+144,29
+192,77
+193,5131
+241,317
+...
+</code></pre></div></div>
+
+<p>程式碼 :</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
@@ -148,6 +160,7 @@
 </code></pre></div></div>
 
 <p>Go 時間 format</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>t := time.Now()
 fmt.Println(t.Format("2006-01-02 15:04:05")) // 2018-10-11 12:11:13
 </code></pre></div></div>

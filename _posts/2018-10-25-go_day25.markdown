@@ -8,7 +8,22 @@ categories: go
 
 #### json
 
-json 是一種資料格式，json.Unmarshal 可以把 json 字串轉成 struct，而 json.Marshal 可以將 struct 轉成 json 字串．
+json 是一種很好擴充的資料格式，格式像這樣  
+
+```
+{
+	"cId" : "A" , 
+	"cType" : "English" , 
+	"saddr" : { "hsnId" : "C" , "addr" : "中正路12號" } , 
+	"persons" : [
+		{"id" : 1 , "name" : "Daniel"},
+		{"id" : 2 , "name" : "Allen"},
+		{"id" : 3 , "name" : "Sam"}
+	]
+}
+```
+
+go 的 json.Unmarshal 可以把 json 字串轉成 struct，而 json.Marshal 可以將 struct 轉成 json 字串．
 
 ```
 package main
@@ -34,10 +49,27 @@ func main() {
 
 ```
 
+輸出結果  
+
+```
+> go run example1.go
+{1 Daniel}
+{"id":1,"Name":"Daniel"}
+```
 
 #### json Array
 
-json Array 的 parser 方式  
+json Array 的格式像這樣，就是 Array 裡邊的元素是 json 格式．  
+
+```
+[
+	{"id" : 1 , "name" : "Daniel"},
+	{"id" : 2 , "name" : "Allen"},
+	{"id" : 3 , "name" : "Sam"}
+]
+```
+
+json Array 的 parser 方式    
 
 ```
 package main
@@ -105,6 +137,20 @@ func main() {
 
 更複雜的巢狀結構，Students 包含了 string、[]Person 及 Address．   
 
+```
+{
+	"cId" : "A" , 
+	"cType" : "English" , 
+	"saddr" : { "hsnId" : "C" , "addr" : "中正路12號" } , 
+	"persons" : [
+		{"id" : 1 , "name" : "Daniel"},
+		{"id" : 2 , "name" : "Allen"},
+		{"id" : 3 , "name" : "Sam"}
+	]
+}
+```
+
+範例程式  
 
 ```
 package main
@@ -156,7 +202,7 @@ func main() {
 {"cId":"A","cType":"English","persons":[{"id":1,"Name":"Daniel"},{"id":2,"Name":"Allen"},{"id":3,"Name":"Sam"}],"saddr":{"hsnId":"C","addr":"中正路12號"}}
 ```
 
-不使用 struct 的方式去 parser，使用空的 interface  
+不使用 struct 的方式去 parser，使用 map 的方式 
 
 ```
 package main
@@ -197,7 +243,7 @@ func main() {
 輸出結果  
 
 ```
-go run example1.go
+> go run example1.go
 A
 English
 C

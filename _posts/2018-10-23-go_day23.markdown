@@ -49,7 +49,7 @@ l  m
 
 ### bytes.Buffer
 
-使用 bytes.Buffer 讀取資料
+使用 strings.NewReader 讀取資料，然後透過 bytes.Buffer 印出
 
 ```
 package main

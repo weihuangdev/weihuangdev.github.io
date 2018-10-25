@@ -1,9 +1,23 @@
 ---
 layout: post
-title:  "go day 32 (read file insert mongo)"
+title:  "go day 32 (read file to mongo)"
 date:   2018-10-31 12:45:17 +0800
 categories: go
 ---
+
+
+測試檔案  
+
+```
+> cat 20181011_report
+96,2288266
+240,3501
+144,29
+192,77
+193,5131
+241,317
+...
+```
 
 程式碼 :  
 
@@ -75,6 +89,7 @@ func getDB() *mgo.Database {
 
 
 Go 時間 format  
+
 ```
 t := time.Now()
 fmt.Println(t.Format("2006-01-02 15:04:05")) // 2018-10-11 12:11:13

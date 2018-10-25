@@ -1,0 +1,77 @@
+---
+layout: post
+title:  "go day 33 (hdfs)"
+date:   2018-10-31 12:46:17 +0800
+categories: go
+---
+
+
+#### HDFS for Go
+
+參考 [HDFS for Go](https://github.com/colinmarc/hdfs)，API 使用可以參考 [GoDoc](https://godoc.org/github.com/colinmarc/hdfs)，下載  
+
+```
+go get github.com/colinmarc/hdfs
+```
+
+查看 HDFS 目錄  
+
+```
+hdfs dfs -ls /data/model/20181024_person
+18/10/24 16:47:10 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 7 items
+-rw-r--r--   2 miuser supergroup          0 2018-10-24 10:34 /data/model/20181024_person/_SUCCESS
+-rw-r--r--   2 miuser supergroup          0 2018-10-24 10:34 /data/model/20181024_person/part-00000
+-rw-r--r--   2 miuser supergroup        292 2018-10-24 10:34 /data/model/20181024_person/part-00001
+-rw-r--r--   2 miuser supergroup        311 2018-10-24 10:34 /data/model/20181024_person/part-00002
+-rw-r--r--   2 miuser supergroup        285 2018-10-24 10:34 /data/model/20181024_person/part-00003
+-rw-r--r--   2 miuser supergroup        153 2018-10-24 10:34 /data/model/20181024_person/part-00004
+-rw-r--r--   2 miuser supergroup        115 2018-10-24 10:34 /data/model/20181024_person/part-00005
+```
+
+讀取 HDFS File 程式  
+
+```
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"strings"
+
+	"github.com/colinmarc/hdfs"
+)
+
+func main() {
+	hdfsDirPath := "/data/model/20181024_person"
+	client, _ := hdfs.New("192.168.1.1:8020")
+	hdfsFiles, _ := client.ReadDir(hdfsDirPath)
+
+	for _, hdfsFile := range hdfsFiles {
+		var hdfsnm string
+		hdfsnm = hdfsFile.Name()
+		if strings.HasPrefix(hdfsnm, "part") {
+			hdfsFile := hdfsDirPath + "/" + hdfsnm
+			file, _ := client.Open(hdfsFile)
+			scanner := bufio.NewScanner(file)
+			for scanner.Scan() {
+				lineData := scanner.Text()
+				fmt.Println(lineData)
+			}
+		}
+
+	}
+}
+
+```
+執行結果  
+
+```
+> go run example1.go
+0,0,hash:628584079XXXX,0||||3000005,GF520 D791;3000013,Y;3000009,1950;3000008,4500;3000003,1;3000004,Feature Phone;3000010,2900;3000014,2000;3000007,ROAMING;3000002,51000;3000011,1000;3000012,DynamicSites;3000006,Proprietary;3000001,PREPAID|hash:628584079XXXX|10071,9;10058,9;10080,9;10328,9
+0,0,hash:628579093XXXX,0||||3000005,Samsung G925F/Samsung Galaxy S6 Edge;3000013,Y;3000009,2000;3000008,26300;3000003,1;3000004,Smartphone;3000010,2000;3000014,1650;3000007,3G;3000002,2300;3000011,1650;3000012,WhatsApp;3000006,Android OS 5.0.2;3000001,PREPAID|hash:628579093XXXX|10071,9;10058,9;10080,9;10328,9
+0,0,hash:628584655XXXX,0||||3000005,Fly Mobiles Mast+;3000013,Y;3000009,2000;3000008,2200;3000003,1;3000004,Feature Phone;3000010,500;3000014,1650;3000007,4G;3000002,0;3000011,500;3000012,WhatsApp;3000006,Proprietary;3000001,POSTPAID|hash:628584655XXXX|10071,9;10058,9;10080,9;10328,9
+0,0,hash:92cd8b4c0d0104f625a61936d485ef8d,0|||4000019,3;4000001,3||hash:92cd8b4c0d0104f625a61936d485ef8d|10071,9;11760,8;10058,9;11781,8;10080,9;10328,9
+0,0,ifa:625a61936d485e,0|||4000019,2;4000001,2||ifa:625a61936d485e|10071,9;11760,8;10058,9;11781,8;10080,9;10328,9
+```
+
