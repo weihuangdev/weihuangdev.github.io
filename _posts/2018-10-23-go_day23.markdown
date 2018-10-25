@@ -361,6 +361,58 @@ def
 ghi
 ```
 
+#### use goroutines writing csv file
+
+
+```
+package main
+
+import (
+	"encoding/csv"
+	"fmt"
+	"os"
+	"strconv"
+	"sync"
+)
+
+func main() {
+	var wg sync.WaitGroup
+	var m sync.Mutex
+	csvFile, _ := os.Create("./data/test.csv")
+
+	w := csv.NewWriter(csvFile)
+	w.Write([]string{"id1", "id2", "id3"})
+
+	count := 1000000
+	wg.Add(count)
+	for i := 0; i < count; i++ {
+		dataLine := []string{"NAME_" + strconv.Itoa(i), strconv.Itoa(i), strconv.Itoa(i)}
+		go func(i int) {
+			defer wg.Done()
+			m.Lock()
+			w.Write(dataLine)
+			m.Unlock()
+		}(i)
+	}
+	wg.Wait()
+	w.Flush()
+	showFileSize(csvFile)
+}
+
+func showFileSize(csvFile *os.File) {
+	fileInfo, _ := csvFile.Stat()
+	bytes := fileInfo.Size()
+	kiloBytes := (bytes / 1024)
+	megaBytes := (kiloBytes / 1024)
+	gigaBytes := (megaBytes / 1024)
+	fmt.Printf("FileSize is %d K \n", kiloBytes)
+	fmt.Printf("FileSize is %d M \n", megaBytes)
+	fmt.Printf("FileSize is %d G \n", gigaBytes)
+}
+
+```
+
+
 最後做個整理  
 
 * In  
