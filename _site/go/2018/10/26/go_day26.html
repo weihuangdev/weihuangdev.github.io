@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>go day 32 (read file to mongo)</title>
-  <meta name="description" content="測試檔案">
+  <title>go day 26 (mongodb)</title>
+  <meta name="description" content="mongodb mongodb 是一種 Document database，json 格式的資料很適合存在 mongodb． 這邊使用使用 docker 方式測試 Mongo DB．">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/go/2018/10/31/go_day32.html">
+  <link rel="canonical" href="http://localhost:4000/go/2018/10/26/go_day26.html">
   <link rel="alternate" type="application/rss+xml" title="Daniel&#39;s Blog" href="/feed.xml">
   
   
@@ -70,17 +70,155 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">go day 32 (read file to mongo)</h1>
+    <h1 class="post-title p-name" itemprop="name headline">go day 26 (mongodb)</h1>
     <p class="post-meta">
-      <time class="dt-published" datetime="2018-10-31T12:45:17+08:00" itemprop="datePublished">
+      <time class="dt-published" datetime="2018-10-26T10:45:17+08:00" itemprop="datePublished">
         
-        Oct 31, 2018
+        Oct 26, 2018
       </time>
       </p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <p>測試檔案</p>
+    <h4 id="mongodb">mongodb</h4>
+<p>mongodb 是一種 Document database，json 格式的資料很適合存在 mongodb．
+這邊使用使用 docker 方式測試 Mongo DB．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull mongo
+</code></pre></div></div>
+
+<p>建立一個 docker-compose.yml，使用 docker-compose 的方式啟動 container．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /Users/daniel/mongo-docker
+touch docker-compose.yml
+</code></pre></div></div>
+
+<p>docker-compose.yml 內容(/Users/daniel/mongo-docker) :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    volumes:
+      - /Users/daniel/mongo-docker/data
+
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
+</code></pre></div></div>
+
+<p>執行 docker-compose up，啟動 mongodb container</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; docker-compose up
+</code></pre></div></div>
+
+<h4 id="使用-go-的-mongo-go-driver">使用 go 的 mongo-go-driver</h4>
+
+<p>參考 <a href="https://labix.org/mgo">mongo-go-driver</a></p>
+
+<p>下載 gopkg.in/mgo.v2 套件</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go get gopkg.in/mgo.v2
+</code></pre></div></div>
+
+<p>新增及查詢 Mongo</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+  <span class="s2">"fmt"</span>
+  <span class="s2">"log"</span>
+
+  <span class="s2">"gopkg.in/mgo.v2"</span>
+  <span class="s2">"gopkg.in/mgo.v2/bson"</span>
+<span class="p">)</span>
+
+<span class="n">type</span> <span class="n">User</span> <span class="n">struct</span> <span class="p">{</span>
+  <span class="n">Name</span> <span class="k">string</span> <span class="s2">"bson:`name`"</span>
+  <span class="n">Age</span>  <span class="n">int</span>    <span class="s2">"bson:`age`"</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">var</span> <span class="n">mydb</span> <span class="p">=</span> <span class="n">getDB</span><span class="p">()</span>
+  <span class="n">mydb</span><span class="p">.</span><span class="n">Login</span><span class="p">(</span><span class="s2">"root"</span><span class="p">,</span> <span class="s2">"123456"</span><span class="p">)</span>
+  <span class="n">c</span> <span class="p">:=</span> <span class="n">mydb</span><span class="p">.</span><span class="n">C</span><span class="p">(</span><span class="s2">"student"</span><span class="p">)</span>
+  <span class="n">err</span> <span class="p">:=</span> <span class="n">c</span><span class="p">.</span><span class="n">Insert</span><span class="p">(&amp;</span><span class="n">User</span><span class="p">{</span><span class="n">Name</span><span class="p">:</span> <span class="s2">"Daniel"</span><span class="p">,</span> <span class="n">Age</span><span class="p">:</span> <span class="m">30</span><span class="p">})</span>
+  <span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>    <span class="n">panic</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">//</span> <span class="p">&lt;</span><span class="n">nil</span><span class="p">&gt;</span>
+
+  <span class="n">result</span> <span class="p">:=</span> <span class="n">User</span><span class="p">{}</span>
+  <span class="n">err</span> <span class="p">=</span> <span class="n">c</span><span class="p">.</span><span class="n">Find</span><span class="p">(</span><span class="n">bson</span><span class="p">.</span><span class="n">M</span><span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Daniel"</span><span class="p">}).</span><span class="n">One</span><span class="p">(&amp;</span><span class="n">result</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>    <span class="nb">log</span><span class="p">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"Age:"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">Age</span><span class="p">)</span> <span class="p">//</span> <span class="n">Age</span><span class="p">:</span> <span class="m">30</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">getDB</span><span class="p">()</span> <span class="p">*</span><span class="n">mgo</span><span class="p">.</span><span class="n">Database</span> <span class="p">{</span>
+  <span class="n">session</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">mgo</span><span class="p">.</span><span class="n">Dial</span><span class="p">(</span><span class="s2">"127.0.0.1:27017"</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
+</span>    <span class="n">panic</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="n">session</span><span class="p">.</span><span class="n">SetMode</span><span class="p">(</span><span class="n">mgo</span><span class="p">.</span><span class="n">Monotonic</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span>
+  <span class="n">db</span> <span class="p">:=</span> <span class="n">session</span><span class="p">.</span><span class="n">DB</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">)</span> <span class="p">//</span><span class="n">root</span> <span class="n">user</span> <span class="n">is</span> <span class="n">created</span> <span class="k">in</span> <span class="n">the</span> <span class="n">admin</span> <span class="n">authentication</span> <span class="n">database</span> <span class="k">and</span> <span class="n">given</span> <span class="n">the</span> <span class="n">role</span> <span class="k">of</span> <span class="n">root</span><span class="p">.</span>
+  <span class="n">return</span> <span class="n">db</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>執行程式</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run example1.go
+Age: 30
+</code></pre></div></div>
+
+<p>進入 container</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it mongo-docker_mongo_1 bash
+</code></pre></div></div>
+
+<p>連進 mongo shell</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mongo --host 127.0.0.1:27017 -u root -p 123456 --authenticationDatabase admin
+</code></pre></div></div>
+
+<p>查看剛剛執行完程式的資料是否存在</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+&gt; db.collection.count()
+0
+&gt; db
+admin
+&gt; show collections
+student
+&gt; db.student.find()
+{ "_id" : ObjectId("5bd314fbdac1db3ff5d54eef"), "name" : "Daniel", "age" : 30 }
+
+</code></pre></div></div>
+
+<h4 id="read-file-to-mongo">read file to mongo</h4>
+
+<p>做個測試檔案</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; cat 20181011_report
 96,2288266
@@ -92,7 +230,7 @@
 ...
 </code></pre></div></div>
 
-<p>程式碼 :</p>
+<p>讀取測試檔案資料並補上 timestamp 寫入 mongodb</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
@@ -116,7 +254,7 @@
 <span class="p">}</span>
 
 <span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">Now</span><span class="p">().</span><span class="n">Format</span><span class="p">(</span><span class="s2">"Y-m-d H:i:s"</span><span class="p">))</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">Now</span><span class="p">().</span><span class="n">Format</span><span class="p">(</span><span class="s2">"2006-01-02 15:04:05"</span><span class="p">))</span>
 	<span class="n">file</span><span class="p">,</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">os</span><span class="p">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">"/Volumes/Transcend/test/20181011_report"</span><span class="p">)</span>
 	<span class="k">if</span> <span class="n">err</span> <span class="c1">!= nil {
 </span>		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"error"</span><span class="p">)</span>
@@ -157,9 +295,24 @@
 	<span class="n">db</span> <span class="p">:=</span> <span class="n">session</span><span class="p">.</span><span class="n">DB</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">)</span> <span class="p">//</span><span class="n">root</span> <span class="n">user</span> <span class="n">is</span> <span class="n">created</span> <span class="k">in</span> <span class="n">the</span> <span class="n">admin</span> <span class="n">authentication</span> <span class="n">database</span> <span class="k">and</span> <span class="n">given</span> <span class="n">the</span> <span class="n">role</span> <span class="k">of</span> <span class="n">root</span><span class="p">.</span>
 	<span class="n">return</span> <span class="n">db</span>
 <span class="p">}</span>
+
+</code></pre></div></div>
+<p>執行測試</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run example1.go
+2018-10-26 21:25:59
 </code></pre></div></div>
 
-<p>Go 時間 format</p>
+<p>查詢 mongodb 寫入結果</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; db.LabelCount_TEST.find()
+{ "_id" : ObjectId("5bbec45eb082c29547bcadff"), "labelindex" : NumberLong(96), "createdat" : ISODate("2018-10-11T03:32:46.216Z"), "count" : NumberLong(2288266), "updatedat" : ISODate("2018-10-11T03:32:46.216Z") }
+{ "_id" : ObjectId("5bbec45eb082c29547bcae01"), "labelindex" : NumberLong(240), "createdat" : ISODate("2018-10-11T03:32:46.228Z"), "count" : NumberLong(3501), "updatedat" : ISODate("2018-10-11T03:32:46.228Z") }
+{ "_id" : ObjectId("5bbec45eb082c29547bcae03"), "labelindex" : NumberLong(144), "createdat" : ISODate("2018-10-11T03:32:46.229Z"), "count" : NumberLong(29), "updatedat" : ISODate("2018-10-11T03:32:46.229Z") }
+{ "_id" : ObjectId("5bbec45eb082c29547bcae05"), "labelindex" : NumberLong(192), "createdat" : ISODate("2018-10-11T03:32:46.229Z"), "count" : NumberLong(77), "updatedat" : ISODate("2018-10-11T03:32:46.229Z") }
+...
+</code></pre></div></div>
+
+<p>go 的日期時間 format 是使用格式是 “2006-01-02 15:04:05” 類似 java 的 “yyyy-MM-dd hh:mm:ss”</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>t := time.Now()
 fmt.Println(t.Format("2006-01-02 15:04:05")) // 2018-10-11 12:11:13
@@ -167,7 +320,8 @@ fmt.Println(t.Format("2006-01-02 15:04:05")) // 2018-10-11 12:11:13
 
 <blockquote>
   <p>參考資料<br />
-<a href="https://flaviocopes.com/go-date-time-format/">go-date-time-format</a></p>
+<a href="https://flaviocopes.com/go-date-time-format/">go-date-time-format</a>
+<a href="https://hackernoon.com/make-yourself-a-go-web-server-with-mongodb-go-on-go-on-go-on-48f394f24e">MongoDb</a></p>
 </blockquote>
 
 
@@ -175,7 +329,7 @@ fmt.Println(t.Format("2006-01-02 15:04:05")) // 2018-10-11 12:11:13
 
   
 
-  <a class="u-url" href="/go/2018/10/31/go_day32.html" hidden></a>
+  <a class="u-url" href="/go/2018/10/26/go_day26.html" hidden></a>
 </article>
 
       </div>
