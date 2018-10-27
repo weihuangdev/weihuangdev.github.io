@@ -238,4 +238,5 @@ Dropped 36 nodes (cum <= 0.25mins)
 > 參考資料  
 > [benchmark-in-go](https://blog.wu-boy.com/2018/06/how-to-write-benchmark-in-go/)  
 > [go-benchmark](https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/391387/)  
+> [goroutines-performace](https://mikespook.com/2012/01/goroutine%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/)  
 
