@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-27T16:24:56+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 34 (redis)</title><link href="http://localhost:4000/go/2018/10/31/go_day34.html" rel="alternate" type="text/html" title="go day 34 (redis)" /><published>2018-10-31T12:47:17+08:00</published><updated>2018-10-31T12:47:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day34</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day34.html">&lt;h4 id=&quot;go-redis&quot;&gt;go-redis&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-27T18:11:04+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 34 (redis)</title><link href="http://localhost:4000/go/2018/10/31/go_day34.html" rel="alternate" type="text/html" title="go day 34 (redis)" /><published>2018-10-31T12:47:17+08:00</published><updated>2018-10-31T12:47:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day34</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day34.html">&lt;h4 id=&quot;go-redis&quot;&gt;go-redis&lt;/h4&gt;
 
 &lt;p&gt;參考 &lt;a href=&quot;https://github.com/go-redis/redis&quot;&gt;go-redis&lt;/a&gt;．下載&lt;/p&gt;
 
@@ -541,7 +541,7 @@ printType(o)
 &lt;p&gt;改成&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;printType(&amp;amp;o)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;要在 ValueOf 後再加上 Elem&lt;/p&gt;
+&lt;p&gt;要在 ValueOf 後再加上 Elem 來取得變數 q 的定址的值&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;v := reflect.ValueOf(q)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;改成&lt;/p&gt;

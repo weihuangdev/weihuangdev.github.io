@@ -188,7 +188,7 @@ printType(o)
 ```
 printType(&o)
 ```
-要在 ValueOf 後再加上 Elem  
+要在 ValueOf 後再加上 Elem 來取得變數 q 的定址的值  
 ```
 v := reflect.ValueOf(q)
 ```
