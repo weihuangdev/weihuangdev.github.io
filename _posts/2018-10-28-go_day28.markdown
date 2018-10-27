@@ -1,0 +1,241 @@
+---
+layout: post
+title:  "go day 28 (benchmark)"
+date:   2018-10-28 10:45:17 +0800
+categories: go
+---
+
+### benchmark
+go 可以使用 benchmark 來做一些效能測試，需要調整程式的效能時就會需要用到．
+
+#### example.go
+準備要測試的程式，是一個用來產生測試資料的一段程式．  
+GenTestData1 沒有使用 goroutines．  
+GenTestData2 是使用了 goroutines，但產生亂數那一行並沒有加到 goroutines 去跑．  
+GenTestData2 是將 for 迴圈裡面所有的工作都放到 goroutines 去跑．  
+三個 function 都會先產生檔案，並把測試資料寫入各自的檔案．  
+
+```
+package test
+
+import (
+	"encoding/csv"
+	"os"
+	"sync"
+	ran "util/gendata"
+)
+
+func GenTestData1(dataCount int) {
+	csvFile, _ := os.Create("./test1.csv")
+	w := csv.NewWriter(csvFile)
+	for i := 0; i < dataCount; i++ {
+		func(i int) {
+			startTime := ran.GenStartTime()
+			dataLine := []string{ran.GenId(), ran.GenFullURL(), startTime, ran.GenEndTime(startTime), ran.GenDownVolumn(), ran.GenUpVolumn()}
+			w.Write(dataLine)
+		}(i)
+	}
+	w.Flush()
+}
+
+func GenTestData2(dataCount int) {
+	csvFile, _ := os.Create("./test2.csv")
+	w := csv.NewWriter(csvFile)
+	var wg sync.WaitGroup
+	var m sync.Mutex
+	wg.Add(dataCount)
+
+	for i := 0; i < dataCount; i++ {
+		startTime := ran.GenStartTime()
+		dataLine := []string{ran.GenId(), ran.GenFullURL(), startTime, ran.GenEndTime(startTime), ran.GenDownVolumn(), ran.GenUpVolumn()}
+
+		go func(i int) {
+			defer wg.Done()
+			m.Lock()
+			w.Write(dataLine)
+			m.Unlock()
+		}(i)
+	}
+	wg.Wait()
+	w.Flush()
+}
+
+func GenTestData3(dataCount int) {
+	csvFile, _ := os.Create("./test3.csv")
+	w := csv.NewWriter(csvFile)
+	var wg sync.WaitGroup
+	var m sync.Mutex
+	wg.Add(dataCount)
+
+	for i := 0; i < dataCount; i++ {
+		go func(i int) {
+			defer wg.Done()
+			startTime := ran.GenStartTime()
+			dataLine := []string{ran.GenId(), ran.GenFullURL(), startTime, ran.GenEndTime(startTime), ran.GenDownVolumn(), ran.GenUpVolumn()}
+			m.Lock()
+			w.Write(dataLine)
+			m.Unlock()
+		}(i)
+	}
+	wg.Wait()
+	w.Flush()
+}
+
+```
+
+#### example_test.go
+
+接著跟 testing 一樣寫一隻 example_test.go，如果是要單元測試的話 function 名稱是 Test 開頭．
+但要效能測試的 function 名稱是要 Benchmark 開頭．根據要比較的三個 function 各自寫一個測試 function．  
+
+```
+package test
+
+import (
+	"testing"
+)
+
+func BenchmarkGenTestData1(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		GenTestData1(10000)
+	}
+}
+func BenchmarkGenTestData2(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		GenTestData2(10000)
+	}
+}
+func BenchmarkGenTestData3(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		GenTestData3(10000)
+	}
+}
+
+```
+
+#### go test -bench
+
+下指令執行 benchmark，在 go test 後加上 -bench=.，最後一個 . 是代表當前 package．  
+
+```
+> go test -bench=. .
+goos: darwin
+goarch: amd64
+pkg: practice/test
+BenchmarkGenTestData1-8              2   815488165 ns/op
+BenchmarkGenTestData2-8              2   782245901 ns/op
+BenchmarkGenTestData3-8              5   279053275 ns/op
+PASS
+ok   practice/test  8.018s
+```
+
+BenchmarkGenTestData1-8 的 -8 代表目前 CPU 的核心數．
+2 跟 5 是指 1 秒鐘可以跑 2 次及 5 次．而每一次需要約 77779208 ns．
+
+根據上面的數字來看 GenTestData3 的程式寫法效能是最好的．
+而 GenTestData1 與 GenTestData2 的執行時間差不多，代表效能瓶頸會在產生測試資料的部分  
+
+```
+startTime := ran.GenStartTime()
+ådataLine := []string{ran.GenId(), ran.GenFullURL(), startTime, ran.GenEndTime(startTime), ran.GenDownVolumn(), ran.GenUpVolumn()}
+```
+
+產生 cpu、memory 及 blocking 的效能分析檔案  
+
+```
+go test -v -bench=. -cpuprofile=cpu.out -memprofile=mem.out -blockprofile=block.out .
+goos: darwin
+goarch: amd64
+pkg: practice/test
+BenchmarkGenTestData1-8              2   740294511 ns/op
+BenchmarkGenTestData2-8              2   794994639 ns/op
+BenchmarkGenTestData3-8              5   269349969 ns/op
+PASS
+ok   practice/test  8.155s
+```
+
+產生的檔案如下，test.test，檔名 test 是測試的 package 名稱．  
+
+```
+> ll
+total 14592
+-rwxrwxrwx  1 daniel  staff   2.0K Oct 27 23:21 block.out
+-rwxrwxrwx  1 daniel  staff    17K Oct 27 23:21 cpu.out
+-rwxrwxrwx  1 daniel  staff   1.4K Oct 27 22:10 example.go
+-rwxrwxrwx  1 daniel  staff   331B Oct 27 22:00 example_test.go
+-rwxrwxrwx  1 daniel  staff   3.7K Oct 27 23:21 mem.out
+-rwxrwxrwx  1 daniel  staff   3.5M Oct 27 23:21 test.test
+-rwxrwxrwx  1 daniel  staff   995K Oct 27 23:21 test1.csv
+-rwxrwxrwx  1 daniel  staff   995K Oct 27 23:21 test2.csv
+-rwxrwxrwx  1 daniel  staff   995K Oct 27 23:21 test3.csv
+```
+
+#### go tool pprof
+使用 go tool pprof 來看分析檔案，會根據消耗最多的來排序．cpu 的分析檔案  
+```
+> go tool pprof -text test.test cpu.out
+File: test.test
+Type: cpu
+Time: Oct 27, 2018 at 11:21pm (CST)
+Duration: 8.01s, Total samples = 19.90s (248.58%)
+Showing nodes accounting for 18.86s, 94.77% of 19.90s total
+Dropped 141 nodes (cum <= 0.10s)
+      flat  flat%   sum%        cum   cum%
+     6.60s 33.17% 33.17%      6.60s 33.17%  runtime.usleep
+     2.86s 14.37% 47.54%      2.86s 14.37%  runtime.pthread_cond_signal
+     2.69s 13.52% 61.06%      2.69s 13.52%  runtime.pthread_cond_wait
+     1.91s  9.60% 70.65%      1.91s  9.60%  syscall.Syscall
+     0.85s  4.27% 74.92%      0.85s  4.27%  math/rand.seedrand (inline)
+     0.64s  3.22% 78.14%      1.49s  7.49%  math/rand.(*rngSource).Seed
+     0.62s  3.12% 81.26%      0.62s  3.12%  runtime.pthread_cond_timedwait_relative_np
+     0.55s  2.76% 84.02%      0.55s  2.76%  runtime.memclrNoHeapPointers
+     0.28s  1.41% 85.43%      0.28s  1.41%  runtime.kevent
+     0.27s  1.36% 86.78%      0.32s  1.61%  runtime.scanobject
+...
+```
+memoery 的分析檔案  
+
+```
+> go tool pprof -text test.test mem.out
+File: test.test
+Type: alloc_space
+Time: Oct 27, 2018 at 11:21pm (CST)
+Showing nodes accounting for 5190.38MB, 99.11% of 5236.92MB total
+Dropped 46 nodes (cum <= 26.18MB)
+      flat  flat%   sum%        cum   cum%
+ 5166.88MB 98.66% 98.66%  5166.88MB 98.66%  math/rand.NewSource
+    8.50MB  0.16% 98.82%  4310.96MB 82.32%  util/gendata.stringWithCharset
+       6MB  0.11% 98.94%   883.42MB 16.87%  util/gendata.GenId
+    4.50MB 0.086% 99.03%   925.15MB 17.67%  practice/test.GenTestData2
+    4.50MB 0.086% 99.11%  4315.46MB 82.40%  util/gendata.GenFullURL
+         0     0% 99.11%   934.74MB 17.85%  practice/test.BenchmarkGenTestData1
+         0     0% 99.11%   925.15MB 17.67%  practice/test.BenchmarkGenTestData2
+...
+```
+
+blocking 的分析檔案  
+
+```
+> go tool pprof -text test.test block.out
+File: test.test
+Type: delay
+Time: Oct 27, 2018 at 11:21pm (CST)
+Showing nodes accounting for 49.21mins, 99.67% of 49.37mins total
+Dropped 36 nodes (cum <= 0.25mins)
+      flat  flat%   sum%        cum   cum%
+ 49.21mins 99.67% 99.67%  49.21mins 99.67%  sync.(*Mutex).Lock
+         0     0% 99.67%   0.50mins  1.01%  fmt.Sprintf
+         0     0% 99.67%   0.41mins  0.83%  fmt.newPrinter
+         0     0% 99.67%   0.50mins  1.01%  github.com/Pallinder/go-randomdata.StringNumber
+         0     0% 99.67%   0.50mins  1.01%  github.com/Pallinder/go-randomdata.StringNumberExt
+         0     0% 99.67%  49.21mins 99.67%  practice/test.GenTestData3.func1
+         0     0% 99.67%   0.41mins  0.83%  sync.(*Pool).Get
+         0     0% 99.67%   0.38mins  0.76%  sync.(*Pool).getSlow
+         0     0% 99.67%   0.45mins  0.91%  util/gendata.GenDownVolumn
+```
+
+
+> 參考資料  
+> [benchmark-in-go](https://blog.wu-boy.com/2018/06/how-to-write-benchmark-in-go/)  
+> [go-benchmark](https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/391387/)  
+
