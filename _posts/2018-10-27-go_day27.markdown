@@ -1,0 +1,268 @@
+---
+layout: post
+title:  "go day 27 (reflection)"
+date:   2018-10-27 10:45:17 +0800
+categories: go
+---
+
+### reflection
+reflection 可以讓程式在執行時期時，檢查變數的值、改變它的值或呼叫它的方法．
+
+#### TypeOf、ValueOf、Kind
+
+寫一個 function 參數是 empty interface 可以接收不同 type 的變數，
+然後透過 reflect 套件的功能印出該變數的型別、值以及種類  
+
+```
+func printType(q interface{}) {
+	t := reflect.TypeOf(q)
+	v := reflect.ValueOf(q)
+	k := t.Kind()
+	fmt.Println("Type ", t)
+	fmt.Println("Value ", v)
+	fmt.Println("Kind ", k)
+}
+```
+
+丟 int、string、array 給 printType  
+
+```
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+func printType(q interface{}) {
+	t := reflect.TypeOf(q)
+	v := reflect.ValueOf(q)
+	k := t.Kind()
+	fmt.Println("Type ", t)
+	fmt.Println("Value ", v)
+	fmt.Println("Kind ", k)
+}
+
+func main() {
+	printType(1)
+	printType("Daniel")
+	printType([]string{"a", "b", "c"})
+}
+
+```
+
+印出  
+
+```
+> go run example1.go
+Type  int
+Value  1
+Kind  int
+Type  string
+Value  Daniel
+Kind  string
+Type  [3]string
+Value  [a b c]
+Kind  array
+```
+
+使用 struct 測試  
+
+```
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type people struct {
+	id   int
+	name string
+}
+type animal struct {
+	id   int
+	tp   string
+	name string
+}
+
+func printType(q interface{}) {
+	t := reflect.TypeOf(q)
+	v := reflect.ValueOf(q)
+	k := t.Kind()
+	fmt.Println("Type ", t)
+	fmt.Println("Value ", v)
+	fmt.Println("Kind ", k)
+
+}
+func main() {
+	o := people{
+		id:   1,
+		name: "Daniel",
+	}
+	printType(o)
+
+	a := animal{
+		id: 2,
+		tp: "road",
+	}
+	printType(a)
+}
+
+```
+
+執行結果  
+
+```
+> go run example1.go
+Type  main.people
+Value  {1 Daniel}
+Kind  struct
+Type  main.animal
+Value  {2 road }
+Kind  struct
+```
+
+所以 reflect.TypeOf 可以印出該變數的 type．  
+reflect.ValueOf 可以印出該變數的 value．  
+Kind 是 type 的基底型別．people 這 type 的基底型別是 struct．  
+
+#### NumField 與 Field  
+
+NumField 可以回傳在 struct 裡有多少個欄位，
+而 Field(i) 可以取得該欄位的資訊．  
+
+```
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type people struct {
+	id   int
+	name string
+}
+type animal struct {
+	id   int
+	tp   string
+	name string
+}
+
+func printType(q interface{}) {
+	v := reflect.ValueOf(q)
+
+	fmt.Println("Number of fields", v.NumField())
+	for i := 0; i < v.NumField(); i++ {
+		fmt.Printf("Field:%d type:%T value:%v\n", i, v.Field(i), v.Field(i))
+	}
+}
+
+func main() {
+
+	o := people{
+		id:   1,
+		name: "Daniel",
+	}
+	printType(o)
+
+	a := animal{
+		id: 2,
+		tp: "road",
+	}
+	printType(a)
+}
+
+```
+
+如果要可以改變值的話要將原本變數的位址傳遞給 function  
+```
+o := people{
+	id:   1,
+	name: "Daniel",
+}
+printType(o)
+```
+改成  
+```
+printType(&o)
+```
+要在 ValueOf 後再加上 Elem  
+```
+v := reflect.ValueOf(q)
+```
+改成
+```
+v := reflect.ValueOf(q).Elem()
+```
+以及 struct 的變數名稱該頭要改成大寫 export 出來．  
+
+程式範例，如果 type 是 string 就改變值  
+
+```
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type people struct {
+	Id   int
+	Name string
+}
+type animal struct {
+	Id   int
+	Tp   string
+	Name string
+}
+
+func printType(q interface{}) {
+	v := reflect.ValueOf(q).Elem()
+	for i := 0; i < v.NumField(); i++ {
+		switch v.Field(i).Kind() {
+		case reflect.Int:
+			fmt.Printf("type is Int,value is %d \n", v.Field(i).Int())
+		case reflect.String:
+			fmt.Printf("can set value : %t \n", v.Field(i).CanSet())
+			v.Field(i).SetString("update_" + v.Field(i).String()) // 使用 reflect 改變值
+			fmt.Printf("type is String,value is %v \n", v.Field(i).String())
+		default:
+			fmt.Println("Unsupported type")
+			return
+		}
+	}
+}
+
+func main() {
+	o := people{1, "Daniel"}
+	printType(&o)
+
+	a := animal{
+		Id: 2,
+		Tp: "road",
+	}
+	printType(&a)
+}
+
+```
+
+執行結果  
+
+```
+> go run example1.go
+type is Int,value is 1
+can set value : true
+type is String,value is update_Daniel
+type is Int,value is 2
+can set value : true
+type is String,value is update_road
+can set value : true
+type is String,value is update_
+```
+
+> 參考資料  
+> [go-reflect](http://wiki.jikexueyuan.com/project/the-way-to-go/11.10.html)  
+> [golangbot-reflect](https://golangbot.com/reflection/)  
+
