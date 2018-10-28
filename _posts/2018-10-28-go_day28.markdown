@@ -9,7 +9,7 @@ categories: go
 go 可以使用 benchmark 來做一些效能測試，需要調整程式的效能時就會需要用到．
 
 #### example.go
-準備要測試的程式，是一個用來產生測試資料的一段程式．  
+準備要測試的程式，是一個用來產生測試資料的一段程式．所以要測試的是下面三種寫法哪個效能會比較好．  
 GenTestData1 沒有使用 goroutines．  
 GenTestData2 是使用了 goroutines，但產生亂數那一行並沒有加到 goroutines 去跑．  
 GenTestData2 是將 for 迴圈裡面所有的工作都放到 goroutines 去跑．  
@@ -115,7 +115,7 @@ func BenchmarkGenTestData3(b *testing.B) {
 
 #### go test -bench
 
-下指令執行 benchmark，在 go test 後加上 -bench=.，最後一個 . 是代表當前 package．  
+下指令執行 benchmark 跑效能測試，在 go test 後加上 -bench=.，最後一個 . 是代表當前 package．  
 
 ```
 > go test -bench=. .
@@ -132,8 +132,7 @@ ok   practice/test  8.018s
 BenchmarkGenTestData1-8 的 -8 代表目前 CPU 的核心數．
 2 跟 5 是指 1 秒鐘可以跑 2 次及 5 次．而每一次需要約 77779208 ns．
 
-根據上面的數字來看 GenTestData3 的程式寫法效能是最好的．
-而 GenTestData1 與 GenTestData2 的執行時間差不多，代表效能瓶頸會在產生測試資料的部分  
+根據上面的數字來看 GenTestData3 的程式寫法效能是最好的．因為它 1 秒鐘可以跑 5 次，另外兩個都只能跑 2 次．而 GenTestData1 與 GenTestData2 的執行時間差不多，代表效能瓶頸會在產生測試資料的部分  
 
 ```
 startTime := ran.GenStartTime()

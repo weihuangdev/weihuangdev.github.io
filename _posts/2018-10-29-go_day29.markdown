@@ -1,0 +1,147 @@
+---
+layout: post
+title:  "go day 29 (error handling)"
+date:   2018-10-29 10:45:17 +0800
+categories: go
+---
+
+### error handling
+
+go 如果出現錯誤訊息程式並不會中斷還會繼續執行  
+
+```
+package main
+
+import (
+	"encoding/csv"
+	"fmt"
+	"os"
+)
+
+func main() {
+	csvFile, error := os.Create("./null/newFile.csv")
+	if error != nil {
+		fmt.Println(error)
+	}
+	fmt.Println(csvFile) // <nil>
+	w := csv.NewWriter(csvFile)
+	fmt.Println(w) // &{44 false 0xc00001e100}
+	w.Write([]string{"H", "e", "l", "l", "o"})
+	w.Flush()
+	fmt.Println("Done")
+}
+
+```
+執行結果  
+
+```
+> go run example1.go
+open ./null/newFile.csv: no such file or directory
+<nil>
+&{44 false 0xc00001e100}
+Done
+```
+
+但加上 panic 後程式就會中斷了，不會繼續往下執行  
+
+```
+package main
+
+import (
+	"encoding/csv"
+	"fmt"
+	"os"
+)
+
+func main() {
+	csvFile, error := os.Create("./null/newFile.csv")
+	if error != nil {
+		fmt.Println(error)
+		panic(error)
+	}
+	fmt.Println(csvFile) // <nil>
+	w := csv.NewWriter(csvFile)
+	fmt.Println(w) // &{44 false 0xc00001e100}
+	w.Write([]string{"H", "e", "l", "l", "o"})
+	w.Flush()
+	fmt.Println("Done")
+}
+
+```
+執行結果  
+
+```
+> go run example1.go
+open ./null/newFile.csv: no such file or directory
+panic: open ./null/newFile.csv: no such file or directory
+
+goroutine 1 [running]:
+main.main()
+ /Volumes/Transcend/golang/goHello/src/practice/example1.go:13 +0x333
+exit status 2
+```
+
+#### recover
+如果程式發生 panic 後，recover 機制會停止 panic 並回傳 panic 的值．
+使用了 recover 程式雖然不會從中斷處繼續執行但可以有機會做一些當發生 panic 時的處理．
+還可以使用 runtime.Stack 可以找出發生問題的 stack trace．  
+
+```
+package main
+
+import (
+	"encoding/csv"
+	"fmt"
+	"os"
+	"runtime"
+)
+
+func main() {
+	defer func() {
+		switch err := recover(); err {
+		case nil:
+			fmt.Println("no Panic...")
+		default:
+			fmt.Println(err) // panic 的值
+			fmt.Println("------- stack trace -------")
+			var buf [4096]byte
+			n := runtime.Stack(buf[:], false)
+			fmt.Println(string(buf[:n]))
+			fmt.Println("recover and stop...")
+		}
+	}()
+
+	csvFile, error := os.Create("./null/newFile.csv")
+	if error != nil {
+		panic(error)
+	}
+	fmt.Println(csvFile) // <nil>
+	w := csv.NewWriter(csvFile)
+	fmt.Println(w) // &{44 false 0xc00001e100}
+	w.Write([]string{"H", "e", "l", "l", "o"})
+	w.Flush()
+	fmt.Println("Done")
+}
+
+
+```
+執行結果  
+
+```
+go run example1.go
+open ./null/newFile.csv: no such file or directory
+------- stack trace -------
+goroutine 1 [running]:
+main.main.func1()
+ /Volumes/Transcend/golang/goHello/src/practice/example1.go:19 +0xff
+panic(0x10ac960, 0xc0000701b0)
+ /usr/local/go/src/runtime/panic.go:513 +0x1b9
+main.main()
+ /Volumes/Transcend/golang/goHello/src/practice/example1.go:27 +0x303
+
+recover and stop...
+```
+
+
+
+

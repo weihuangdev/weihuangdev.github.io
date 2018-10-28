@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-27T23:41:50+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 34 (redis)</title><link href="http://localhost:4000/go/2018/10/31/go_day34.html" rel="alternate" type="text/html" title="go day 34 (redis)" /><published>2018-10-31T12:47:17+08:00</published><updated>2018-10-31T12:47:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day34</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day34.html">&lt;h4 id=&quot;go-redis&quot;&gt;go-redis&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-10-29T00:49:36+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">go day 34 (redis)</title><link href="http://localhost:4000/go/2018/10/31/go_day34.html" rel="alternate" type="text/html" title="go day 34 (redis)" /><published>2018-10-31T12:47:17+08:00</published><updated>2018-10-31T12:47:17+08:00</updated><id>http://localhost:4000/go/2018/10/31/go_day34</id><content type="html" xml:base="http://localhost:4000/go/2018/10/31/go_day34.html">&lt;h4 id=&quot;go-redis&quot;&gt;go-redis&lt;/h4&gt;
 
 &lt;p&gt;參考 &lt;a href=&quot;https://github.com/go-redis/redis&quot;&gt;go-redis&lt;/a&gt;．下載&lt;/p&gt;
 
@@ -366,11 +366,140 @@ Found 7 items
   &lt;p&gt;參考資料&lt;br /&gt;
 &lt;a href=&quot;https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/313050/&quot;&gt;ref-1&lt;/a&gt;&lt;br /&gt;
 &lt;a href=&quot;https://blog.csdn.net/aflyeaglenku/article/details/74188222&quot;&gt;ref-2&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 28 (benchmark)</title><link href="http://localhost:4000/go/2018/10/28/go_day28.html" rel="alternate" type="text/html" title="go day 28 (benchmark)" /><published>2018-10-28T10:45:17+08:00</published><updated>2018-10-28T10:45:17+08:00</updated><id>http://localhost:4000/go/2018/10/28/go_day28</id><content type="html" xml:base="http://localhost:4000/go/2018/10/28/go_day28.html">&lt;h3 id=&quot;benchmark&quot;&gt;benchmark&lt;/h3&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">``` package main</summary></entry><entry><title type="html">go day 29 (error handling)</title><link href="http://localhost:4000/go/2018/10/29/go_day29.html" rel="alternate" type="text/html" title="go day 29 (error handling)" /><published>2018-10-29T10:45:17+08:00</published><updated>2018-10-29T10:45:17+08:00</updated><id>http://localhost:4000/go/2018/10/29/go_day29</id><content type="html" xml:base="http://localhost:4000/go/2018/10/29/go_day29.html">&lt;h3 id=&quot;error-handling&quot;&gt;error handling&lt;/h3&gt;
+
+&lt;p&gt;go 如果出現錯誤訊息程式並不會中斷還會繼續執行&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;encoding/csv&quot;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;os&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;csvFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./null/newFile.csv&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;!= nil {
+&lt;/span&gt;		&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csvFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csvFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;amp;{&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;44&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0xc00001e100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;H&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;e&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;l&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;l&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Done&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行結果&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; go run example1.go
+open ./null/newFile.csv: no such file or directory
+&amp;lt;nil&amp;gt;
+&amp;amp;{44 false 0xc00001e100}
+Done
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;但加上 panic 後程式就會中斷了，不會繼續往下執行&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;encoding/csv&quot;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;os&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;csvFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./null/newFile.csv&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;!= nil {
+&lt;/span&gt;		&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;panic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csvFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csvFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;amp;{&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;44&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0xc00001e100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;H&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;e&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;l&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;l&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Done&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行結果&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; go run example1.go
+open ./null/newFile.csv: no such file or directory
+panic: open ./null/newFile.csv: no such file or directory
+
+goroutine 1 [running]:
+main.main()
+ /Volumes/Transcend/golang/goHello/src/practice/example1.go:13 +0x333
+exit status 2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;recover&quot;&gt;recover&lt;/h4&gt;
+&lt;p&gt;如果程式發生 panic 後，recover 機制會停止 panic 並回傳 panic 的值．
+使用了 recover 程式雖然不會從中斷處繼續執行但可以有機會做一些當發生 panic 時的處理．
+還可以使用 runtime.Stack 可以找出發生問題的 stack trace．&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;encoding/csv&quot;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;fmt&quot;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;os&quot;&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;runtime&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;defer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;recover&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;no Panic...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;panic&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;的值&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;------- stack trace -------&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4096&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runtime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Stack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:],&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;recover and stop...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}()&lt;/span&gt;
+
+	&lt;span class=&quot;n&quot;&gt;csvFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./null/newFile.csv&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;!= nil {
+&lt;/span&gt;		&lt;span class=&quot;n&quot;&gt;panic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csvFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;csvFile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;amp;{&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;44&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0xc00001e100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([]&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;H&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;e&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;l&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;l&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;o&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;w&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Flush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;fmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Println&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Done&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;執行結果&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;go run example1.go
+open ./null/newFile.csv: no such file or directory
+------- stack trace -------
+goroutine 1 [running]:
+main.main.func1()
+ /Volumes/Transcend/golang/goHello/src/practice/example1.go:19 +0xff
+panic(0x10ac960, 0xc0000701b0)
+ /usr/local/go/src/runtime/panic.go:513 +0x1b9
+main.main()
+ /Volumes/Transcend/golang/goHello/src/practice/example1.go:27 +0x303
+
+recover and stop...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">error handling</summary></entry><entry><title type="html">go day 28 (benchmark)</title><link href="http://localhost:4000/go/2018/10/28/go_day28.html" rel="alternate" type="text/html" title="go day 28 (benchmark)" /><published>2018-10-28T10:45:17+08:00</published><updated>2018-10-28T10:45:17+08:00</updated><id>http://localhost:4000/go/2018/10/28/go_day28</id><content type="html" xml:base="http://localhost:4000/go/2018/10/28/go_day28.html">&lt;h3 id=&quot;benchmark&quot;&gt;benchmark&lt;/h3&gt;
 &lt;p&gt;go 可以使用 benchmark 來做一些效能測試，需要調整程式的效能時就會需要用到．&lt;/p&gt;
 
 &lt;h4 id=&quot;examplego&quot;&gt;example.go&lt;/h4&gt;
-&lt;p&gt;準備要測試的程式，是一個用來產生測試資料的一段程式．&lt;br /&gt;
+&lt;p&gt;準備要測試的程式，是一個用來產生測試資料的一段程式．所以要測試的是下面三種寫法哪個效能會比較好．&lt;br /&gt;
 GenTestData1 沒有使用 goroutines．&lt;br /&gt;
 GenTestData2 是使用了 goroutines，但產生亂數那一行並沒有加到 goroutines 去跑．&lt;br /&gt;
 GenTestData2 是將 for 迴圈裡面所有的工作都放到 goroutines 去跑．&lt;br /&gt;
@@ -474,7 +603,7 @@ GenTestData2 是將 for 迴圈裡面所有的工作都放到 goroutines 去跑�
 
 &lt;h4 id=&quot;go-test--bench&quot;&gt;go test -bench&lt;/h4&gt;
 
-&lt;p&gt;下指令執行 benchmark，在 go test 後加上 -bench=.，最後一個 . 是代表當前 package．&lt;/p&gt;
+&lt;p&gt;下指令執行 benchmark 跑效能測試，在 go test 後加上 -bench=.，最後一個 . 是代表當前 package．&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; go test -bench=. .
 goos: darwin
@@ -490,8 +619,7 @@ ok   practice/test  8.018s
 &lt;p&gt;BenchmarkGenTestData1-8 的 -8 代表目前 CPU 的核心數．
 2 跟 5 是指 1 秒鐘可以跑 2 次及 5 次．而每一次需要約 77779208 ns．&lt;/p&gt;
 
-&lt;p&gt;根據上面的數字來看 GenTestData3 的程式寫法效能是最好的．
-而 GenTestData1 與 GenTestData2 的執行時間差不多，代表效能瓶頸會在產生測試資料的部分&lt;/p&gt;
+&lt;p&gt;根據上面的數字來看 GenTestData3 的程式寫法效能是最好的．因為它 1 秒鐘可以跑 5 次，另外兩個都只能跑 2 次．而 GenTestData1 與 GenTestData2 的執行時間差不多，代表效能瓶頸會在產生測試資料的部分&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;startTime := ran.GenStartTime()
 ådataLine := []string{ran.GenId(), ran.GenFullURL(), startTime, ran.GenEndTime(startTime), ran.GenDownVolumn(), ran.GenUpVolumn()}
@@ -2001,202 +2129,4 @@ io.Copy
 io.WriteString
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">strings.NewReader</summary></entry><entry><title type="html">go day 22 (gin-gonic)</title><link href="http://localhost:4000/go/2018/10/22/go_day22.html" rel="alternate" type="text/html" title="go day 22 (gin-gonic)" /><published>2018-10-22T10:44:17+08:00</published><updated>2018-10-22T10:44:17+08:00</updated><id>http://localhost:4000/go/2018/10/22/go_day22</id><content type="html" xml:base="http://localhost:4000/go/2018/10/22/go_day22.html">&lt;h3 id=&quot;gin-gonic&quot;&gt;gin-gonic&lt;/h3&gt;
-
-&lt;p&gt;gin-gonic 是一個 golang 的 HTTP web framework，使用 framework 可以簡化程式碼，因為很多東西 framework 都幫忙整合做掉了．
-先使用 go get 下載 gin-gonic&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;go get github.com/gin-gonic/gin
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;hello-name&quot;&gt;Hello Name&lt;/h4&gt;
-
-&lt;p&gt;使用 gin-gonic 跑一個簡單的範例，url 如果 match /hello/Daniel 會回傳一個 json 格式的資料．&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-	&lt;span class=&quot;s2&quot;&gt;&quot;github.com/gin-gonic/gin&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/hello/:name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Param&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;hello &quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;執行 example.go，會啟動一個預設為 8080 的 port，console 會印出綁定的 GET 的 handler．
-之後接收到 request 時也會印出 log．&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;go run example.go
-[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
-
-[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.
- - using env:   export GIN_MODE=release
- - using code:  gin.SetMode(gin.ReleaseMode)
-
-[GIN-debug] GET    /hello/:name              --&amp;gt; main.main.func1 (3 handlers)
-[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default[GIN-debug] Listening and serving HTTP on :8080
-[GIN] 2018/10/22 - 11:58:39 | 200 |      17.721µs |             ::1 | GET      /hello/Daniel
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;輸出結果&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; curl http://localhost:8080/hello/Daniel
-{&quot;message&quot;:&quot;hello Daniel&quot;}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;路徑--與--的差異&quot;&gt;路徑 : 與 * 的差異&lt;/h4&gt;
-
-&lt;p&gt;net/http 裡面定義了很多 http status 的 type 可以直接使用．這次在前面的範例再加上 *action 並透過 c.Param 來取得 action 的值&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-	&lt;span class=&quot;s2&quot;&gt;&quot;net/http&quot;&lt;/span&gt;
-
-	&lt;span class=&quot;s2&quot;&gt;&quot;github.com/gin-gonic/gin&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/hello/:name/*action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Param&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Param&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-		&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StatusOK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;:8081&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;輸出結果&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; curl http://localhost:8081/hello/Daniel/play
-{&quot;action&quot;:&quot;/play&quot;,&quot;name&quot;:&quot;Daniel&quot;}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;: 跟 * 的差異在於，: 如果沒給參數的話會 404，* 可以不給沒關係．&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; curl http://localhost:8081/hello/Daniel/
-{&quot;action&quot;:&quot;/&quot;,&quot;name&quot;:&quot;Daniel&quot;}
-
-&amp;gt; curl http://localhost:8081/hello/
-404 page not found
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;取得-request-參數&quot;&gt;取得 request 參數&lt;/h4&gt;
-
-&lt;p&gt;使用 Query 與 DefaultQuery 來取得 request 參數．
-DefaultQuery 的話如果沒有 firstname 這參數，就會給預設值第二個參數(None)．&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-	&lt;span class=&quot;s2&quot;&gt;&quot;net/http&quot;&lt;/span&gt;
-
-	&lt;span class=&quot;s2&quot;&gt;&quot;github.com/gin-gonic/gin&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/hello/:name/*action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Param&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Param&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-		&lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DefaultQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;firstname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;None&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;lastname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-		&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StatusOK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;firstname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;lastname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;:8081&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;輸出結果&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; curl http://localhost:8081/hello/Daniel/play\?firstnam=Sam\&amp;amp;lastname=Lucas
-{&quot;action&quot;:&quot;/play&quot;,&quot;firstname&quot;:&quot;None&quot;,&quot;lastname&quot;:&quot;Lucas&quot;,&quot;name&quot;:&quot;Daniel&quot;}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;使用-basicauth-做認證&quot;&gt;使用 BasicAuth 做認證&lt;/h4&gt;
-
-&lt;p&gt;使用 BasicAuth 認證並給他 Accounts 參數就是使用者的帳密，
-所以只有 Daniel 與 Sam 可以對 “/hello/:name/*action” 做呼叫&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-	&lt;span class=&quot;s2&quot;&gt;&quot;net/http&quot;&lt;/span&gt;
-
-	&lt;span class=&quot;s2&quot;&gt;&quot;github.com/gin-gonic/gin&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-	&lt;span class=&quot;n&quot;&gt;authorized&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Group&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BasicAuth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Accounts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;s2&quot;&gt;&quot;Daniel&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;123456&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;s2&quot;&gt;&quot;Sam&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;s2&quot;&gt;&quot;abc123&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}))&lt;/span&gt;
-
-	&lt;span class=&quot;n&quot;&gt;authorized&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/hello/:name/*action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Param&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Param&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-		&lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DefaultQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;firstname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;None&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;lastname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-		&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StatusOK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;action&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;firstname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;firstname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-			&lt;span class=&quot;s2&quot;&gt;&quot;lastname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;lastname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-		&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;:8081&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如果沒給帳密的話會什麼都沒有&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; curl http://localhost:8081/hello/Daniel/play\?firstnam=Sam\&amp;amp;lastname=Lucas
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;使用 curl 給帳密的方式測試，有下列 3 種 :&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; curl Daniel:123456@localhost:8081/hello/Daniel/play\?firstnam=Sam\&amp;amp;lastname=Lucas
-{&quot;action&quot;:&quot;/play&quot;,&quot;firstname&quot;:&quot;None&quot;,&quot;lastname&quot;:&quot;Lucas&quot;,&quot;name&quot;:&quot;Daniel&quot;}
-
-&amp;gt; curl -u Sam localhost:8081/hello/Daniel/play\?firstnam=Sam\&amp;amp;lastname=Lucas
-Enter host password for user 'Sam':
-{&quot;action&quot;:&quot;/play&quot;,&quot;firstname&quot;:&quot;None&quot;,&quot;lastname&quot;:&quot;Lucas&quot;,&quot;name&quot;:&quot;Daniel&quot;}%
-
-curl -u Sam:abc123 localhost:8081/hello/Daniel/play\?firstnam=Sam\&amp;amp;lastname=Lucas
-{&quot;action&quot;:&quot;/play&quot;,&quot;firstname&quot;:&quot;None&quot;,&quot;lastname&quot;:&quot;Lucas&quot;,&quot;name&quot;:&quot;Daniel&quot;}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;參考資料&lt;br /&gt;
-&lt;a href=&quot;https://github.com/gin-gonic/&quot;&gt;gin-gonic&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">gin-gonic</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">strings.NewReader</summary></entry></feed>
