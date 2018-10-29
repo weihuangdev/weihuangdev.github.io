@@ -82,7 +82,8 @@
   <div class="post-content e-content" itemprop="articleBody">
     <h3 id="error-handling">error handling</h3>
 
-<p>go 如果出現錯誤訊息程式並不會中斷還會繼續執行</p>
+<p>go 的錯誤處理大致上分成兩塊 Error 和 Panic．Error 不會中斷程式但 Panic 會．
+下面範例出現錯誤訊息程式並不會中斷還會繼續執行</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
@@ -209,6 +210,152 @@ main.main()
  /Volumes/Transcend/golang/goHello/src/practice/example1.go:27 +0x303
 
 recover and stop...
+</code></pre></div></div>
+
+<p>透過不同的 type 來決定要做怎樣的 recover</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"encoding/csv"</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"os"</span>
+	<span class="s2">"runtime"</span>
+<span class="p">)</span>
+
+<span class="n">type</span> <span class="n">CustomError</span> <span class="n">struct</span> <span class="p">{</span>
+	<span class="n">msg</span> <span class="k">string</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">defer</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">defer</span> <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"recover and stop..."</span><span class="p">)</span>
+		<span class="n">switch</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">recover</span><span class="p">();</span> <span class="n">err</span> <span class="p">{</span>
+		<span class="k">case</span> <span class="n">nil</span><span class="p">:</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"no Panic..."</span><span class="p">)</span>
+		<span class="k">case</span> <span class="n">CustomError</span><span class="p">{}:</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"CustomError..."</span><span class="p">)</span>
+		<span class="n">default</span><span class="p">:</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">//</span> <span class="n">panic</span> <span class="err">的值</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"------- stack trace -------"</span><span class="p">)</span>
+			<span class="n">var</span> <span class="n">buf</span> <span class="p">[</span><span class="m">4096</span><span class="p">]</span><span class="n">byte</span>
+			<span class="n">n</span> <span class="p">:=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">Stack</span><span class="p">(</span><span class="n">buf</span><span class="p">[:],</span> <span class="nb">false</span><span class="p">)</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="k">string</span><span class="p">(</span><span class="n">buf</span><span class="p">[:</span><span class="n">n</span><span class="p">]))</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"Panic ..."</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}()</span>
+
+	<span class="n">csvFile</span><span class="p">,</span> <span class="n">error</span> <span class="p">:=</span> <span class="n">os</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="s2">"./null/newFile.csv"</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">error</span> <span class="c1">!= nil {
+</span>		<span class="n">panic</span><span class="p">(</span><span class="n">CustomError</span><span class="p">{})</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">csvFile</span><span class="p">)</span> <span class="p">//</span> <span class="p">&lt;</span><span class="n">nil</span><span class="p">&gt;</span>
+	<span class="n">w</span> <span class="p">:=</span> <span class="n">csv</span><span class="p">.</span><span class="n">NewWriter</span><span class="p">(</span><span class="n">csvFile</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="p">//</span> <span class="p">&amp;{</span><span class="m">44</span> <span class="nb">false</span> <span class="m">0xc00001e100</span><span class="p">}</span>
+	<span class="n">w</span><span class="p">.</span><span class="n">Write</span><span class="p">([]</span><span class="k">string</span><span class="p">{</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">})</span>
+	<span class="n">w</span><span class="p">.</span><span class="n">Flush</span><span class="p">()</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"Done"</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>執行結果</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run example1.go
+CustomError...
+recover and stop...
+</code></pre></div></div>
+
+<h4 id="custom-error">custom Error</h4>
+
+<ol>
+  <li>定義一個 Error 的 struct(CustomError)</li>
+  <li>替 struct(CustomError) 加上一個 Error() function</li>
+  <li>定義錯誤的 function 回傳定義好的 Error (CustomError)</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="n">import</span> <span class="p">(</span>
+	<span class="s2">"encoding/csv"</span>
+	<span class="s2">"fmt"</span>
+	<span class="s2">"os"</span>
+	<span class="s2">"runtime"</span>
+<span class="p">)</span>
+
+<span class="n">type</span> <span class="n">CustomError</span> <span class="n">struct</span> <span class="p">{</span>
+	<span class="n">msg</span> <span class="k">string</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="p">(</span><span class="n">error</span> <span class="p">*</span><span class="n">CustomError</span><span class="p">)</span> <span class="n">Error</span><span class="p">()</span> <span class="k">string</span> <span class="p">{</span>
+	<span class="n">return</span> <span class="n">error</span><span class="p">.</span><span class="n">msg</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">FileNotExistError</span><span class="p">()</span> <span class="n">error</span> <span class="p">{</span>
+	<span class="n">return</span> <span class="p">&amp;</span><span class="n">CustomError</span><span class="p">{</span><span class="s2">"FileNotExistError"</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">defer</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="n">defer</span> <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"recover and stop..."</span><span class="p">)</span>
+		<span class="n">switch</span> <span class="n">err</span> <span class="p">:=</span> <span class="n">recover</span><span class="p">();</span> <span class="n">err</span> <span class="p">{</span>
+		<span class="k">case</span> <span class="n">nil</span><span class="p">:</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"no Panic..."</span><span class="p">)</span>
+		<span class="k">case</span> <span class="n">CustomError</span><span class="p">{}:</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"CustomError..."</span><span class="p">)</span>
+		<span class="n">default</span><span class="p">:</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">//</span> <span class="n">panic</span> <span class="err">的值</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"------- stack trace -------"</span><span class="p">)</span>
+			<span class="n">var</span> <span class="n">buf</span> <span class="p">[</span><span class="m">4096</span><span class="p">]</span><span class="n">byte</span>
+			<span class="n">n</span> <span class="p">:=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">Stack</span><span class="p">(</span><span class="n">buf</span><span class="p">[:],</span> <span class="nb">false</span><span class="p">)</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="k">string</span><span class="p">(</span><span class="n">buf</span><span class="p">[:</span><span class="n">n</span><span class="p">]))</span>
+			<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"Panic ..."</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}()</span>
+
+	<span class="n">csvFile</span><span class="p">,</span> <span class="n">error</span> <span class="p">:=</span> <span class="n">createFile</span><span class="p">(</span><span class="s2">"./null/newFile.csv"</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">error</span> <span class="c1">!= nil {
+</span>		<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">csvFile</span><span class="p">)</span> <span class="p">//</span> <span class="p">&lt;</span><span class="n">nil</span><span class="p">&gt;</span>
+	<span class="n">w</span> <span class="p">:=</span> <span class="n">csv</span><span class="p">.</span><span class="n">NewWriter</span><span class="p">(</span><span class="n">csvFile</span><span class="p">)</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="p">//</span> <span class="p">&amp;{</span><span class="m">44</span> <span class="nb">false</span> <span class="m">0xc00001e100</span><span class="p">}</span>
+	<span class="n">w</span><span class="p">.</span><span class="n">Write</span><span class="p">([]</span><span class="k">string</span><span class="p">{</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"o"</span><span class="p">})</span>
+	<span class="n">w</span><span class="p">.</span><span class="n">Flush</span><span class="p">()</span>
+	<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s2">"Done"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">createFile</span><span class="p">(</span><span class="n">filePath</span> <span class="k">string</span><span class="p">)</span> <span class="p">(*</span><span class="n">os</span><span class="p">.</span><span class="n">File</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">csvFile</span><span class="p">,</span> <span class="n">error</span> <span class="p">:=</span> <span class="n">os</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">error</span> <span class="c1">!= nil {
+</span>		<span class="n">return</span> <span class="n">nil</span><span class="p">,</span> <span class="n">FileNotExistError</span><span class="p">()</span>
+	<span class="p">}</span>
+	<span class="n">return</span> <span class="n">csvFile</span><span class="p">,</span> <span class="n">error</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>執行結果</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; go run example1.go
+FileNotExistError
+&lt;nil&gt;
+&amp;{44 false 0xc00001e100}
+Done
+no Panic...
+recover and stop...
+</code></pre></div></div>
+
+<p>用上面的例子複習一下建立及初始化一個實體的 type．</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func FileNotExistError() error {
+	return &amp;CustomError{"FileNotExistError"}
+}
+</code></pre></div></div>
+<p>上面的寫法相當於 new(T)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func FileNotExistError() error {
+	custError := new(CustomError)
+	custError.msg = "FileNotExistError"
+	return custError
+}
 </code></pre></div></div>
 
 

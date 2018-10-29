@@ -7,7 +7,8 @@ categories: go
 
 ### error handling
 
-go 如果出現錯誤訊息程式並不會中斷還會繼續執行  
+go 的錯誤處理大致上分成兩塊 Error 和 Panic．Error 不會中斷程式但 Panic 會．
+下面範例出現錯誤訊息程式並不會中斷還會繼續執行  
 
 ```
 package main
@@ -142,6 +143,155 @@ main.main()
 recover and stop...
 ```
 
+透過不同的 type 來決定要做怎樣的 recover  
+
+```
+package main
+
+import (
+	"encoding/csv"
+	"fmt"
+	"os"
+	"runtime"
+)
+
+type CustomError struct {
+	msg string
+}
+
+func main() {
+	defer func() {
+		defer fmt.Println("recover and stop...")
+		switch err := recover(); err {
+		case nil:
+			fmt.Println("no Panic...")
+		case CustomError{}:
+			fmt.Println("CustomError...")
+		default:
+			fmt.Println(err) // panic 的值
+			fmt.Println("------- stack trace -------")
+			var buf [4096]byte
+			n := runtime.Stack(buf[:], false)
+			fmt.Println(string(buf[:n]))
+			fmt.Println("Panic ...")
+		}
+	}()
+
+	csvFile, error := os.Create("./null/newFile.csv")
+	if error != nil {
+		panic(CustomError{})
+	}
+	fmt.Println(csvFile) // <nil>
+	w := csv.NewWriter(csvFile)
+	fmt.Println(w) // &{44 false 0xc00001e100}
+	w.Write([]string{"H", "e", "l", "l", "o"})
+	w.Flush()
+	fmt.Println("Done")
+}
+
+```
+執行結果  
+```
+> go run example1.go
+CustomError...
+recover and stop...
+```
+
+#### custom Error  
+
+1. 定義一個 Error 的 struct(CustomError)  
+2. 替 struct(CustomError) 加上一個 Error() function  
+3. 定義錯誤的 function 回傳定義好的 Error (CustomError)  
+
+```
+package main
+
+import (
+	"encoding/csv"
+	"fmt"
+	"os"
+	"runtime"
+)
+
+type CustomError struct {
+	msg string
+}
+
+func (error *CustomError) Error() string {
+	return error.msg
+}
+
+func FileNotExistError() error {
+	return &CustomError{"FileNotExistError"}
+}
+
+func main() {
+	defer func() {
+		defer fmt.Println("recover and stop...")
+		switch err := recover(); err {
+		case nil:
+			fmt.Println("no Panic...")
+		case CustomError{}:
+			fmt.Println("CustomError...")
+		default:
+			fmt.Println(err) // panic 的值
+			fmt.Println("------- stack trace -------")
+			var buf [4096]byte
+			n := runtime.Stack(buf[:], false)
+			fmt.Println(string(buf[:n]))
+			fmt.Println("Panic ...")
+		}
+	}()
+
+	csvFile, error := createFile("./null/newFile.csv")
+	if error != nil {
+		fmt.Println(error)
+	}
+	fmt.Println(csvFile) // <nil>
+	w := csv.NewWriter(csvFile)
+	fmt.Println(w) // &{44 false 0xc00001e100}
+	w.Write([]string{"H", "e", "l", "l", "o"})
+	w.Flush()
+	fmt.Println("Done")
+}
+
+func createFile(filePath string) (*os.File, error) {
+	csvFile, error := os.Create(filePath)
+	if error != nil {
+		return nil, FileNotExistError()
+	}
+	return csvFile, error
+}
+
+```
+執行結果  
+
+```
+> go run example1.go
+FileNotExistError
+<nil>
+&{44 false 0xc00001e100}
+Done
+no Panic...
+recover and stop...
+```
+
+用上面的例子複習一下建立及初始化一個實體的 type．  
+
+```
+func FileNotExistError() error {
+	return &CustomError{"FileNotExistError"}
+}
+```
+上面的寫法相當於 new(T)  
+
+```
+func FileNotExistError() error {
+	custError := new(CustomError)
+	custError.msg = "FileNotExistError"
+	return custError
+}
+```
 
 
 
