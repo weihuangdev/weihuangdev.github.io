@@ -89,16 +89,22 @@
 
 <p>查看 HDFS 目錄</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hdfs dfs -ls /data/model/20181024_person
-18/10/24 16:47:10 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-Found 7 items
--rw-r--r--   2 miuser supergroup          0 2018-10-24 10:34 /data/model/20181024_person/_SUCCESS
--rw-r--r--   2 miuser supergroup          0 2018-10-24 10:34 /data/model/20181024_person/part-00000
--rw-r--r--   2 miuser supergroup        292 2018-10-24 10:34 /data/model/20181024_person/part-00001
--rw-r--r--   2 miuser supergroup        311 2018-10-24 10:34 /data/model/20181024_person/part-00002
--rw-r--r--   2 miuser supergroup        285 2018-10-24 10:34 /data/model/20181024_person/part-00003
--rw-r--r--   2 miuser supergroup        153 2018-10-24 10:34 /data/model/20181024_person/part-00004
--rw-r--r--   2 miuser supergroup        115 2018-10-24 10:34 /data/model/20181024_person/part-00005
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; hdfs dfs -ls /user/miuser/data/model/20181030_person
+18/10/30 12:50:25 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 6 items
+-rw-r--r--   2 miuser supergroup          0 2018-10-30 12:44 /user/miuser/data/model/20181030_person/_SUCCESS
+-rw-r--r--   2 miuser supergroup  185979860 2018-10-30 12:44 /user/miuser/data/model/20181030_person/part-00000
+-rw-r--r--   2 miuser supergroup  185978526 2018-10-30 12:44 /user/miuser/data/model/20181030_person/part-00001
+-rw-r--r--   2 miuser supergroup  185973527 2018-10-30 12:44 /user/miuser/data/model/20181030_person/part-00002
+-rw-r--r--   2 miuser supergroup  185977162 2018-10-30 12:44 /user/miuser/data/model/20181030_person/part-00003
+-rw-r--r--   2 miuser supergroup  185986465 2018-10-30 12:44 /user/miuser/data/model/20181030_person/part-00004
+</code></pre></div></div>
+
+<p>資料格式如下</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; hdfs dfs -cat /user/miuser/data/model/20181030_person/part-00004 | head -n 1
+18/10/30 12:52:12 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+0,0,hash:trackrapid68427621,0|||||hash:trackrapid68427621|10071,9;10058,9;10080,9;10328,9
 </code></pre></div></div>
 
 <p>讀取 HDFS File 程式</p>
