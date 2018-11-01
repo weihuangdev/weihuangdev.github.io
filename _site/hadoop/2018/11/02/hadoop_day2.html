@@ -442,6 +442,15 @@ yarn.nodemanager.resource.cpu-vcores : 36 Core
 <a href="https://blog.csdn.net/lsshlsw/article/details/48627737">map &amp; mapPartitions</a></p>
 </blockquote>
 
+<ul>
+  <li>其他參考</li>
+</ul>
+
+<p>一個 spark application 所使用的資源為：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cores = spark.driver.cores + spark.executor.cores * spark.executor.instances
+memory = spark.driver.memory + spark.yarn.driver.memoryOverhead + (spark.executor.memory + spark.yarn.executor.memoryOverhead) * spark.executor.instances
+</code></pre></div></div>
+
 
   </div>
 
