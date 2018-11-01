@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>hadoop day 2 (spark on yarn performance)</title>
+  <meta name="description" content="針對 spark job 在 yarn 上面執行的效能調整，在 GCP 上面使用三台機器做一個 hadoop cluster 做測試．">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/hadoop/2018/11/02/hadoop_day2.html">
+  <link rel="alternate" type="application/rss+xml" title="Daniel&#39;s Blog" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">Daniel&#39;s Blog</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">hadoop day 2 (spark on yarn performance)</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-11-02T10:45:17+08:00" itemprop="datePublished">
+        
+        Nov 2, 2018
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>針對 spark job 在 yarn 上面執行的效能調整，在 GCP 上面使用三台機器做一個 hadoop cluster 做測試．</p>
+
+<p>測試檔案的資料格式大概長這樣，然後大小為 1G , 10200000 筆資料 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jackalhelix68714,picbear.com/ebcbuzz/cannotmappin,2018-10-22 06:08:11,2018-10-22 06:08:57,33,530214
+butterflyforest75334240,www.theguardian.com/media/iplayer,2018-10-13 12:07:15,2018-10-13 12:08:34,70,2487
+lightningsmall9571044,picbear.com/ebcbuzz/cannotmappin,2018-10-17 06:07:15,2018-10-17 06:08:10,467706,58
+</code></pre></div></div>
+
+<p>主要就是跑 spark job 處理上面的檔案資料後，寫入 Redis．</p>
+
+<p>一台機器的規格</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4 Core , 15G
+</code></pre></div></div>
+
+<p>Hadoop Cluster 規格，每一台保留 2 Core 及 5G 的 Memory 給系統使用 :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Memory Total 30 GB
+VCores Total 6
+</code></pre></div></div>
+
+<p>執行 “update.sh” 測試 :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1)spark-submit 參數 : 
+	yarn cluster mode , driver-memory 5g , executor-memory 5g , executor-cores 2 , num-executors 3
+(2)yarn 執行狀態 : 
+	Containers Running : 3 個, Memory Used : 18GB , VCores Used : 3
+(3)執行時間 : 
+	17:18:52 ~ 18:21:44 , 63 分鐘
+(4)redis 資料 : 
+	約 20399995 筆
+</code></pre></div></div>
+<p>使用上面的 spark-submit 參數，一開始只有 3 個 container 在跑，資源也沒有用滿．跑了 1 小時左右．
+所以調整了一下參數，算法如下 :</p>
+
+<p>1台機器 2 Core / 每個 executor 1 個 Core 所以每一台機器最多只能跑 2 個 executor．
+1台機器 2 個 executor * 3 台，所以最多有 6 個 executor 可以執行，但扣掉 1 個 Driver 所以剩 5 個 executor．
+1台機器的 Memory 有 10G / 2 個 executor，1 個 executor 可以使用的 Memory 公式算法大概是 :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 個 executor 可以使用的 Memory - Min(384 , 0.1 * (1 個 executor 可以使用的 Memory)) - (Driver 使用的 Memory + Min(384 , (0.1 * (Driver 使用的 Memory))))
+</code></pre></div></div>
+<p>或著是將 0.1 改成 0.7</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 個 executor 可以使用的 Memory - Min(384 , 0.7 * (1 個 executor 可以使用的 Memory)) - (Driver 使用的 Memory + Min(384 , (0.7 * (Driver 使用的 Memory))))
+</code></pre></div></div>
+<p>所以大概是</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5G - Min(384 , 0.1 * 5G) = 5G - 0.5G = 4.5G
+10G - 4.5G 剩 5.5 給 driver，上面的例子 driver-memory 給 5g，實際會用到 5 + 0.5 = 5.5，所以可能不夠用．
+</code></pre></div></div>
+<p>如果是用 0.7 算的話</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5G - Min(384 , 0.7 * 5G) = 5G - 3.5G = 1.5G 完全不夠給 Driver．
+</code></pre></div></div>
+<p>所以修改 spark-submit 參數如下 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1)spark-submit 參數 : 
+	yarn cluster mode , driver-memory 7g , executor-memory 7g , executor-cores 1 , num-executors 5
+(2)yarn 執行狀態 : 
+	Containers Running : 6 個 , Memory Used : 48 GB , VCores Used : 6 core
+(3)執行時間 : 
+	10:17:34 ~ 10:57:48 , 40 分鐘
+(4)redis 資料 : 
+</code></pre></div></div>
+
+<p>所以 Memory 的計算，0.1 的算法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5 個 executors * (7G + 7G * 0.1) = 5 * 7.7 = 38.5
+1 個 driver * (7G + 7G * 0.1) = 7.7
+38.5 + 7.7 = 46.2
+</code></pre></div></div>
+<p>0.7 的算法</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5 個 executors * (7G + 7G * 0.7) = 5 * 11.9 = 59.5
+1 個 driver * (7G + 7G * 0.7) = 11.9
+59.5 + 11.9 = 71.4
+</code></pre></div></div>
+<p>Memory 實際使用了 48G，所以感覺用 0.7 去估比較保險．</p>
+
+<p>提升機器規格做測試，一台機器的規格</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>8 Core , 30G
+</code></pre></div></div>
+
+<p>Hadoop Cluster 規格，每一台保留 2 Core 及 8G 的 Memory 給系統使用 :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Memory Total 66 GB
+VCores Total 18
+</code></pre></div></div>
+
+<p>執行 “update.sh” 測試 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1)spark-submit 參數 : 
+	yarn cluster mode , driver-memory 7g , executor-memory 7g , executor-cores 2 , num-executors 8
+(2)yarn 執行狀態 : 
+	Containers Running : 6 個 , Memory Used : 48 GB , VCores Used : 6 core
+(3)執行時間 : 
+	17:37:57 ~ 18:12:07 , 35 分鐘
+(4)redis 資料 : 
+	info keyspace 
+	n1 -&gt; db0:keys=6799307
+	n2 -&gt; db0:keys=6801872
+	n3 -&gt; db0:keys=6798816
+</code></pre></div></div>
+<p>每 1 個 executor 應該要是 2 個 core 但在 Yarn 上面看到的還是只有 6 個 core．</p>
+
+<p>修改 capacity-scheduler.xml 的 yarn.scheduler.capacity.resource-calculator 參數，原本是</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;property&gt;
+    &lt;name&gt;yarn.scheduler.capacity.resource-calculator&lt;/name&gt;
+    &lt;value&gt;org.apache.hadoop.yarn.util.resource.DefaultResourceCalculator&lt;/value&gt;
+    &lt;description&gt;
+      The ResourceCalculator implementation to be used to compare
+      Resources in the scheduler.
+      The default i.e. DefaultResourceCalculator only uses Memory while
+      DominantResourceCalculator uses dominant-resource to compare
+      multi-dimensional resources such as Memory, CPU etc.
+    &lt;/description&gt;
+  &lt;/property&gt;
+</code></pre></div></div>
+<p>改成使用 DominantResourceCalculator :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;property&gt;
+    &lt;name&gt;yarn.scheduler.capacity.resource-calculator&lt;/name&gt;
+    &lt;value&gt;org.apache.hadoop.yarn.util.resource.DominantResourceCalculator&lt;/value&gt;
+    &lt;description&gt;
+      The ResourceCalculator implementation to be used to compare
+      Resources in the scheduler.
+      The default i.e. DefaultResourceCalculator only uses Memory while
+      DominantResourceCalculator uses dominant-resource to compare
+      multi-dimensional resources such as Memory, CPU etc.
+    &lt;/description&gt;
+  &lt;/property&gt;
+</code></pre></div></div>
+<p>修改 capacity-scheduler.xml 只需要下</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn rmadmin -refreshQueues
+</code></pre></div></div>
+
+<p>參考 <a href="https://www.jianshu.com/p/702068910f5b">yarn 資訊不準確</a> 修改後再測試</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1)spark-submit 參數 : 
+  yarn cluster mode , driver-memory 7g , executor-memory 7g , executor-cores 2 , num-executors 6
+(2)yarn 執行狀態 : 
+  Containers Running : 6 個 , Memory Used : 48 GB , VCores Used : 12 core
+  spark 執行狀態 : 
+   Task : 8 個 , 
+   executor-cores : 2 Cores
+(3)執行時間 : 
+  14:54:19 ~ 15:26:05 , 32 分鐘
+(4)redis 資料 : 20399989 筆左右
+
+</code></pre></div></div>
+<p>可以看到 core 是正確的了，但執行時間並沒有提升太多．</p>
+
+<p>再次提升機器規格做測試，一台機器的規格</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>16 Core , 60G
+</code></pre></div></div>
+
+<p>Hadoop Cluster 規格，每一台保留 4 Core 及 12G 的 Memory 給系統使用 :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Memory Total 144 GB
+VCores Total 36
+</code></pre></div></div>
+
+<p>這次提升了很多 core 跟 memory 所以重新定義 yarn 的參數 yarn-site.xml :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn.scheduler.maximum-allocation-mb : 49152/3 = 16384 = 16G
+yarn.scheduler.minimum-allocation-mb : 49152/9 = 5461 = 5.3 G
+yarn.scheduler.maximum-allocation-vcores : 36/3 = 12
+yarn.scheduler.minimum-allocation-vcores : 36/9 = 4 Core
+yarn.nodemanager.resource.memory-mb : 1024 * 48 = 49152
+yarn.nodemanager.resource.cpu-vcores : 36 Core
+</code></pre></div></div>
+<p>執行 “update.sh” 測試 :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1)spark-submit 參數 : 
+	yarn cluster mode , driver-memory 8g , executor-memory 5g , executor-cores 4 , num-executors 24
+(2)yarn 執行狀態 : 
+	Containers Running : 12 個 , Memory Used : 127.99 GB , VCores Used : 48 core
+  spark 執行狀態 : 
+   executors : 11 個 executor + 1 個 driver
+   Task : 8 個
+   executor-cores : 4 Cores
+(3)執行時間 : 
+	17:42:14 ~ 18:14 , 32 分鐘
+(4)redis 資料 : 20400541 筆左右
+</code></pre></div></div>
+
+<p>執行 “update.sh” 測試 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1)spark-submit 參數 : 
+  yarn cluster mode , driver-memory 12g , executor-memory 5g , executor-cores 2 , num-executors 24
+(2)yarn 執行狀態 : 
+  Containers Running : 12 個 , Memory Used : 133.33 GB , VCores Used : 48 core
+  spark 執行狀態 : 
+   executors : 11 個 executor + 1 個 driver
+   Task : 8 個
+   executor-cores : 2 Cores
+(3)執行時間 : 
+  18:19:23  ~ 18:49 , 30 分鐘
+(4)redis 資料 : 20400541 筆左右
+</code></pre></div></div>
+<p>不管怎麼調速度都差不多，而且 spark 的 task 最多都只切到 8 個 :</p>
+
+<p><img src="http://localhost:4000/assets/hadoop/day2/hadoop_day2_1.jpg" alt="hadoop_day2_1.jpg" /></p>
+
+<p>於是想到會不會跟 HDFS 的 Block 數有關，因為程式有寫到 sc.textFile 而主程式架構大致上為 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc.textFile(inDir).map { str =&gt;
+    ...
+}.filter(
+    ...
+).reduceByKey(
+    ...
+).map { case (id, person) =&gt;
+    ...
+}.reduceByKey(
+    ...
+).foreach { case (id, person) =&gt;
+    ...
+}
+</code></pre></div></div>
+<p>查看目前的 blocksize</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; hdfs getconf -confKey dfs.blocksize
+134217728
+</code></pre></div></div>
+
+<p>修改  hdfs block size 將 128MB 改成 64M，修改 hdfs-site.xml :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;property&gt;
+      &lt;name&gt;dfs.blocksize&lt;/name&gt;
+      &lt;value&gt;134217728&lt;/value&gt;
+&lt;/property&gt;
+</code></pre></div></div>
+<p>改成</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;property&gt;
+&lt;name&gt;dfs.blocksize&lt;/name&gt;
+&lt;value&gt;67108864&lt;/value&gt;
+&lt;/property&gt;
+
+</code></pre></div></div>
+<p>改完之後重啟 Hadoop cluster，記得 HDFS 的檔案要重新放，不然舊 HDFS 檔案的 blocksize 還會是舊的．</p>
+
+<p>執行 “update.sh” 測試 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1)spark-submit 參數 : 
+  yarn cluster mode , driver-memory 9g , driver-cores 12 , executor-memory 14g(15g會超過) , executor-cores 10 , num-executors 5
+(2)yarn 執行狀態 : 
+  Containers Running : 6 個 , Memory Used : 90.66  GB , VCores Used : 72 core
+  spark 執行狀態 : 
+   executors : 5 個 executor + 1 個 driver
+   Task : 15 個
+   executor-cores : 10 Cores
+   driver : 5G
+(3)執行時間 : 
+  12:36:38 ~ 12:55:41 , 20 分鐘
+</code></pre></div></div>
+
+<p>這時候 Task 就變 15 個了，而且時間又快了 10 分鐘，公式如下</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HDFS File Size / HDFS Block Size
+</code></pre></div></div>
+<p>所以原本的 8 個 task 是</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1024M / 128M = 8
+</code></pre></div></div>
+<p>修改後變</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1024M / 64M = 16 (實際只有15)
+</code></pre></div></div>
+
+<p>所以看起來增加 task 數，可以加快執行速度。</p>
+
+<p><img src="http://localhost:4000/assets/hadoop/day2/hadoop_day2_2.jpg" alt="hadoop_day2_2.jpg" /></p>
+
+<p>但由於要讀取 HDFS 檔案的關係 task 數受限於 HDFS 的 Block size．那想再增加 task 數該怎麼辦．
+這時候可以利用 repartition 或 coalesce 這兩個 API 改變 partition 的數量．
+目前理解是要增加 partition 數使用 repartition，要減少 partition 數要使用 coalesce．
+減少 partition 時使用 coalesce 的話好像不會進行 shuffle，其他的動作都會產生 shuffle 增加額外的負擔．</p>
+
+<p>先切 100 個 partition 測試，程式改成這樣 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc.textFile(inDir).map { str =&gt;
+    ...
+}.filter(
+    ...
+).reduceByKey(
+    ...
+).repartition(100)
+.map { case (id, person) =&gt;
+    ...
+}.reduceByKey(
+    ...
+).foreach { case (id, person) =&gt;
+    ...
+}
+</code></pre></div></div>
+
+<p>執行 “update.sh” 測試 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1)spark-submit 參數 : 
+  yarn cluster mode , driver-memory 9g , driver-cores 12 , executor-memory 14g(15g會超過) , executor-cores 10 , num-executors 5
+(2)yarn 執行狀態 : 
+  Containers Running : 6 個 , Memory Used : 90.66  GB , VCores Used : 72 core
+  spark 執行狀態 : 
+   executors : 5 個 executor + 1 個 driver
+   Task : 15 個
+   executor-cores : 10 Cores
+   driver : 5G
+(3)執行時間 : 
+  16:37:50 ~ 16:46:46  , 9 分鐘
+</code></pre></div></div>
+<p>速度又提升不少只花了 9 分鐘．</p>
+
+<p><img src="http://localhost:4000/assets/hadoop/day2/hadoop_day2_3.jpg" alt="hadoop_day2_3.jpg" /></p>
+
+<p>那調成 500 看看其他不變，repartition(500)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(3)執行時間 : 
+  17:09:03 ~ 17:17:47 , 8 分鐘
+</code></pre></div></div>
+
+<p><img src="http://localhost:4000/assets/hadoop/day2/hadoop_day2_4.jpg" alt="hadoop_day2_4.jpg" /></p>
+
+<p>看來 partition 切到一個大小速度就上不去了．在執行的過程中其實 RUNNING 的 task 只有約 50 個在執行．
+有可能跟 Containers 的資源大小有關，可以在測測．</p>
+
+<p>接下來把 foreach 改成 foreachPartition 試試看 :</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc.textFile(inDir).map { str =&gt;
+    ...
+}.filter(
+    ...
+).reduceByKey(
+    ...
+).repartition(500)
+.map { case (id, person) =&gt;
+    ...
+}.reduceByKey(
+    ...
+).foreachPartition { case (id, person) =&gt;
+    ...
+}
+</code></pre></div></div>
+
+<p>執行 “update.sh” 測試 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(1)spark-submit 參數 : 
+  yarn cluster mode , driver-memory 9g , driver-cores 12 , executor-memory 14g(15g會超過) , executor-cores 10 , num-executors 5
+(2)yarn 執行狀態 : 
+  Containers Running : 6 個 , Memory Used : 90.66  GB , VCores Used : 72 core
+  spark 執行狀態 : 
+   executors : 5 個 executor + 1 個 driver
+   Task : 500 個(實際同時 running 的只有 50 個左右)
+   executor-cores : 10 Cores
+   driver : 5G
+(3)執行時間 : 
+  18:03:52 ~ 18:10 , 7 分鐘
+</code></pre></div></div>
+
+<p><img src="http://localhost:4000/assets/hadoop/day2/hadoop_day2_5.jpg" alt="hadoop_day2_5.jpg" /></p>
+
+<p>在這邊的案例使用 foreachPartition 筆 foreach 快了 2 分鐘左右．</p>
+
+<p>所以調整 performance 的重點整理</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 程式寫法及 API 的使用
+2. task 數量的調整
+3. core 及 memory 的分配
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>參考資料<br />
+<a href="https://www.jianshu.com/p/389be84b230d">performance skill</a><br />
+<a href="http://blog.jangmt.com/2015/09/hadoop-hdfs-block-size.html">update HDFS block size</a><br />
+<a href="https://blog.csdn.net/lsshlsw/article/details/48627737">map &amp; mapPartitions</a></p>
+</blockquote>
+
+
+  </div>
+
+  
+
+  <a class="u-url" href="/hadoop/2018/11/02/hadoop_day2.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Daniel&#39;s Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Daniel&#39;s Blog
+            
+            </li>
+            
+            <li><a href="mailto:your-email@example.com">your-email@example.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
