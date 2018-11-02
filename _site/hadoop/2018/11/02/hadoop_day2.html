@@ -428,6 +428,12 @@ yarn.nodemanager.resource.cpu-vcores : 36 Core
 
 <p>在這邊的案例使用 foreachPartition 筆 foreach 快了 2 分鐘左右．</p>
 
+<p><img src="http://localhost:4000/assets/hadoop/day2/hadoop_day2_6.jpg" alt="hadoop_day2_6.jpg" /></p>
+
+<p><img src="http://localhost:4000/assets/hadoop/day2/hadoop_day2_7.jpg" alt="hadoop_day2_7.jpg" /></p>
+
+<p>不管怎麼測，實際 RUNNING 的 task 上限大概是 50 左右，可能要再加大 excutoer 的 core 跟 memory 才可以再提升 RUNNING 的 task 數．</p>
+
 <p>所以調整 performance 的重點整理</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 程式寫法及 API 的使用
 2. task 數量的調整
