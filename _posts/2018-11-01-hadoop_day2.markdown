@@ -398,7 +398,44 @@ sc.textFile(inDir).map { str =>
 
 不管怎麼測，實際 RUNNING 的 task 上限大概是 50 左右，可能要再加大 excutoer 的 core 跟 memory 才可以再提升 RUNNING 的 task 數．
 
+繼續提升機器規格做測試，一台機器的規格
+```
+32 Core , 120G
+```
 
+Hadoop Cluster 規格，每一台保留 6 Core 及 20G 的 Memory 給系統使用 : 
+``` 
+Memory Total 100 GB
+VCores Total 26
+```
+
+重新定義 yarn 的參數 yarn-site.xml : 
+
+```
+yarn.scheduler.maximum-allocation-mb : 307200/3 = 102400 = 100G
+yarn.scheduler.minimum-allocation-mb : 307200/12 = 25600 = 25 G
+yarn.scheduler.maximum-allocation-vcores : 26/3 = 8 Core
+yarn.scheduler.minimum-allocation-vcores : 26/13 = 2 Core
+yarn.nodemanager.resource.memory-mb : 1024 * 100 = 102400
+yarn.nodemanager.resource.cpu-vcores : 26 Core
+```
+執行 "update.sh" 測試 :  
+```
+(1)spark-submit 參數 : 
+	yarn cluster mode , driver-memory 20g , driver-cores 6 , executor-memory 8g , executor-cores 6 , num-executors 11
+(2)yarn 執行狀態 : 
+	Containers Running : 12 個 , Memory Used : 300 GB , VCores Used : 72 core
+  spark 執行狀態 : 
+   executors : 11 個 executor + 1 個 driver
+   executor-cores : 6 Cores
+(3)執行時間 : 
+	11:04:05 ~ 11:13:26 , 9 分鐘
+(4)redis 資料 : 20399991 筆左右
+```
+
+![hadoop_day2_8.jpg]({{ "/assets/hadoop/day2/hadoop_day2_8.jpg" | absolute_url }})
+
+資源加大後提升到最多可以有 66 個 Task 同時在 RUNNING．
 
 
 
@@ -415,6 +452,8 @@ sc.textFile(inDir).map { str =>
 > [performance skill](https://www.jianshu.com/p/389be84b230d)  
 > [update HDFS block size](http://blog.jangmt.com/2015/09/hadoop-hdfs-block-size.html)  
 > [map & mapPartitions](https://blog.csdn.net/lsshlsw/article/details/48627737)  
+> [yarn UI params](https://forum.huawei.com/enterprise/zh/thread-155145-1-1.html)  
+> [manager-cpu-yarn-cluster](https://hortonworks.com/blog/managing-cpu-resources-in-your-hadoop-yarn-clusters/)  
 
 * 其他參考  
 
