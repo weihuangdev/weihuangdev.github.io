@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-11-09T12:23:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hadoop day 2 (spark on yarn performance)</title><link href="http://localhost:4000/hadoop/2018/11/02/hadoop_day2.html" rel="alternate" type="text/html" title="hadoop day 2 (spark on yarn performance)" /><published>2018-11-02T10:45:17+08:00</published><updated>2018-11-02T10:45:17+08:00</updated><id>http://localhost:4000/hadoop/2018/11/02/hadoop_day2</id><content type="html" xml:base="http://localhost:4000/hadoop/2018/11/02/hadoop_day2.html">&lt;p&gt;針對 spark job 在 yarn 上面執行的效能調整，在 GCP 上面使用三台機器做一個 hadoop cluster 做測試．&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-11-09T16:58:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hadoop day 2 (spark on yarn performance)</title><link href="http://localhost:4000/hadoop/2018/11/02/hadoop_day2.html" rel="alternate" type="text/html" title="hadoop day 2 (spark on yarn performance)" /><published>2018-11-02T10:45:17+08:00</published><updated>2018-11-02T10:45:17+08:00</updated><id>http://localhost:4000/hadoop/2018/11/02/hadoop_day2</id><content type="html" xml:base="http://localhost:4000/hadoop/2018/11/02/hadoop_day2.html">&lt;p&gt;針對 spark job 在 yarn 上面執行的效能調整，在 GCP 上面使用三台機器做一個 hadoop cluster 做測試．&lt;/p&gt;
 
 &lt;p&gt;測試檔案的資料格式大概長這樣，然後大小為 1G , 10200000 筆資料 :&lt;/p&gt;
 
@@ -422,6 +422,10 @@ val jc = new JedisCluster(jedisClusterNodes ,5000,5000,20,
     AesUtil.decrypt(keyDir.split(&quot;,&quot;)(1) ,keyDir.split(&quot;,&quot;)(0)) , cpcfg)
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;sparkmemoryfraction&quot;&gt;spark.memory.fraction&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/hadoop/day2/hadoop_day2_11.jpg&quot; alt=&quot;hadoop_day2_11.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;所以調整 performance 的重點整理&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 程式寫法及 API 的使用

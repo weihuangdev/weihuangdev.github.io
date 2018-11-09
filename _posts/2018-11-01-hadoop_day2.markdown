@@ -477,6 +477,10 @@ val jc = new JedisCluster(jedisClusterNodes ,5000,5000,20,
 
 ```
 
+#### spark.memory.fraction
+
+![hadoop_day2_11.jpg]({{ "/assets/hadoop/day2/hadoop_day2_11.jpg" | absolute_url }})
+
 
 所以調整 performance 的重點整理  
 ```
