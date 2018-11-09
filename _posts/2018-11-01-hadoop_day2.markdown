@@ -437,7 +437,45 @@ yarn.nodemanager.resource.cpu-vcores : 26 Core
 
 資源加大後提升到最多可以有 66 個 Task 同時在 RUNNING．
 
+#### 調整 GC
+在 spark-defaults.conf 加上參數  
+```
+spark.executor.extraJavaOptions -XX:+UseG1GC
+```
+沒有使用 G1GC 的時間 :  
+![hadoop_day2_9.jpg]({{ "/assets/hadoop/day2/hadoop_day2_9.jpg" | absolute_url }})
+調整後的時間 :  
+![hadoop_day2_10.jpg]({{ "/assets/hadoop/day2/hadoop_day2_10.jpg" | absolute_url }})
 
+
+#### KryoSerializer
+改成使用 KryoSerializer，並將自定義的 class registerKryoClasses :  
+
+```
+val conf = new SparkConf()
+conf.set("spark.sql.warehouse.dif", "/tmp")
+conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+conf.registerKryoClasses(
+  Array(classOf[Person], classOf[Location], classOf[LatLon], classOf[Visit], classOf[Url], classOf[Url])
+)
+```
+#### 調高 JedisCluster 的 Connection 上限(預設是 8)  
+
+```
+val jedisClusterNodes = new HashSet[HostAndPort]()
+config.split(',').foreach { str =>
+    val Array(ip, _port) = str.split(':')
+    jedisClusterNodes.add(new HostAndPort(ip, _port.toInt))
+}
+
+val cpcfg =  new GenericObjectPoolConfig()
+cpcfg.setMaxTotal(10000)
+cpcfg.setMaxIdle(10000)
+
+val jc = new JedisCluster(jedisClusterNodes ,5000,5000,20,
+    AesUtil.decrypt(keyDir.split(",")(1) ,keyDir.split(",")(0)) , cpcfg)
+
+```
 
 
 所以調整 performance 的重點整理  
@@ -445,6 +483,15 @@ yarn.nodemanager.resource.cpu-vcores : 26 Core
 1. 程式寫法及 API 的使用
 2. task 數量的調整
 3. core 及 memory 的分配
+
+```
+
+一些心得 : 
+```
+1. executer 的 core 數影響到可以跑的 task 數量，1 個 core 大概開 1~3 個 task 左右，task 數量介於 (core 數 * 1) ~ (core 數 * 3)．  
+2. yarn 在算 memory 時會影響到實際能開多少個 container，所以雖然 num-executors 可能開 5 個，但資源沒開好，可能最後只會有 4 個 container 在跑
+3. (executer 數量少資源多) 開的 task 比 (executer 數量多資源少) 還多．所以實際 Runnig 的 task 越多效能越好．
+4. 在 spark-defaults.conf 加上 spark.executor.extraJavaOptions -XX:+UseG1GC 指定使用 G1GC 可以縮短許多 GC 的時間．
 
 ```
 

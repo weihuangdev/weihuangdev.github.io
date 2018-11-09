@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-11-05T17:22:18+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hadoop day 2 (spark on yarn performance)</title><link href="http://localhost:4000/hadoop/2018/11/02/hadoop_day2.html" rel="alternate" type="text/html" title="hadoop day 2 (spark on yarn performance)" /><published>2018-11-02T10:45:17+08:00</published><updated>2018-11-02T10:45:17+08:00</updated><id>http://localhost:4000/hadoop/2018/11/02/hadoop_day2</id><content type="html" xml:base="http://localhost:4000/hadoop/2018/11/02/hadoop_day2.html">&lt;p&gt;針對 spark job 在 yarn 上面執行的效能調整，在 GCP 上面使用三台機器做一個 hadoop cluster 做測試．&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-11-09T12:23:55+08:00</updated><id>http://localhost:4000/</id><title type="html">Daniel’s Blog</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">hadoop day 2 (spark on yarn performance)</title><link href="http://localhost:4000/hadoop/2018/11/02/hadoop_day2.html" rel="alternate" type="text/html" title="hadoop day 2 (spark on yarn performance)" /><published>2018-11-02T10:45:17+08:00</published><updated>2018-11-02T10:45:17+08:00</updated><id>http://localhost:4000/hadoop/2018/11/02/hadoop_day2</id><content type="html" xml:base="http://localhost:4000/hadoop/2018/11/02/hadoop_day2.html">&lt;p&gt;針對 spark job 在 yarn 上面執行的效能調整，在 GCP 上面使用三台機器做一個 hadoop cluster 做測試．&lt;/p&gt;
 
 &lt;p&gt;測試檔案的資料格式大概長這樣，然後大小為 1G , 10200000 筆資料 :&lt;/p&gt;
 
@@ -387,10 +387,54 @@ yarn.nodemanager.resource.cpu-vcores : 26 Core
 
 &lt;p&gt;資源加大後提升到最多可以有 66 個 Task 同時在 RUNNING．&lt;/p&gt;
 
+&lt;h4 id=&quot;調整-gc&quot;&gt;調整 GC&lt;/h4&gt;
+&lt;p&gt;在 spark-defaults.conf 加上參數&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spark.executor.extraJavaOptions -XX:+UseG1GC
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;沒有使用 G1GC 的時間 :&lt;br /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/hadoop/day2/hadoop_day2_9.jpg&quot; alt=&quot;hadoop_day2_9.jpg&quot; /&gt;
+調整後的時間 :&lt;br /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/hadoop/day2/hadoop_day2_10.jpg&quot; alt=&quot;hadoop_day2_10.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;kryoserializer&quot;&gt;KryoSerializer&lt;/h4&gt;
+&lt;p&gt;改成使用 KryoSerializer，並將自定義的 class registerKryoClasses :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val conf = new SparkConf()
+conf.set(&quot;spark.sql.warehouse.dif&quot;, &quot;/tmp&quot;)
+conf.set(&quot;spark.serializer&quot;, &quot;org.apache.spark.serializer.KryoSerializer&quot;)
+conf.registerKryoClasses(
+  Array(classOf[Person], classOf[Location], classOf[LatLon], classOf[Visit], classOf[Url], classOf[Url])
+)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;調高-jediscluster-的-connection-上限預設是-8&quot;&gt;調高 JedisCluster 的 Connection 上限(預設是 8)&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val jedisClusterNodes = new HashSet[HostAndPort]()
+config.split(',').foreach { str =&amp;gt;
+    val Array(ip, _port) = str.split(':')
+    jedisClusterNodes.add(new HostAndPort(ip, _port.toInt))
+}
+
+val cpcfg =  new GenericObjectPoolConfig()
+cpcfg.setMaxTotal(10000)
+cpcfg.setMaxIdle(10000)
+
+val jc = new JedisCluster(jedisClusterNodes ,5000,5000,20,
+    AesUtil.decrypt(keyDir.split(&quot;,&quot;)(1) ,keyDir.split(&quot;,&quot;)(0)) , cpcfg)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;所以調整 performance 的重點整理&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 程式寫法及 API 的使用
 2. task 數量的調整
 3. core 及 memory 的分配
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;一些心得 :&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. executer 的 core 數影響到可以跑的 task 數量，1 個 core 大概開 1~3 個 task 左右，task 數量介於 (core 數 * 1) ~ (core 數 * 3)．  
+2. yarn 在算 memory 時會影響到實際能開多少個 container，所以雖然 num-executors 可能開 5 個，但資源沒開好，可能最後只會有 4 個 container 在跑
+3. (executer 數量少資源多) 開的 task 比 (executer 數量多資源少) 還多．所以實際 Runnig 的 task 越多效能越好．
+4. 在 spark-defaults.conf 加上 spark.executor.extraJavaOptions -XX:+UseG1GC 指定使用 G1GC 可以縮短許多 GC 的時間．
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
