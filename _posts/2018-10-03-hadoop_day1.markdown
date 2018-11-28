@@ -413,6 +413,81 @@ hdfs namenode -bootstrapStandby
 ./hadoop-daemon.sh start namenode
 ```
 
+#### [問題] 出現下列錯誤訊息
+```
+2018-11-27 12:10:38,505 WARN org.apache.hadoop.hdfs.server.common.Storage: Failed to add storage directory [DISK]file:/data/hadoop/dfs/data/
+java.io.FileNotFoundException: /data/hadoop/dfs/data/in_use.lock (Permission denied)
+        at java.io.RandomAccessFile.open0(Native Method)
+        at java.io.RandomAccessFile.open(RandomAccessFile.java:316)
+        at java.io.RandomAccessFile.<init>(RandomAccessFile.java:243)
+        at org.apache.hadoop.hdfs.server.common.Storage$StorageDirectory.tryLock(Storage.java:782)
+        at org.apache.hadoop.hdfs.server.common.Storage$StorageDirectory.lock(Storage.java:754)
+        at org.apache.hadoop.hdfs.server.common.Storage$StorageDirectory.analyzeStorage(Storage.java:567)
+        at org.apache.hadoop.hdfs.server.datanode.DataStorage.loadStorageDirectory(DataStorage.java:270)
+        at org.apache.hadoop.hdfs.server.datanode.DataStorage.loadDataStorage(DataStorage.java:409)
+        at org.apache.hadoop.hdfs.server.datanode.DataStorage.addStorageLocations(DataStorage.java:388)
+        at org.apache.hadoop.hdfs.server.datanode.DataStorage.recoverTransitionRead(DataStorage.java:556)
+```
+
+[解決] :  
+刪掉 in_use.lock 
+```
+sudo rm -fr /data/hadoop/dfs/data/in_use.lock
+```
+
+#### [問題] datanode 起不來
+
+```
+java.net.BindException: Problem binding to [0.0.0.0:50010] java.net.BindException: Address already in use; For more details see:  http://wiki.apache.org/hadoop/BindException
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+        at org.apache.hadoop.net.NetUtils.wrapWithMessage(NetUtils.java:824)
+        at org.apache.hadoop.net.NetUtils.wrapException(NetUtils.java:735)
+        at org.apache.hadoop.ipc.Server.bind(Server.java:561)
+        at org.apache.hadoop.ipc.Server.bind(Server.java:533)
+        at org.apache.hadoop.hdfs.net.TcpPeerServer.<init>(TcpPeerServer.java:52)
+        at org.apache.hadoop.hdfs.server.datanode.DataNode.initDataXceiver(DataNode.java:1116)
+        at org.apache.hadoop.hdfs.server.datanode.DataNode.startDataNode(DataNode.java:1369)
+```
+
+
+[解決] : 
+原本的 user(miuser) 底下都找不到被 bind 的 50010
+
+```
+netstat -anp | grep 50010
+netstat -ano | grep 50010
+ps -aux | grep 50010
+pgrep -f datanode
+pgrep -f journalnode
+```
+
+後來切換到另一個 user(yarn)，有找到一個 process 佔用該 port
+
+```
+yarn@dmpn5:~>netstat -ano | grep 50010
+tcp        0      0 0.0.0.0:50010           0.0.0.0:*               LISTEN      off (0.00/0/0)
+```
+
+找有關 datanode 的 PID
+
+```
+yarn@dmpn5:~>pgrep -f datanode
+159789
+```
+
+把佔用的 port 刪掉
+
+```
+yarn@dmpn5:~>ps -aux | grep 159789
+yarn      61224  0.0  0.0 112616   732 pts/1    S+   12:45   0:00 grep --color=auto 159789
+root     159789  0.1  0.3 3039556 878360 ?      Sl   May15 464:44 /usr/lib/jvm/jdk1.8.0_151//bin/java -Dproc_datanode -Xmx1000m -Djava.net.preferIPv4Stack=true -Dhadoop.log.dir=/opt/hadoop-2.9.0/logs -Dhadoop.log.file=hadoop.log -Dhadoop.home.dir=/opt/hadoop-2.9.0 -Dhadoop.id.str=root -Dhadoop.root.logger=INFO,console -Dhadoop.policy.file=hadoop-policy.xml -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Stack=true -Dhadoop.log.dir=/opt/hadoop-2.9.0/logs -Dhadoop.log.file=hadoop-root-datanode-dmpn5.log -Dhadoop.home.dir=/opt/hadoop-2.9.0 -Dhadoop.id.str=root -Dhadoop.root.logger=INFO,RFA -Dhadoop.policy.file=hadoop-policy.xml -Djava.net.preferIPv4Stack=true -server -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=INFO,RFAS org.apache.hadoop.hdfs.server.datanode.DataNode
+
+sudo kill -9 159789
+```
+
 #### 指令速查
 * 查看所有 node 的狀態
 ```

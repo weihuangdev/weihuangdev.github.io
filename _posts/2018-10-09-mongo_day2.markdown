@@ -172,7 +172,12 @@ db.grantRolesToUser(
 
 ```
 
+查看 People 這 Collection 的資料以及筆數 : 
 
+```
+db.getCollection('People').find({})
+db.getCollection('People').count()
+```
 
 
 > 參考資料  
