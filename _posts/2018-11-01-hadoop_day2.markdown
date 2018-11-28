@@ -496,6 +496,7 @@ val jc = new JedisCluster(jedisClusterNodes ,5000,5000,20,
 2. yarn 在算 memory 時會影響到實際能開多少個 container，所以雖然 num-executors 可能開 5 個，但資源沒開好，可能最後只會有 4 個 container 在跑
 3. (executer 數量少資源多) 開的 task 比 (executer 數量多資源少) 還多．所以實際 Runnig 的 task 越多效能越好．
 4. 在 spark-defaults.conf 加上 spark.executor.extraJavaOptions -XX:+UseG1GC 指定使用 G1GC 可以縮短許多 GC 的時間．
+5. 使用 yarn external shuffle service 提昇性能．
 
 ```
 
@@ -505,6 +506,7 @@ val jc = new JedisCluster(jedisClusterNodes ,5000,5000,20,
 > [map & mapPartitions](https://blog.csdn.net/lsshlsw/article/details/48627737)  
 > [yarn UI params](https://forum.huawei.com/enterprise/zh/thread-155145-1-1.html)  
 > [manager-cpu-yarn-cluster](https://hortonworks.com/blog/managing-cpu-resources-in-your-hadoop-yarn-clusters/)  
+> [external shuffle service](http://support.huawei.com/hedex/pages/EDOC1000098233YZF0317G/01/EDOC1000098233YZF0317G/01/resources/2012/02_admin/zh-cn_topic_0020117067.html)
 
 * 其他參考  
 
