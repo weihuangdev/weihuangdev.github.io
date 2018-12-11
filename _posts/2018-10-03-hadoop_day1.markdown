@@ -250,6 +250,7 @@ hadoop-daemon.sh start zkfc
 
 
 ### Initializing HA state in ZooKeeper
+記得要先啟動 zookeeper 才可以把 znode 加入．  
 ```
 hdfs zkfc -formatZK
 ```
