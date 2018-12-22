@@ -492,7 +492,7 @@ val jc = new JedisCluster(jedisClusterNodes ,5000,5000,20,
 
 一些心得 : 
 ```
-1. executer 的 core 數影響到可以跑的 task 數量，1 個 core 大概開 1~3 個 task 左右，task 數量介於 (core 數 * 1) ~ (core 數 * 3)．  
+1. executer 的 core 數影響到可以跑的 task 數量，1 個 core 大概開 1 個 task 左右，task 數量介於 (core 數 * 1) 
 2. yarn 在算 memory 時會影響到實際能開多少個 container，所以雖然 num-executors 可能開 5 個，但資源沒開好，可能最後只會有 4 個 container 在跑
 3. (executer 數量少資源多) 開的 task 比 (executer 數量多資源少) 還多．所以實際 Runnig 的 task 越多效能越好．
 4. 在 spark-defaults.conf 加上 spark.executor.extraJavaOptions -XX:+UseG1GC 指定使用 G1GC 可以縮短許多 GC 的時間．
