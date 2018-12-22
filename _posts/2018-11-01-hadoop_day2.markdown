@@ -459,6 +459,8 @@ conf.registerKryoClasses(
   Array(classOf[Person], classOf[Location], classOf[LatLon], classOf[Visit], classOf[Url], classOf[Url])
 )
 ```
+![hadoop_day2_12.jpg]({{ "/assets/hadoop/day2/hadoop_day2_12.jpg" | absolute_url }})
+
 #### 調高 JedisCluster 的 Connection 上限(預設是 8)  
 
 ```
