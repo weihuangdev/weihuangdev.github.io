@@ -488,6 +488,8 @@ conf.registerKryoClasses(
   Array(classOf[Person], classOf[Location], classOf[LatLon], classOf[Visit], classOf[Url], classOf[Url])
 )
 </code></pre></div></div>
+<p><img src="http://localhost:4000/assets/hadoop/day2/hadoop_day2_12.jpg" alt="hadoop_day2_12.jpg" /></p>
+
 <h4 id="調高-jediscluster-的-connection-上限預設是-8">調高 JedisCluster 的 Connection 上限(預設是 8)</h4>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val jedisClusterNodes = new HashSet[HostAndPort]()
@@ -517,10 +519,11 @@ val jc = new JedisCluster(jedisClusterNodes ,5000,5000,20,
 </code></pre></div></div>
 
 <p>一些心得 :</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. executer 的 core 數影響到可以跑的 task 數量，1 個 core 大概開 1~3 個 task 左右，task 數量介於 (core 數 * 1) ~ (core 數 * 3)．  
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. executer 的 core 數影響到可以跑的 task 數量，1 個 core 大概開 1 個 task 左右，task 數量介於 (core 數 * 1) 
 2. yarn 在算 memory 時會影響到實際能開多少個 container，所以雖然 num-executors 可能開 5 個，但資源沒開好，可能最後只會有 4 個 container 在跑
 3. (executer 數量少資源多) 開的 task 比 (executer 數量多資源少) 還多．所以實際 Runnig 的 task 越多效能越好．
 4. 在 spark-defaults.conf 加上 spark.executor.extraJavaOptions -XX:+UseG1GC 指定使用 G1GC 可以縮短許多 GC 的時間．
+5. 使用 yarn external shuffle service 提昇性能．
 
 </code></pre></div></div>
 
@@ -530,7 +533,8 @@ val jc = new JedisCluster(jedisClusterNodes ,5000,5000,20,
 <a href="http://blog.jangmt.com/2015/09/hadoop-hdfs-block-size.html">update HDFS block size</a><br />
 <a href="https://blog.csdn.net/lsshlsw/article/details/48627737">map &amp; mapPartitions</a><br />
 <a href="https://forum.huawei.com/enterprise/zh/thread-155145-1-1.html">yarn UI params</a><br />
-<a href="https://hortonworks.com/blog/managing-cpu-resources-in-your-hadoop-yarn-clusters/">manager-cpu-yarn-cluster</a></p>
+<a href="https://hortonworks.com/blog/managing-cpu-resources-in-your-hadoop-yarn-clusters/">manager-cpu-yarn-cluster</a><br />
+<a href="http://support.huawei.com/hedex/pages/EDOC1000098233YZF0317G/01/EDOC1000098233YZF0317G/01/resources/2012/02_admin/zh-cn_topic_0020117067.html">external shuffle service</a></p>
 </blockquote>
 
 <ul>

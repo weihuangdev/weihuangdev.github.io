@@ -234,6 +234,12 @@ db.grantRolesToUser(
 
 </code></pre></div></div>
 
+<p>查看 People 這 Collection 的資料以及筆數 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.getCollection('People').find({})
+db.getCollection('People').count()
+</code></pre></div></div>
+
 <blockquote>
   <p>參考資料<br />
 <a href="https://hub.docker.com/_/mongo/">mongo docker</a></p>
