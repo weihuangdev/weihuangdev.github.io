@@ -185,12 +185,6 @@ dfs.ha.automatic-failover.enabled 設為 true 時，start-dfs.sh 或 start-all.s
 ```
 hadoop-daemon.sh start zkfc
 ```
-這邊如果遇到啟動不了的話，通常都是防火牆跟 /etc/hosts 的問題，所以要先確認這兩個地方 :  
-
-```
-Unable to start failover controller. Unable to connect to ZooKeeper quorum at node1:2181,node2:2181,node3:2181.
-```
-
 
 ### Yarn Resourcemanager HA by Zookeeper
 修改 yarn-site.xml
@@ -259,6 +253,12 @@ Unable to start failover controller. Unable to connect to ZooKeeper quorum at no
 記得要先啟動 zookeeper 才可以把 znode 加入．  
 ```
 hdfs zkfc -formatZK
+```
+
+這邊如果遇到啟動不了的話，通常都是防火牆跟 /etc/hosts 的問題，所以要先確認這兩個地方 :  
+
+```
+Unable to start failover controller. Unable to connect to ZooKeeper quorum at node1:2181,node2:2181,node3:2181.
 ```
 
 ### Start HA cluster
