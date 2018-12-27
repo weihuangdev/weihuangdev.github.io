@@ -185,6 +185,12 @@ dfs.ha.automatic-failover.enabled 設為 true 時，start-dfs.sh 或 start-all.s
 ```
 hadoop-daemon.sh start zkfc
 ```
+這邊如果遇到啟動不了的話，通常都是防火牆跟 /etc/hosts 的問題，所以要先確認這兩個地方 :  
+
+```
+Unable to start failover controller. Unable to connect to ZooKeeper quorum at node1:2181,node2:2181,node3:2181.
+```
+
 
 ### Yarn Resourcemanager HA by Zookeeper
 修改 yarn-site.xml
@@ -487,6 +493,12 @@ yarn      61224  0.0  0.0 112616   732 pts/1    S+   12:45   0:00 grep --color=a
 root     159789  0.1  0.3 3039556 878360 ?      Sl   May15 464:44 /usr/lib/jvm/jdk1.8.0_151//bin/java -Dproc_datanode -Xmx1000m -Djava.net.preferIPv4Stack=true -Dhadoop.log.dir=/opt/hadoop-2.9.0/logs -Dhadoop.log.file=hadoop.log -Dhadoop.home.dir=/opt/hadoop-2.9.0 -Dhadoop.id.str=root -Dhadoop.root.logger=INFO,console -Dhadoop.policy.file=hadoop-policy.xml -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Stack=true -Dhadoop.log.dir=/opt/hadoop-2.9.0/logs -Dhadoop.log.file=hadoop-root-datanode-dmpn5.log -Dhadoop.home.dir=/opt/hadoop-2.9.0 -Dhadoop.id.str=root -Dhadoop.root.logger=INFO,RFA -Dhadoop.policy.file=hadoop-policy.xml -Djava.net.preferIPv4Stack=true -server -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=INFO,RFAS org.apache.hadoop.hdfs.server.datanode.DataNode
 
 sudo kill -9 159789
+```
+
+#### 如果有用到 external shuffle service 的話要記得 :  
+Put spark-2.1.1-yarn-shuffle.jar into lib folder of yarn.
+```
+cp <SPARK_HOME>/yarn/spark-<version>-yarn-shuffle.jar /opt/hadoop-2.7.3/share/hadoop/yarn/lib/
 ```
 
 #### 指令速查

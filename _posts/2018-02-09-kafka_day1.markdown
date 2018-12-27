@@ -7,6 +7,9 @@ categories: kafka
 
 ### 下載 kafka
 
+#### 執行 zookeeper server : 
+./bin/zookeeper-server-start.sh ./config/zookeeper.properties
+
 #### 執行 kafka server :  
 ./kafka-server-start.sh ../config/server.properties
 
