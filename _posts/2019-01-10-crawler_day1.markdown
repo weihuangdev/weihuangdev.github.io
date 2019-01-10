@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "crawler day 1 (selenium)"
+title:  "crawler day 1 (TripAdvisor Hotel)"
 date:   2019-01-10 10:44:17 +0800
 categories: crawler
 ---
@@ -129,4 +129,16 @@ object AdvHotelCrawler {
 }
 
 ```
+
+執行結果 :  
+
+```
+Hotel 71;Suites, Non-Smoking Rooms, Smoking rooms available, Family Rooms;$38-$65;4.0 
+Hotel Noorjahan Grand;Non-Smoking Rooms, Suites, Family Rooms, Smoking rooms available;$38-$75;5.0 
+Le Meridien Dhaka;Suites, Non-Smoking Rooms, Family Rooms, Smoking rooms available, Accessible rooms;$234-$452;4.5 
+Amari Dhaka;Suites, Kitchenette, Non-Smoking Rooms, Smoking rooms available;$153-$261;4.5 
+...
+```
+
+
 
