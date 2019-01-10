@@ -317,6 +317,11 @@ active 會不斷寫入，而 standby 會一直讀取更新 metadata．而這邊�
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hdfs zkfc -formatZK
 </code></pre></div></div>
 
+<p>這邊如果遇到啟動不了的話，通常都是防火牆跟 /etc/hosts 的問題，所以要先確認這兩個地方 :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Unable to start failover controller. Unable to connect to ZooKeeper quorum at node1:2181,node2:2181,node3:2181.
+</code></pre></div></div>
+
 <h3 id="start-ha-cluster">Start HA cluster</h3>
 
 <p>1.在每台機器(dn1,dn2,dn3)啟動 zookeeper</p>
@@ -512,6 +517,11 @@ yarn      61224  0.0  0.0 112616   732 pts/1    S+   12:45   0:00 grep --color=a
 root     159789  0.1  0.3 3039556 878360 ?      Sl   May15 464:44 /usr/lib/jvm/jdk1.8.0_151//bin/java -Dproc_datanode -Xmx1000m -Djava.net.preferIPv4Stack=true -Dhadoop.log.dir=/opt/hadoop-2.9.0/logs -Dhadoop.log.file=hadoop.log -Dhadoop.home.dir=/opt/hadoop-2.9.0 -Dhadoop.id.str=root -Dhadoop.root.logger=INFO,console -Dhadoop.policy.file=hadoop-policy.xml -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Stack=true -Dhadoop.log.dir=/opt/hadoop-2.9.0/logs -Dhadoop.log.file=hadoop-root-datanode-dmpn5.log -Dhadoop.home.dir=/opt/hadoop-2.9.0 -Dhadoop.id.str=root -Dhadoop.root.logger=INFO,RFA -Dhadoop.policy.file=hadoop-policy.xml -Djava.net.preferIPv4Stack=true -server -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=INFO,RFAS org.apache.hadoop.hdfs.server.datanode.DataNode
 
 sudo kill -9 159789
+</code></pre></div></div>
+
+<h4 id="如果有用到-external-shuffle-service-的話要記得-">如果有用到 external shuffle service 的話要記得 :</h4>
+<p>Put spark-2.1.1-yarn-shuffle.jar into lib folder of yarn.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp &lt;SPARK_HOME&gt;/yarn/spark-&lt;version&gt;-yarn-shuffle.jar /opt/hadoop-2.7.3/share/hadoop/yarn/lib/
 </code></pre></div></div>
 
 <h4 id="指令速查">指令速查</h4>
