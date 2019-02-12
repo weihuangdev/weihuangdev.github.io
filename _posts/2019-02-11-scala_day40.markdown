@@ -156,8 +156,63 @@ object LabelVectorUtil {
 (hash:17385608,0.9676812174493781)
 ```
 
+Spark MinHashLSH :  
 
+```
+ test("labelMinHashLSHTest") {
+    val spark = SparkSession.builder().master("local[*]").appName("testtest").config("spark.cassandra.connection.host", "127.0.0.1").getOrCreate()
+    import spark.implicits._
 
+    val comparePersons = spark.sparkContext.cassandraTable("miks1","twmperson")
+      .select("id","labels").map(row => (row.get[String]("id") , row.get[String]("labels")
+      .replaceAll("[{]" , "").replaceAll("[}]","")))
+      .toDF("id","labels").cache()
+    comparePersons.createOrReplaceTempView("comparePersons")
 
+    //val basePerson = spark.sql("select b.id,b.labels from inputIds a left join comparePersons b on a.baseid = b.id")
+    val selectSql = new StringBuffer()
+    selectSql.append("select a.id as baseid ,a.labels as baselabels from comparePersons a ")
+    selectSql.append(" where a.id in ('hash:5172647' , 'hash:48474168' , 'hash:54263647' , 'hash:61311833' , 'hash:63397014') ")
+
+    val inputIds = spark.sql(selectSql.toString)
+    inputIds.createOrReplaceTempView("inputIds")
+
+    //inputIds.foreach(println(_))
+    val dfA = comparePersons.map(row => {
+      val personId = row.getAs[String]("id")
+      val labels = row.getAs[String]("labels")
+      (personId , LabelVectorUtil().labelToSparsemlVector(labels))
+    }).toDF("id" , "dflabel")
+
+    val dfB = inputIds.map(row => {
+      val personId = row.getAs[String]("baseid")
+      val labels = row.getAs[String]("baselabels")
+      (personId , LabelVectorUtil().labelToSparsemlVector(labels))
+    }).toDF("id" , "dflabel")
+
+    val mh = new MinHashLSH()
+      .setNumHashTables(150)
+      .setInputCol("dflabel")
+      .setOutputCol("hashes")
+
+    val model = mh.fit(dfA)
+    model.transform(dfA).show()
+
+    val allPerson = model.approxSimilarityJoin(dfA, dfB, 0.9, "JaccardDistance")
+      .select(col("datasetA.id").alias("ida"),
+        col("datasetB.id").alias("idb"),
+        col("JaccardDistance")).map(row => {
+      val ida = row.getAs[String]("ida")
+      val idb = row.getAs[String]("idb")
+      val jds = row.getAs[Double]("JaccardDistance")
+      (idb,(ida,jds))
+    }).rdd.groupByKey.map(personInfos => {
+      val dataAry = personInfos._2
+      dataAry.toList.sortWith(_._2 > _._2).take(3) // 11,8,7,4,3,2,1
+    })
+
+    allPerson.flatMap(l => l).foreach(println(_))
+  }
+```
 
 
