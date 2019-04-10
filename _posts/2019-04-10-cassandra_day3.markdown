@@ -6,18 +6,19 @@ categories: cassandra
 ---
 
 
-spark cassandra 影響項目 : 
-1. spark partitioner : 
-spark partition : 
-spark 先去讀取 HDFS 的檔案，這時候 spark 會用 Some(org.apache.spark.HashPartitioner@1b) 來切 partition．
+#### spark cassandra 影響項目 : 
+1. spark partitioner :  
+spark partition :  
+spark 先去讀取 HDFS 的檔案，這時候 spark 會用 Some(org.apache.spark.HashPartitioner@1b) 來切 partition．  
 
-cassandra partition : 
-cassandra 會根據 table 的 partition key (row key) 來切 partition．
+cassandra partition :  
+cassandra 會根據 table 的 partition key (row key) 來切 partition．  
 
 
 ```
 val repartPersons = newPersons.repartitionByCassandraReplica(EnrichConfig.CASSANDRA_KEYSPACE,EnrichConfig.CASSANDRA_TABLE)
 ```
+
 當 RDD 透過 repartitionByCassandraReplica，會變成使用 Some(com.datastax.spark.connector.rdd.partitioner.ReplicaPartitioner@498c988) 來切 partition．
 
 
@@ -28,15 +29,16 @@ val personsRdd1 = sc.cassandraTable[Person](EnrichConfig.CASSANDRA_KEYSPACE, Enr
 
 當 partitioner 為 none 時，後續的 RDD 操作可能會有大量的 shuffle．
 
-2. cassandra tabel compaction : 
+2. cassandra tabel compaction :  
 因為 cassandra table 會把資料存放成 sstable，sstable 是許多的檔案，所以 table 達到一個條件後會執行 compaction 把檔案合併．
 那如果剛好在做 compaction 時，對該 table 進行大量的操作不確定是否會造成問題．
 
 
-3. RDD shuffle : 
+3. RDD shuffle :  
 根據 Data Locality 理論上 spark + cassandra 的運算是希望各自的 partition 在各自的節點上，盡量減少 shuffle．
 但目前看起來程式 update 都還是會做很多 shuffle．不知道是否是因為個階段的 partitioner 不一致的原因．
-如果使用了 repartitionByCassandraReplica 就一定會 shuffle 因為底層程式會跑這一段 : 
+如果使用了 repartitionByCassandraReplica 就一定會 shuffle 因為底層程式會跑這一段 :  
+
 ```
 val partitioner = new ReplicaPartitioner[T](
   tableName,
