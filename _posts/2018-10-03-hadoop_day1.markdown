@@ -420,6 +420,17 @@ hdfs namenode -bootstrapStandby
 ./hadoop-daemon.sh start namenode
 ```
 
+#### 修改 hadoop temp 目錄的路徑
+在 core-site.xml 加上要設定的路徑(預設是/tmp/hadoop/hadoop-${user.name}) : 
+```
+<property>
+    <name>hadoop.tmp.dir</name>
+    <value>/opt/hadoop-2.9.0/tmp/hadoop/hadoop-${user.name}</value>
+    <description>A base for other temporary directories.</description>
+</property>
+```
+
+
 #### [問題] 出現下列錯誤訊息
 ```
 2018-11-27 12:10:38,505 WARN org.apache.hadoop.hdfs.server.common.Storage: Failed to add storage directory [DISK]file:/data/hadoop/dfs/data/
@@ -499,6 +510,54 @@ sudo kill -9 159789
 Put spark-2.1.1-yarn-shuffle.jar into lib folder of yarn.
 ```
 cp <SPARK_HOME>/yarn/spark-<version>-yarn-shuffle.jar /opt/hadoop-2.7.3/share/hadoop/yarn/lib/
+```
+
+#### [問題] namenode 掛掉
+
+```
+2019-04-09 19:12:29,121 WARN org.apache.hadoop.hdfs.qjournal.client.QuorumJournalManager: Waited 17015 ms (timeout=20000 ms) for a response for sendEdits. Succeeded so far: [192.168.6.31:8485]
+2019-04-09 19:12:30,122 WARN org.apache.hadoop.hdfs.qjournal.client.QuorumJournalManager: Waited 18016 ms (timeout=20000 ms) for a response for sendEdits. Succeeded so far: [192.168.6.31:8485]
+2019-04-09 19:12:31,123 WARN org.apache.hadoop.hdfs.qjournal.client.QuorumJournalManager: Waited 19017 ms (timeout=20000 ms) for a response for sendEdits. Succeeded so far: [192.168.6.31:8485]
+2019-04-09 19:12:32,107 FATAL org.apache.hadoop.hdfs.server.namenode.FSEditLog: Error: flush failed for required journal (JournalAndStream(mgr=QJM to [192.168.6.31:8485, 192.168.6.32:8485, 192.168.6.33:8485], stream=QuorumOutputStream starting at txid 104137))
+java.io.IOException: Timed out waiting 20000ms for a quorum of nodes to respond.
+        at org.apache.hadoop.hdfs.qjournal.client.AsyncLoggerSet.waitForWriteQuorum(AsyncLoggerSet.java:137)
+        at org.apache.hadoop.hdfs.qjournal.client.QuorumOutputStream.flushAndSync(QuorumOutputStream.java:107)
+        at org.apache.hadoop.hdfs.server.namenode.EditLogOutputStream.flush(EditLogOutputStream.java:113)
+        at org.apache.hadoop.hdfs.server.namenode.EditLogOutputStream.flush(EditLogOutputStream.java:107)
+        at org.apache.hadoop.hdfs.server.namenode.JournalSet$JournalSetOutputStream$8.apply(JournalSet.java:533)
+        at org.apache.hadoop.hdfs.server.namenode.JournalSet.mapJournalsAndReportErrors(JournalSet.java:393)
+        at org.apache.hadoop.hdfs.server.namenode.JournalSet.access$100(JournalSet.java:57)
+        at org.apache.hadoop.hdfs.server.namenode.JournalSet$JournalSetOutputStream.flush(JournalSet.java:529)
+        at org.apache.hadoop.hdfs.server.namenode.FSEditLog.logSync(FSEditLog.java:707)
+        at org.apache.hadoop.hdfs.server.namenode.FSEditLogAsync.run(FSEditLogAsync.java:188)
+        at java.lang.Thread.run(Thread.java:748)
+2019-04-09 19:12:32,108 WARN org.apache.hadoop.hdfs.qjournal.client.QuorumJournalManager: Aborting QuorumOutputStream starting at txid 104137
+```
+有可能對 HDFS 大量操作時，或網路問題狀況出現
+
+
+[解決] : 
+修改 hdfs-site.xml
+```
+<property>
+        <name>dfs.qjournal.write-txns.timeout.ms</name>
+        <value>60000</value>
+</property>
+<property>
+        <name>dfs.qjournal.start-segment.timeout.ms</name>
+        <value>60000</value>
+</property>
+<property>
+        <name>dfs.qjournal.select-input-streams.timeout.ms</name>
+        <value>60000</value>
+</property>
+```
+修改core-site.xml
+```
+<property>
+    <name>ipc.client.connect.timeout</name>
+    <value>60000</value>
+</property>
 ```
 
 #### 指令速查
